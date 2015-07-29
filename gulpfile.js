@@ -28,52 +28,6 @@ var extend = function extend(a, b) {
   return require("util")._extend(a, b);
 };
 
-var webpackCommonConfig = {
-  module: {
-    loaders: [
-      { test: /\.(js)$/, exclude: /node_modules|bower_components/, loader: "babel", query: {optional: ["runtime"], stage: 0} }
-      //,{ test: /\.(js)$/, exclude: /node_modules|bower_components|.spec.js/, loader: "uglify" }
-      // ,{ test: /\.(otf|eot|svg|ttf|woff)/, loader: "url-loader?limit=8192" }
-      // ,{ test: /\.(js)$/, exclude: /node_modules/, loaders: ["eslint-loader"] }
-    ]
-  },
-  // stats: {
-  //     colors: true
-  // },
-  devtool: "eval-source-map",
-  watch: false,
-  keepalive: false
-};
-
-var siteWebpackConfig = extend(webpackCommonConfig, {
-  resolve: {
-    root: "./clients/site",
-    extensions: ["", ".js"],
-    modulesDirectories: ["node_modules", "bower_components"]
-  },
-  entry: {
-    client: "./clients/site/client.js",
-    vendor: ["react", "react-router", "superagent", "alt", "iso", "jquery"]
-  },
-  output: {
-    path: "./build/statics/site/js",
-    filename: "client.js"
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      "__DEBUG__": DEBUG,
-      "NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
-    }),
-    new webpack.ResolverPlugin(
-      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])
-    ),
-    new webpack.PrefetchPlugin("react"),
-    new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment"),
-    new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.bundle.js")
-  ]
-});
-var siteCompiler = webpack(siteWebpackConfig);
-
 /**
  * path globs / expressions for targets below
  */
@@ -87,6 +41,8 @@ var paths = {
   },
   clients: {
     site: {
+      root: "./clients/site",
+      entry: "./clients/site/client.js",
       sources: ["clients/site/**/*.js", "clients/common/**/*.js"],
       styles: ["assets/css/site/*.scss", "assets/css/vendor/*.scss"],
       images: ["assets/images/**/*"],
@@ -104,6 +60,48 @@ var paths = {
   }
 };
 
+var webpackCommonConfig = {
+  module: {
+    loaders: [
+      { test: /\.(js)$/, exclude: /node_modules|bower_components/, loader: "babel", query: {optional: ["runtime"], stage: 0} }
+      // ,{ test: /\.(otf|eot|svg|ttf|woff)/, loader: "url-loader?limit=8192" }
+      // ,{ test: /\.(js)$/, exclude: /node_modules/, loaders: ["eslint-loader"] }
+    ]
+  },
+  devtool: "eval-source-map",
+  watch: false,
+  keepalive: false
+};
+
+var siteWebpackConfig = extend(webpackCommonConfig, {
+  resolve: {
+    root: paths.clients.site.root,
+    extensions: ["", ".js"],
+    modulesDirectories: ["node_modules", "bower_components"]
+  },
+  entry: {
+    client: paths.clients.site.entry,
+    vendor: ["react", "react-router", "superagent", "alt", "iso", "jquery"]
+  },
+  output: {
+    path: paths.clients.site.statics + "/js",
+    filename: "client.js"
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      "__DEBUG__": DEBUG,
+      "NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
+    }),
+    new webpack.ResolverPlugin(
+      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])
+    ),
+    new webpack.PrefetchPlugin("react"),
+    new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment"),
+    new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.bundle.js")
+  ]
+});
+var siteCompiler = webpack(siteWebpackConfig);
+
 gulp.task("lint", function () {
   return gulp.src(["server/**/*.js", "client/**/*.js"])
     .pipe(eslint())
@@ -111,18 +109,6 @@ gulp.task("lint", function () {
     //.pipe(eslint.failOnError());
 });
 
-// gulp.task("copy-server-images", function () {
-//   return gulp.src("./public/images/**/*")
-//     .pipe(gulp.dest(path.join(paths.server.build, "public/images")));
-// });
-
-// gulp.task("copy-server-views", function () {
-//   return gulp.src("./views/**/*")
-//     //.pipe(minifyhtml())
-//     .pipe(gulp.dest(path.join(paths.server.build, "views")));
-// });
-
-//["copy-server-images", "copy-server-views"]
 gulp.task("build-server", function () {
   return gulp.src(["./server/**/*.js", "./config/**/*.js"], {base: "server"})
     .pipe(sourcemaps.init())
