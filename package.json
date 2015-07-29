@@ -33,7 +33,8 @@
     "react-router": "^0.13.3",
     "serve-favicon": "^2.2.1",
     "superagent": "^1.2.0",
-    "uuid": "^2.0.1"
+    "uuid": "^2.0.1",
+    "winston": "^1.0.1"
   },
   "devDependencies": {
     "babel-core": "^5.8.12",
@@ -62,7 +63,7 @@
   },
   "scripts": {
     "lint": "gulp lint",
-    "dev": "DEBUG=*,-babel,-express:*,-mquery,-pool2,-knex:client,-eslint:*,-tinylr:* gulp dev",
+    "dev": "DEBUG=*,-babel,-express:*,-mquery,-pool2,-knex:client,-eslint:*,-tinylr:*,-send,-body-parser:* gulp dev",
     "migrate": "DEBUG=*,-babel node init.js migrate",
     "test": "NODE_ENV=test mocha --compilers js:babel/register --timeout 50000 --reporter dot test/**/**",
     "server": "node init.js"

@@ -14,16 +14,20 @@ import Iso from "iso";
 import Configuration from "./lib/Configuration";
 import Helpers from "./lib/Helpers";
 import Errors from "./lib/Errors";
+import Logger from "./lib/Logger";
 
 const PROJECT_ROOT = path.resolve(__dirname, "..");
-const CLIENT_ROOT = path.resolve(__dirname, "..", "clients", "site");
-const COMMON_CLIENT_ROOT = path.resolve(__dirname, "..", "clients", "common");
-const STATICS_ROOT = path.resolve(__dirname, "..", "statics");
+const COMMON_CLIENT_ROOT = path.resolve(PROJECT_ROOT, "clients", "common");
+const STATICS_ROOT = path.resolve(PROJECT_ROOT, "build", "statics");
 const SOURCE_PATH = __dirname;
+let CLIENT_ROOT = null;
 
 let debug = require("debug")("app");
 
-exports.run = function(afterRun) {
+exports.run = function(clientName, afterRun) {
+
+  clientName = clientName || "site";
+  CLIENT_ROOT = path.resolve(PROJECT_ROOT, "clients", clientName);
 
   if (typeof afterRun !== "function") {
     afterRun = () => {};
@@ -72,6 +76,17 @@ exports.run = function(afterRun) {
     let routes = require(path.join(CLIENT_ROOT, "components/Routes"));
     let alt = require(path.join(COMMON_CLIENT_ROOT, "alt.js"));
 
+    function configureLogger() {
+      return new Promise((resolve) => {
+        debug("configureLogger");
+        let logger = new Logger(config.logging);
+
+        // Add external logging transports here
+        // ie. logger.addTransport("Loggly", require("winston-loggly").Loggly);
+        logger.configure(app).then(() => resolve());
+      });
+    }
+
     function connectToDatabase() {
       return new Promise((resolve, reject) => {
         debug("connectToDatabase");
@@ -81,7 +96,10 @@ exports.run = function(afterRun) {
         }
         require(path.join(SOURCE_PATH, "lib", "Database")).configure(app, app.config.database)
         .then( () => resolve() )
-        .catch( (err) => reject(err) );
+        .catch((err) => {
+          app.log.error(`Unable to configure database!: ${err.message}`, err);
+          reject(err);
+        });
       });
     }
 
@@ -91,11 +109,14 @@ exports.run = function(afterRun) {
 
         if (app.config.env !== "production" && app.config.env !== "staging") {
           let staticDir = path.join(STATICS_ROOT, "site");
+          console.log("staticDir", staticDir);
           app.use("/public", express.static(staticDir));
+          let faviconImage = path.join(staticDir, "images", "favicon.ico");
+          if (fs.existsSync(faviconImage)) {
+            let favicon = require("serve-favicon");
+            app.use(favicon(faviconImage));
+          }
         }
-
-        // let favicon = require("serve-favicon");
-        // app.use(favicon(path.join(PROJECT_ROOT, "/public/images", "favicon.ico")));
 
         resolve();
       });
@@ -122,14 +143,21 @@ exports.run = function(afterRun) {
           app.authentication = amInstance.register();
         }
 
+        let tasks = [];
+
+        tasks.push(
+          require(path.join(SOURCE_PATH, "lib", "Middleware", "Security")).configure(app, app.config.security)
+        );
+
         if (app.config.cdn.adapter.length) {
-          require(path.join(SOURCE_PATH, "lib", "Middleware", "CDN")).configure(app, app.config.cdn)
-          .then( () => resolve() )
-          .catch( (err) => reject(err) );
-        } else {
-          resolve();
+          tasks.push(
+            require(path.join(SOURCE_PATH, "lib", "Middleware", "CDN")).configure(app, app.config.cdn)
+          );
         }
 
+        return Promise.all(tasks)
+          .then(() => resolve())
+          .catch((err) => reject(err));
       });
     }
 
@@ -169,9 +197,9 @@ exports.run = function(afterRun) {
           try {
             router = require(rf);
           } catch(err) {
-            console.error("Unable to load router " + rf + ": " + err.message);
+            app.log.error("Unable to load router " + rf + ": " + err.message);
             if (app.config.env === "development") {
-              console.error(err.stack);
+              app.log.error(err.stack);
             }
             return reject(err);
           }
@@ -179,9 +207,9 @@ exports.run = function(afterRun) {
           try {
             router.registerRoutes(app);
           } catch (err) {
-            console.error("Unable to register routes from router " + rf + ": " + err.message);
+            app.log.error("Unable to register routes from router " + rf + ": " + err.message);
             if (app.config.env === "development") {
-              console.error(err.stack);
+              app.log.error(err.stack);
             }
             return reject(err);
           }
@@ -313,7 +341,8 @@ exports.run = function(afterRun) {
 
     // Application initialization flow
 
-    connectToDatabase()
+    configureLogger()
+    .then( () => connectToDatabase() )
     .then( () => setupStaticRoutes() )
     .then( () => configureMiddleware() )
     .then( () => setupExtensions() )
@@ -324,15 +353,16 @@ exports.run = function(afterRun) {
 
       if (app.config.env !== "test") {
         app.server.listen(app.config.port, function() {
-          console.log("Server listening on port " + app.config.port);
+          app.log.info(`Server listening on port: ${app.config.port}`);
         });
       } else {
         afterRun(app);
       }
     })
     .catch(err => {
-      console.error("Error on initialization flow", err);
-      console.error(err.stack);
+      app.log.error(`Error on initialization flow!: ${err.message}`, err, {stack: err.stack});
+      // console.error("Error on initialization flow", err);
+      // console.error(err.stack);
       throw err;
     });
 

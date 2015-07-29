@@ -11,11 +11,21 @@ module.exports = (projectRoot) => {
   let config = {
     port: port,
     host: host,
+    logging: {
+      Console: {
+        enabled: true,
+        level: "warn"
+      }
+    },
     database: {
       adapter: getEnvironmentValue("DATABASE_ADAPTER", "mongoose"),
       adapterConfig: {
         uri: getEnvironmentValue("DATABASE_URI", `mongodb://localhost/homehapp-${env}`)
       }
+    },
+    security: {
+      csrf: true,
+      xframe: "DENY"
     },
     authentication: {
       adapters: ["local"],

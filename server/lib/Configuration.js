@@ -28,12 +28,7 @@ Configuration.load = (projectRoot, configDir, defs={}, next) => {
   }
 
   let config = {
-    env: env,
-    logging: {
-      "console": {
-        enabled: true
-      }
-    }
+    env: env
   };
 
   let getConfig = (file) => {
@@ -45,27 +40,27 @@ Configuration.load = (projectRoot, configDir, defs={}, next) => {
     }
   };
 
-  config = Helpers.merge({}, config, defs);
+  config = Helpers.merge(config, defs);
 
   // Read in defaults
   let defaults = getConfig(path.join(configDir, "defaults.js"));
-  config = Helpers.merge({}, config, defaults);
+  config = Helpers.merge(config, defaults);
 
   // Get environment specific config, if exists
   if (env === "test" && exists(path.join(configDir, "development.js"))) {
     let envCfg = getConfig(path.join(configDir, "development.js"));
-    config = Helpers.merge({}, config, envCfg);
+    config = Helpers.merge(config, envCfg);
   }
 
   if (exists(path.join(configDir, env + ".js"))) {
     let envCfg = getConfig(path.join(configDir, env + ".js"));
-    config = Helpers.merge({}, config, envCfg);
+    config = Helpers.merge(config, envCfg);
   }
 
   // Load local overrides
   if (exists(path.join(configDir, "locals.js"))) {
     let envCfg = getConfig(path.join(configDir, "locals.js"));
-    config = Helpers.merge({}, config, envCfg);
+    config = Helpers.merge(config, envCfg);
   }
 
   next(null, config);
