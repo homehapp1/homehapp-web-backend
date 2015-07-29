@@ -78,8 +78,25 @@ exports.listDirSync = function listDirSync(srcpath) {
   });
 };
 
-exports.merge = function merge (...argv) {
-  return Object.assign.apply(null, argv);
+let merge = exports.merge = function merge (...argv) {
+  let target = Object.assign({}, argv.shift());
+
+  argv.forEach((a) => {
+    for (let [key, value] of enumerate(a)) {
+      if (a.hasOwnProperty(key)) {
+        if (typeof target[key] === "object"
+            && typeof target[key] !== "undefined"
+            && target[key] !== null)
+        {
+          target[key] = merge(target[key], value);
+        } else {
+          target[key] = value;
+        }
+      }
+    }
+  });
+
+  return target;
 };
 
 exports.getEnvironmentValue = function getEnvironmentValue(envKey, defaultValue) {
@@ -150,7 +167,7 @@ exports.isEmpty = function isEmpty(val) {
   return false;
 };
 
-exports.enumerate = function* enumerate(obj) {
+let enumerate = exports.enumerate = function* enumerate(obj) {
   for (let key of Object.keys(obj)) {
     yield [key, obj[key]];
   }
