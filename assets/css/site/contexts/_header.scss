@@ -1,0 +1,36 @@
+#header {
+  $pv: $contentPadding;
+  padding: $pv $contentPadding * 2;
+  //box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: $headerHeight;
+  z-index: $zHeader;
+  background-color: rgba(255, 255, 255, 0.6);
+  @include vendors(transition-property, all);
+  @include vendors(transition-duration, 500ms);
+  
+  &.away {
+    //@include vendors(transform, translateY(-50%));
+    @include vendors(filter, blur(2px));
+    opacity: 0.3;
+  }
+  
+  .logo {
+    float: left;
+    
+    img {
+      width: 230px / 69px * ($headerHeight - 2 * $pv);
+      height: $headerHeight - 2 * $pv;
+      margin-left: 0;
+    }
+  }
+  
+  @import "navigation";
+  
+  & + * {
+    // margin-top: $headerHeight;
+  }
+}

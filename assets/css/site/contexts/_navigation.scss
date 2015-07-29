@@ -1,0 +1,29 @@
+#navigation {
+  display: block;
+  float: right;
+  
+  ul {
+    margin: 0;
+    padding: 0;
+    display: block;
+    line-height: $headerHeight - 2 * $pv;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+    
+    & > li {
+      display: inline;
+      
+      & + li {
+        &:before {
+          content: '//';
+          margin-left: 1em;
+          margin-right: 1em;
+        }
+      }
+      
+      a {
+        color: black;
+        font-weight: $navigationWeight;
+      }
+    }
+  }
+}

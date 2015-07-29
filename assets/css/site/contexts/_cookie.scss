@@ -1,0 +1,27 @@
+#cookiePolicy {
+  $h: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $h;
+  line-height: $h;
+  background-color: black;
+  color: white;
+  text-align: center;
+  z-index: 100;
+  font-weight: 300;
+  
+  a {
+    cursor: pointer;
+    color: $orange;
+  }
+  
+  & + #header {
+    margin-top: $h;
+  }
+  
+  &.hidden + #header {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "name": "homehapp-web-backend",
+  "private": true,
+  "version": "0.0.1",
+  "description": "",
+  "author": "Jerry Jalava <jerry@qvik.fi>",
+  "dependencies": {
+    "alt": "^0.17.1",
+    "async": "^1.2.0",
+    "babel": "^5.4.7",
+    "bcrypt": "^0.8.3",
+    "bluebird": "^2.9.34",
+    "body-parser": "^1.12.4",
+    "cloudinary": "^1.2.2",
+    "connect": "^3.3.5",
+    "connect-mongo": "^0.8.1",
+    "connect-mongodb": "^1.1.5",
+    "csurf": "^1.8.2",
+    "debug": "^2.2.0",
+    "ejs": "^2.3.1",
+    "express": "^4.12.4",
+    "express-layout": "^0.1.0",
+    "express-partials": "^0.3.0",
+    "express-session": "^1.11.2",
+    "express-state": "^1.2.0",
+    "iso": "^4.1.0",
+    "moment": "^2.10.3",
+    "moment-timezone": "^0.4.0",
+    "mongoose": "^4.0.4",
+    "passport": "^0.2.2",
+    "passport-local": "^1.0.0",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3",
+    "serve-favicon": "^2.2.1",
+    "superagent": "^1.2.0",
+    "uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^5.8.12",
+    "babel-loader": "^5.3.2",
+    "babel-runtime": "^5.8.12",
+    "deep-merge": "^1.0.0",
+    "eslint": "^0.22.1",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-eslint": "^0.15.0",
+    "gulp-livereload": "^3.8.0",
+    "gulp-minify-html": "^1.0.4",
+    "gulp-nodemon": "^2.0.3",
+    "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.6",
+    "mocha": "^2.2.5",
+    "nodemon": "^1.4.0",
+    "should": "^6.0.3",
+    "source-map-support": "^0.3.2",
+    "supertest": "^1.0.1",
+    "uglify-loader": "^1.2.0",
+    "webpack": "^1.10.5"
+  },
+  "scripts": {
+    "lint": "gulp lint",
+    "dev": "DEBUG=*,-babel,-express:*,-mquery,-pool2,-knex:client,-eslint:*,-tinylr:* gulp dev",
+    "migrate": "DEBUG=*,-babel node init.js migrate",
+    "test": "NODE_ENV=test mocha --compilers js:babel/register --timeout 50000 --reporter dot test/**/**",
+    "server": "node init.js"
+  },
+  "eslintConfig": {
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "blockBindings": true,
+      "classes": true,
+      "forOf": true,
+      "defaultParams": true,
+      "jsx": true,
+      "modules": true
+    },
+    "env": {
+      "es6": true,
+      "browser": true,
+      "node": true,
+      "mocha": true,
+      "jasmine": true
+    },
+    "settings": {
+      "ecmascript": 6,
+      "jsx": true
+    },
+    "rules": {
+      "strict": 2,
+      "eqeqeq": [
+        2,
+        "smart"
+      ],
+      "no-eval": 1,
+      "indent": [
+        2,
+        2,
+        {
+          "indentSwitchCase": true
+        }
+      ],
+      "no-underscore-dangle": 0,
+      "no-unused-vars": [
+        1,
+        {
+          "vars": "all",
+          "args": "after-used"
+        }
+      ],
+      "no-undef": 0,
+      "semi": [
+        2,
+        "always"
+      ],
+      "max-statements": [
+        1,
+        30
+      ],
+      "max-depth": [
+        1,
+        3
+      ],
+      "complexity": [
+        1,
+        7
+      ]
+    }
+  }
+}

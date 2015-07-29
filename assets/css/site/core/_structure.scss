@@ -1,0 +1,134 @@
+*, *:before, *:after {
+  @include vendors(box-sizing, border-box);
+  background-repeat: no-repeat;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.clearfix {
+  @include clearfix();
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  
+  &.no-scroll {
+    overflow-y: hidden;
+  }
+}
+
+.width-wrapper {
+  width: 100%;
+  max-width: $pageWidth;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $contentPadding;
+  padding-right: $contentPadding;
+}
+
+#container {
+  height: 100%;
+}
+
+// Display only for small screens
+.show-for-small {
+  display: none;
+  
+  @include small() {
+    display: block;
+  }
+}
+
+// Hide only for small screens
+.hide-for-small {
+  @include small() {
+    display: none !important;
+  }
+}
+
+// Display only for medium screens
+.show-for-medium {
+  display: none !important;
+  
+  @include medium(false) {
+    display: block !important;
+  }
+}
+
+// Hide only for medium screens
+.hide-for-medium {
+  @include medium(false) {
+    display: none !important;
+  }
+}
+
+// Display only for large screens
+.show-for-large {
+  @include noOverflow() {
+    display: none;
+  }
+}
+
+// Hide only for large screens
+.hide-for-large {
+  display: none !important;
+  
+  @include noOverflow() {
+    display: block !important;
+  }
+}
+
+// Display only for large and medium screens
+.show-for-large-and-medium, .show-for-medium-and-large {
+  @include small() {
+    display: none !important;
+  }
+}
+
+// Hide only for large screens
+.hide-for-large-and-medium, .hide-for-medium-and-large {
+  display: none !important;
+  
+  @include small() {
+    display: block !important;
+  }
+}
+
+// Display only for small and medium screens
+.show-for-small-and-medium, .show-for-medium-and-small {
+  display: none;
+  
+  @include medium() {
+    display: block !important;
+  }
+}
+
+// Hide only for small screens
+.hide-for-small-and-medium, .hide-for-medium-and-small {
+  display: block;
+  
+  @include medium() {
+    display: none !important;
+  }
+}
+
+.row {
+  @include clearfix();
+  display: table;
+  
+  & > * {
+    display: table-cell;
+  }
+}
+
+@for $i from 1 through $cols {
+  .span#{$i} {
+    width: 100% * $i / $cols;
+  }
+}

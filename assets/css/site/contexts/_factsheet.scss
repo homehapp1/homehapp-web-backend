@@ -1,0 +1,37 @@
+#container #apartmentDescription, #container  > .item#apartmentDescription {
+  height: auto;
+  
+  .data-summary {
+    & > * {
+      &.show-more {
+        a {
+          color: white;
+        }
+      }
+      
+      & + * {
+        &:before {
+          content: ' // ';
+          margin-left: 0.5em;
+          margin-right: 0.5em;
+        }
+      }
+    }
+  }
+}
+
+.data-sheet {
+  overflow: auto;
+  height: 100%;
+  padding-top: $contentPadding * 4;
+  padding-bottom: $contentPadding * 4;
+  
+  .section {
+    @include clearfix();
+    
+    & + .section {
+      margin-top: 2em;
+      border-top: solid 1px $borderGray;
+    }
+  }
+}

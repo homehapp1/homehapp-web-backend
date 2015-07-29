@@ -1,0 +1,31 @@
+$blue: #5785D4;
+$orange: #ff7d5a;
+$lightGray: #eeeeee;
+$extraLightGray: #f1f1f1;
+$borderGray: #dddddd;
+$linkGray: #666666;
+$linkBlue: #000088;
+
+// Measurements
+$headerHeight: 60px;
+$footerHeight: 350px;
+$contentPadding: 10px;
+
+// Page size breakpoints
+$largeWidth: 960px;
+$mediumWidth: 960px;
+$smallWidth: 400px;
+$pageWidth: 960px;
+
+$cols: 12;
+$fontSize: 16px;
+$defaultWeight: 200;
+$titleWeight: 200;
+$navigationWeight: 200;
+
+// Z-indexes
+$zHeader: 100;
+$zModal: 1000;
+
+// Easings
+$easingEaseOutSlow: cubic-bezier(0,1,0,1);

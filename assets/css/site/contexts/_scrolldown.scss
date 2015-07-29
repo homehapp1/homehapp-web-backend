@@ -1,0 +1,24 @@
+#scrollDown {
+  $s: 40px;
+  position: fixed;
+  z-index: 200;
+  bottom: $contentPadding;
+  left: 50%;
+  width: $s;
+  height: $s;
+  line-height: $s;
+  margin-left: -0.5 * $s;
+  font-size: 0.8 * $s;
+  border-radius: $s;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  @include vendors(transition-property, all);
+  @include vendors(transition-duration, 200ms);
+  opacity: 0.3;
+  background-color: white;
+  
+  &:hover {
+    opacity: 0.6;
+  }
+}

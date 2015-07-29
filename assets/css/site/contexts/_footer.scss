@@ -1,0 +1,21 @@
+#footer {
+  border-top: solid 1px $borderGray;
+  padding: 3 * $contentPadding 0;
+  background-color: $lightGray;
+  
+  h3 {
+    img {
+      vertical-align: middle;
+    }
+  }
+  
+  ul {
+    margin: 1em 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  a {
+    color: $linkGray;
+  }
+}

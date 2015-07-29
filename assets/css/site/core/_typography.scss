@@ -1,0 +1,77 @@
+// @import url("//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
+@import url("../fonts/font-awesome/css/font-awesome.min.css");
+@import url("http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,200italic,300italic,400italic,600italic");
+
+* {
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  td, th {
+    vertical-align: top;
+    text-align: left;
+  }
+
+  tbody {
+    tr {
+      &:nth-child(2n) {
+        background-color: #f1f1f1;
+      }
+    }
+
+    th, td {
+      border-top: solid 1px #dddddd;
+    }
+  }
+}
+
+a {
+  color: $linkBlue;
+
+  &:link, &:visited {
+    text-decoration: none;
+  }
+
+  &:hover, &:visited:hover {
+    text-decoration: underline;
+  }
+
+  img {
+    border: none;
+  }
+}
+
+body {
+  font-size: $fontSize;
+  font-weight: $defaultWeight;
+}
+
+h1, h2, h3, h4, h5, h6, li, p {
+  line-height: 1.4em;
+}
+
+h1 {
+  font-size: 200%;
+  font-weight: $titleWeight;
+}
+
+h2 {
+  font-size: 150%;
+  font-weight: $titleWeight;
+}
+
+h3 {
+  font-size: 130%;
+  font-weight: $titleWeight;
+}
+
+h1, h2, h3 {
+  margin: 1em 0 0.5em;
+}
+
+p {
+  margin: 1em 0;
+}
