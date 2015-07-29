@@ -200,10 +200,10 @@ gulp.task("dev", ["lint", "build-server", "build-clients", "watch"], function() 
     execMap: {
       js: "node"
     },
-    //script: path.join(__dirname, 'init.js'),
+    script: path.join(__dirname, 'init.js'),
     // ignore: ['gulpfile.js'],
     // ext: 'js html'
-    script: path.join(paths.server.build, "app.js"),
+    //script: path.join(paths.server.build, "app.js"),
     ignore: ['*']
   }).on('restart', function() {
     console.log('Restarted!');
