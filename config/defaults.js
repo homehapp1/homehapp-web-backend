@@ -28,7 +28,7 @@ module.exports = (projectRoot) => {
       xframe: "DENY"
     },
     authentication: {
-      adapters: ["basic"],
+      adapters: [],
       adapterConfigs: {
         basic: {
           username: "homehapp",
