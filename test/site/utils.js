@@ -9,5 +9,5 @@ const TEST_USER_DATA = exports.TEST_USER_DATA = {
 };
 
 let createApp = exports.createApp = (done) => {
-  app.run((app) => done(null, app));
+  app.run("site", (app) => done(null, app));
 };

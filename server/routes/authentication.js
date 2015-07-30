@@ -3,6 +3,10 @@
 import {Forbidden} from "../lib/Errors";
 
 exports.registerRoutes = (app) => {
+  if (!app.authentication) {
+    return;
+  }
+
   app.post("/auth/login", function(req, res, next) {
     let loginMethod = app.authentication.resolveLoginMethod(req);
     app.authentication.authenticate(loginMethod, function(err, user, info) {

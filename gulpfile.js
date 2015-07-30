@@ -6,7 +6,6 @@ var sourcemaps = require("gulp-sourcemaps");
 var babel = require("gulp-babel");
 var eslint = require("gulp-eslint");
 var sass = require("gulp-sass");
-var minifyhtml = require("gulp-minify-html");
 var livereload = require("gulp-livereload");
 var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
@@ -45,19 +44,21 @@ var paths = {
       root: "./clients/site",
       entry: "./clients/site/client.js",
       sources: ["clients/site/**/*.js", "clients/common/**/*.js"],
-      styles: ["assets/css/site/**/*.scss", "assets/css/vendor/**/*.scss", "assets/css/shared/**/*.scss", ],
+      styles: ["assets/css/site/**/*.scss", "assets/css/vendor/site/**/*.scss", "assets/css/shared/**/*.scss", ],
       images: ["assets/images/**/*"],
       statics: "./build/statics/site",
       fonts: "assets/fonts/**/*"
-    }
-  },
-  client: {
-    main: "client/js/app.js",
-    sources: "clients/**/*.js",
-    styles: "assets/css/**/*.scss",
-    assets: ["assets/**/*", "!**/*.js", "!**/*.scss"],
-    build: "./build/clients",
-    statics: "./build/statics"
+    },
+    admin: {
+      root: "./clients/admin",
+      entry: "./clients/admin/client.js",
+      sources: ["clients/admin/**/*.js", "clients/common/**/*.js"],
+      styles: ["assets/css/admin/**/*.scss", "assets/css/vendor/admin/**/*.scss", "assets/css/shared/**/*.scss", ],
+      images: ["assets/images/**/*"],
+      statics: "./build/statics/admin",
+      fonts: "assets/fonts/**/*"
+    },
+    build: "./build/clients"
   }
 };
 
@@ -103,6 +104,35 @@ var siteWebpackConfig = extend(webpackCommonConfig, {
 });
 var siteCompiler = webpack(siteWebpackConfig);
 
+var adminWebpackConfig = extend(webpackCommonConfig, {
+  resolve: {
+    root: paths.clients.admin.root,
+    extensions: ["", ".js"],
+    modulesDirectories: ["node_modules", "bower_components"]
+  },
+  entry: {
+    client: paths.clients.admin.entry,
+    vendor: ["react", "react-router", "superagent", "alt", "iso", "react-bootstrap"]
+  },
+  output: {
+    path: paths.clients.admin.statics + "/js",
+    filename: "client.js"
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      "__DEBUG__": DEBUG,
+      "NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
+    }),
+    new webpack.ResolverPlugin(
+      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])
+    ),
+    new webpack.PrefetchPlugin("react"),
+    new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment"),
+    new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.bundle.js")
+  ]
+});
+var adminCompiler = webpack(adminWebpackConfig);
+
 gulp.task("lint", function () {
   return gulp.src(["server/**/*.js", "clients/**/*.js"])
     .pipe(eslint())
@@ -124,7 +154,7 @@ gulp.task("build-server", ["lint"], function () {
 gulp.task("compile-site-styles", function(){
   return gulp.src(paths.clients.site.styles)
     .pipe(sass())
-    .pipe(gulp.dest(path.join(paths.clients.site.statics, "css")));
+    .pipe(gulp.dest(path.join(paths.clients.site.statics, "css")))
 });
 gulp.task("copy-site-fonts", function(){
   return gulp.src(paths.clients.site.fonts)
@@ -156,18 +186,37 @@ gulp.task("webpack:build-site-client", function(callback) {
 // });
 gulp.task("compile-site", ["compile-site-styles", "copy-site-fonts", "copy-site-images", "webpack:build-site-client"]);
 
-// gulp.task("compile-admin-styles", function(){
-//   return gulp.src(paths.clients.admin.styles)
-//     .pipe(sass())
-//     .pipe(gulp.dest(path.join(paths.clients.admin.statics, "css")));
-// });
+gulp.task("compile-admin-styles", function(){
+  return gulp.src(paths.clients.admin.styles)
+    .pipe(sass())
+    .pipe(gulp.dest(path.join(paths.clients.admin.statics, "css")))
+});
+gulp.task("copy-admin-fonts", function(){
+  return gulp.src(paths.clients.admin.fonts)
+    .pipe(gulp.dest(path.join(paths.clients.admin.statics, "fonts")));
+});
+gulp.task("copy-admin-images", function(){
+  return gulp.src(paths.clients.admin.images)
+    .pipe(gulp.dest(path.join(paths.clients.admin.statics, "images")));
+});
+gulp.task("webpack:build-admin-client", function(callback) {
+  // run webpack
+  adminCompiler.run(function(err, stats) {
+    if(err) throw new gutil.PluginError("webpack:build-admin-client", err);
+    gutil.log("[webpack:build-admin-client]", stats.toString({
+      colors: true
+    }));
+    callback();
+  });
+});
+gulp.task("compile-admin", ["compile-admin-styles", "copy-admin-fonts", "copy-admin-images", "webpack:build-admin-client"]);
 
 gulp.task("copy-client-templates", function () {
   return gulp.src("./clients/**/*.html")
-    .pipe(gulp.dest(path.join(paths.client.build)));
+    .pipe(gulp.dest(path.join(paths.clients.build)));
 });
 
-gulp.task("build-clients", ["copy-client-templates", "compile-site"], function(){
+gulp.task("build-clients", ["copy-client-templates", "compile-site", "compile-admin"], function(){
   return gulp.src(["./clients/**/*.js"], {})
     .pipe(sourcemaps.init())
     .pipe(babel({
@@ -175,7 +224,7 @@ gulp.task("build-clients", ["copy-client-templates", "compile-site"], function()
       stage: 0
     }))
     .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest(paths.client.build));
+    .pipe(gulp.dest(paths.clients.build));
 });
 
 gulp.task("watch", function(){
@@ -187,6 +236,8 @@ gulp.task("watch", function(){
 
   gulp.watch(paths.clients.site.sources, ["build-clients"]);
   gulp.watch(paths.clients.site.styles, ["build-clients"]);
+  gulp.watch(paths.clients.admin.sources, ["build-clients"]);
+  gulp.watch(paths.clients.admin.styles, ["build-clients"]);
 
   gulp.watch("./server/**", batch(function(events, done) {
     //console.log("server changed", events);
@@ -208,13 +259,13 @@ gulp.task("restart-dev", function() {
   }
 });
 
-var watchStarted = false;
 gulp.task("dev", ["lint", "build-server", "build-clients", "watch"], function() {
   nodemonInstance = nodemon({
     execMap: {
       js: "node"
     },
     script: path.join(__dirname, "init.js"),
+    env: {PROJECT_NAME: process.env.PROJECT_NAME || "site"},
     //watch: ["./build/server"],
     // ignore: ["gulpfile.js"],
     // ext: "js html"

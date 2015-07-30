@@ -16,6 +16,7 @@ import Helpers from "./lib/Helpers";
 import Errors from "./lib/Errors";
 import Logger from "./lib/Logger";
 
+let PROJECT_NAME = "site";
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 const COMMON_CLIENT_ROOT = path.resolve(PROJECT_ROOT, "clients", "common");
 const STATICS_ROOT = path.resolve(PROJECT_ROOT, "build", "statics");
@@ -24,16 +25,16 @@ let CLIENT_ROOT = null;
 
 let debug = require("debug")("app");
 
-exports.run = function(clientName, afterRun) {
+exports.run = function(projectName, afterRun) {
 
-  clientName = clientName || "site";
-  CLIENT_ROOT = path.resolve(PROJECT_ROOT, "clients", clientName);
+  PROJECT_NAME = projectName || "site";
+  CLIENT_ROOT = path.resolve(PROJECT_ROOT, "clients", PROJECT_NAME);
 
   if (typeof afterRun !== "function") {
     afterRun = () => {};
   }
 
-  Configuration.load(PROJECT_ROOT, path.join(PROJECT_ROOT, "config"), {}, function (configError, config) {
+  Configuration.load(PROJECT_ROOT, PROJECT_NAME, path.join(PROJECT_ROOT, "config"), {}, function (configError, config) {
     if (configError) {
       throw configError;
     }
@@ -41,6 +42,7 @@ exports.run = function(clientName, afterRun) {
     let app = module.exports.app = express();
     app.config = config;
     app.server = http.createServer(app);
+    app.PROJECT_NAME = PROJECT_NAME;
     app.PROJECT_ROOT = PROJECT_ROOT;
     app.SOURCE_PATH = SOURCE_PATH;
 
@@ -108,7 +110,7 @@ exports.run = function(clientName, afterRun) {
         debug("setupStaticRoutes");
 
         if (app.config.env !== "production" && app.config.env !== "staging") {
-          let staticDir = path.join(STATICS_ROOT, "site");
+          let staticDir = path.join(STATICS_ROOT, app.PROJECT_NAME);
           app.use("/public", express.static(staticDir));
 
           let faviconImage = path.join(staticDir, "images", "favicon.ico");
@@ -137,7 +139,7 @@ exports.run = function(clientName, afterRun) {
           next();
         });
 
-        if (app.config.authentication.adapters.length) {
+        if (app.config.authentication && app.config.authentication.adapters.length) {
           let AuthenticationMiddleware = require(path.join(SOURCE_PATH, "lib", "Middleware", "Authentication"));
           let amInstance = new AuthenticationMiddleware(app, config.authentication);
           app.authentication = amInstance.register();
@@ -188,12 +190,19 @@ exports.run = function(clientName, afterRun) {
       return new Promise((resolve, reject) => {
         debug("setupRoutes");
 
-        var routerFiles = Helpers.walkDirSync(path.join(SOURCE_PATH, "/routes"), {
+        let routerFiles = Helpers.walkDirSync(path.join(SOURCE_PATH, "/routes"), {
           ext: [".js"]
         });
+        let projectRoutesPath = path.join(SOURCE_PATH, "/routes", app.PROJECT_NAME);
+        if (require("fs").existsSync(projectRoutesPath)) {
+          var projectRouterFiles = Helpers.walkDirSync(projectRoutesPath, {
+            ext: [".js"]
+          });
+          routerFiles = routerFiles.concat(projectRouterFiles);
+        }
 
         routerFiles.forEach((rf) => {
-          var router;
+          let router;
           try {
             router = require(rf);
           } catch(err) {
@@ -230,6 +239,7 @@ exports.run = function(clientName, afterRun) {
           if (!res.locals.data.ApplicationStore) {
             res.locals.data.ApplicationStore = {};
           }
+
           if (app.config.security.csrf) {
             res.locals.data.ApplicationStore.csrf = req.csrfToken();
           }
@@ -258,22 +268,15 @@ exports.run = function(clientName, afterRun) {
         });
 
         app.use(function errorHandler(err, req, res) {
-          var code = 422;
-          if (err.statusCode) {
-            code = err.statusCode;
-          }
+          var code = err.statusCode || 422;
+
           var msg = "Unexpected error has occurred!";
           if (err.message) {
             msg = err.message;
           }
           var payload = msg;
 
-          var asJSON = false;
-          if (req.xhr || req.headers["content-type"] === "application/json") {
-            asJSON = true;
-          }
-
-          if (asJSON) {
+          let prepareJSONError = function() {
             payload = {
               status: "failed", error: msg, data: {
                 name: err.name
@@ -312,6 +315,10 @@ exports.run = function(clientName, afterRun) {
                 });
               }
             }
+          };
+
+          if (req.xhr || req.headers["content-type"] === "application/json") {
+            payload = prepareJSONError();
           }
 
           if (err.stack && app.config.env === "development") {
@@ -333,8 +340,12 @@ exports.run = function(clientName, afterRun) {
       return new Promise((resolve) => {
         debug("additionalConfig");
 
+        let pageTitle = "Homehapp";
+        if (projectName === "admin") {
+          pageTitle = "Homehapp - Admin";
+        }
         app.locals.site = {
-          title: "Homehapp"
+          title: pageTitle
         };
 
         resolve();
@@ -357,6 +368,7 @@ exports.run = function(clientName, afterRun) {
       if (app.config.env !== "test") {
         app.server.listen(app.config.port, function() {
           app.log.info(`Server listening on port: ${app.config.port}`);
+          afterRun(app);
         });
       } else {
         afterRun(app);

@@ -42,7 +42,7 @@ class HomeStory extends React.Component {
   }
 
   render() {
-    if (this.state.loading) {
+    if (this.state.loading || !this.state.home) {
       return (
         <div className="story-loader">
           <h3>Loading story data...</h3>

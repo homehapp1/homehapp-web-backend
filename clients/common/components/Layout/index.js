@@ -4,7 +4,7 @@ import React from "react";
 
 class Layout extends React.Component {
   static propTypes = {
-    children: React.PropTypes.object.isRequired,
+    children: React.PropTypes.array.isRequired,
     width: React.PropTypes.number.isRequired
   }
   static defaultProps = {

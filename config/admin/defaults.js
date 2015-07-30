@@ -1,6 +1,6 @@
 "use strict";
 
-import {getEnvironmentValue} from "../server/lib/Helpers";
+import {getEnvironmentValue} from "../../server/lib/Helpers";
 
 module.exports = (projectRoot) => {
   let env = getEnvironmentValue("NODE_ENV", "development");
@@ -28,32 +28,16 @@ module.exports = (projectRoot) => {
       xframe: "DENY"
     },
     authentication: {
-      adapters: [],
+      adapters: ["local"],
       adapterConfigs: {
         local: {
           cookie: {
             maxAge: 86000
           },
           session: {
-            name: "qvik:common",
+            name: "homehapp:login",
             secret: "really-secret-string-here"
           }
-        },
-        jwt: {
-          secretOrKey: "really-secret-string-here-for-fwt",
-          issuer: "qvik.fi",
-          audience: "qvik.fi",
-          lifetimeSeconds: 86000
-        },
-        facebook: {
-          appId: null,
-          secret: null,
-          callbackUrl: null
-        },
-        google: {
-          clientID: null,
-          clientSecret: null,
-          callbackUrl: null
         }
       }
     },
