@@ -23,6 +23,11 @@ if (process.env.NODE_ENV === "production") {
   DEBUG = false;
 }
 
+var PROJECT_NAME = "site";
+if (process.env.PROJECT_NAME && process.env.PROJECT_NAME !== "undefined") {
+  PROJECT_NAME = process.env.PROJECT_NAME;
+}
+
 var extend = function extend(a, b) {
   a = require("util")._extend({}, a);
   return require("util")._extend(a, b);
@@ -216,7 +221,10 @@ gulp.task("copy-client-templates", function () {
     .pipe(gulp.dest(path.join(paths.clients.build)));
 });
 
-gulp.task("build-clients", ["copy-client-templates", "compile-site", "compile-admin"], function(){
+var clientBuildDependencies = ["copy-client-templates"];
+clientBuildDependencies.push("compile-" + PROJECT_NAME);
+
+gulp.task("build-clients", clientBuildDependencies, function(){
   return gulp.src(["./clients/**/*.js"], {})
     .pipe(sourcemaps.init())
     .pipe(babel({
@@ -234,10 +242,8 @@ gulp.task("watch", function(){
   //gulp.watch(paths.server.views, ["copy-server-views"]);
   gulp.watch(paths.server.sources, ["lint"]); //"lint", , "restart-dev"
 
-  gulp.watch(paths.clients.site.sources, ["build-clients"]);
-  gulp.watch(paths.clients.site.styles, ["build-clients"]);
-  gulp.watch(paths.clients.admin.sources, ["build-clients"]);
-  gulp.watch(paths.clients.admin.styles, ["build-clients"]);
+  gulp.watch(paths.clients[PROJECT_NAME].sources, ["build-clients"]);
+  gulp.watch(paths.clients[PROJECT_NAME].styles, ["build-clients"]);
 
   gulp.watch("./server/**", batch(function(events, done) {
     //console.log("server changed", events);
