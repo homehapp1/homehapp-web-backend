@@ -22,18 +22,20 @@ class HomeStory extends React.Component {
   }
 
   componentDidMount() {
+    console.log("componentDidMount");
     this.homeStoreListener = this.homeStoreOnChange.bind(this);
     HomeStore.listen(this.homeStoreListener);
     HomeActions.fetchHome(this.props.params.slug);
   }
 
   componentWillUnmount() {
+    console.log("componentWillUnmount");
     HomeStore.unlisten(this.homeStoreListener);
   }
 
   homeStoreOnChange(state) {
     if (state.home) {
-      this.setState({home: state.home, loading: false});
+      this.setState({home: state.home, loading: false, error: null});
     } else if (state.error) {
       this.setState({error: state.error, loading: false});
     } else {

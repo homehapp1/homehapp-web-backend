@@ -7,6 +7,7 @@ let {RouteHandler} = require("react-router");
 
 import Header from "../Header";
 import Footer from "../Footer";
+import Layout from "../../../common/components/Layout";
 
 class Application extends React.Component {
   static propTypes = {
@@ -28,11 +29,11 @@ class Application extends React.Component {
 
   render() {
     return (
-      <div className="application">
+      <Layout width="625">
         <Header {...this.props} />
         <RouteHandler />
         <Footer {...this.props} />
-      </div>
+      </Layout>
     );
   }
 }

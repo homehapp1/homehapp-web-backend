@@ -230,7 +230,9 @@ exports.run = function(clientName, afterRun) {
           if (!res.locals.data.ApplicationStore) {
             res.locals.data.ApplicationStore = {};
           }
-          //res.locals.data.ApplicationStore.csrf = req.csrfToken();
+          if (app.config.security.csrf) {
+            res.locals.data.ApplicationStore.csrf = req.csrfToken();
+          }
 
           debug("res.locals.data", res.locals.data);
 
