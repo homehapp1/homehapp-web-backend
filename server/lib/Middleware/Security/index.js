@@ -6,7 +6,7 @@ exports.configure = function(app, config) {
   return new Promise((resolve) => {
     if (config.csrf) {
       let csrfProtection = csrf({});
-      if (!app.authentication) {
+      if (!app.hasSessions) {
         csrfProtection = csrf({
           cookie: true
         });

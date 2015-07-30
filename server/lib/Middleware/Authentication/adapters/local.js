@@ -47,7 +47,7 @@ exports.register = function (parent, app, config) {
     if (parent.sessionStore) {
       sessionConfig.store = parent.sessionStore;
     }
-
+    app.hasSessions = true;
     app.use(session(sessionConfig));
   }
 

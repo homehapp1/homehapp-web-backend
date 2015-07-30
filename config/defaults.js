@@ -28,8 +28,12 @@ module.exports = (projectRoot) => {
       xframe: "DENY"
     },
     authentication: {
-      adapters: [],
+      adapters: ["basic"],
       adapterConfigs: {
+        basic: {
+          username: "homehapp",
+          password: "homehapplondon2015"
+        },
         local: {
           cookie: {
             maxAge: 86000
