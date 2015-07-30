@@ -230,7 +230,7 @@ gulp.task("build-clients", clientBuildDependencies, function(){
     .pipe(babel({
       optional: ["runtime"],
       stage: 0
-    }))
+    }).on("error", gutil.log))
     .pipe(sourcemaps.write("."))
     .pipe(gulp.dest(paths.clients.build));
 });
