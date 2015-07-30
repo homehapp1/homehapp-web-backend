@@ -15,22 +15,20 @@ class HomeStory extends React.Component {
     super(props);
   }
 
-  state = {
-    loading: false,
-    error: null,
-    home: HomeStore.getState().home
-  }
-
   componentDidMount() {
-    console.log("componentDidMount");
     this.homeStoreListener = this.homeStoreOnChange.bind(this);
     HomeStore.listen(this.homeStoreListener);
     HomeActions.fetchHome(this.props.params.slug);
   }
 
   componentWillUnmount() {
-    console.log("componentWillUnmount");
     HomeStore.unlisten(this.homeStoreListener);
+  }
+
+  state = {
+    loading: false,
+    error: null,
+    home: HomeStore.getState().home
   }
 
   homeStoreOnChange(state) {

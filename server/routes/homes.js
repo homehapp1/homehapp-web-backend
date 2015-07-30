@@ -1,9 +1,9 @@
 "use strict";
 
-import QueryBuilder from "../lib/QueryBuilder";
+//import QueryBuilder from "../lib/QueryBuilder";
 
 exports.registerRoutes = (app) => {
-  const QB = new QueryBuilder(app);
+  //const QB = new QueryBuilder(app);
 
   app.get("/home/:slug", function(req, res, next) {
     console.log("show home with slug", req.params.slug);

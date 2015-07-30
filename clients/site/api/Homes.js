@@ -1,7 +1,6 @@
 "use strict";
 
 import request from "../../common/request";
-import HomeActions from "../actions/HomeActions";
 import {batchedCallback} from "../../common/Helpers";
 
 let debug = require("../../common/debugger")("HomeAPI");
