@@ -10,6 +10,7 @@ var minifyhtml = require("gulp-minify-html");
 var livereload = require("gulp-livereload");
 var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
+var batch = require("gulp-batch");
 
 var path = require("path");
 var fs = require("fs");
@@ -32,31 +33,31 @@ var extend = function extend(a, b) {
  * path globs / expressions for targets below
  */
 var paths = {
-  tests: 'test/**/*.js',
+  tests: "test/**/*.js",
   server: {
-    main: 'server/app.js',
-    sources: ['**/*.js', '!node_modules/**', '!client/vendor/**', '!build/**'],
+    main: "server/app.js",
+    sources: ["**/*.js", "!node_modules/**", "!client/vendor/**", "!build/**", "!gulpfile.js"],
     views: ["views/**/*.html"],
-    build: './build/server'
+    build: "./build/server"
   },
   clients: {
     site: {
       root: "./clients/site",
       entry: "./clients/site/client.js",
       sources: ["clients/site/**/*.js", "clients/common/**/*.js"],
-      styles: ["assets/css/site/*.scss", "assets/css/vendor/*.scss"],
+      styles: ["assets/css/site/**/*.scss", "assets/css/vendor/**/*.scss", "assets/css/shared/**/*.scss", ],
       images: ["assets/images/**/*"],
       statics: "./build/statics/site",
       fonts: "assets/fonts/**/*"
     }
   },
   client: {
-    main: 'client/js/app.js',
-    sources: 'clients/**/*.js',
-    styles: 'assets/css/**/*.scss',
-    assets: ['assets/**/*', '!**/*.js', '!**/*.scss'],
-    build: './build/clients',
-    statics: './build/statics'
+    main: "client/js/app.js",
+    sources: "clients/**/*.js",
+    styles: "assets/css/**/*.scss",
+    assets: ["assets/**/*", "!**/*.js", "!**/*.scss"],
+    build: "./build/clients",
+    statics: "./build/statics"
   }
 };
 
@@ -109,7 +110,7 @@ gulp.task("lint", function () {
     //.pipe(eslint.failOnError());
 });
 
-gulp.task("build-server", function () {
+gulp.task("build-server", ["lint"], function () {
   return gulp.src(["./server/**/*.js", "./config/**/*.js"], {base: "server"})
     .pipe(sourcemaps.init())
     .pipe(babel({
@@ -145,7 +146,7 @@ gulp.task("webpack:build-site-client", function(callback) {
 });
 // gulp.task("uglify-site", function() {
 //   return gulp.src(paths.clients.site.statics + "/js/*.js")
-//     .pipe(concat('site.min.js'))
+//     .pipe(concat("site.min.js"))
 //     .pipe(uglify({
 //       mangel: true,
 //       compress: {},
@@ -155,7 +156,7 @@ gulp.task("webpack:build-site-client", function(callback) {
 // });
 gulp.task("compile-site", ["compile-site-styles", "copy-site-fonts", "copy-site-images", "webpack:build-site-client"]);
 
-// gulp.task('compile-admin-styles', function(){
+// gulp.task("compile-admin-styles", function(){
 //   return gulp.src(paths.clients.admin.styles)
 //     .pipe(sass())
 //     .pipe(gulp.dest(path.join(paths.clients.admin.statics, "css")));
@@ -166,7 +167,7 @@ gulp.task("copy-client-templates", function () {
     .pipe(gulp.dest(path.join(paths.client.build)));
 });
 
-gulp.task('build-clients', ["copy-client-templates", "compile-site"], function(){
+gulp.task("build-clients", ["copy-client-templates", "compile-site"], function(){
   return gulp.src(["./clients/**/*.js"], {})
     .pipe(sourcemaps.init())
     .pipe(babel({
@@ -182,30 +183,44 @@ gulp.task("watch", function(){
     quiet: true
   });
   //gulp.watch(paths.server.views, ["copy-server-views"]);
-  gulp.watch(paths.server.sources, ["lint"]); //, "build-server"
+  gulp.watch(paths.server.sources, ["lint"]); //"lint", , "restart-dev"
 
-  gulp.watch(paths.clients.site.sources, ["compile-site", "webpack:build-site-client"]);
-  gulp.watch(paths.clients.site.styles, ["compile-site-styles"]);
+  gulp.watch(paths.clients.site.sources, ["build-clients"]);
+  gulp.watch(paths.clients.site.styles, ["build-clients"]);
 
-  gulp.watch('./build/**').on('change', function() {
-    livereload.changed.apply(null, arguments);
-    // if (nodemonInstance) {
-    //   nodemonInstance.emit("restart");
-    // }
+  gulp.watch("./server/**", batch(function(events, done) {
+    //console.log("server changed", events);
+    gulp.start("restart-dev", done);
+  }));
+
+  gulp.watch("./build/**", function(changed) {
+    //console.log("build changed", changed);
+    livereload.changed(changed);
   });
 });
 
+gulp.task("restart-dev", function() {
+  if (nodemonInstance) {
+    nodemonInstance.once("restart", function() {
+      livereload.changed();
+    });
+    nodemonInstance.emit("restart");
+  }
+});
+
+var watchStarted = false;
 gulp.task("dev", ["lint", "build-server", "build-clients", "watch"], function() {
   nodemonInstance = nodemon({
     execMap: {
       js: "node"
     },
-    script: path.join(__dirname, 'init.js'),
-    // ignore: ['gulpfile.js'],
-    // ext: 'js html'
+    script: path.join(__dirname, "init.js"),
+    //watch: ["./build/server"],
+    // ignore: ["gulpfile.js"],
+    // ext: "js html"
     //script: path.join(paths.server.build, "app.js"),
-    ignore: ['*']
-  }).on('restart', function() {
-    console.log('Restarted!');
+    ignore: ["*"]
+  }).on("restart", function() {
+    console.log("Restarted!");
   });
 });

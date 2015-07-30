@@ -23,6 +23,7 @@
     "express-partials": "^0.3.0",
     "express-session": "^1.11.2",
     "express-state": "^1.2.0",
+    "gulp-batch": "^1.0.5",
     "iso": "^4.1.0",
     "moment": "^2.10.3",
     "moment-timezone": "^0.4.0",

@@ -109,8 +109,8 @@ exports.run = function(clientName, afterRun) {
 
         if (app.config.env !== "production" && app.config.env !== "staging") {
           let staticDir = path.join(STATICS_ROOT, "site");
-          console.log("staticDir", staticDir);
           app.use("/public", express.static(staticDir));
+
           let faviconImage = path.join(staticDir, "images", "favicon.ico");
           if (fs.existsSync(faviconImage)) {
             let favicon = require("serve-favicon");
@@ -338,6 +338,7 @@ exports.run = function(clientName, afterRun) {
         resolve();
       });
     }
+
 
     // Application initialization flow
 
