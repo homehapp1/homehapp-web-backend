@@ -5,6 +5,9 @@ let {RouteHandler} = require("react-router");
 
 //import ApplicationStore from "../../../common/stores/ApplicationStore";
 
+import Layout from "../Layout";
+import Navigation from "../Navigation";
+
 class Application extends React.Component {
   static propTypes = {
     // autoPlay: React.PropTypes.bool.isRequired,
@@ -26,7 +29,10 @@ class Application extends React.Component {
   render() {
     return (
       <div>
-        <RouteHandler />
+        <Navigation {...this.props} />
+        <Layout>
+          <RouteHandler />
+        </Layout>
       </div>
     );
   }

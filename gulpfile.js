@@ -207,7 +207,9 @@ gulp.task("copy-admin-images", function(){
 gulp.task("webpack:build-admin-client", function(callback) {
   // run webpack
   adminCompiler.run(function(err, stats) {
-    if(err) throw new gutil.PluginError("webpack:build-admin-client", err);
+    if (err) {
+      throw new gutil.PluginError("webpack:build-admin-client", err);
+    }
     gutil.log("[webpack:build-admin-client]", stats.toString({
       colors: true
     }));
@@ -240,20 +242,20 @@ gulp.task("watch", function(){
     quiet: true
   });
   //gulp.watch(paths.server.views, ["copy-server-views"]);
-  gulp.watch(paths.server.sources, ["lint"]); //"lint", , "restart-dev"
+  gulp.watch(paths.server.sources, ["lint"]).on("error", gutil.log); //"lint", , "restart-dev"
 
-  gulp.watch(paths.clients[PROJECT_NAME].sources, ["build-clients"]);
-  gulp.watch(paths.clients[PROJECT_NAME].styles, ["build-clients"]);
+  gulp.watch(paths.clients[PROJECT_NAME].sources, ["build-clients"]).on("error", gutil.log);
+  gulp.watch(paths.clients[PROJECT_NAME].styles, ["build-clients"]).on("error", gutil.log);
 
   gulp.watch("./server/**", batch(function(events, done) {
     //console.log("server changed", events);
     gulp.start("restart-dev", done);
-  }));
+  })).on("error", gutil.log);
 
   gulp.watch("./build/**", function(changed) {
     //console.log("build changed", changed);
     livereload.changed(changed);
-  });
+  }).on("error", gutil.log);
 });
 
 gulp.task("restart-dev", function() {
@@ -279,5 +281,5 @@ gulp.task("dev", ["lint", "build-server", "build-clients", "watch"], function() 
     ignore: ["*"]
   }).on("restart", function() {
     console.log("Restarted!");
-  });
+  }).on("error", gutil.log);
 });
