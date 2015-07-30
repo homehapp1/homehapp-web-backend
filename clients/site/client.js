@@ -25,11 +25,11 @@ let {HistoryLocation} = Router;
 // the element is created and we just render it into the container
 // and our application is now live
 Iso.bootstrap(function (state, _, container) {
-    debug("Bootsrap Application with state", state);
-    alt.bootstrap(state);
+  debug("Bootsrap Application with state", state);
+  alt.bootstrap(state);
 
-    Router.run(routes, HistoryLocation, function (Handler) {
-        var node = React.createElement(Handler);
-        React.render(node, container);
-    });
+  Router.run(routes, HistoryLocation, function (Handler) {
+    var node = React.createElement(Handler);
+    React.render(node, container);
+  });
 });

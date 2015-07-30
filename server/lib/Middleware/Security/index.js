@@ -3,7 +3,7 @@
 import csrf from "csurf";
 
 exports.configure = function(app, config) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (config.csrf && app.authentication) {
       app.use(csrf({}));
     }

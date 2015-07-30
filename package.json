@@ -39,10 +39,12 @@
   },
   "devDependencies": {
     "babel-core": "^5.8.12",
+    "babel-eslint": "^4.0.5",
     "babel-loader": "^5.3.2",
     "babel-runtime": "^5.8.12",
     "deep-merge": "^1.0.0",
-    "eslint": "^0.22.1",
+    "eslint": "^0.24.1",
+    "eslint-plugin-react": "^3.1.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-concat": "^2.6.0",
@@ -77,8 +79,13 @@
       "forOf": true,
       "defaultParams": true,
       "jsx": true,
-      "modules": true
+      "modules": true,
+      "superInFunctions": true
     },
+    "parser": "babel-eslint",
+    "plugins": [
+      "react"
+    ],
     "env": {
       "es6": true,
       "browser": true,
@@ -128,7 +135,27 @@
       "complexity": [
         1,
         7
-      ]
+      ],
+      "react/display-name": [1, {"acceptTranspilerName": true}],
+      "react/jsx-boolean-value": 1,
+      "react/jsx-curly-spacing": 1,
+      "react/jsx-no-duplicate-props": 1,
+      "react/jsx-no-undef": 1,
+      "react/jsx-quotes": 1,
+      "react/jsx-sort-prop-types": 1,
+      "react/jsx-uses-react": 1,
+      "react/jsx-uses-vars": 1,
+      "react/no-danger": 1,
+      "react/no-did-mount-set-state": 1,
+      "react/no-did-update-set-state": 1,
+      "react/no-multi-comp": 1,
+      "react/no-unknown-property": 1,
+      "react/prop-types": 1,
+      "react/react-in-jsx-scope": 1,
+      "react/require-extension": 1,
+      "react/self-closing-comp": 1,
+      "react/sort-comp": 1,
+      "react/wrap-multilines": 1
     }
   }
 }

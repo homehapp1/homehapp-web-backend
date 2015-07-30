@@ -104,7 +104,7 @@ var siteWebpackConfig = extend(webpackCommonConfig, {
 var siteCompiler = webpack(siteWebpackConfig);
 
 gulp.task("lint", function () {
-  return gulp.src(["server/**/*.js", "client/**/*.js"])
+  return gulp.src(["server/**/*.js", "clients/**/*.js"])
     .pipe(eslint())
     .pipe(eslint.format())
     //.pipe(eslint.failOnError());

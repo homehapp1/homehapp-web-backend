@@ -1,7 +1,7 @@
 "use strict";
 
 import winston from "winston";
-import {merge, toTitleCase} from "./Helpers";
+import {merge} from "./Helpers";
 
 class Logger {
   constructor(config) {

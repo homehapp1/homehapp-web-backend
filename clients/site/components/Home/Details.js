@@ -4,6 +4,10 @@ import React from "react";
 import { Link } from "react-router";
 
 class HomeDetails extends React.Component {
+  static propTypes = {
+    params: React.PropTypes.object
+  }
+
   render() {
     return (
       <div className="details">

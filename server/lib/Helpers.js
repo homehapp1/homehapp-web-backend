@@ -78,7 +78,7 @@ exports.listDirSync = function listDirSync(srcpath) {
   });
 };
 
-let merge = exports.merge = function merge (...argv) {
+exports.merge = function merge(...argv) {
   let target = Object.assign({}, argv.shift());
 
   argv.forEach((a) => {
