@@ -41,6 +41,10 @@ module.exports = (projectRoot) => {
           session: {
             name: "qvik:common",
             secret: "really-secret-string-here"
+          },
+          routes: {
+            login: "/auth/login",
+            logout: "/auth/logout"
           }
         },
         jwt: {
@@ -72,6 +76,9 @@ module.exports = (projectRoot) => {
           default: null
         }
       }
+    },
+    isomorphic: {
+      enabled: true
     }
   };
 

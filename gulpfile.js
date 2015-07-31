@@ -42,6 +42,7 @@ var paths = {
     main: "server/app.js",
     sources: ["**/*.js", "!node_modules/**", "!client/vendor/**", "!build/**", "!gulpfile.js"],
     views: ["views/**/*.html"],
+    viewsBase: "views/",
     build: "./build/server"
   },
   clients: {
@@ -145,7 +146,13 @@ gulp.task("lint", function () {
     //.pipe(eslint.failOnError());
 });
 
-gulp.task("build-server", ["lint"], function () {
+gulp.task("copy-server-views", function(){
+  var viewsPath = path.join(paths.server.viewsBase, PROJECT_NAME, "**");
+  return gulp.src(viewsPath)
+    .pipe(gulp.dest(path.join(paths.server.build, "views")));
+});
+
+gulp.task("build-server", ["lint", "copy-server-views"], function () {
   return gulp.src(["./server/**/*.js", "./config/**/*.js"], {base: "server"})
     .pipe(sourcemaps.init())
     .pipe(babel({
@@ -241,8 +248,12 @@ gulp.task("watch", function(){
   livereload.listen({
     quiet: true
   });
-  //gulp.watch(paths.server.views, ["copy-server-views"]);
-  gulp.watch(paths.server.sources, ["lint"]).on("error", gutil.log); //"lint", , "restart-dev"
+
+  gulp.watch(paths.server.views, ["copy-server-views"]);
+  gulp.watch(paths.server.sources, ["lint"]).on("error", function(err) {
+    new gutil.PluginError("Watch", err, {showStack: true});
+    this.emit("end");
+  });
 
   gulp.watch(paths.clients[PROJECT_NAME].sources, ["build-clients"]).on("error", gutil.log);
   gulp.watch(paths.clients[PROJECT_NAME].styles, ["build-clients"]).on("error", gutil.log);

@@ -9,24 +9,6 @@ module.exports = (projectRoot) => {
   let host = `http://${hostname}:${port}`;
 
   let config = {
-    port: port,
-    host: host,
-    logging: {
-      Console: {
-        enabled: true,
-        level: "warn"
-      }
-    },
-    database: {
-      adapter: getEnvironmentValue("DATABASE_ADAPTER", "mongoose"),
-      adapterConfig: {
-        uri: getEnvironmentValue("DATABASE_URI", `mongodb://localhost/homehapp-${env}`)
-      }
-    },
-    security: {
-      csrf: true,
-      xframe: "DENY"
-    },
     authentication: {
       adapters: ["local"],
       adapterConfigs: {
@@ -38,18 +20,6 @@ module.exports = (projectRoot) => {
             name: "homehapp:login",
             secret: "really-secret-string-here"
           }
-        }
-      }
-    },
-    errors: {
-      includeData: false
-    },
-    cdn: {
-      adapter: "cloudinary",
-      adapterConfig: {
-        uri: getEnvironmentValue("CLOUDINARY_URI", "cloudinary://748155655238327:BxDt9A-ZMmmfVQyIXQQfSxqMS9Q@kaktus"),
-        transformations: {
-          default: null
         }
       }
     }

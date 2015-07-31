@@ -1,9 +1,12 @@
 "use strict";
 
+import Bluebird from "bluebird";
 import BaseAdapter from "./BaseAdapter";
 import Helpers from "../Helpers";
 import mongoose from "mongoose";
 import async from "async";
+
+Bluebird.promisifyAll(mongoose);
 
 class MongooseAdapter extends BaseAdapter {
   static defaults() {
@@ -14,8 +17,9 @@ class MongooseAdapter extends BaseAdapter {
     };
   }
 
-  constructor(config) {
-    super(config, MongooseAdapter.defaults());
+  constructor(app, config) {
+    super(app, config, MongooseAdapter.defaults());
+    this.migrationSupport = true;
   }
 
   connect(cb) {
@@ -123,6 +127,9 @@ class MongooseAdapter extends BaseAdapter {
   getSchema(name) {
     return this._schemas[name];
   }
+  getSchemas() {
+    return this._schemas;
+  }
   getModel(name, dbName) {
     if (!dbName) {
       dbName = name;
@@ -133,6 +140,20 @@ class MongooseAdapter extends BaseAdapter {
     } catch (err) {
       return this.connection.model(dbName);
     }
+  }
+  getModels() {
+    let models = {};
+    Object.keys(this._schemas).forEach((name) => {
+      models[name] = this.getModel(name);
+    });
+    return models;
+  }
+
+  getMigrator() {
+    return require("./Migrators/Mongoose");
+  }
+  getFixturesData() {
+    return require(require("path").join(this.app.PROJECT_ROOT, "fixtures", "mongoose"));
   }
 }
 

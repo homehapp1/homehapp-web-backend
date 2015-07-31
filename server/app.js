@@ -49,9 +49,9 @@ exports.run = function(projectName, afterRun) {
     app.set("trust proxy", 1);
 
     // For Isomorphic React
-    app.set("view engine", "html");
-    app.set("views", path.join(CLIENT_ROOT, "templates"));
-    app.engine("html", require("ejs").renderFile);
+    // app.set("view engine", "html");
+    // app.set("views", path.join(CLIENT_ROOT, "templates"));
+    // app.engine("html", require("ejs").renderFile);
 
     /**
      * Configure templating if views folder is present
@@ -60,19 +60,27 @@ exports.run = function(projectName, afterRun) {
     // if (fs.existsSync(path.join(PROJECT_ROOT, "views"))) {
     //   viewsFolder = path.join(PROJECT_ROOT, "views");
     // }
-    // if (fs.existsSync(viewsFolder)) {
-    //   let ejs = require("ejs");
-    //
-    //   app.set("view engine", "html");
-    //   app.set("views", viewsFolder);
-    //   app.engine("html", ejs.renderFile);
-    //
-    //   let partials = require("express-partials");
-    //   partials.register(".html", ejs.render);
-    //   app.use(partials());
-    //
-    //   app.use(require("express-layout")());
-    // }
+
+    let viewsFolder = path.join(PROJECT_ROOT, "views", PROJECT_NAME);
+    if (config.isomorphic.enabled) {
+      viewsFolder = path.join(CLIENT_ROOT, "templates");
+    }
+
+    if (fs.existsSync(viewsFolder)) {
+      let ejs = require("ejs");
+
+      app.set("view engine", "html");
+      app.set("views", viewsFolder);
+      app.engine("html", ejs.renderFile);
+
+      let partials = require("express-partials");
+      partials.register(".html", ejs.render);
+      app.use(partials());
+
+      if (!config.isomorphic.enabled) {
+        app.use(require("express-layout")());
+      }
+    }
 
     // For Isomorphic React
     let routes = require(path.join(CLIENT_ROOT, "components/Routes"));
@@ -129,6 +137,7 @@ exports.run = function(projectName, afterRun) {
         debug("configureMiddleware");
 
         let bodyParser = require("body-parser");
+        app.use(bodyParser.urlencoded({ extended: false }));
         app.use(bodyParser.json());
 
         // For Isomorphic React
@@ -234,8 +243,12 @@ exports.run = function(projectName, afterRun) {
         });
 
         // For Isomorphic React
-        app.use(function mainRoute(req, res) {
+        app.use(function mainRoute(req, res, next) {
           debug("mainRoute");
+          if (req.skipMain) {
+            return next();
+          }
+
           if (!res.locals.data.ApplicationStore) {
             res.locals.data.ApplicationStore = {};
           }
@@ -259,15 +272,17 @@ exports.run = function(projectName, afterRun) {
             }
 
             var html = iso.render();
-            res.render("layout", {
+            app.getLocals(req, res, {
               html: html,
-              env: app.config.env,
-              styleSheet: res.locals.styleSheets
+              includeClient: true
+            })
+            .then((locals) => {
+              res.render("index", locals);
             });
           });
         });
 
-        app.use(function errorHandler(err, req, res) {
+        app.use(function errorHandler(err, req, res, next) {
           var code = err.statusCode || 422;
 
           var msg = "Unexpected error has occurred!";
@@ -275,6 +290,20 @@ exports.run = function(projectName, afterRun) {
             msg = err.message;
           }
           var payload = msg;
+
+          if (err.code === "EBADCSRFTOKEN") {
+            code = 403;
+            msg = "Request was tampered!";
+          }
+
+          if (!req.xhr || req.headers["content-type"] !== "application/json") {
+            if ([403].indexOf(code) !== -1) {
+              if (app.authenticationRoutes) {
+                let redirectUrl = `${app.authenticationRoutes.login}?message=${msg}`;
+                return res.redirect(redirectUrl);
+              }
+            }
+          }
 
           let prepareJSONError = function() {
             payload = {
@@ -351,7 +380,6 @@ exports.run = function(projectName, afterRun) {
         resolve();
       });
     }
-
 
     // Application initialization flow
 
