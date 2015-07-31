@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import async from "async";
+import async from 'async';
 
 class CommonQueryBuilder {
   constructor(app, modelName) {
@@ -45,7 +45,7 @@ class CommonQueryBuilder {
   /**
    * Parse common request query arguments and translate them to
    * search query arguments.
-   * req.query.sort       String "asc|desc" (defaults to desc)
+   * req.query.sort       String 'asc|desc' (defaults to desc)
    * req.query.sortBy     String (defaults to updatedAt)
    * req.query.limit      Number
    * req.query.skip       Number
@@ -53,10 +53,10 @@ class CommonQueryBuilder {
   parseRequestArguments(req) {
     // Here we allow this convenience handling to sort ascendingly by the updatedAt value
     if (req.query.sort || req.query.sortBy) {
-      let sortBy = req.query.sortBy || "updatedAt";
-      let order = "desc";
-      if (req.query.sort === "asc") {
-        order = "asc";
+      let sortBy = req.query.sortBy || 'updatedAt';
+      let order = 'desc';
+      if (req.query.sort === 'asc') {
+        order = 'asc';
       }
       let sort = {};
       sort[sortBy] = order;
@@ -99,18 +99,18 @@ class CommonQueryBuilder {
    * @param data Object
    */
   create() {
-    throw new Error("not implemented");
+    throw new Error('not implemented');
   }
 
   /**
    * @param data Object
    */
   update() {
-    throw new Error("not implemented");
+    throw new Error('not implemented');
   }
 
   remove() {
-    throw new Error("not implemented");
+    throw new Error('not implemented');
   }
 
   _executeTasks() {

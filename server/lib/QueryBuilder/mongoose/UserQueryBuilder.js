@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-import BaseQueryBuilder from "./BaseQueryBuilder";
-import {NotFound} from "../../Errors";
-import async from "async";
+import BaseQueryBuilder from './BaseQueryBuilder';
+import {NotFound} from '../../Errors';
+import async from 'async';
 
 class UserQueryBuilder extends BaseQueryBuilder {
   constructor(app) {
-    super(app, "User");
+    super(app, 'User');
   }
 
   initialize() {
@@ -50,7 +50,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
           return callback(err);
         }
         if (!user) {
-          return callback(new NotFound("user not found"));
+          return callback(new NotFound('user not found'));
         }
         this.result.user = user;
         this.result.userJson = user.toJSON();
@@ -72,7 +72,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
           return callback(err);
         }
         if (!user) {
-          return callback(new NotFound("user not found"));
+          return callback(new NotFound('user not found'));
         }
         this.result.user = user;
         this.result.userJson = user.toJSON();
@@ -95,7 +95,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
         }
 
         if (!user) {
-          return callback(new NotFound("user not found"));
+          return callback(new NotFound('user not found'));
         }
 
         this.result.user = user;
@@ -138,7 +138,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
         }
 
         if (!user) {
-          return callback(new NotFound("user not found"));
+          return callback(new NotFound('user not found'));
         }
 
         this.result.user = user;

@@ -1,21 +1,21 @@
-"use strict";
+'use strict';
 
-import path from "path";
+import path from 'path';
 
-import Configuration from "./lib/Configuration";
+import Configuration from './lib/Configuration';
 
 let Migrator = null;
 
-let PROJECT_NAME = "site";
-const PROJECT_ROOT = path.resolve(__dirname, "..");
-let debug = require("debug")("migration");
+let PROJECT_NAME = 'site';
+const PROJECT_ROOT = path.resolve(__dirname, '..');
+let debug = require('debug')('migration');
 
 exports.run = function run(projectName, action, ...args) {
-  console.log("Migrate run", action, args);
+  console.log('Migrate run', action, args);
 
-  PROJECT_NAME = projectName || "site";
+  PROJECT_NAME = projectName || 'site';
 
-  Configuration.load(PROJECT_ROOT, PROJECT_NAME, path.join(PROJECT_ROOT, "config"), {}, function (configError, config) {
+  Configuration.load(PROJECT_ROOT, PROJECT_NAME, path.join(PROJECT_ROOT, 'config'), {}, function (configError, config) {
     if (configError) {
       throw configError;
     }
@@ -28,12 +28,12 @@ exports.run = function run(projectName, action, ...args) {
 
     function connectToDatabase() {
       return new Promise((resolve, reject) => {
-        debug("connectToDatabase");
+        debug('connectToDatabase');
         if (!config.database.adapter) {
-          debug("no database adapter configured");
+          debug('no database adapter configured');
           return resolve();
         }
-        require("./lib/Database").configure(app, config.database)
+        require('./lib/Database').configure(app, config.database)
         .then( () => {
           if (!app.db.migrationSupport) {
             return Promise.reject(`No migration support in adapter ${config.database.adaptor}`);
@@ -49,14 +49,14 @@ exports.run = function run(projectName, action, ...args) {
     connectToDatabase()
     //.then( () => setupStaticRoutes() )
     .then( () => {
-      debug("Migration initialization flow done!");
+      debug('Migration initialization flow done!');
       return Migrator.execute(action, args);
     })
     .then( () => {
-      debug("Migration execution finished!");
+      debug('Migration execution finished!');
     })
     .catch(err => {
-      console.error("Error on migration", err);
+      console.error('Error on migration', err);
       console.error(err.stack);
       throw err;
     });

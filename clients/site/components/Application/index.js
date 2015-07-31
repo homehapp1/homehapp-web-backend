@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-import React from "react";
-let {RouteHandler} = require("react-router");
+import React from 'react';
+let {RouteHandler} = require('react-router');
 
-//import ApplicationStore from "../../../common/stores/ApplicationStore";
+//import ApplicationStore from '../../../common/stores/ApplicationStore';
 
-import Header from "../Header";
-import Footer from "../Footer";
-import Layout from "../../../common/components/Layout";
+import Header from '../Header';
+import Footer from '../Footer';
+import Layout from '../../../common/components/Layout';
 
 class Application extends React.Component {
   static propTypes = {

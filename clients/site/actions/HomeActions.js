@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-import alt from "../../common/alt";
-import HomesAPI from "../api/Homes";
-import ExecutionEnvironment from "react/lib/ExecutionEnvironment";
+import alt from '../../common/alt';
+import HomesAPI from '../api/Homes';
+import ExecutionEnvironment from 'react/lib/ExecutionEnvironment';
 
 class HomeActions {
   updateHome(home) {

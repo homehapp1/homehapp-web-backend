@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-import React from "react";
-let {RouteHandler} = require("react-router");
+import React from 'react';
+let {RouteHandler} = require('react-router');
 
-//import ApplicationStore from "../../../common/stores/ApplicationStore";
+//import ApplicationStore from '../../../common/stores/ApplicationStore';
 
-import Layout from "../Layout";
-import Navigation from "../Navigation";
+import Layout from '../Layout';
+import Navigation from '../Navigation';
 
 class Application extends React.Component {
   static propTypes = {

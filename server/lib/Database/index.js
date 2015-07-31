@@ -1,5 +1,5 @@
-"use strict";
-import {toTitleCase} from "../Helpers";
+'use strict';
+import {toTitleCase} from '../Helpers';
 
 exports.configure = function(app, config) {
   return new Promise((resolve, reject) => {

@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import {merge} from "../Helpers";
+import {merge} from '../Helpers';
 
 class BaseAdapter {
   constructor(app, config, defaults = {}) {

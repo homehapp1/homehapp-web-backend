@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-import fs from "fs";
-import path from "path";
-import util from "util";
-import uuid from "uuid";
+import fs from 'fs';
+import path from 'path';
+import util from 'util';
+import uuid from 'uuid';
 
 exports.randomString = function randomString(len = 8) {
-  let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-  let randomStr = "";
+  let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+  let randomStr = '';
   let cc = 0;
   while (cc < len) {
     cc++;
@@ -32,13 +32,13 @@ exports.clone = function clone(input) {
   type = typeOf(input),
   index, size;
 
-  if (type === "array") {
+  if (type === 'array') {
     output = [];
     size = input.length;
     for (index = 0; index < size; ++index) {
       output[index] = clone(input[index]);
     }
-  } else if (type === "object") {
+  } else if (type === 'object') {
     output = {};
     for (index in input) {
       output[index] = clone(input[index]);
@@ -84,10 +84,10 @@ exports.merge = function merge(...argv) {
   argv.forEach((a) => {
     for (let [key, value] of enumerate(a)) {
       if (a.hasOwnProperty(key)) {
-        if (require("util").isArray(target[key])) {
+        if (require('util').isArray(target[key])) {
           target[key] = target[key].concat(value);
-        } else if (typeof target[key] === "object"
-            && typeof target[key] !== "undefined"
+        } else if (typeof target[key] === 'object'
+            && typeof target[key] !== 'undefined'
             && target[key] !== null)
         {
           target[key] = merge(target[key], value);
@@ -117,11 +117,11 @@ exports.pick = function pick (obj, keys) {
   let res = {};
   let i = 0;
 
-  if (typeof obj !== "object") {
+  if (typeof obj !== 'object') {
     return res;
   }
 
-  if (typeof keys === "string") {
+  if (typeof keys === 'string') {
     if (keys in obj) {
       res[keys] = obj[keys];
     }
@@ -162,7 +162,7 @@ exports.isEmpty = function isEmpty(val) {
   if (val === null) {
     return true;
   }
-  if (require("util").isArray(val) || val.constructor === String) {
+  if (require('util').isArray(val) || val.constructor === String) {
     return !val.length;
   }
 

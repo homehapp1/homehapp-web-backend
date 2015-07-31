@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import {loadCommonPlugins, commonJsonTransform} from "./common";
+import {loadCommonPlugins, commonJsonTransform} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -31,11 +31,11 @@ exports.loadSchemas = function (mongoose, next) {
     // Relations
     // strory: {
     //   type: ObjectId,
-    //   ref: "HomeStory"
+    //   ref: 'HomeStory'
     // },
     createdBy: {
       type: ObjectId,
-      ref: "User"
+      ref: 'User'
     },
     // Common metadata
     createdAt: {
@@ -51,7 +51,7 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.Home.statics.editableFields = function () {
     return [
-      "title"
+      'title'
     ];
   };
 

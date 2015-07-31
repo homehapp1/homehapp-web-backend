@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
-let Alt = require("alt");
+let Alt = require('alt');
 module.exports = new Alt();

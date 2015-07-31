@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import alt from "../alt";
+import alt from '../alt';
 
 class ApplicationStore {
   constructor() {

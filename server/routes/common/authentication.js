@@ -1,16 +1,16 @@
-"use strict";
+'use strict';
 
-import {Forbidden} from "../../lib/Errors";
+import {Forbidden} from '../../lib/Errors';
 
 exports.registerRoutes = (app) => {
   if (!app.authentication) {
     return;
   }
 
-  app.post("/auth/login", function(req, res, next) {
+  app.post('/auth/login', function(req, res, next) {
     let loginMethod = app.authentication.resolveLoginMethod(req);
 
-    let redirectTo = "/";
+    let redirectTo = '/';
     if (req.query.redirectTo) {
       redirectTo = req.query.redirectTo;
     }
@@ -23,10 +23,10 @@ exports.registerRoutes = (app) => {
         return next(err);
       }
       if (!user) {
-        if (info.message === "user not active") {
-          return next(new Forbidden("Account not active"));
+        if (info.message === 'user not active') {
+          return next(new Forbidden('Account not active'));
         }
-        return next(new Forbidden("Invalid credentials"));
+        return next(new Forbidden('Invalid credentials'));
       }
 
       req.logIn(user, function(loginErr) {
@@ -35,7 +35,7 @@ exports.registerRoutes = (app) => {
         }
 
         if (req.xhr) {
-          return res.send({status: "ok", user: user});
+          return res.send({status: 'ok', user: user});
         }
 
         res.redirect(redirectTo);
@@ -43,10 +43,10 @@ exports.registerRoutes = (app) => {
     })(req, res, next);
   });
 
-  app.get("/auth/logout", function(req, res) {
+  app.get('/auth/logout', function(req, res) {
     req.logOut();
 
-    let redirectTo = "/";
+    let redirectTo = '/';
     if (req.query.redirectTo) {
       redirectTo = req.query.redirectTo;
     }
@@ -57,15 +57,15 @@ exports.registerRoutes = (app) => {
     res.redirect(redirectTo);
   });
 
-  app.post("/auth/logout", function(req, res) {
-    return res.send({status: "ok"});
+  app.post('/auth/logout', function(req, res) {
+    return res.send({status: 'ok'});
   });
 
-  app.get("/auth/check", app.authenticatedRoute, function(req, res, next) {
+  app.get('/auth/check', app.authenticatedRoute, function(req, res, next) {
     if (!req.user) {
-      return next(new Error("no user found from request!"));
+      return next(new Error('no user found from request!'));
     }
 
-    res.send({status: "ok", user: req.user});
+    res.send({status: 'ok', user: req.user});
   });
 };

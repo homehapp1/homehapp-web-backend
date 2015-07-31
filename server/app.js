@@ -1,40 +1,40 @@
-"use strict";
+'use strict';
 
-import path from "path";
-import fs from "fs";
-import http from "http";
+import path from 'path';
+import fs from 'fs';
+import http from 'http';
 
-import express from "express";
+import express from 'express';
 
 // For Isomorphic React
-import React from "react";
-import Router from "react-router";
-import Iso from "iso";
+import React from 'react';
+import Router from 'react-router';
+import Iso from 'iso';
 
-import Configuration from "./lib/Configuration";
-import Helpers from "./lib/Helpers";
-import Errors from "./lib/Errors";
-import Logger from "./lib/Logger";
+import Configuration from './lib/Configuration';
+import Helpers from './lib/Helpers';
+import Errors from './lib/Errors';
+import Logger from './lib/Logger';
 
-let PROJECT_NAME = "site";
-const PROJECT_ROOT = path.resolve(__dirname, "..");
-const COMMON_CLIENT_ROOT = path.resolve(PROJECT_ROOT, "clients", "common");
-const STATICS_ROOT = path.resolve(PROJECT_ROOT, "build", "statics");
+let PROJECT_NAME = 'site';
+const PROJECT_ROOT = path.resolve(__dirname, '..');
+const COMMON_CLIENT_ROOT = path.resolve(PROJECT_ROOT, 'clients', 'common');
+const STATICS_ROOT = path.resolve(PROJECT_ROOT, 'build', 'statics');
 const SOURCE_PATH = __dirname;
 let CLIENT_ROOT = null;
 
-let debug = require("debug")("app");
+let debug = require('debug')('app');
 
 exports.run = function(projectName, afterRun) {
 
-  PROJECT_NAME = projectName || "site";
-  CLIENT_ROOT = path.resolve(PROJECT_ROOT, "clients", PROJECT_NAME);
+  PROJECT_NAME = projectName || 'site';
+  CLIENT_ROOT = path.resolve(PROJECT_ROOT, 'clients', PROJECT_NAME);
 
-  if (typeof afterRun !== "function") {
+  if (typeof afterRun !== 'function') {
     afterRun = () => {};
   }
 
-  Configuration.load(PROJECT_ROOT, PROJECT_NAME, path.join(PROJECT_ROOT, "config"), {}, function (configError, config) {
+  Configuration.load(PROJECT_ROOT, PROJECT_NAME, path.join(PROJECT_ROOT, 'config'), {}, function (configError, config) {
     if (configError) {
       throw configError;
     }
@@ -46,52 +46,52 @@ exports.run = function(projectName, afterRun) {
     app.PROJECT_ROOT = PROJECT_ROOT;
     app.SOURCE_PATH = SOURCE_PATH;
 
-    app.set("trust proxy", 1);
+    app.set('trust proxy', 1);
 
     /**
      * Configure templating if views folder is present
      */
 
-    let viewsFolder = path.join(PROJECT_ROOT, "views", PROJECT_NAME);
+    let viewsFolder = path.join(PROJECT_ROOT, 'views', PROJECT_NAME);
     if (config.isomorphic.enabled) {
-      viewsFolder = path.join(CLIENT_ROOT, "templates");
+      viewsFolder = path.join(CLIENT_ROOT, 'templates');
     }
 
     if (fs.existsSync(viewsFolder)) {
-      let ejs = require("ejs");
+      let ejs = require('ejs');
 
-      app.set("view engine", "html");
-      app.set("views", viewsFolder);
-      app.engine("html", ejs.renderFile);
+      app.set('view engine', 'html');
+      app.set('views', viewsFolder);
+      app.engine('html', ejs.renderFile);
 
-      let partials = require("express-partials");
-      partials.register(".html", ejs.render);
+      let partials = require('express-partials');
+      partials.register('.html', ejs.render);
       app.use(partials());
 
       if (!config.isomorphic.enabled) {
-        app.use(require("express-layout")());
+        app.use(require('express-layout')());
       }
     }
 
     function configureLogger() {
       return new Promise((resolve) => {
-        debug("configureLogger");
+        debug('configureLogger');
         let logger = new Logger(config.logging);
 
         // Add external logging transports here
-        // ie. logger.addTransport("Loggly", require("winston-loggly").Loggly);
+        // ie. logger.addTransport('Loggly', require('winston-loggly').Loggly);
         logger.configure(app).then(() => resolve());
       });
     }
 
     function connectToDatabase() {
       return new Promise((resolve, reject) => {
-        debug("connectToDatabase");
+        debug('connectToDatabase');
         if (!app.config.database.adapter) {
-          debug("no database adapter configured");
+          debug('no database adapter configured');
           return resolve();
         }
-        require(path.join(SOURCE_PATH, "lib", "Database")).configure(app, app.config.database)
+        require(path.join(SOURCE_PATH, 'lib', 'Database')).configure(app, app.config.database)
         .then( () => resolve() )
         .catch((err) => {
           app.log.error(`Unable to configure database!: ${err.message}`, err);
@@ -102,15 +102,15 @@ exports.run = function(projectName, afterRun) {
 
     function setupStaticRoutes() {
       return new Promise((resolve) => {
-        debug("setupStaticRoutes");
+        debug('setupStaticRoutes');
 
-        if (app.config.env !== "production" && app.config.env !== "staging") {
+        if (app.config.env !== 'production' && app.config.env !== 'staging') {
           let staticDir = path.join(STATICS_ROOT, app.PROJECT_NAME);
-          app.use("/public", express.static(staticDir));
+          app.use('/public', express.static(staticDir));
 
-          let faviconImage = path.join(staticDir, "images", "favicon.ico");
+          let faviconImage = path.join(staticDir, 'images', 'favicon.ico');
           if (fs.existsSync(faviconImage)) {
-            let favicon = require("serve-favicon");
+            let favicon = require('serve-favicon');
             app.use(favicon(faviconImage));
           }
         }
@@ -121,9 +121,9 @@ exports.run = function(projectName, afterRun) {
 
     function configureMiddleware() {
       return new Promise((resolve, reject) => {
-        debug("configureMiddleware");
+        debug('configureMiddleware');
 
-        let bodyParser = require("body-parser");
+        let bodyParser = require('body-parser');
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(bodyParser.json());
 
@@ -137,7 +137,7 @@ exports.run = function(projectName, afterRun) {
         }
 
         if (app.config.authentication && app.config.authentication.adapters.length) {
-          let AuthenticationMiddleware = require(path.join(SOURCE_PATH, "lib", "Middleware", "Authentication"));
+          let AuthenticationMiddleware = require(path.join(SOURCE_PATH, 'lib', 'Middleware', 'Authentication'));
           let amInstance = new AuthenticationMiddleware(app, config.authentication);
           app.authentication = amInstance.register();
         }
@@ -145,12 +145,12 @@ exports.run = function(projectName, afterRun) {
         let tasks = [];
 
         tasks.push(
-          require(path.join(SOURCE_PATH, "lib", "Middleware", "Security")).configure(app, app.config.security)
+          require(path.join(SOURCE_PATH, 'lib', 'Middleware', 'Security')).configure(app, app.config.security)
         );
 
         if (app.config.cdn.adapter.length) {
           tasks.push(
-            require(path.join(SOURCE_PATH, "lib", "Middleware", "CDN")).configure(app, app.config.cdn)
+            require(path.join(SOURCE_PATH, 'lib', 'Middleware', 'CDN')).configure(app, app.config.cdn)
           );
         }
 
@@ -162,9 +162,9 @@ exports.run = function(projectName, afterRun) {
 
     function setupExtensions() {
       let tasks = [];
-      debug("setupExtensions");
+      debug('setupExtensions');
 
-      let extensionsDir = path.join(SOURCE_PATH, "extensions");
+      let extensionsDir = path.join(SOURCE_PATH, 'extensions');
       if (fs.existsSync(extensionsDir)) {
         Helpers.listDirSync(extensionsDir)
         .forEach((extensionName) => {
@@ -185,15 +185,15 @@ exports.run = function(projectName, afterRun) {
 
     function setupRoutes() {
       return new Promise((resolve, reject) => {
-        debug("setupRoutes");
+        debug('setupRoutes');
 
-        let routerFiles = Helpers.walkDirSync(path.join(SOURCE_PATH, "/routes/common"), {
-          ext: [".js"]
+        let routerFiles = Helpers.walkDirSync(path.join(SOURCE_PATH, '/routes/common'), {
+          ext: ['.js']
         });
-        let projectRoutesPath = path.join(SOURCE_PATH, "/routes", app.PROJECT_NAME);
-        if (require("fs").existsSync(projectRoutesPath)) {
+        let projectRoutesPath = path.join(SOURCE_PATH, '/routes', app.PROJECT_NAME);
+        if (require('fs').existsSync(projectRoutesPath)) {
           var projectRouterFiles = Helpers.walkDirSync(projectRoutesPath, {
-            ext: [".js"]
+            ext: ['.js']
           });
           routerFiles = routerFiles.concat(projectRouterFiles);
         }
@@ -203,8 +203,8 @@ exports.run = function(projectName, afterRun) {
           try {
             router = require(rf);
           } catch(err) {
-            app.log.error("Unable to load router " + rf + ": " + err.message);
-            if (app.config.env === "development") {
+            app.log.error('Unable to load router ' + rf + ': ' + err.message);
+            if (app.config.env === 'development') {
               app.log.error(err.stack);
             }
             return reject(err);
@@ -213,8 +213,8 @@ exports.run = function(projectName, afterRun) {
           try {
             router.registerRoutes(app);
           } catch (err) {
-            app.log.error("Unable to register routes from router " + rf + ": " + err.message);
-            if (app.config.env === "development") {
+            app.log.error('Unable to register routes from router ' + rf + ': ' + err.message);
+            if (app.config.env === 'development') {
               app.log.error(err.stack);
             }
             return reject(err);
@@ -222,8 +222,8 @@ exports.run = function(projectName, afterRun) {
         });
 
         if (config.isomorphic.enabled) {
-          app.get("*", function populateCommonData(req, res, next) {
-            debug("populateCommonData");
+          app.get('*', function populateCommonData(req, res, next) {
+            debug('populateCommonData');
             if (!res.locals.data) {
               res.locals.data = {};
             }
@@ -233,12 +233,12 @@ exports.run = function(projectName, afterRun) {
 
         if (config.isomorphic.enabled) {
           app.use(function mainRoute(req, res, next) {
-            debug("mainRoute");
+            debug('mainRoute');
             if (req.skipMain) {
               return next();
             }
 
-            let alt = require(path.join(COMMON_CLIENT_ROOT, "alt.js"));
+            let alt = require(path.join(COMMON_CLIENT_ROOT, 'alt.js'));
 
             if (!res.locals.data.ApplicationStore) {
               res.locals.data.ApplicationStore = {};
@@ -248,13 +248,13 @@ exports.run = function(projectName, afterRun) {
               res.locals.data.ApplicationStore.csrf = req.csrfToken();
             }
 
-            debug("res.locals.data", res.locals.data);
+            debug('res.locals.data', res.locals.data);
 
             alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
             var iso = new Iso();
 
-            let routes = require(path.join(CLIENT_ROOT, "components/Routes"));
+            let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
 
             Router.run(routes, req.url, function (Handler) {
               var content = React.renderToString(React.createElement(Handler));
@@ -270,7 +270,7 @@ exports.run = function(projectName, afterRun) {
                 includeClient: true
               })
               .then((locals) => {
-                res.render("index", locals);
+                res.render('index', locals);
               });
             });
           });
@@ -278,13 +278,13 @@ exports.run = function(projectName, afterRun) {
 
         app.use(function errorHandler(err, req, res) {
           var code = err.statusCode || 422;
-          var msg = err.message || "Unexpected error has occurred!";
+          var msg = err.message || 'Unexpected error has occurred!';
           var payload = msg;
-          var isJSONRequest = (req.xhr || req.headers["content-type"] === "application/json");
+          var isJSONRequest = (req.xhr || req.headers['content-type'] === 'application/json');
 
-          if (err.code === "EBADCSRFTOKEN") {
+          if (err.code === 'EBADCSRFTOKEN') {
             code = 403;
-            msg = "Request was tampered!";
+            msg = 'Request was tampered!';
           }
 
           let handleUnauthenticatedGetRequest = function() {
@@ -302,12 +302,12 @@ exports.run = function(projectName, afterRun) {
 
           let prepareJSONError = function() {
             payload = {
-              status: "failed", error: msg, data: {
+              status: 'failed', error: msg, data: {
                 name: err.name
               }
             };
 
-            if (err.stack && app.config.env === "development") {
+            if (err.stack && app.config.env === 'development') {
               payload.data.stack = err.stack;
             }
 
@@ -324,10 +324,10 @@ exports.run = function(projectName, afterRun) {
               }
             }
             else if (err.message.match(/Duplicate primary key/)) {
-              payload.error = err.message.split("\n")[0];
+              payload.error = err.message.split('\n')[0];
               payload.error = payload.error.substr(0, payload.error.length - 1);
             }
-            else if (err.name === "ValidationError") {
+            else if (err.name === 'ValidationError') {
               if (err.errors) {
                 payload.data.fields = {};
                 Object.keys(err.errors).forEach(function (field) {
@@ -345,8 +345,8 @@ exports.run = function(projectName, afterRun) {
             payload = prepareJSONError();
           }
 
-          // if (err.stack && app.config.env === "development") {
-          //   debug("Error stacktrace: ", err.stack);
+          // if (err.stack && app.config.env === 'development') {
+          //   debug('Error stacktrace: ', err.stack);
           // }
 
           if (!app.config.errors.includeData) {
@@ -362,11 +362,11 @@ exports.run = function(projectName, afterRun) {
 
     function additionalConfig() {
       return new Promise((resolve) => {
-        debug("additionalConfig");
+        debug('additionalConfig');
 
-        let pageTitle = "Homehapp";
-        if (projectName === "admin") {
-          pageTitle = "Homehapp - Admin";
+        let pageTitle = 'Homehapp';
+        if (projectName === 'admin') {
+          pageTitle = 'Homehapp - Admin';
         }
         app.locals.site = {
           title: pageTitle
@@ -386,9 +386,9 @@ exports.run = function(projectName, afterRun) {
     .then( () => setupRoutes() )
     .then( () => additionalConfig() )
     .then( () => {
-      debug("Application initialization flow done!");
+      debug('Application initialization flow done!');
 
-      if (app.config.env !== "test") {
+      if (app.config.env !== 'test') {
         app.server.listen(app.config.port, function() {
           app.log.info(`Server listening on port: ${app.config.port}`);
           afterRun(app);
@@ -399,7 +399,7 @@ exports.run = function(projectName, afterRun) {
     })
     .catch(err => {
       app.log.error(`Error on initialization flow!: ${err.message}`, err, {stack: err.stack});
-      // console.error("Error on initialization flow", err);
+      // console.error('Error on initialization flow', err);
       // console.error(err.stack);
       throw err;
     });
