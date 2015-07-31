@@ -1,6 +1,6 @@
 "use strict";
 
-import QueryBuilder from "../../lib/QueryBuilder";
+import QueryBuilder from "../../../lib/QueryBuilder";
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);

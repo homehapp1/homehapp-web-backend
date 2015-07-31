@@ -1,6 +1,6 @@
 "use strict";
 
-import {Forbidden} from "../lib/Errors";
+import {Forbidden} from "../../lib/Errors";
 
 exports.registerRoutes = (app) => {
   if (!app.authentication) {
