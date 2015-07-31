@@ -76,6 +76,9 @@ module.exports = (projectRoot) => {
           default: null
         }
       }
+    },
+    isomorphic: {
+      enabled: true
     }
   };
 

@@ -49,9 +49,9 @@ exports.run = function(projectName, afterRun) {
     app.set("trust proxy", 1);
 
     // For Isomorphic React
-    app.set("view engine", "html");
-    app.set("views", path.join(CLIENT_ROOT, "templates"));
-    app.engine("html", require("ejs").renderFile);
+    // app.set("view engine", "html");
+    // app.set("views", path.join(CLIENT_ROOT, "templates"));
+    // app.engine("html", require("ejs").renderFile);
 
     /**
      * Configure templating if views folder is present
@@ -60,7 +60,12 @@ exports.run = function(projectName, afterRun) {
     // if (fs.existsSync(path.join(PROJECT_ROOT, "views"))) {
     //   viewsFolder = path.join(PROJECT_ROOT, "views");
     // }
+
     let viewsFolder = path.join(PROJECT_ROOT, "views", PROJECT_NAME);
+    if (config.isomorphic.enabled) {
+      viewsFolder = path.join(CLIENT_ROOT, "templates");
+    }
+
     if (fs.existsSync(viewsFolder)) {
       let ejs = require("ejs");
 
@@ -260,10 +265,12 @@ exports.run = function(projectName, afterRun) {
             }
 
             var html = iso.render();
-            res.render("layout", {
+            app.getLocals(req, res, {
               html: html,
-              env: app.config.env,
-              styleSheet: res.locals.styleSheets
+              includeClient: true
+            })
+            .then((locals) => {
+              res.render("layout", locals);
             });
           });
         });

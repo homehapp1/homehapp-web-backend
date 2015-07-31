@@ -6,7 +6,7 @@ import {merge} from "../../lib/Helpers";
 
 export function register(app) {
   app.getLocals = function(req, res, ext = {}) {
-    ext.locals = ext.locals || {};
+    ext = ext || {};
 
     let user = req.user;
 
@@ -28,9 +28,12 @@ export function register(app) {
         host: app.config.host
       },
       user: cleanUser(),
+      env: app.config.env,
+      html: "",
       cssIncludeHtml: "",
-      jsIncludeHtml: ""
-    }, appLocals, resLocals, ext.locals);
+      jsIncludeHtml: "",
+      bodyClass: ""
+    }, appLocals, resLocals, ext);
 
     return Promise.resolve(opts);
   };
