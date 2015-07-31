@@ -2,6 +2,18 @@
 
 TBD
 
+## Development
+
+Happens in "development" -branch.
+All features must be done in their own separated branches and when ready a merge request needs to be created for
+getting them to the development branch.
+
+### Loading fixture data to database
+
+To load fixtures to database run:
+
+    npm run migrate init applyFixtures
+
 # Docker
 
 If you are using Kitematic, open it first and click the "Docker CLI" -button. Then navigate to the project checkout folder.
