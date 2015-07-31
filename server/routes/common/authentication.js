@@ -9,6 +9,15 @@ exports.registerRoutes = (app) => {
 
   app.post("/auth/login", function(req, res, next) {
     let loginMethod = app.authentication.resolveLoginMethod(req);
+
+    let redirectTo = "/";
+    if (req.query.redirectTo) {
+      redirectTo = req.query.redirectTo;
+    }
+    if (req.body.redirectTo) {
+      redirectTo = req.body.redirectTo;
+    }
+
     app.authentication.authenticate(loginMethod, function(err, user, info) {
       if (err) {
         return next(err);
@@ -25,14 +34,31 @@ exports.registerRoutes = (app) => {
           return next(loginErr);
         }
 
-        res.send({status: "ok", user: user});
+        if (req.xhr) {
+          return res.send({status: "ok", user: user});
+        }
+
+        res.redirect(redirectTo);
       });
     })(req, res, next);
   });
 
-  app.post("/auth/logout", function(req, res) {
+  app.get("/auth/logout", function(req, res) {
     req.logOut();
-    res.send({status: "ok"});
+
+    let redirectTo = "/";
+    if (req.query.redirectTo) {
+      redirectTo = req.query.redirectTo;
+    }
+    if (req.body.redirectTo) {
+      redirectTo = req.body.redirectTo;
+    }
+
+    res.redirect(redirectTo);
+  });
+
+  app.post("/auth/logout", function(req, res) {
+    return res.send({status: "ok"});
   });
 
   app.get("/auth/check", app.authenticatedRoute, function(req, res, next) {

@@ -7,10 +7,11 @@ exports.registerRoutes = (app) => {
   app.get("/auth/login", function(req, res, next) {
     app.getLocals(req, res, {
       includeClient: false,
-      bodyClass: "adminLogin"
+      bodyClass: "adminLogin",
+      csrfToken: req.csrfToken()
     })
     .then((locals) => {
-      locals.layout = null;
+      //locals.layout = null;
       res.render("login", locals);
     });
   });

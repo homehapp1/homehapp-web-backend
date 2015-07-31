@@ -77,7 +77,9 @@ exports.run = function(projectName, afterRun) {
       partials.register(".html", ejs.render);
       app.use(partials());
 
-      app.use(require("express-layout")());
+      if (!config.isomorphic.enabled) {
+        app.use(require("express-layout")());
+      }
     }
 
     // For Isomorphic React
@@ -135,6 +137,7 @@ exports.run = function(projectName, afterRun) {
         debug("configureMiddleware");
 
         let bodyParser = require("body-parser");
+        app.use(bodyParser.urlencoded({ extended: false }));
         app.use(bodyParser.json());
 
         // For Isomorphic React
@@ -240,8 +243,12 @@ exports.run = function(projectName, afterRun) {
         });
 
         // For Isomorphic React
-        app.use(function mainRoute(req, res) {
+        app.use(function mainRoute(req, res, next) {
           debug("mainRoute");
+          if (req.skipMain) {
+            return next();
+          }
+
           if (!res.locals.data.ApplicationStore) {
             res.locals.data.ApplicationStore = {};
           }
@@ -270,7 +277,7 @@ exports.run = function(projectName, afterRun) {
               includeClient: true
             })
             .then((locals) => {
-              res.render("layout", locals);
+              res.render("index", locals);
             });
           });
         });
@@ -283,6 +290,11 @@ exports.run = function(projectName, afterRun) {
             msg = err.message;
           }
           var payload = msg;
+
+          if (err.code === "EBADCSRFTOKEN") {
+            code = 403;
+            msg = "Request was tampered!";
+          }
 
           if (!req.xhr || req.headers["content-type"] !== "application/json") {
             if ([403].indexOf(code) !== -1) {
@@ -368,7 +380,6 @@ exports.run = function(projectName, afterRun) {
         resolve();
       });
     }
-
 
     // Application initialization flow
 

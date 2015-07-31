@@ -35,6 +35,10 @@ export function register(app) {
       bodyClass: ""
     }, appLocals, resLocals, ext);
 
+    if (!opts.body) {
+      opts.body = "";
+    }
+
     return Promise.resolve(opts);
   };
 

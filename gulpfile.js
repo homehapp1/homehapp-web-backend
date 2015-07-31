@@ -250,7 +250,10 @@ gulp.task("watch", function(){
   });
 
   gulp.watch(paths.server.views, ["copy-server-views"]);
-  gulp.watch(paths.server.sources, ["lint"]).on("error", gutil.log); //"lint", , "restart-dev"
+  gulp.watch(paths.server.sources, ["lint"]).on("error", function(err) {
+    new gutil.PluginError("Watch", err, {showStack: true});
+    this.emit("end");
+  });
 
   gulp.watch(paths.clients[PROJECT_NAME].sources, ["build-clients"]).on("error", gutil.log);
   gulp.watch(paths.clients[PROJECT_NAME].styles, ["build-clients"]).on("error", gutil.log);
