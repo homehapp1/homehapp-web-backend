@@ -17,8 +17,8 @@ export function register(app) {
       return user.toJSON();
     }
 
-    let appLocals = app.locals || {};
-    let resLocals = res.locals || {};
+    let appLocals = JSON.parse(JSON.stringify(app.locals)) || {};
+    let resLocals = JSON.parse(JSON.stringify(res.locals)) || {};
 
     let opts = merge({
       layout: "layout",

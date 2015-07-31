@@ -24,6 +24,8 @@ let initSessionStore = function(app) {
 exports.register = function (parent, app, config) {
   const QB = new QueryBuilder(app);
 
+  app.authenticationRoutes = config.routes;
+
   if (config.session) {
     let session = require("express-session");
 

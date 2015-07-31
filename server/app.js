@@ -60,19 +60,20 @@ exports.run = function(projectName, afterRun) {
     // if (fs.existsSync(path.join(PROJECT_ROOT, "views"))) {
     //   viewsFolder = path.join(PROJECT_ROOT, "views");
     // }
-    // if (fs.existsSync(viewsFolder)) {
-    //   let ejs = require("ejs");
-    //
-    //   app.set("view engine", "html");
-    //   app.set("views", viewsFolder);
-    //   app.engine("html", ejs.renderFile);
-    //
-    //   let partials = require("express-partials");
-    //   partials.register(".html", ejs.render);
-    //   app.use(partials());
-    //
-    //   app.use(require("express-layout")());
-    // }
+    let viewsFolder = path.join(PROJECT_ROOT, "views", PROJECT_NAME);
+    if (fs.existsSync(viewsFolder)) {
+      let ejs = require("ejs");
+
+      app.set("view engine", "html");
+      app.set("views", viewsFolder);
+      app.engine("html", ejs.renderFile);
+
+      let partials = require("express-partials");
+      partials.register(".html", ejs.render);
+      app.use(partials());
+
+      app.use(require("express-layout")());
+    }
 
     // For Isomorphic React
     let routes = require(path.join(CLIENT_ROOT, "components/Routes"));
@@ -267,7 +268,7 @@ exports.run = function(projectName, afterRun) {
           });
         });
 
-        app.use(function errorHandler(err, req, res) {
+        app.use(function errorHandler(err, req, res, next) {
           var code = err.statusCode || 422;
 
           var msg = "Unexpected error has occurred!";
@@ -275,6 +276,15 @@ exports.run = function(projectName, afterRun) {
             msg = err.message;
           }
           var payload = msg;
+
+          if (!req.xhr || req.headers["content-type"] !== "application/json") {
+            if ([403].indexOf(code) !== -1) {
+              if (app.authenticationRoutes) {
+                let redirectUrl = `${app.authenticationRoutes.login}?message=${msg}`;
+                return res.redirect(redirectUrl);
+              }
+            }
+          }
 
           let prepareJSONError = function() {
             payload = {
