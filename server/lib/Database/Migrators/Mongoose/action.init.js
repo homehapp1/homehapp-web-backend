@@ -1,7 +1,5 @@
 "use strict";
 
-import moment from "moment";
-
 import Fixtures from "./fixtures";
 
 let debug = require("debug")("MongooseMigrator.Action.Init");

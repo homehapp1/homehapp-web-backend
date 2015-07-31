@@ -1,10 +1,9 @@
 "use strict";
 
 import path from "path";
-import fs from "fs";
 
 import Configuration from "./lib/Configuration";
-import Helpers from "./lib/Helpers";
+
 let Migrator = null;
 
 let PROJECT_NAME = "site";

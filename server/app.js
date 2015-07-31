@@ -48,18 +48,9 @@ exports.run = function(projectName, afterRun) {
 
     app.set("trust proxy", 1);
 
-    // For Isomorphic React
-    // app.set("view engine", "html");
-    // app.set("views", path.join(CLIENT_ROOT, "templates"));
-    // app.engine("html", require("ejs").renderFile);
-
     /**
      * Configure templating if views folder is present
      */
-    // let viewsFolder = path.join(SOURCE_PATH, "views");
-    // if (fs.existsSync(path.join(PROJECT_ROOT, "views"))) {
-    //   viewsFolder = path.join(PROJECT_ROOT, "views");
-    // }
 
     let viewsFolder = path.join(PROJECT_ROOT, "views", PROJECT_NAME);
     if (config.isomorphic.enabled) {
@@ -81,10 +72,6 @@ exports.run = function(projectName, afterRun) {
         app.use(require("express-layout")());
       }
     }
-
-    // For Isomorphic React
-    let routes = require(path.join(CLIENT_ROOT, "components/Routes"));
-    let alt = require(path.join(COMMON_CLIENT_ROOT, "alt.js"));
 
     function configureLogger() {
       return new Promise((resolve) => {
@@ -140,13 +127,14 @@ exports.run = function(projectName, afterRun) {
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(bodyParser.json());
 
-        // For Isomorphic React
-        app.use(function prepareResData(req, res, next) {
-          if (!res.locals.data) {
-            res.locals.data = {};
-          }
-          next();
-        });
+        if (config.isomorphic.enabled) {
+          app.use(function prepareResData(req, res, next) {
+            if (!res.locals.data) {
+              res.locals.data = {};
+            }
+            next();
+          });
+        }
 
         if (app.config.authentication && app.config.authentication.adapters.length) {
           let AuthenticationMiddleware = require(path.join(SOURCE_PATH, "lib", "Middleware", "Authentication"));
@@ -233,76 +221,83 @@ exports.run = function(projectName, afterRun) {
           }
         });
 
-        // For Isomorphic React
-        app.get("*", function populateCommonData(req, res, next) {
-          debug("populateCommonData");
-          if (!res.locals.data) {
-            res.locals.data = {};
-          }
-          next();
-        });
+        if (config.isomorphic.enabled) {
+          app.get("*", function populateCommonData(req, res, next) {
+            debug("populateCommonData");
+            if (!res.locals.data) {
+              res.locals.data = {};
+            }
+            next();
+          });
+        }
 
-        // For Isomorphic React
-        app.use(function mainRoute(req, res, next) {
-          debug("mainRoute");
-          if (req.skipMain) {
-            return next();
-          }
-
-          if (!res.locals.data.ApplicationStore) {
-            res.locals.data.ApplicationStore = {};
-          }
-
-          if (app.config.security.csrf) {
-            res.locals.data.ApplicationStore.csrf = req.csrfToken();
-          }
-
-          debug("res.locals.data", res.locals.data);
-
-          alt.bootstrap(JSON.stringify(res.locals.data || {}));
-
-          var iso = new Iso();
-
-          Router.run(routes, req.url, function (Handler) {
-            var content = React.renderToString(React.createElement(Handler));
-            iso.add(content, alt.flush());
-
-            if (!res.locals.styleSheets) {
-              res.locals.styleSheets = [];
+        if (config.isomorphic.enabled) {
+          app.use(function mainRoute(req, res, next) {
+            debug("mainRoute");
+            if (req.skipMain) {
+              return next();
             }
 
-            var html = iso.render();
-            app.getLocals(req, res, {
-              html: html,
-              includeClient: true
-            })
-            .then((locals) => {
-              res.render("index", locals);
+            let alt = require(path.join(COMMON_CLIENT_ROOT, "alt.js"));
+
+            if (!res.locals.data.ApplicationStore) {
+              res.locals.data.ApplicationStore = {};
+            }
+
+            if (app.config.security.csrf) {
+              res.locals.data.ApplicationStore.csrf = req.csrfToken();
+            }
+
+            debug("res.locals.data", res.locals.data);
+
+            alt.bootstrap(JSON.stringify(res.locals.data || {}));
+
+            var iso = new Iso();
+
+            let routes = require(path.join(CLIENT_ROOT, "components/Routes"));
+
+            Router.run(routes, req.url, function (Handler) {
+              var content = React.renderToString(React.createElement(Handler));
+              iso.add(content, alt.flush());
+
+              if (!res.locals.styleSheets) {
+                res.locals.styleSheets = [];
+              }
+
+              var html = iso.render();
+              app.getLocals(req, res, {
+                html: html,
+                includeClient: true
+              })
+              .then((locals) => {
+                res.render("index", locals);
+              });
             });
           });
-        });
+        }
 
-        app.use(function errorHandler(err, req, res, next) {
+        app.use(function errorHandler(err, req, res) {
           var code = err.statusCode || 422;
-
-          var msg = "Unexpected error has occurred!";
-          if (err.message) {
-            msg = err.message;
-          }
+          var msg = err.message || "Unexpected error has occurred!";
           var payload = msg;
+          var isJSONRequest = (req.xhr || req.headers["content-type"] === "application/json");
 
           if (err.code === "EBADCSRFTOKEN") {
             code = 403;
             msg = "Request was tampered!";
           }
 
-          if (!req.xhr || req.headers["content-type"] !== "application/json") {
+          let handleUnauthenticatedGetRequest = function() {
             if ([403].indexOf(code) !== -1) {
               if (app.authenticationRoutes) {
                 let redirectUrl = `${app.authenticationRoutes.login}?message=${msg}`;
                 return res.redirect(redirectUrl);
               }
             }
+          };
+
+          if (!isJSONRequest) {
+            handleUnauthenticatedGetRequest();
           }
 
           let prepareJSONError = function() {
@@ -346,13 +341,13 @@ exports.run = function(projectName, afterRun) {
             }
           };
 
-          if (req.xhr || req.headers["content-type"] === "application/json") {
+          if (isJSONRequest) {
             payload = prepareJSONError();
           }
 
-          if (err.stack && app.config.env === "development") {
-            debug("Error stacktrace: ", err.stack);
-          }
+          // if (err.stack && app.config.env === "development") {
+          //   debug("Error stacktrace: ", err.stack);
+          // }
 
           if (!app.config.errors.includeData) {
             delete payload.data;

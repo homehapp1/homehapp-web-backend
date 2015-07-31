@@ -1,10 +1,8 @@
 "use strict";
 
-import {Forbidden} from "../../lib/Errors";
-
 exports.registerRoutes = (app) => {
 
-  app.get("/auth/login", function(req, res, next) {
+  app.get("/auth/login", function(req, res) {
     app.getLocals(req, res, {
       includeClient: false,
       bodyClass: "adminLogin",

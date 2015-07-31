@@ -84,15 +84,13 @@ exports.merge = function merge(...argv) {
   argv.forEach((a) => {
     for (let [key, value] of enumerate(a)) {
       if (a.hasOwnProperty(key)) {
-        if (typeof target[key] === "object"
+        if (require("util").isArray(target[key])) {
+          target[key] = target[key].concat(value);
+        } else if (typeof target[key] === "object"
             && typeof target[key] !== "undefined"
             && target[key] !== null)
         {
-          if (require("util").isArray(target[key])) {
-            target[key] = target[key].concat(value);
-          } else {
-            target[key] = merge(target[key], value);
-          }
+          target[key] = merge(target[key], value);
         } else {
           target[key] = value;
         }
