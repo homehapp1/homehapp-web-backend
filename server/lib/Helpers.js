@@ -88,7 +88,11 @@ exports.merge = function merge(...argv) {
             && typeof target[key] !== "undefined"
             && target[key] !== null)
         {
-          target[key] = merge(target[key], value);
+          if (require("util").isArray(target[key])) {
+            target[key] = target[key].concat(value);
+          } else {
+            target[key] = merge(target[key], value);
+          }
         } else {
           target[key] = value;
         }
