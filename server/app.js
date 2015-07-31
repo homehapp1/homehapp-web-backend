@@ -190,7 +190,7 @@ exports.run = function(projectName, afterRun) {
       return new Promise((resolve, reject) => {
         debug("setupRoutes");
 
-        let routerFiles = Helpers.walkDirSync(path.join(SOURCE_PATH, "/routes"), {
+        let routerFiles = Helpers.walkDirSync(path.join(SOURCE_PATH, "/routes/common"), {
           ext: [".js"]
         });
         let projectRoutesPath = path.join(SOURCE_PATH, "/routes", app.PROJECT_NAME);
