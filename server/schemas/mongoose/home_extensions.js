@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-import {randomString} from "../../lib/Helpers";
+import {randomString} from '../../lib/Helpers';
 
 var generateUniqueSlug = function (home, cb, iteration) {
   if (iteration > 10) {
-    return cb(new Error("iteration overflow"));
+    return cb(new Error('iteration overflow'));
   }
 
   home.slug = randomString(8);
@@ -24,7 +24,7 @@ var generateUniqueSlug = function (home, cb, iteration) {
 
 exports.extendSchema = function (schema) {
   // Generate slug
-  schema.pre("validate", function (next) {
+  schema.pre('validate', function (next) {
     if (!this.slug && this.isNew) {
       generateUniqueSlug(this, next, 0);
     } else {
@@ -32,7 +32,7 @@ exports.extendSchema = function (schema) {
     }
   });
 
-  require("util")._extend((schema.methods || {}), {
+  require('util')._extend((schema.methods || {}), {
     /**
     * Request ACL implementations
     **/

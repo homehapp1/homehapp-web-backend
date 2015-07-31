@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-import alt from "../../common/alt";
-import HomeActions from "../actions/HomeActions";
+import alt from '../../common/alt';
+import HomeActions from '../actions/HomeActions';
 
-let debug = require("../../common/debugger")("HomeStore");
+let debug = require('../../common/debugger')('HomeStore');
 
 class HomeStore {
   constructor() {
@@ -18,17 +18,17 @@ class HomeStore {
   }
 
   handleUpdateHome(home) {
-    debug("handleUpdateHome", home);
+    debug('handleUpdateHome', home);
     this.home = home;
     this.error = null;
   }
   handleFetchHome() {
-    debug("handleFetchHome");
+    debug('handleFetchHome');
     this.home = null;
     this.error = null;
   }
   handleFetchFailed(error) {
-    debug("handleFetchFailed", error);
+    debug('handleFetchFailed', error);
     this.error = error;
   }
 }

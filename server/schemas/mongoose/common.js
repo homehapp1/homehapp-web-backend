@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-import Plugins from "./Plugins";
-import moment from "moment";
+import Plugins from './Plugins';
+import moment from 'moment';
 
 exports.loadCommonPlugins = (schema, name, mongoose) => {
-  let extensionsFile = require("path").join(__dirname, name.toLowerCase() + "_extensions.js");
-  if (require("fs").existsSync(extensionsFile)) {
+  let extensionsFile = require('path').join(__dirname, name.toLowerCase() + '_extensions.js');
+  if (require('fs').existsSync(extensionsFile)) {
     require(extensionsFile).extendSchema(schema, mongoose);
   }
 
@@ -16,7 +16,7 @@ exports.loadCommonPlugins = (schema, name, mongoose) => {
   schema.plugin(Plugins.enableACL, {
     requestModelName: name.toLowerCase()
   });
-  schema.set("toJSON", { virtuals: true });
+  schema.set('toJSON', { virtuals: true });
 };
 
 exports.commonJsonTransform = (ret) => {
@@ -31,7 +31,7 @@ exports.commonJsonTransform = (ret) => {
   // Delete private properties
   let ownProps = Object.getOwnPropertyNames(ret);
   ownProps.forEach((prop) => {
-    if (prop.substring(0, 1) === "_") {
+    if (prop.substring(0, 1) === '_') {
       delete ret[prop];
     }
   });

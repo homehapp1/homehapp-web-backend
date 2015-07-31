@@ -44,6 +44,7 @@
     "babel-eslint": "^4.0.5",
     "babel-loader": "^5.3.2",
     "babel-runtime": "^5.8.12",
+    "del": "^1.2.0",
     "eslint": "^0.24.1",
     "eslint-plugin-react": "^3.1.0",
     "gulp": "^3.9.0",
@@ -52,8 +53,10 @@
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^0.15.0",
     "gulp-livereload": "^3.8.0",
+    "gulp-load-plugins": "^1.0.0-rc.1",
     "gulp-nodemon": "^2.0.3",
     "gulp-sass": "^2.0.4",
+    "gulp-size": "^1.2.3",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
@@ -112,6 +115,11 @@
           "indentSwitchCase": true
         }
       ],
+      "quotes": [
+        2,
+        "single",
+        "avoid-escape"
+      ],
       "no-underscore-dangle": 0,
       "no-unused-vars": [
         1,
@@ -135,7 +143,7 @@
       ],
       "complexity": [
         1,
-        7
+        8
       ],
       "react/display-name": [
         1,

@@ -8,6 +8,8 @@ Happens in "development" -branch.
 All features must be done in their own separated branches and when ready a merge request needs to be created for
 getting them to the development branch.
 
+Make sure you follow the Coding Standard as defined in here: https://github.com/airbnb/javascript
+
 ### Loading fixture data to database
 
 To load fixtures to database run:

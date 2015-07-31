@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-import React from "react";
-import { Link } from "react-router";
+import React from 'react';
+import { Link } from 'react-router';
 
-import HomeStore from "../../stores/HomeStore";
-import HomeActions from "../../actions/HomeActions";
+import HomeStore from '../../stores/HomeStore';
+import HomeActions from '../../actions/HomeActions';
 
 class HomeStory extends React.Component {
   static propTypes = {
@@ -44,13 +44,13 @@ class HomeStory extends React.Component {
   render() {
     if (this.state.loading || !this.state.home) {
       return (
-        <div className="story-loader">
+        <div className='story-loader'>
           <h3>Loading story data...</h3>
         </div>
       );
     } else if (this.state.error) {
       return (
-        <div className="story-error">
+        <div className='story-error'>
           <h3>Error loading story!</h3>
           <p>{this.state.error.message}</p>
         </div>
@@ -58,11 +58,11 @@ class HomeStory extends React.Component {
     }
 
     return (
-      <div className="story">
+      <div className='story'>
         <h1>{this.state.home.title} Story for {this.props.params.slug}</h1>
-        <Link to="homeDetails" params={{slug: this.props.params.slug}}>Got to details</Link>
+        <Link to='homeDetails' params={{slug: this.props.params.slug}}>Got to details</Link>
         <p>
-          <Link to="app">Back to frontpage</Link>
+          <Link to='app'>Back to frontpage</Link>
         </p>
       </div>
     );

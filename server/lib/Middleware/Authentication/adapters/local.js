@@ -1,20 +1,20 @@
-"use strict";
+'use strict';
 
-//import moment from "moment";
+//import moment from 'moment';
 
-import {Strategy as LocalStrategy} from "passport-local";
+import {Strategy as LocalStrategy} from 'passport-local';
 
-import QueryBuilder from "../../../QueryBuilder";
-import {Forbidden} from "../../../Errors";
+import QueryBuilder from '../../../QueryBuilder';
+import {Forbidden} from '../../../Errors';
 
-let debug = require("debug")("Authentication:LocalAdapter");
+let debug = require('debug')('Authentication:LocalAdapter');
 
 /*, config*/
 let initSessionStore = function(app) {
   let store = null;
 
-  if (app.config.database.adapter === "mongoose") {
-    let MongoStore = require("connect-mongodb");
+  if (app.config.database.adapter === 'mongoose') {
+    let MongoStore = require('connect-mongodb');
     store = new MongoStore({ db: app.db.connection.db });
   }
 
@@ -27,9 +27,9 @@ exports.register = function (parent, app, config) {
   app.authenticationRoutes = config.routes;
 
   if (config.session) {
-    let session = require("express-session");
+    let session = require('express-session');
 
-    if (app.config.env !== "test") {
+    if (app.config.env !== 'test') {
       parent.sessionStore = initSessionStore(app, config.session);
     }
 
@@ -53,20 +53,20 @@ exports.register = function (parent, app, config) {
     app.use(session(sessionConfig));
   }
 
-  parent.authentication.use("local", new LocalStrategy((username, password, done) => {
-    debug("passport:local", username);
+  parent.authentication.use('local', new LocalStrategy((username, password, done) => {
+    debug('passport:local', username);
 
     QB
-    .query("User")
+    .query('User')
     .findByUsername(username)
     .fetch()
     .then((result) => {
       if (!result.user) {
-        return done(null, false, { message: "unknown user" });
+        return done(null, false, { message: 'unknown user' });
       }
 
       if (!result.user.isValidPassword(password)) {
-        return done(null, false, { message: "invalid password" });
+        return done(null, false, { message: 'invalid password' });
       }
 
       // TODO: Handle this through QB also
@@ -82,7 +82,7 @@ exports.register = function (parent, app, config) {
 
   app.authenticatedRoute.push(function(req, res, next) {
     if (!req.isAuthenticated()) {
-      return next(new Forbidden("not enough permissions"));
+      return next(new Forbidden('not enough permissions'));
     }
     next();
   });
@@ -95,7 +95,7 @@ exports.register = function (parent, app, config) {
       }
     }, res = {};
 
-    parent.authentication.authenticate("local", (authErr, user) => {
+    parent.authentication.authenticate('local', (authErr, user) => {
       if (authErr) {
         return done(authErr);
       }

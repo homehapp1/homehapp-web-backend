@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-import passport from "passport";
-import http from "http";
-//import moment from "moment";
+import passport from 'passport';
+import http from 'http';
+//import moment from 'moment';
 
-import Helpers from "../../Helpers";
-import QueryBuilder from "../../QueryBuilder";
+import Helpers from '../../Helpers';
+import QueryBuilder from '../../QueryBuilder';
 
 class AuthenticationMiddleware {
   constructor(app, config) {
@@ -42,12 +42,12 @@ class AuthenticationMiddleware {
     });
     this.authentication.deserializeUser((id, done) => {
       QB
-      .query("User")
+      .query('User')
       .findById(id)
       .fetch()
       .then((result) => {
         if (!result.user) {
-          return done(new Error("user not found"));
+          return done(new Error('user not found'));
         }
         done(null, result.user);
       })
@@ -81,7 +81,7 @@ class AuthenticationMiddleware {
    * @param req Request
    */
   resolveLoginMethod() {
-    let loginMethod = "local";
+    let loginMethod = 'local';
 
     if (this.config.adapters.indexOf(loginMethod) === -1) {
       return null;

@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-import debug from "debug";
-let ExecutionEnvironment = require("react/lib/ExecutionEnvironment");
+import debug from 'debug';
+let ExecutionEnvironment = require('react/lib/ExecutionEnvironment');
 
 let originalLog = debug.log;
 if (ExecutionEnvironment.canUseDOM) {

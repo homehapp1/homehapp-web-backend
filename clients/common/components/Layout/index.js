@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
 class Layout extends React.Component {
   static propTypes = {
@@ -16,7 +16,7 @@ class Layout extends React.Component {
       width: `${this.props.width}px`
     };
     return (
-      <div id="layout" style={style}>
+      <div id='layout' style={style}>
         {this.props.children}
       </div>
     );

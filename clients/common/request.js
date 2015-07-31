@@ -1,16 +1,16 @@
-import superagent from "superagent";
+import superagent from 'superagent';
 
-import ApplicationStore from "./stores/ApplicationStore";
+import ApplicationStore from './stores/ApplicationStore';
 
 let setCommonDefaults = function(req) {
-  req.accept( "application/json");
-  req.type("json");
+  req.accept( 'application/json');
+  req.type('json');
 };
 let setPostingDefaults = function(req) {
   if (ApplicationStore.getState().csrf) {
-    req.set("x-csrf-token", ApplicationStore.getState().csrf);
+    req.set('x-csrf-token', ApplicationStore.getState().csrf);
   }
-  req.set("X-Requested-With", "XMLHttpRequest");
+  req.set('X-Requested-With', 'XMLHttpRequest');
 };
 
 module.exports = {

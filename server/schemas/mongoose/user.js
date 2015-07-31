@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-import moment from "moment";
-import bcrypt from "bcrypt";
-import {loadCommonPlugins, commonJsonTransform} from "./common";
+import moment from 'moment';
+import bcrypt from 'bcrypt';
+import {loadCommonPlugins, commonJsonTransform} from './common';
 
 let getSalt = function () {
   let salt = bcrypt.genSaltSync(10);
@@ -46,7 +46,7 @@ exports.loadSchemas = function (mongoose, next) {
     },
     _saltAlg: {
       type: String,
-      default: "default"
+      default: 'default'
     },
     _password: {
       type: String
@@ -59,7 +59,7 @@ exports.loadSchemas = function (mongoose, next) {
     },
     _accessLevel: {
       type: String,
-      default: "user"
+      default: 'user'
     },
     active: {
       type: Boolean,
@@ -78,10 +78,10 @@ exports.loadSchemas = function (mongoose, next) {
     }
   });
 
-  schemas.User.virtual("displayName").get(function () {
-    return [this.givenName, this.familyName].join(" ");
+  schemas.User.virtual('displayName').get(function () {
+    return [this.givenName, this.familyName].join(' ');
   });
-  schemas.User.virtual("password").set(function (password) {
+  schemas.User.virtual('password').set(function (password) {
     this._salt = getSalt();
     this._password = calculateHash(password, this._salt);
     this._passwordSetAt = moment().utc().toDate();
@@ -102,7 +102,7 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.User.statics.editableFields = function () {
     return [
-      "givenName", "familyName", "email"
+      'givenName', 'familyName', 'email'
     ];
   };
 

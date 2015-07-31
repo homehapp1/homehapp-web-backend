@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import {toTitleCase} from "../Helpers";
+import {toTitleCase} from '../Helpers';
 
 class QueryBuilder {
   constructor(app) {

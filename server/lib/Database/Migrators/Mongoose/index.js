@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-let debug = require("debug")("MongooseMigrator");
+let debug = require('debug')('MongooseMigrator');
 
 class MongooseMigrator {
   constructor(app) {
@@ -23,7 +23,7 @@ class MongooseMigrator {
   }
 
   execute(action, args) {
-    debug("execute", action, args);
+    debug('execute', action, args);
     let actionMethod = require(`./action.${action}`);
     return actionMethod(this, args);
   }

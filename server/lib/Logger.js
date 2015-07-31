@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-import winston from "winston";
-import {merge} from "./Helpers";
+import winston from 'winston';
+import {merge} from './Helpers';
 
 class Logger {
   constructor(config) {

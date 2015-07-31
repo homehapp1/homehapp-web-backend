@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-import ReactUpdates from "react/lib/ReactUpdates";
+import ReactUpdates from 'react/lib/ReactUpdates';
 
 exports.floor = function floor(v) {
   v = Math.floor(v * 100) / 100;
-  if ("#{v}".match(/\./)) {
-    let vp = `${v}`.split(".");
+  if ('#{v}'.match(/\./)) {
+    let vp = `${v}`.split('.');
     let n = vp[0];
     let d = vp[1];
     if (d < 10) {
@@ -22,8 +22,8 @@ exports.merge = function merge(...argv) {
   argv.forEach((a) => {
     for (let [key, value] of enumerate(a)) {
       if (a.hasOwnProperty(key)) {
-        if (typeof target[key] === "object"
-          && typeof target[key] !== "undefined"
+        if (typeof target[key] === 'object'
+          && typeof target[key] !== 'undefined'
           && target[key] !== null)
         {
           target[key] = merge(target[key], value);
