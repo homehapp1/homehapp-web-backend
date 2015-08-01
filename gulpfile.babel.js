@@ -164,7 +164,9 @@ gulp.task('build-server', ['lint', 'copy-server-views'], function () {
 
 gulp.task('compile-site-styles', () => {
   return gulp.src(paths.clients.site.styles)
+    .pipe(g.sourcemaps.init())
     .pipe(g.sass())
+    .pipe(g.sourcemaps.write())
     .pipe(gulp.dest(path.join(paths.clients.site.statics, 'css')))
     .pipe(g.size({title: 'Site styles'}));
 });
