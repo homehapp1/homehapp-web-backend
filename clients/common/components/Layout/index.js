@@ -11,7 +11,6 @@ class Layout extends React.Component {
   }
 
   scrollTop(e) {
-    
   }
   
   resize(e) {
@@ -21,6 +20,20 @@ class Layout extends React.Component {
     for (let i = 0; i < items.length; i++) {
       items[i].style.minHeight = `${height}px`;
     }
+  }
+  
+  componentDidMount = function() {
+    window.addEventListener('scroll', this.scrollTop);
+    window.addEventListener('resize', this.resize);
+    
+    // Trigger the events on load
+    this.scrollTop();
+    this.resize();
+  }
+  
+  componentWillUnmount = function() {
+    window.removeEventListener('scroll', this.scrollTop);
+    window.removeEventListener('resize', this.resize);
   }
   
   render() {
