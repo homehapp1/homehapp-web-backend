@@ -8,12 +8,24 @@ class Layout extends React.Component {
     width: React.PropTypes.number.isRequired
   }
   static defaultProps = {
-    width: 500
   }
 
+  scrollTop(e) {
+    
+  }
+  
+  resize(e) {
+    let items = document.getElementsByClassName('full-height');
+    let height = window.innerHeight;
+    
+    for (let i = 0; i < items.length; i++) {
+      items[i].style.minHeight = `${height}px`;
+    }
+  }
+  
   render() {
     let style = {
-      width: `${this.props.width}px`
+      //width: `${this.props.width}px`
     };
     return (
       <div id='layout' style={style}>
