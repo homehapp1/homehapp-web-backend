@@ -9,8 +9,6 @@ import Header from '../Header';
 import Footer from '../Footer';
 import Layout from '../../../common/components/Layout';
 
-let layout = new Layout();
-
 class Application extends React.Component {
   static propTypes = {
     // autoPlay: React.PropTypes.bool.isRequired,
