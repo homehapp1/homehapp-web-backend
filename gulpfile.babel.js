@@ -276,6 +276,8 @@ gulp.task('watch', function(){
   }).on('error', gutil.log);
 });
 
+gulp.task('clean-dist', cb => del(['dist/*', '!dist/.git'], {dot: true}, cb));
+
 gulp.task('restart-dev', () => {
   if (nodemonInstance) {
     nodemonInstance.once('restart', () => {
