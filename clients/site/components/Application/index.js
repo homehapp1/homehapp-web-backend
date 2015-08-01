@@ -9,6 +9,8 @@ import Header from '../Header';
 import Footer from '../Footer';
 import Layout from '../../../common/components/Layout';
 
+let layout = new Layout();
+
 class Application extends React.Component {
   static propTypes = {
     // autoPlay: React.PropTypes.bool.isRequired,
@@ -29,7 +31,7 @@ class Application extends React.Component {
 
   render() {
     return (
-      <Layout width={625}>
+      <Layout>
         <Header {...this.props} />
         <RouteHandler />
         <Footer {...this.props} />
