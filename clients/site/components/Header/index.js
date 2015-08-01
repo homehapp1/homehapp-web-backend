@@ -8,7 +8,7 @@ class Header extends React.Component {
     return (
       <div id='header'>
         <Link to='app' className='logo'>
-          <img src='/public/images/homehapp-logo.svg' alt='homehapp' />
+          <img src='/public/images/homehapp-logo.svg' alt='Homehapp' />
         </Link>
         <div id='navigation'>Nav component here</div>
       </div>
