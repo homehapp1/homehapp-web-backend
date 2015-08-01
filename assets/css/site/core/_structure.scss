@@ -32,8 +32,8 @@ body {
   padding-right: $contentPadding;
 }
 
-#container {
-  height: 100%;
+#app {
+  min-height: 100%;
 }
 
 // Display only for small screens
