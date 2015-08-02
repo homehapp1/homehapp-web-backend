@@ -20,7 +20,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.HomeStoryBlock = new Schema({
     template: {
       type: String,
-      default: "default"
+      default: 'default'
     },
     properties: {
       type: Schema.Types.Mixed

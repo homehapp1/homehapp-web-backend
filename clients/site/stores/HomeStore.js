@@ -12,7 +12,9 @@ class HomeStore {
   constructor() {
     this.on('bootstrap', () => {
       debug('bootstrapping', this.home);
-      Cache.set('homesBySlug', this.home.slug, this.home);
+      if (this.home) {
+        Cache.set('homesBySlug', this.home.slug, this.home);
+      }
     });
 
     this.bindListeners({

@@ -12,6 +12,7 @@ class HomeDetails extends React.Component {
     return (
       <div className='details'>
         <h1>Home Details for {this.props.home.slug}</h1>
+        <p>{this.props.home.description}</p>
         <Link to='home' params={{slug: this.props.home.slug}}>Back to story</Link>
       </div>
     );

@@ -2,6 +2,7 @@
 
 const DEMO_HOMES = [
   {
+    slug: 'S02HhBOV',
     description: '2 rooms, kitchent, balcony and dressing room. 1 toilet + shower',
     location: {
       address: {
@@ -88,7 +89,7 @@ exports.execute = function execute(migrator) {
       tasks.push(
         new Promise((resolve, reject) => {
           Home.findOne({
-            'location.address.street': homeData.location.address.street
+            slug: homeData.slug
           }).execAsync()
           .then((model) => {
             //console.log('got exiting home', model);
