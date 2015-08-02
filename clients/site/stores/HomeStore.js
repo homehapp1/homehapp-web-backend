@@ -3,12 +3,18 @@
 import alt from '../../common/alt';
 import HomeActions from '../actions/HomeActions';
 import HomeSource from '../sources/HomeSource';
+import Cache from '../../common/Cache';
 
 let debug = require('../../common/debugger')('HomeStore');
 
 @alt.createStore
 class HomeStore {
   constructor() {
+    this.on('bootstrap', () => {
+      debug('bootstrapping', this.home);
+      Cache.set('homesBySlug', this.home.slug, this.home);
+    });
+
     this.bindListeners({
       handleUpdateHome: HomeActions.UPDATE_HOME,
       handleFetchHomeBySlug: HomeActions.FETCH_HOME_BY_SLUG,

@@ -2,17 +2,14 @@
 
 import request from '../../common/request';
 import HomeActions from '../actions/HomeActions';
+import Cache from '../../common/Cache';
 
 let debug = require('../../common/debugger')('HomeSource');
 
-// Dummy cache
-let homesCache = {};
-
 let HomeSource = {
   fetchHomeBySlug: () => {
-    debug('fetchHomeBySlug');
     return {
-      remote(store, slug) {
+      remote(storeState, slug) {
         debug('fetchHomeBySlug:remote', arguments);
         return request.get(`/api/home/${slug}`)
           .then((response) => {
@@ -21,7 +18,7 @@ let HomeSource = {
               err = new Error('Invalid response');
               return Promise.reject(err);
             }
-            homesCache[slug] = response.data.home;
+            Cache.set('homesBySlug', slug, response.data.home);
             return Promise.resolve(response.data.home);
           })
           .catch((response) => {
@@ -45,10 +42,10 @@ let HomeSource = {
             return Promise.reject(response);
           });
       },
-      local(store, slug) {
+      local(storeState, slug) {
         debug('fetchHomeBySlug:local', arguments);
-        if (homesCache[slug]) {
-          return homesCache[slug];
+        if (Cache.has('homesBySlug', slug)) {
+          return Cache.get('homesBySlug', slug);
         }
         return null;
       },
