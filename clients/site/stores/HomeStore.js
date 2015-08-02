@@ -5,6 +5,7 @@ import HomeActions from '../actions/HomeActions';
 
 let debug = require('../../common/debugger')('HomeStore');
 
+@alt.createStore
 class HomeStore {
   constructor() {
     this.bindListeners({
@@ -33,4 +34,4 @@ class HomeStore {
   }
 }
 
-module.exports = alt.createStore(HomeStore);
+module.exports = HomeStore;
