@@ -2,6 +2,7 @@
 
 import alt from '../../common/alt';
 import HomeActions from '../actions/HomeActions';
+import HomeSource from '../sources/HomeSource';
 
 let debug = require('../../common/debugger')('HomeStore');
 
@@ -10,12 +11,18 @@ class HomeStore {
   constructor() {
     this.bindListeners({
       handleUpdateHome: HomeActions.UPDATE_HOME,
-      handleFetchHome: HomeActions.FETCH_HOME,
+      handleFetchHomeBySlug: HomeActions.FETCH_HOME_BY_SLUG,
       handleFetchFailed: HomeActions.FETCH_FAILED
     });
 
     this.home = null;
     this.error = null;
+
+    // this.exportPublicMethods({
+    //   getHome: this.getHome
+    // });
+
+    this.exportAsync(HomeSource);
   }
 
   handleUpdateHome(home) {
@@ -23,8 +30,8 @@ class HomeStore {
     this.home = home;
     this.error = null;
   }
-  handleFetchHome() {
-    debug('handleFetchHome');
+  handleFetchHomeBySlug(slug) {
+    debug('handleFetchHomeBySlug', slug);
     this.home = null;
     this.error = null;
   }

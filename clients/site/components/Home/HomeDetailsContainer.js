@@ -2,15 +2,17 @@
 
 import React from 'react';
 import HomeContainer from './HomeContainer';
+import HomeStore from '../../stores/HomeStore';
 import HomeDetails from './Details';
 
 class HomeDetailsContainer extends HomeContainer {
 
   render() {
-    if (this.state.loading || !this.state.home) {
+    if (this.state.error) {
+      return this.handleErrorState();
+    }
+    if (HomeStore.isLoading() || !this.state.home) {
       return this.handlePendingState();
-    } else if (this.state.error) {
-      return handleErrorState();
     }
 
     return (

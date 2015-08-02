@@ -6,7 +6,7 @@ exports.registerRoutes = (app) => {
   //const QB = new QueryBuilder(app);
 
   app.get('/api/home/:slug', function(req, res) {
-    console.log('fetch home with slug', req.params.slug);
+    console.log('API fetch home with slug', req.params.slug);
     console.log('req.query', req.query);
     res.json({
       status: 'ok', home: {id: '123', slug: req.params.slug, title: `House ${req.params.slug}`}

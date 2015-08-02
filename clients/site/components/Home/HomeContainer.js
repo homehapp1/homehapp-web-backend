@@ -2,8 +2,6 @@
 
 import React from 'react';
 import HomeStore from '../../stores/HomeStore';
-import HomeActions from '../../actions/HomeActions';
-
 import HomeStory from './Story';
 
 class HomeContainer extends React.Component {
@@ -18,7 +16,7 @@ class HomeContainer extends React.Component {
 
   componentDidMount() {
     HomeStore.listen(this.homeStoreListener);
-    HomeActions.fetchHome(this.props.params.slug);
+    HomeStore.fetchHomeBySlug(this.props.params.slug);
   }
 
   componentWillUnmount() {
@@ -26,19 +24,13 @@ class HomeContainer extends React.Component {
   }
 
   state = {
-    loading: false,
     error: null,
     home: HomeStore.getState().home
   }
 
   homeStoreOnChange(state) {
-    if (state.home) {
-      this.setState({home: state.home, loading: false, error: null});
-    } else if (state.error) {
-      this.setState({error: state.error, loading: false});
-    } else {
-      this.setState({home: null, error: null, loading: true});
-    }
+    console.log('homeStoreOnChange', state);
+    this.setState(state);
   }
 
   handlePendingState() {
@@ -59,10 +51,11 @@ class HomeContainer extends React.Component {
   }
 
   render() {
-    if (this.state.loading || !this.state.home) {
+    if (this.state.error) {
+      return this.handleErrorState();
+    }
+    if (HomeStore.isLoading() || !this.state.home) {
       return this.handlePendingState();
-    } else if (this.state.error) {
-      return handleErrorState();
     }
 
     return (
