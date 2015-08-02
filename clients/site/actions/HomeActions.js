@@ -4,6 +4,7 @@ import alt from '../../common/alt';
 import HomesAPI from '../api/Homes';
 import ExecutionEnvironment from 'react/lib/ExecutionEnvironment';
 
+@alt.createActions
 class HomeActions {
   updateHome(home) {
     this.dispatch(home);
@@ -28,4 +29,4 @@ class HomeActions {
   }
 }
 
-module.exports = alt.createActions(HomeActions);
+module.exports = HomeActions;
