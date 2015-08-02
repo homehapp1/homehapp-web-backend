@@ -41,20 +41,28 @@ class HomeContainer extends React.Component {
     }
   }
 
+  handlePendingState() {
+    return (
+      <div className='story-loader'>
+        <h3>Loading story data...</h3>
+      </div>
+    );
+  }
+
+  handleErrorState() {
+    return (
+      <div className='story-error'>
+        <h3>Error loading story!</h3>
+        <p>{this.state.error.message}</p>
+      </div>
+    );
+  }
+
   render() {
     if (this.state.loading || !this.state.home) {
-      return (
-        <div className='story-loader'>
-          <h3>Loading story data...</h3>
-        </div>
-      );
+      return this.handlePendingState();
     } else if (this.state.error) {
-      return (
-        <div className='story-error'>
-          <h3>Error loading story!</h3>
-          <p>{this.state.error.message}</p>
-        </div>
-      );
+      return handleErrorState();
     }
 
     return (
