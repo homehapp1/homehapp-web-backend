@@ -1,3 +1,4 @@
+/* global window */
 'use strict';
 
 import React from 'react';
@@ -24,9 +25,21 @@ class Layout extends React.Component {
     window.removeEventListener('resize', this.resize);
   }
 
-  scrollTop(e) {
+  // Get the scroll top
+  getScrollTop() {
+    let top = window.pageYOffset || document.documentElement.scrollTop;
+    console.log('scrolltop', top);
+    return top;
   }
 
+  // Generic stuff that should happen on scrollTop
+  scrollTop() {
+    let top = this.getScrollTop();
+    this.prevScroll = this.getScrollTop();
+    console.log('top', top);
+  }
+
+  // Generic stuff that should happen when the window is resized
   resize(e) {
     let items = document.getElementsByClassName('full-height');
     let height = window.innerHeight;
