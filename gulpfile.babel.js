@@ -52,7 +52,10 @@ const paths = {
       root: './clients/site',
       entry: './clients/site/client.js',
       sources: ['clients/site/**/*.js', 'clients/common/**/*.js'],
-      styles: ['assets/css/site/**/*.scss', 'assets/css/vendor/site/**/*.scss', 'assets/css/shared/**/*.scss', ],
+      styles: [
+        'assets/css/site/**/*.scss', 'assets/css/vendor/site/**/*.scss',
+        'assets/css/shared/**/*.scss'
+      ],
       images: ['assets/images/**/*'],
       statics: './build/statics/site',
       fonts: 'assets/fonts/**/*'
@@ -61,7 +64,10 @@ const paths = {
       root: './clients/admin',
       entry: './clients/admin/client.js',
       sources: ['clients/admin/**/*.js', 'clients/common/**/*.js'],
-      styles: ['assets/css/admin/**/*.scss', 'assets/css/vendor/admin/**/*.scss', 'assets/css/shared/**/*.scss', ],
+      styles: [
+        'assets/css/admin/**/*.scss', 'assets/css/vendor/admin/**/*.scss',
+        'assets/css/shared/**/*.scss'
+      ],
       images: ['assets/images/**/*'],
       statics: './build/statics/admin',
       fonts: 'assets/fonts/**/*'
@@ -174,24 +180,25 @@ gulp.task('build-server', ['lint', 'copy-server-views'], function () {
     .pipe(g.size({title: 'Server source'}));
 });
 
-gulp.task('compile-site-styles', () => {
-  return gulp.src(paths.clients.site.styles)
+gulp.task('compile-client-styles', () => {
+  return gulp.src(paths.clients[PROJECT_NAME].styles)
     .pipe(g.sourcemaps.init())
     .pipe(g.sass())
     .pipe(g.sourcemaps.write())
-    .pipe(gulp.dest(path.join(paths.clients.site.statics, 'css')))
-    .pipe(g.size({title: 'Site styles'}));
+    .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].statics, 'css')))
+    .pipe(g.size({title: 'Client styles'}));
 });
-gulp.task('copy-site-fonts', () => {
-  return gulp.src(paths.clients.site.fonts)
-    .pipe(gulp.dest(path.join(paths.clients.site.statics, 'fonts')))
-    .pipe(g.size({title: 'Site fonts'}));
+gulp.task('copy-client-fonts', () => {
+  return gulp.src(paths.clients[PROJECT_NAME].fonts)
+    .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].statics, 'fonts')))
+    .pipe(g.size({title: 'Client fonts'}));
 });
-gulp.task('copy-site-images', () => {
-  return gulp.src(paths.clients.site.images)
-    .pipe(gulp.dest(path.join(paths.clients.site.statics, 'images')))
-    .pipe(g.size({title: 'Site images'}));
+gulp.task('copy-client-images', () => {
+  return gulp.src(paths.clients[PROJECT_NAME].images)
+    .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].statics, 'images')))
+    .pipe(g.size({title: 'Client images'}));
 });
+
 gulp.task('webpack:build-site-client', function(callback) {
   // run webpack
   siteCompiler.run(function(err, stats) {
@@ -201,34 +208,6 @@ gulp.task('webpack:build-site-client', function(callback) {
     }));
     callback();
   });
-});
-// gulp.task('uglify-site', function() {
-//   return gulp.src(paths.clients.site.statics + '/js/*.js')
-//     .pipe(concat('site.min.js'))
-//     .pipe(uglify({
-//       mangel: true,
-//       compress: {},
-//       preserveComments: ''
-//     }))
-//     .pipe(gulp.dest(paths.clients.site.statics + '/js'));
-// });
-gulp.task('compile-site', ['compile-site-styles', 'copy-site-fonts', 'copy-site-images', 'webpack:build-site-client']);
-
-gulp.task('compile-admin-styles', () => {
-  return gulp.src(paths.clients.admin.styles)
-    .pipe(g.sass())
-    .pipe(gulp.dest(path.join(paths.clients.admin.statics, 'css')))
-    .pipe(g.size({title: 'Admin styles'}));
-});
-gulp.task('copy-admin-fonts', () => {
-  return gulp.src(paths.clients.admin.fonts)
-    .pipe(gulp.dest(path.join(paths.clients.admin.statics, 'fonts')))
-    .pipe(g.size({title: 'Admin fonts'}));
-});
-gulp.task('copy-admin-images', () => {
-  return gulp.src(paths.clients.admin.images)
-    .pipe(gulp.dest(path.join(paths.clients.admin.statics, 'images')))
-    .pipe(g.size({title: 'Admin images'}));
 });
 gulp.task('webpack:build-admin-client', (callback) => {
   // run webpack
@@ -242,7 +221,20 @@ gulp.task('webpack:build-admin-client', (callback) => {
     callback();
   });
 });
-gulp.task('compile-admin', ['compile-admin-styles', 'copy-admin-fonts', 'copy-admin-images', 'webpack:build-admin-client']);
+
+// gulp.task('uglify-site', function() {
+//   return gulp.src(paths.clients.site.statics + '/js/*.js')
+//     .pipe(concat('site.min.js'))
+//     .pipe(uglify({
+//       mangel: true,
+//       compress: {},
+//       preserveComments: ''
+//     }))
+//     .pipe(gulp.dest(paths.clients.site.statics + '/js'));
+// });
+gulp.task('compile-site', ['compile-client-styles', 'copy-client-fonts', 'copy-client-images', 'webpack:build-site-client']);
+
+gulp.task('compile-admin', ['compile-client-styles', 'copy-client-fonts', 'copy-client-images', 'webpack:build-admin-client']);
 
 gulp.task('copy-client-templates', () => {
   return gulp.src('./clients/**/*.html')
@@ -282,10 +274,11 @@ gulp.task('watch', function(){
   })).on('error', gutil.log);
 
   gulp.watch('./build/**', function(changed) {
-    //console.log('build changed', changed);
     livereload.changed(changed);
   }).on('error', gutil.log);
 });
+
+gulp.task('clean-dist', cb => del(['dist/*', '!dist/.git'], {dot: true}, cb));
 
 gulp.task('restart-dev', () => {
   if (nodemonInstance) {

@@ -74,8 +74,8 @@ class HomeQueryBuilder extends BaseQueryBuilder {
         if (err) {
           return callback(err);
         }
-        if (!user) {
-          return callback(new NotFound('user not found'));
+        if (!model) {
+          return callback(new NotFound('home not found'));
         }
         this.result.home = model;
         this.result.homeJson = model.toJSON();

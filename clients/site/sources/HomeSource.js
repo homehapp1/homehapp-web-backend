@@ -15,7 +15,7 @@ let HomeSource = {
           .then((response) => {
             //debug('got response', response);
             if (!response.data || !response.data.home) {
-              err = new Error('Invalid response');
+              let err = new Error('Invalid response');
               return Promise.reject(err);
             }
             Cache.set('homesBySlug', slug, response.data.home);
