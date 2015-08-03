@@ -15,7 +15,7 @@ import MenuItemLink from 'react-router-bootstrap/lib/MenuItemLink';
 
 class Navigation extends React.Component {
   static propTypes = {
-    user: React.PropTypes.object.isRequired
+    user: React.PropTypes.object
   }
 
   render() {
@@ -27,7 +27,7 @@ class Navigation extends React.Component {
       <Navbar brand={<Link to='app'>Homehapp Admin</Link>} inverse fixedTop fluid toggleNavKey={0}>
         <CollapsibleNav eventKey={0}>
           <Nav navbar>
-            <NavItemLink eventKey={1} to='app'>Link</NavItemLink>
+            <NavItemLink eventKey={1} to='homes'>Homes</NavItemLink>
           </Nav>
           <Nav navbar right>
             <DropdownButton eventKey={1} title={userName}>
