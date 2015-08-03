@@ -8,6 +8,25 @@ exports.loadSchemas = function (mongoose, next) {
 
   let schemas = {};
 
+  schemas.HomeAttribute = new Schema({
+    name: String,
+    value: Schema.Types.Mixed,
+    valueType: {
+      type: String,
+      default: 'string'
+    }
+  });
+
+  schemas.HomeStoryBlock = new Schema({
+    template: {
+      type: String,
+      default: 'default'
+    },
+    properties: {
+      type: Schema.Types.Mixed
+    }
+  });
+
   schemas.Home = new Schema({
     uuid: {
       type: String,
@@ -22,6 +41,40 @@ exports.loadSchemas = function (mongoose, next) {
     title: {
       type: String
     },
+    description: {
+      type: String
+    },
+    location: {
+      address: {
+        street: String,
+        apartment: String,
+        city: String,
+        zipcode: String,
+        country: String
+      },
+      coordinates: {
+        type: [Number],
+        index: '2dsphere'
+      }
+    },
+    // Details
+    price: {
+      type: Number,
+      default: 0
+    },
+    currency: {
+      type: String,
+      enum: ['EUR', 'GBP', 'USD']
+    },
+    attributes: [schemas.HomeAttribute],
+    // Strory
+    story: {
+      enabled: {
+        type: Boolean,
+        default: false
+      },
+      blocks: [schemas.HomeStoryBlock]
+    },
     // Flags
     visible: {
       type: Boolean,
@@ -29,10 +82,6 @@ exports.loadSchemas = function (mongoose, next) {
       default: true
     },
     // Relations
-    // strory: {
-    //   type: ObjectId,
-    //   ref: 'HomeStory'
-    // },
     createdBy: {
       type: ObjectId,
       ref: 'User'
@@ -51,7 +100,7 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.Home.statics.editableFields = function () {
     return [
-      'title'
+      'title', 'description', 'details', 'story', 'location'
     ];
   };
 

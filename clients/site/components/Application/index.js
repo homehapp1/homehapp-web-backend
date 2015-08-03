@@ -29,7 +29,7 @@ class Application extends React.Component {
 
   render() {
     return (
-      <Layout width={625}>
+      <Layout>
         <Header {...this.props} />
         <RouteHandler />
         <Footer {...this.props} />

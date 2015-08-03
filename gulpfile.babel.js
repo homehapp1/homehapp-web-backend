@@ -30,6 +30,11 @@ let extend = function extend(a, b) {
   return require('util')._extend(a, b);
 };
 
+const babelOptions = {
+  optional: ['runtime', 'es7.classProperties', 'es7.classProperties'],
+  stage: 0
+};
+
 /**
  * path globs / expressions for targets below
  */
@@ -68,7 +73,7 @@ const paths = {
 let webpackCommonConfig = {
   module: {
     loaders: [
-      { test: /\.(js)$/, exclude: /node_modules|bower_components/, loader: 'babel', query: {optional: ['runtime'], stage: 0} }
+      { test: /\.(js)$/, exclude: /node_modules|bower_components/, loader: 'babel', query: babelOptions }
       // ,{ test: /\.(otf|eot|svg|ttf|woff)/, loader: 'url-loader?limit=8192' }
       // ,{ test: /\.(js)$/, exclude: /node_modules/, loaders: ['eslint-loader'] }
     ]
@@ -86,7 +91,9 @@ const siteWebpackConfig = extend(webpackCommonConfig, {
   },
   entry: {
     client: paths.clients.site.entry,
-    vendor: ['react', 'react-router', 'superagent', 'alt', 'iso', 'jquery']
+    vendor: [
+      'react', 'react-router', 'superagent', 'alt', 'iso', 'jquery'
+    ]
   },
   output: {
     path: paths.clients.site.statics + '/js',
@@ -94,8 +101,12 @@ const siteWebpackConfig = extend(webpackCommonConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      '__DEBUG__': DEBUG,
-      'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      'process': {
+        env: {
+          'DEBUG': DEBUG,
+          'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        }
+      }
     }),
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
@@ -123,8 +134,12 @@ const adminWebpackConfig = extend(webpackCommonConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      '__DEBUG__': DEBUG,
-      'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      'process': {
+        env: {
+          'DEBUG': DEBUG,
+          'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        }
+      }
     }),
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
@@ -153,10 +168,7 @@ gulp.task('copy-server-views', () => {
 gulp.task('build-server', ['lint', 'copy-server-views'], function () {
   return gulp.src(['./server/**/*.js', './config/**/*.js'], {base: 'server'})
     .pipe(g.sourcemaps.init())
-    .pipe(g.babel({
-      optional: ['runtime'],
-      stage: 0
-    }))
+    .pipe(g.babel(babelOptions))
     .pipe(g.sourcemaps.write('.'))
     .pipe(gulp.dest(paths.server.build))
     .pipe(g.size({title: 'Server source'}));
@@ -164,7 +176,9 @@ gulp.task('build-server', ['lint', 'copy-server-views'], function () {
 
 gulp.task('compile-site-styles', () => {
   return gulp.src(paths.clients.site.styles)
+    .pipe(g.sourcemaps.init())
     .pipe(g.sass())
+    .pipe(g.sourcemaps.write())
     .pipe(gulp.dest(path.join(paths.clients.site.statics, 'css')))
     .pipe(g.size({title: 'Site styles'}));
 });
@@ -242,10 +256,7 @@ clientBuildDependencies.push('compile-' + PROJECT_NAME);
 gulp.task('build-clients', clientBuildDependencies, () => {
   return gulp.src(['./clients/**/*.js'], {})
     .pipe(g.sourcemaps.init())
-    .pipe(g.babel({
-      optional: ['runtime'],
-      stage: 0
-    }).on('error', gutil.log))
+    .pipe(g.babel(babelOptions).on('error', gutil.log))
     .pipe(g.sourcemaps.write('.'))
     .pipe(gulp.dest(paths.clients.build))
     .pipe(g.size({title: 'Clients'}));

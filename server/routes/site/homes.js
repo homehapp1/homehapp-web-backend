@@ -1,29 +1,30 @@
 'use strict';
 
-//import QueryBuilder from '../lib/QueryBuilder';
+import QueryBuilder from '../../lib/QueryBuilder';
 
 exports.registerRoutes = (app) => {
-  //const QB = new QueryBuilder(app);
+  const QB = new QueryBuilder(app);
+
+  let returnHomeBySlug = (slug, res, next) => {
+    QB
+    .query('Home')
+    .findBySlug(slug)
+    .fetch()
+    .then((result) => {
+      res.locals.data.HomeStore = {
+        home: result.homeJson
+      };
+      next();
+    })
+    .catch(next);
+  };
 
   app.get('/home/:slug', function(req, res, next) {
-    console.log('show home with slug', req.params.slug);
-    console.log('req.query', req.query);
-    res.locals.data.HomeStore = {
-      home: {id: '123', slug: req.params.slug, title: `House ${req.params.slug}`}
-    };
-    next();
+    returnHomeBySlug(req.params.slug, res, next);
+  });
 
-    // QB
-    // .query('User')
-    // .findByIdOrUsername(req.params.idOrUsername)
-    // .fetch()
-    // .then((result) => {
-    //   res.json({
-    //     status: 'ok', user: result.user
-    //   });
-    // })
-    // .catch(next);
-
+  app.get('/home/:slug/details', function(req, res, next) {
+    returnHomeBySlug(req.params.slug, res, next);
   });
 
 };

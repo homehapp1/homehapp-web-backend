@@ -1,9 +1,10 @@
 /*eslint-env es6, browser */
-/*global window, __DEBUG__ */
+/*global window, process */
 'use strict';
 
 let debug = require('../common/debugger')('site');
-if (__DEBUG__) {
+
+if (process.env.DEBUG) {
   debug.enable('*,-engine.io-client:polling*,-engine.io-client:*');
 }
 

@@ -1,31 +1,22 @@
 'use strict';
 
 import alt from '../../common/alt';
-import HomesAPI from '../api/Homes';
-import ExecutionEnvironment from 'react/lib/ExecutionEnvironment';
 
+let debug = require('../../common/debugger')('HomeActions');
+
+@alt.createActions
 class HomeActions {
   updateHome(home) {
     this.dispatch(home);
   }
-  fetchHome(slug) {
-    this.dispatch();
-
-    if (!ExecutionEnvironment.canUseDOM) {
-      return;
-    }
-
-    HomesAPI.fetch({slug: slug})
-    .then((response) => {
-      this.actions.updateHome(response.home);
-    })
-    .catch((error) => {
-      this.actions.fetchFailed(error);
-    });
+  fetchHomeBySlug(slug, skipCache) {
+    debug('fetchHomeBySlug', slug, skipCache);
+    this.dispatch(slug, skipCache);
   }
   fetchFailed(error) {
+    debug('fetchFailed', error);
     this.dispatch(error);
   }
 }
 
-module.exports = alt.createActions(HomeActions);
+module.exports = HomeActions;

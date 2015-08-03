@@ -1,4 +1,12 @@
 'use strict';
 
-let Alt = require('alt');
-module.exports = new Alt();
+import Alt from 'alt';
+import chromeDebug from 'alt/utils/chromeDebug';
+
+var alt = new Alt();
+
+if (process.env.DEBUG) {
+  chromeDebug(alt);
+}
+
+module.exports = alt;
