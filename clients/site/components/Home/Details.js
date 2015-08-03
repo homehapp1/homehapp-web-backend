@@ -5,14 +5,15 @@ import { Link } from 'react-router';
 
 class HomeDetails extends React.Component {
   static propTypes = {
-    params: React.PropTypes.object
+    home: React.PropTypes.object.isRequired
   }
 
   render() {
     return (
       <div className='details'>
-        <h1>Home Details for {this.props.params.slug}</h1>
-        <Link to='home' params={{slug: this.props.params.slug}}>Back to story</Link>
+        <h1>Home Details for {this.props.home.slug}</h1>
+        <p>{this.props.home.description}</p>
+        <Link to='home' params={{slug: this.props.home.slug}}>Back to story</Link>
       </div>
     );
   }

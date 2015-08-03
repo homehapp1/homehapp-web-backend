@@ -39,6 +39,11 @@ exports.run = function(projectName, afterRun) {
       throw configError;
     }
 
+    process.env.DEBUG = process.env.DEBUG || true;
+    if (config.env === 'production') {
+      process.env.DEBUG = false;
+    }
+
     let app = module.exports.app = express();
     app.config = config;
     app.server = http.createServer(app);
