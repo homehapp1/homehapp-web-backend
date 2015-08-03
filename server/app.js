@@ -232,6 +232,12 @@ exports.run = function(projectName, afterRun) {
             if (!res.locals.data) {
               res.locals.data = {};
             }
+            if (app.authentication) {
+              if (!res.locals.data.AuthStore) {
+                res.locals.data.AuthStore = {};
+              }
+              res.locals.data.AuthStore.loggedIn = !!(req.user);
+            }
             next();
           });
         }
