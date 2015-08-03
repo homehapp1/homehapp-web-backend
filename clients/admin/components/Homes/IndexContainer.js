@@ -16,9 +16,7 @@ class HomesIndexContainer extends React.Component {
 
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
-    if (!this.state.homes.length) {
-      HomeListStore.fetchHomes();
-    }
+    HomeListStore.fetchHomes();
   }
 
   componentWillUnmount() {
