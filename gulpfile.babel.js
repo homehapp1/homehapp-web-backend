@@ -101,11 +101,12 @@ const siteWebpackConfig = extend(webpackCommonConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      '__DEBUG__': DEBUG,
       'process': {
-        env: { 'DEBUG': DEBUG }
-      },
-      'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        env: {
+          'DEBUG': DEBUG,
+          'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        }
+      }
     }),
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
@@ -133,11 +134,12 @@ const adminWebpackConfig = extend(webpackCommonConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      '__DEBUG__': DEBUG,
       'process': {
-        '__DEBUG__': DEBUG
-      },
-      'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        env: {
+          'DEBUG': DEBUG,
+          'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        }
+      }
     }),
     new webpack.ResolverPlugin(
       new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
