@@ -91,7 +91,9 @@ const siteWebpackConfig = extend(webpackCommonConfig, {
   },
   entry: {
     client: paths.clients.site.entry,
-    vendor: ['react', 'react-router', 'superagent', 'alt', 'iso', 'jquery']
+    vendor: [
+      'react', 'react-router', 'superagent', 'alt', 'iso', 'jquery'
+    ]
   },
   output: {
     path: paths.clients.site.statics + '/js',
