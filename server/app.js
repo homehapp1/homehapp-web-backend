@@ -281,7 +281,8 @@ exports.run = function(projectName, afterRun) {
           });
         }
 
-        app.use(function errorHandler(err, req, res) {
+        app.use(function errorHandler(err, req, res, next) {
+          debug('errorHandler', err);
           var code = err.statusCode || 422;
           var msg = err.message || 'Unexpected error has occurred!';
           var payload = msg;
@@ -296,14 +297,12 @@ exports.run = function(projectName, afterRun) {
             if ([403].indexOf(code) !== -1) {
               if (app.authenticationRoutes) {
                 let redirectUrl = `${app.authenticationRoutes.login}?message=${msg}`;
-                return res.redirect(redirectUrl);
+                res.redirect(redirectUrl);
+                return true;
               }
             }
+            return false;
           };
-
-          if (!isJSONRequest) {
-            handleUnauthenticatedGetRequest();
-          }
 
           let prepareJSONError = function() {
             payload = {
@@ -348,6 +347,8 @@ exports.run = function(projectName, afterRun) {
 
           if (isJSONRequest) {
             payload = prepareJSONError();
+          } else if (handleUnauthenticatedGetRequest()) {
+            return next();
           }
 
           // if (err.stack && app.config.env === 'development') {
