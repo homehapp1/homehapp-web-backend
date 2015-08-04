@@ -253,6 +253,21 @@ exports.run = function(projectName, afterRun) {
               res.locals.data.ApplicationStore.csrf = req.csrfToken();
             }
 
+            res.locals.data.ApplicationStore.config = {
+              cloudinary: {
+                baseUrl: '//res.cloudinary.com/kaktus/image/upload/',
+                transformations: {
+                  // Pinterest styled card
+                  card: 'c_fill,q_60,w_400',
+
+                  // Big image view
+                  large: 'c_scale,q_60,w_1920',
+                  medium: 'c_scale,q_60,w_1000',
+                  small: 'c_scale,q_60,w_600'
+                }
+              }
+            };
+
             debug('res.locals.data', res.locals.data);
 
             alt.bootstrap(JSON.stringify(res.locals.data || {}));
