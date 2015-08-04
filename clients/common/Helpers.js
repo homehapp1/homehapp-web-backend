@@ -74,3 +74,27 @@ exports.checkElementInViewport = function checkElementInViewport(element, viewpo
 
   return elementOffsetTop < (viewportHeight + offset);
 };
+
+exports.windowScroller = function(offset = 0, speed = 500) {
+  let f = 5;
+  let init = document.documentElement.scrollTop + document.body.scrollTop;
+  let c = Math.ceil(speed / f);
+  let i = 0;
+
+  // Invalid count
+  if (c <= 0) {
+    return;
+  }
+
+  let dy = (offset - init) / c;
+  let nextHop = function() {
+    i++;
+    window.scrollTo(0, init + dy * i);
+
+    if (i < c) {
+      setTimeout(nextHop, f);
+    }
+  };
+
+  nextHop();
+};
