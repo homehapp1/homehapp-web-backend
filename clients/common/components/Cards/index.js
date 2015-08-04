@@ -46,7 +46,6 @@ class Cards extends React.Component {
     let heights = [];
 
     if (cols === this.cols) {
-      console.log('column count did not change');
       return;
     }
 
@@ -64,7 +63,6 @@ class Cards extends React.Component {
     for (let i = 0; i < cards.length; i++) {
       let c = getMinHeight(heights);
       let offset = (c / cols - 0.5) * (cols * width);
-      console.log('card', i, 'height', cards[i].offsetHeight, c, offset);
 
       cards[i].style.marginLeft = `${offset}px`;
       cards[i].style.marginTop = `${heights[c]}px`;
