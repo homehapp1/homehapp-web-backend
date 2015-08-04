@@ -176,8 +176,11 @@ exports.run = function(projectName, afterRun) {
           tasks.push(
             new Promise((resolve, reject) => {
               debug(`Loading extension ${extensionName}`);
-
-              return require(path.join(extensionsDir, extensionName)).register(app)
+              let extConfig = {};
+              if (app.config.extensions && app.config.extensions[extensionName]) {
+                extConfig = app.config.extensions[extensionName];
+              }
+              return require(path.join(extensionsDir, extensionName)).register(app, extConfig)
                 .then( () => resolve() )
                 .catch( (err) => reject(err) );
             })
