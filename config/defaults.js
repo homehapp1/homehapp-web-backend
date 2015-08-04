@@ -72,13 +72,17 @@ module.exports = (projectRoot) => {
       adapter: "cloudinary",
       adapterConfig: {
         uri: getEnvironmentValue("CLOUDINARY_URI", "cloudinary://748155655238327:BxDt9A-ZMmmfVQyIXQQfSxqMS9Q@kaktus"),
-        transformations: {
-          default: null
-        }
+        transformations: {}
       }
     },
     isomorphic: {
       enabled: true
+    },
+    extensions: {
+      twilio: {
+        sid: 'ACfe13687d3f1fc9f6217a3c5af02e1d76',
+        token: '184d32f9b009255e676cc15b87636331'
+      }
     }
   };
 
