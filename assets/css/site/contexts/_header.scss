@@ -31,6 +31,10 @@
   @import "navigation";
   
   & + * {
-    // margin-top: $headerHeight;
+    padding-top: $headerHeight;
+    
+    & > .item:first-child {
+      margin-top: -1 * $headerHeight;
+    }
   }
 }

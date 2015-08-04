@@ -1,5 +1,4 @@
 .item {
-  display: table;
   width: 100%;
   position: relative;
   background-color: white;
@@ -61,7 +60,6 @@
   .width-wrapper {
     position: relative;
     min-height: 100%;
-    display: table;
   }
   
   &.properties {
@@ -172,6 +170,17 @@
       h1, h2, h3, h4, h5, h6, p {
         margin: 0;
         font-weight: $titleWeight;
+      }
+      
+      &[data-vertical] {
+        display: table;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
       }
       
       &[data-vertical="center"], &[data-vertical="middle"] {

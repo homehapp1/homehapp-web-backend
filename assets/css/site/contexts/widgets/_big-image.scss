@@ -48,7 +48,7 @@
     opacity: 1;
     
     @include small() {
-      display: static;
+      position: static;
     }
   }
   
