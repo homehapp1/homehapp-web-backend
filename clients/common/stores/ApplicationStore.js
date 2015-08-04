@@ -5,6 +5,7 @@ import alt from '../alt';
 class ApplicationStore {
   constructor() {
     this.csrf = null;
+    this.config = {};
   }
 }
 
