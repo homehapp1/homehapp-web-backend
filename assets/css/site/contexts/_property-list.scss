@@ -1,57 +1,90 @@
 .property-list {
   $w: 400px;
   padding: $contentPadding * 10 $contentPadding / 2;
-  width: $w + $contentPadding;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  
+
   h2 {
     margin-bottom: $contentPadding * 10;
     font-size: 200%;
   }
-  
+
   .list-container {
     width: $w + 2 * $contentPadding;
     display: inline-block;
     vertical-align: top;
   }
-  
-  .property {
-    width: $w;
-    margin: 0 $contentPadding / 2 $contentPadding * 2;
-    display: inline-block;
-    text-align: left;
-    padding: 0 $contentPadding * 2 $contentPadding * 2;
-    background-color: white;
-    box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.8);
-    
-    & > .thumbnail {
-      margin-left: -2 * $contentPadding;
-      margin-right: -2 * $contentPadding;
-      display: block;
-      
-      & + p {
-        margin-top: $contentPadding;
+
+  .mode-selector {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: inline;
+
+      & + li {
+        margin-left: 1em;
+      }
+
+      a {
+        color: black;
       }
     }
-    
-    p {
-      margin-bottom: 0;
-      
-      &.address {
-        span + span {
-          &:before {
-            content: ' // ';
-            margin-left: 0.5em;
-            margin-right: 0.5em;
+  }
+
+  .cards {
+    position: relative;
+
+    .card {
+      width: $w + $contentPadding * 2;
+      display: block;
+      text-align: left;
+      padding: 0 $contentPadding $contentPadding * 2;
+      position: absolute;
+      left: 50%;
+      top: 0;
+
+      .card-content {
+        background-color: white;
+        box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.8);
+
+        & > .thumbnail {
+          display: block;
+
+          & + p {
+            margin-top: $contentPadding;
+          }
+        }
+
+        .details {
+          padding: $contentPadding;
+
+          p {
+            margin-bottom: 0;
+
+            &.address {
+              span + span {
+                &:before {
+                  content: ' // ';
+                  margin-left: 0.5em;
+                  margin-right: 0.5em;
+                }
+              }
+            }
+          }
+
+          p + p {
+            margin-top: 0;
           }
         }
       }
     }
-    
-    p + p {
-      margin-top: 0;
+
+    .card-list.animate .card {
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, 500ms);
     }
   }
 }
