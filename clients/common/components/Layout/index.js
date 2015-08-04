@@ -37,7 +37,16 @@ class Layout extends React.Component {
 
   // Generic stuff that should happen on scrollTop
   scrollTop() {
-    console.log('top', this.getScrollTop());
+    let top = this.getScrollTop();
+    let header = document.getElementById('header');
+
+    if (top < this.scrollTop) {
+      header.className = header.className.replace(/ ?away/, '');
+    } else if (!header.className.match(/away/)) {
+      header.className += ' away';
+    }
+
+    this.scrollTop = top;
   }
 
   // Generic stuff that should happen when the window is resized
