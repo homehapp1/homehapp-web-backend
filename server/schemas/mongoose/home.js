@@ -38,35 +38,76 @@ exports.loadSchemas = function (mongoose, next) {
       index: true,
       required: true
     },
+    // Details
     title: {
       type: String
     },
     description: {
-      type: String
+      type: String,
+      default: ''
     },
     location: {
       address: {
-        street: String,
-        apartment: String,
-        city: String,
-        zipcode: String,
-        country: String
+        street: {
+          type: String,
+          default: ''
+        },
+        apartment: {
+          type: String,
+          default: ''
+        },
+        city: {
+          type: String,
+          default: ''
+        },
+        zipcode: {
+          type: String,
+          default: ''
+        },
+        country: {
+          type: String,
+          default: ''
+        }
       },
       coordinates: {
         type: [Number],
+        default: [],
         index: '2dsphere'
       }
     },
-    // Details
-    price: {
-      type: Number,
-      default: 0
-    },
-    currency: {
-      type: String,
-      enum: ['EUR', 'GBP', 'USD']
+    costs: {
+      currency: {
+        type: String,
+        enum: ['EUR', 'GBP', 'USD'],
+        default: 'GBP'
+      },
+      deptFreePrice: {
+        type: Number
+      },
+      sellingPrice: {
+        type: Number
+      },
+      squarePrice: {
+        type: Number
+      },
+      realEstateTaxPerYear: {
+        type: Number
+      },
+      electricChargePerMonth: {
+        type: Number
+      },
+      waterChargePerMonth: {
+        type: Number
+      },
+      waterChargePerType: {
+        type: String,
+        enum: ['person', 'household'],
+        default: 'person'
+      }
     },
     attributes: [schemas.HomeAttribute],
+    amenities: [String],
+    facilities: [String],
     // Strory
     story: {
       enabled: {
@@ -96,6 +137,11 @@ exports.loadSchemas = function (mongoose, next) {
     deletedAt: {
       type: Date
     }
+  });
+
+  schemas.Home.virtual('waterChargeSuffix').get(function () {
+    let suffix = `${this.costs.waterChargePerType} / month`;
+    return suffix;
   });
 
   schemas.Home.statics.editableFields = function () {
