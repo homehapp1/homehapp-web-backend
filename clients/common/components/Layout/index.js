@@ -11,6 +11,11 @@ class Layout extends React.Component {
   static defaultProps = {
   }
 
+  constructor() {
+    super();
+    this.scrollTop = this.scrollTop.bind(this);
+  }
+
   componentDidMount() {
     window.addEventListener('scroll', this.scrollTop);
     window.addEventListener('resize', this.resize);
@@ -27,16 +32,12 @@ class Layout extends React.Component {
 
   // Get the scroll top
   getScrollTop() {
-    let top = window.pageYOffset || document.documentElement.scrollTop;
-    console.log('scrolltop', top);
-    return top;
+    return window.pageYOffset || document.documentElement.scrollTop;
   }
 
   // Generic stuff that should happen on scrollTop
   scrollTop() {
-    let top = this.getScrollTop();
-    this.prevScroll = this.getScrollTop();
-    console.log('top', top);
+    console.log('top', this.getScrollTop());
   }
 
   // Generic stuff that should happen when the window is resized
