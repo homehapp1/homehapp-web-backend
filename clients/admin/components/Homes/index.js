@@ -20,12 +20,10 @@ class HomesIndex extends React.Component {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
+          <NavItemLink to='app'>Frontpage</NavItemLink>
           <h2 className="navigation-title">
             Homes ({this.props.homes.length})
           </h2>
-          <NavItemLink to='app'>
-            &lt; Back
-          </NavItemLink>
         </Nav>
         <Row>
           <h1>{this.props.homes.length} homes</h1>
@@ -37,7 +35,7 @@ class HomesIndex extends React.Component {
                   <Link
                     to="homeEdit"
                     params={{id: home.id}}>
-                    {home.description}
+                    {home.homeTitle}
                   </Link>
                 </li>
               );

@@ -12,7 +12,8 @@ class Homepage extends React.Component {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <NavItemLink to='app'>Frontpage</NavItemLink>
+          <h2>Frontpage</h2>
+          <NavItemLink to='homes'>Homes</NavItemLink>
         </Nav>
         <Row>
           <h1>Welcome to admin!</h1>
