@@ -17,9 +17,10 @@
   }
 
   .mode-selector {
-    margin: 0;
+    margin: 0 0 4 * $contentPadding;
     padding: 0;
     list-style: none;
+    font-size: 200%;
 
     li {
       display: inline;
@@ -45,6 +46,10 @@
       position: absolute;
       left: 50%;
       top: 0;
+
+      @include small() {
+        position: static;
+      }
 
       .card-content {
         background-color: white;
@@ -85,6 +90,12 @@
     .card-list.animate .card {
       @include vendors(transition-property, all);
       @include vendors(transition-duration, 500ms);
+    }
+
+    .card-list.single .card {
+      position: static;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 }

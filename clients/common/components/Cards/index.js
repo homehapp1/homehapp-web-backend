@@ -49,6 +49,27 @@ class Cards extends React.Component {
       return;
     }
 
+    if (cols === 1) {
+      for (let i = 0; i < cards.length; i++) {
+        cards[i].style.marginLeft = null;
+        cards[i].style.marginTop = null;
+      }
+
+      if (!container.className.match(/single/)) {
+        container.className += ' single';
+      }
+
+      if (container.className.match(/animate/)) {
+        container.className = container.className.replace(/ ?animate/, '');
+      }
+
+      return;
+    }
+
+    if (container.className.match(/single/)) {
+      container.className = container.className.replace(/ ?single/, '');
+    }
+
     // Populate zero heights
     for (let i = 0; i < cols; i++) {
       heights.push(0);
@@ -80,6 +101,9 @@ class Cards extends React.Component {
     let style = {
       //width: `${this.props.width}px`
     };
+
+    let classes = this.classes;
+
     return (
       <div ref='cards' className='card-list'>
       {
