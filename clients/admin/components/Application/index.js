@@ -3,33 +3,42 @@
 import React from 'react';
 let {RouteHandler} = require('react-router');
 
-//import ApplicationStore from '../../../common/stores/ApplicationStore';
-
 import Layout from '../Layout';
 import Navigation from '../Navigation';
+import AuthActions from '../../../common/actions/AuthActions';
+import AuthStore from '../../../common/stores/AuthStore';
 
 class Application extends React.Component {
   static propTypes = {
-    // autoPlay: React.PropTypes.bool.isRequired,
-    // maxLoops: React.PropTypes.number.isRequired,
-    // posterFrameSrc: React.PropTypes.string.isRequired,
   }
   static defaultProps = {
   }
 
   constructor(props) {
     super(props);
-    // Operations usually carried out in componentWillMount go here
+    this.state = AuthStore.getState();
+    this.authStoreListener = this.onChange.bind(this);
   }
 
-  state = {
-    // loopsRemaining: this.props.maxLoops,
+  componentDidMount() {
+    AuthStore.listen(this.authStoreListener);
+    if (!this.state.user) {
+      AuthStore.fetchUser();
+    }
+  }
+
+  componentWillUnmount() {
+    AuthStore.unlisten(this.authStoreListener);
+  }
+
+  onChange() {
+    this.setState(AuthStore.getState());
   }
 
   render() {
     return (
       <div>
-        <Navigation {...this.props} />
+        <Navigation user={this.state.user} />
         <Layout>
           <RouteHandler />
         </Layout>

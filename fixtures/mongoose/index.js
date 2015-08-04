@@ -105,6 +105,7 @@ exports.execute = function execute(migrator) {
                 console.error('error while updating home', err);
                 reject(err);
               });
+              return;
             }
 
             let home = new Home(homeData);

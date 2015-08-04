@@ -1,9 +1,10 @@
 /*eslint-env es6, browser */
-/*global window, __DEBUG__ */
+/*global window, process */
 'use strict';
 
 let debug = require('../common/debugger')('site');
-if (__DEBUG__) {
+
+if (process.env.DEBUG) {
   debug.enable('*,-engine.io-client:polling*,-engine.io-client:*');
 }
 
@@ -13,10 +14,6 @@ import Iso from 'iso';
 import alt from '../common/alt';
 
 import routes from './components/Routes';
-
-// External assets required. Remember to sync these to the vendor list
-// in webpack config
-//require('../../assets/js/site/jquery.js');
 
 let {HistoryLocation} = Router;
 

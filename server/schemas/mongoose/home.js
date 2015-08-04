@@ -109,6 +109,13 @@ exports.loadSchemas = function (mongoose, next) {
     schemas[name].options.toJSON.transform = (doc, ret) => {
       return commonJsonTransform(ret);
     };
+    if (name === 'HomeStoryBlock' || name === 'HomeAttribute') {
+      schemas[name].options.toJSON.transform = (doc, ret) => {
+        ret = commonJsonTransform(ret);
+        delete ret.id;
+        return ret;
+      };
+    }
   });
 
   next(schemas);
