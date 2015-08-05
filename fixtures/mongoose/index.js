@@ -16,8 +16,16 @@ const DEMO_HOMES = [
         60.2072733, 25.0765564
       ]
     },
-    price: 220000,
-    currency: 'EUR',
+    costs: {
+      currency: 'EUR',
+      sellingPrice: 220000
+    },
+    amenities: [
+      'Concierge Service'
+    ],
+    facilities: [
+      'Shared Sauna'
+    ],
     attributes: [
       { name: 'rooms', value: 2 },
       { name: 'floor', value: 3 },

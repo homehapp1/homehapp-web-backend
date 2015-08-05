@@ -1,11 +1,16 @@
+/*global window */
 'use strict';
 
 import React from 'react';
 import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Nav from 'react-bootstrap/lib/Nav';
+import TabbedArea from 'react-bootstrap/lib/TabbedArea';
+import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
+import EditDetails from './EditDetails';
+import EditStory from './EditStory';
 
 class HomesEdit extends React.Component {
   static propTypes = {
@@ -16,18 +21,40 @@ class HomesEdit extends React.Component {
     super(props);
   }
 
+  getAutoResponsiveProps() {
+    let width = 1024;
+    window = window || null;
+    if (window) {
+      width = window.document.body.clientWidth;
+    }
+    return {
+      itemMargin: 10,
+      containerWidth: width,
+      itemClassName: 'item',
+      gridWidth: 100,
+      transitionDuration: '.5'
+    };
+  }
+
   render() {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <h2 className="navigation-title">Edit Home</h2>
+          <h2 className='navigation-title'>Edit Home</h2>
           <NavItemLink to='homes'>
             &lt; Back
           </NavItemLink>
         </Nav>
         <Row>
-          <h1>Edit {this.props.home.id}</h1>
-
+          <h1>Edit {this.props.home.homeTitle}</h1>
+          <TabbedArea defaultActiveKey={1}>
+            <TabPane eventKey={1} tab='Details'>
+              <EditDetails home={this.props.home} />
+            </TabPane>
+            <TabPane eventKey={2} tab='Story'>
+              <EditStory home={this.props.home} />
+            </TabPane>
+          </TabbedArea>
         </Row>
       </SubNavigationWrapper>
     );
