@@ -2,23 +2,29 @@
 'use strict';
 
 import React from 'react';
+import { windowScroller} from '../../Helpers';
 
 class Layout extends React.Component {
   static propTypes = {
     children: React.PropTypes.array.isRequired,
     width: React.PropTypes.number
   }
+
   static defaultProps = {
   }
 
   constructor() {
     super();
     this.scrollTop = this.scrollTop.bind(this);
+    this.pageScroller = this.pageScroller.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('scroll', this.scrollTop);
     window.addEventListener('resize', this.resize);
+
+    this.refs.scroller.getDOMNode().addEventListener('click', this.pageScroller, true);
+    this.refs.scroller.getDOMNode().addEventListener('touchstart', this.pageScroller, true);
 
     // Trigger the events on load
     this.scrollTop();
@@ -28,6 +34,8 @@ class Layout extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('scroll', this.scrollTop);
     window.removeEventListener('resize', this.resize);
+    this.refs.scroller.getDOMNode().removeEventListener('click', this.pageScroller);
+    this.refs.scroller.getDOMNode().removeEventListener('touchstart', this.pageScroller);
   }
 
   // Get the scroll top
@@ -49,6 +57,13 @@ class Layout extends React.Component {
     this.scrollTop = top;
   }
 
+  pageScroller() {
+    let top = this.getScrollTop();
+
+    top += window.innerHeight;
+    windowScroller(top);
+  }
+
   // Generic stuff that should happen when the window is resized
   resize(e) {
     let items = document.getElementsByClassName('full-height');
@@ -66,6 +81,7 @@ class Layout extends React.Component {
     return (
       <div id='layout' style={style}>
         {this.props.children}
+        <i className='fa fa-angle-down' id='scrollDown' ref='scroller'></i>
       </div>
     );
   }
