@@ -8,6 +8,15 @@ module.exports = (projectRoot) => {
   let hostname = getEnvironmentValue("HOSTNAME", "localhost");
   let host = `http://${hostname}:${port}`;
 
+  let databaseOptions = {};
+  if (getEnvironmentValue("DATABASE_OPTIONS", null)) {
+    try {
+      databaseOptions = JSON.parse(getEnvironmentValue("DATABASE_OPTIONS", {}));
+    } catch (err) {
+      console.error(`Error while parsing database options: ${err.message}`);
+    }
+  }
+
   let config = {
     port: port,
     host: host,
@@ -20,7 +29,8 @@ module.exports = (projectRoot) => {
     database: {
       adapter: getEnvironmentValue("DATABASE_ADAPTER", "mongoose"),
       adapterConfig: {
-        uri: getEnvironmentValue("DATABASE_URI", `mongodb://localhost/homehapp-${env}`)
+        uri: getEnvironmentValue("DATABASE_URI", `mongodb://localhost/homehapp-${env}`),
+        options: databaseOptions
       }
     },
     security: {
