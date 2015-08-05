@@ -57,10 +57,6 @@
 
         & > .thumbnail {
           display: block;
-
-          & + p {
-            margin-top: $contentPadding;
-          }
         }
 
         .details {
@@ -68,6 +64,10 @@
 
           p {
             margin-bottom: 0;
+
+            &:first-child {
+              margin-top: 0;
+            }
 
             &.address {
               span + span {
