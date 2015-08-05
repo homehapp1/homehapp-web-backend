@@ -2,6 +2,7 @@
 'use strict';
 
 import React from 'react';
+import { Link } from 'react-router';
 import ApplicationStore from '../../stores/ApplicationStore';
 
 class Cards extends React.Component {
@@ -93,8 +94,9 @@ class Cards extends React.Component {
     let max = Math.max.apply(Math, heights);
     container.style.minHeight = `${max}px`;
 
-    if (!container.className.match(/animate/))
+    if (!container.className.match(/animate/)) {
       container.className += ' animate';
+    }
   }
 
   render() {
@@ -117,9 +119,9 @@ class Cards extends React.Component {
           return (
             <div className='card' key={index}>
               <div className='card-content'>
-                <a className='thumbnail'>
+                <Link to='home' params={{slug: item.slug}} className='thumbnail'>
                   <img src={src} height={h} />
-                </a>
+                </Link>
                 <div className='details'>
                   <p className='address'>
                     <span className='street'>{item.address.street}</span>
