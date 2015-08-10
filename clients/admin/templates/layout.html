@@ -11,8 +11,12 @@
   <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>
 
   <!-- !Stylesheets -->
-  <link rel='stylesheet' href='/public/css/vendor.css'>
-  <link rel='stylesheet' href='/public/css/admin.css'>
+  <% if (env === 'production') { %>
+    <link rel="stylesheet" href="<%= staticPath %>/admin/css/all.min.css">
+  <% } else { %>
+    <link rel="stylesheet" href="<%= staticPath %>/css/vendor.css">
+    <link rel="stylesheet" href="<%= staticPath %>/css/admin.css">
+  <% } %>
   <%- cssIncludeHtml %>
 
   <!-- !Favicons -->
@@ -32,10 +36,11 @@
 
   <% if (includeClient) { %>
     <% if (env === 'production') { %>
-      <!-- real production urls here -->
+      <script src="<%= staticPath %>/site/js/vendor.bundle.min.js"></script>
+      <script src="<%= staticPath %>/site/js/client.min.js"></script>
     <% } else { %>
-      <script src='/public/js/vendor.bundle.js'></script>
-      <script src='/public/js/client.js'></script>
+      <script src="<%= staticPath %>/js/vendor.bundle.js"></script>
+      <script src="<%= staticPath %>/js/client.js"></script>
     <% } %>
   <% } %>
   <%- jsIncludeHtml %>
