@@ -24,22 +24,11 @@ class PropertyList extends React.Component {
   }
 
   render() {
-    let style = {
-      //width: `${this.props.width}px`
-    };
-
-    let classes = this.classes;
-
     return (
       <div ref='PropertyRow' className='property-list'>
       {
         this.props.items.map((item, index) => {
-          let heights = [250, 300, 340, 380, 420, 450, 460, 500, 520, 540, 560, 600, 610];
-          let seed = Math.floor(Math.random() * heights.length);
-          let h = heights[seed];
-
           let src = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.propList}/${item.images[0]}`;
-          console.log('this.config', this.config);
 
           return (
             <div className='property-list-item' key={index}>
