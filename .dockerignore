@@ -5,3 +5,5 @@ build
 support
 dist
 Dockerfile.*
+tmp/
+logs/

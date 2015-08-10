@@ -21,6 +21,12 @@ module.exports = function (projectRoot) {
           }
         }
       }
+    },
+    google: {
+      enabled: true
+    },
+    authentication: {
+      adapters: ['basic']
     }
   };
   return config;

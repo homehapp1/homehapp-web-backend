@@ -153,6 +153,12 @@ exports.run = function(projectName, afterRun) {
           require(path.join(SOURCE_PATH, 'lib', 'Middleware', 'Security')).configure(app, app.config.security)
         );
 
+        if (app.config.google.enabled) {
+          tasks.push(
+            require(path.join(SOURCE_PATH, 'lib', 'Middleware', 'Google')).configure(app, app.config.google)
+          );
+        }
+
         if (app.config.cdn.adapter.length) {
           tasks.push(
             require(path.join(SOURCE_PATH, 'lib', 'Middleware', 'CDN')).configure(app, app.config.cdn)

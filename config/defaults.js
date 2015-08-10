@@ -111,6 +111,9 @@ module.exports = (projectRoot) => {
     isomorphic: {
       enabled: true
     },
+    google: {
+      enabled: false
+    },
     extensions: {
       twilio: {
         sid: 'ACfe13687d3f1fc9f6217a3c5af02e1d76',
