@@ -98,3 +98,12 @@ exports.windowScroller = function(offset = 0, speed = 500) {
 
   nextHop();
 };
+
+exports.setFullHeight = function(){
+  let items = document.getElementsByClassName('full-height');
+  let height = window.innerHeight;
+
+  for (let i = 0; i < items.length; i++) {
+    items[i].style.minHeight = `${height}px`;
+  }
+};

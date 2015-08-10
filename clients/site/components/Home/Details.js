@@ -2,10 +2,15 @@
 
 import React from 'react';
 import { Link } from 'react-router';
+import { setFullHeight } from '../../../common/Helpers';
 
 class HomeDetails extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired
+  }
+
+  componentDidMount() {
+    setFullHeight();
   }
 
   render() {

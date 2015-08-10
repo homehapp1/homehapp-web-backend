@@ -2,7 +2,7 @@
 'use strict';
 
 import React from 'react';
-import { windowScroller} from '../../Helpers';
+import { windowScroller, setFullHeight } from '../../Helpers';
 
 class Layout extends React.Component {
   static propTypes = {
@@ -21,19 +21,19 @@ class Layout extends React.Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.scrollTop);
-    window.addEventListener('resize', this.resize);
+    window.addEventListener('resize', setFullHeight);
 
     this.refs.scroller.getDOMNode().addEventListener('click', this.pageScroller, true);
     this.refs.scroller.getDOMNode().addEventListener('touchstart', this.pageScroller, true);
 
     // Trigger the events on load
     this.scrollTop();
-    this.resize();
+    setFullHeight();
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.scrollTop);
-    window.removeEventListener('resize', this.resize);
+    window.removeEventListener('resize', setFullHeight);
     this.refs.scroller.getDOMNode().removeEventListener('click', this.pageScroller);
     this.refs.scroller.getDOMNode().removeEventListener('touchstart', this.pageScroller);
   }
@@ -62,16 +62,6 @@ class Layout extends React.Component {
 
     top += window.innerHeight;
     windowScroller(top);
-  }
-
-  // Generic stuff that should happen when the window is resized
-  resize() {
-    let items = document.getElementsByClassName('full-height');
-    let height = window.innerHeight;
-
-    for (let i = 0; i < items.length; i++) {
-      items[i].style.minHeight = `${height}px`;
-    }
   }
 
   render() {

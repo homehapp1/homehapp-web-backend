@@ -33,11 +33,10 @@ class PropertyPreview extends React.Component {
       return true;
     }
 
-    return;
+    return false;
   }
 
   componentDidMount() {
-    console.log('this', this.refs);
     this.pagerClick = this.pagerClick.bind(this);
 
     this.pager = this.refs.pager.getDOMNode().getElementsByTagName('span');

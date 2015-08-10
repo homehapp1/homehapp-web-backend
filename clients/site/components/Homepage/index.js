@@ -4,6 +4,10 @@ import React from 'react';
 import { Link } from 'react-router';
 
 class Homepage extends React.Component {
+  componentDidMount() {
+    // Trigger the resize events defined in layout
+    window.dispatchEvent(new Event('resize'));
+  }
   render() {
     return (
       <div id='container'>
