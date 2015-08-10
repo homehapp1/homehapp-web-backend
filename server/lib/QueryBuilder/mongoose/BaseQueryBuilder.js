@@ -126,6 +126,78 @@ class BaseQueryBuilder {
     return this._executeTasks();
   }
 
+  findAll() {
+    this.queries.push((callback) => {
+      let cursor = this.Model.find({
+        deletedAt: null
+      });
+
+      if (this._opts.limit) {
+        cursor.limit(this._opts.limit);
+      }
+      if (this._opts.sort) {
+        cursor.sort(this._opts.sort);
+      }
+      if (this._opts.skip) {
+        cursor.skip(this._opts.skip);
+      }
+
+      cursor.exec((err, models) => {
+        if (err) {
+          return callback(err);
+        }
+        this.result.models = models;
+        this.result.modelsJson = models.map(model => {
+          return model.toJSON();
+        });
+        callback();
+      });
+    });
+
+    return this;
+  }
+
+  findById(id) {
+    this.queries.push((callback) => {
+      this.Model.findById(id, (err, model) => {
+        if (err) {
+          return callback(err);
+        }
+        if (!model) {
+          return callback(new NotFound('model not found'));
+        }
+        this.result.model = model;
+        this.result.modelJson = model.toJSON();
+        this._loadedModel = model;
+        callback();
+      });
+    });
+
+    return this;
+  }
+
+  findByUuid(uuid) {
+    this.queries.push((callback) => {
+      this.Model.findOne({
+        uuid: uuid,
+        deletedAt: null
+      }, (err, model) => {
+        if (err) {
+          return callback(err);
+        }
+        if (!model) {
+          return callback(new NotFound('model not found'));
+        }
+        this.result.model = model;
+        this.result.modelJson = model.toJSON();
+        this._loadedModel = model;
+        callback();
+      });
+    });
+
+    return this;
+  }
+
   _executeTasks() {
     return new Promise((resolve, reject) => {
       async.series(this.queries, (err) => {
