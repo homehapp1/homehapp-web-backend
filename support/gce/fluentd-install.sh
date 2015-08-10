@@ -52,9 +52,6 @@ Starting installation of ${AGENT_NAME}
 EOF
 }
 
-postinstall() {
-}
-
 install_for_debian() {
   local CODENAME="$(lsb_release -sc)"
 
@@ -130,7 +127,6 @@ main() {
     exit 1
   fi
 
-  postinstall
 }
 
 main "$@"

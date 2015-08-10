@@ -12,7 +12,7 @@ exports.configure = function(app, config = {}) {
     onStart: null
   };
 
-  let fileLogPath = getEnvironmentValue("LOG_PATH", null);
+  let fileLogPath = getEnvironmentValue('LOG_PATH', null);
   if (fileLogPath) {
     app.use(expressWinston.logger({
       transports: [

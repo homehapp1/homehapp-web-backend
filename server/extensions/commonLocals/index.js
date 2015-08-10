@@ -15,7 +15,10 @@ export function register(app) {
       if (!user) {
         return null;
       }
-      return user.toJSON();
+      if (user.toJSON) {
+        return user.toJSON();
+      }
+      return null;
     }
 
     let appLocals = JSON.parse(JSON.stringify(app.locals)) || {};

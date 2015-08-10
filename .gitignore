@@ -3,3 +3,5 @@ build/
 npm-debug.log
 config/locals.js
 dist/
+tmp/
+logs/
