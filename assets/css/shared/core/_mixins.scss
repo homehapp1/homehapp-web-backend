@@ -68,53 +68,53 @@
 @mixin triangle($width, $height, $dir, $color) {
   $width: $width / 1px;
   $height: $height / 1px;
-  
+
   $mid: $width / 2;
   $p1x: 0;
   $p1y: 0;
-  
+
   $p2x: $width;
   $p2y: 0;
-  
+
   $p3x: $mid;
   $p3y: $height;
-  
+
   @if $dir == up {
     $mid: $width / 2;
     $p1x: 0;
     $p1y: $height;
-    
+
     $p2x: $width;
     $p2y: $height;
-    
+
     $p3x: $mid;
     $p3y: 0;
   }
-  
+
   @if $dir == left {
     $mid: $height / 2;
     $p1x: $width;
     $p1y: $height;
-    
+
     $p2x: 0;
     $p2y: $mid;
-    
+
     $p3x: $width;
     $p3y: 0;
   }
-  
+
   @if $dir == right {
     $mid: $height / 2;
     $p1x: 0;
     $p1y: 0;
-    
+
     $p2x: $width;
     $p2y: $mid;
-    
+
     $p3x: 0;
     $p3y: $height;
   }
-  
+
   background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="triangle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="#{$width}px" height="#{$height}px" viewBox="0 0 #{$width} #{$height}" enable-background="new 0 0 #{$width} #{$height}" xml:space="preserve"><polygon fill="#{$color}" points="#{$p1x},#{$p1y} #{$p2x},#{$p2y} #{$p3x},#{$p3y} " /></svg>');
 }
 
@@ -133,5 +133,29 @@
   }
   @keyframes #{$name} {
     @content;
+  }
+}
+
+@mixin ball() {
+  $s: 40px;
+  display: block;
+  width: $s;
+  height: $s;
+  line-height: $s;
+  margin-top: -0.5 * $s;
+  border-radius: $s;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+  font-size: 150%;
+  background-color: #ffffff;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  opacity: 0.2;
+  font-size: 0.8 * $s;
+  @include vendors(transition-property, opacity);
+  @include vendors(transition-duration, 200ms);
+
+  &:hover {
+    opacity: 0.8;
   }
 }
