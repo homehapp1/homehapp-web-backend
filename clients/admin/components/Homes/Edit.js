@@ -21,21 +21,6 @@ class HomesEdit extends React.Component {
     super(props);
   }
 
-  getAutoResponsiveProps() {
-    let width = 1024;
-    window = window || null;
-    if (window) {
-      width = window.document.body.clientWidth;
-    }
-    return {
-      itemMargin: 10,
-      containerWidth: width,
-      itemClassName: 'item',
-      gridWidth: 100,
-      transitionDuration: '.5'
-    };
-  }
-
   render() {
     return (
       <SubNavigationWrapper>
