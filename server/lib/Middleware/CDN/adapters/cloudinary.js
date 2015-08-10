@@ -19,9 +19,14 @@ class CloudinaryAdapter {
     };
     this.config = merge(this.config, uriConfig);
 
-    this.cloudinary = cloudinary.config(this.config);
+    cloudinary.config(this.config);
+    this.cloudinary = cloudinary;
 
     this.registerRoutes();
+  }
+
+  getStaticPath() {
+    return `//res.cloudinary.com/${this.config.projectName}/raw/upload`;
   }
 
   registerRoutes() {
