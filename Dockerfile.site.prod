@@ -7,6 +7,10 @@ RUN apt-get update -y && apt-get install -y curl git make g++ python python-soft
 RUN curl -sL https://deb.nodesource.com/setup | bash
 RUN apt-get install -y nodejs
 
+ADD ./support/gce/fluentd-install.sh /usr/local/sbin/fluentd-install.sh
+RUN /usr/local/sbin/fluentd-install.sh
+ADD ./support/gce/fluentd.conf /etc/google-fluentd/config.d/app.conf
+
 ADD package.json /app/package.json
 RUN cd /app && npm install
 ADD . /app

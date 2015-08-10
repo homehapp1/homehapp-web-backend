@@ -3,7 +3,8 @@ node_modules
 build
 *.md
 support
+!support/gce
 dist
 Dockerfile.*
-tmp/
-logs/
+tmp
+logs
