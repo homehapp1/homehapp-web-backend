@@ -10,9 +10,11 @@ RUN apt-get install -y nodejs
 ADD ./support/gce/fluentd-install.sh /usr/local/sbin/fluentd-install.sh
 RUN /usr/local/sbin/fluentd-install.sh
 ADD ./support/gce/fluentd.conf /etc/google-fluentd/config.d/app.conf
+CMD service google-fluentd restart
 
 ADD package.json /app/package.json
 RUN cd /app && npm install
+RUN mkdir /app/logs
 ADD . /app
 
 ENV NODE_ENV=production

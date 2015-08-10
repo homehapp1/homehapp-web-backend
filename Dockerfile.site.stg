@@ -7,13 +7,14 @@ RUN apt-get update -y && apt-get install -y curl git make g++ python python-soft
 RUN curl -sL https://deb.nodesource.com/setup | bash
 RUN apt-get install -y nodejs
 
-#RUN curl -s "https://storage.googleapis.com/signals-agents/logging/google-fluentd-install.sh" | bash
 ADD ./support/gce/fluentd-install.sh /usr/local/sbin/fluentd-install.sh
 RUN /usr/local/sbin/fluentd-install.sh
 ADD ./support/gce/fluentd.conf /etc/google-fluentd/config.d/app.conf
+CMD service google-fluentd restart
 
 ADD package.json /app/package.json
 RUN cd /app && npm install
+RUN mkdir /app/logs
 ADD . /app
 
 ENV NODE_ENV=staging
