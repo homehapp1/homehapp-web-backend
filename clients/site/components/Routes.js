@@ -12,7 +12,7 @@ import HomeContainer from './Home/HomeContainer';
 import HomeDetailsContainer from './Home/HomeDetailsContainer';
 import HomeRouteNotFound from './ErrorPages/HomeRouteNotFound';
 
-import PropertyFilter from './Property/PropertyFilter';
+import PropertyFilter from './Property/Filter';
 
 let routes = (
   <Route name='app' path='/' handler={Application}>
@@ -25,6 +25,7 @@ let routes = (
     <Route name='properties' path='/properties'>
       <Route name='propertiesMode' path=':mode' handler={PropertyFilter} />
       <DefaultRoute handler={PropertyFilter} />
+      <NotFoundRoute handler={HomeRouteNotFound} />
     </Route>
   </Route>
 );

@@ -3,9 +3,9 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import ApplicationStore from '../../stores/ApplicationStore';
+import ApplicationStore from '../../../common/stores/ApplicationStore';
 
-class Cards extends React.Component {
+class PropertyCards extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired
   }
@@ -29,7 +29,7 @@ class Cards extends React.Component {
   }
 
   // Generic stuff that should happen when the window is resized
-  resize(e) {
+  resize() {
     if (typeof this.refs.cards === 'undefined') {
       return;
     }
@@ -100,12 +100,6 @@ class Cards extends React.Component {
   }
 
   render() {
-    let style = {
-      //width: `${this.props.width}px`
-    };
-
-    let classes = this.classes;
-
     return (
       <div ref='cards' className='card-list'>
       {
@@ -139,4 +133,4 @@ class Cards extends React.Component {
   }
 }
 
-export default Cards;
+export default PropertyCards;

@@ -65,7 +65,7 @@ class Layout extends React.Component {
   }
 
   // Generic stuff that should happen when the window is resized
-  resize(e) {
+  resize() {
     let items = document.getElementsByClassName('full-height');
     let height = window.innerHeight;
 
