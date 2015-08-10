@@ -69,15 +69,15 @@ echo "Pushing staging containers to registry"
 echo ""
 pushContainers
 
-# echo "Building and tagging production container"
-# echo ""
-# buildContainer "prod"
-# tagContainer "prod"
-#
-# echo ""
-# echo "Pushing product containers to registry"
-# echo ""
-# pushContainers
+echo "Building and tagging production container"
+echo ""
+buildContainer "prod"
+tagContainer "prod"
+
+echo ""
+echo "Pushing product containers to registry"
+echo ""
+pushContainers
 
 echo "Finished!"
 exit
