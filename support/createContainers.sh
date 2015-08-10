@@ -46,12 +46,19 @@ function tagContainer() {
   docker tag -f $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME:$revString
 }
 
+# Arguments:
+# envName: Enum(prod, stg)
+function cleanOldImages() {
+  docker images | grep 'homehappweb/site' | grep -v 'latest' | grep -v $REV-$1 | awk '{print $3}' | xargs docker rmi
+}
+
 function pushContainers() {
   gcloud docker push $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME
 }
 
 echo "Building and tagging staging container"
 echo ""
+cleanOldImages "stg"
 buildContainer "stg"
 tagContainer "stg"
 
@@ -62,6 +69,7 @@ pushContainers
 
 echo "Building and tagging production container"
 echo ""
+cleanOldImages "prod"
 buildContainer "prod"
 tagContainer "prod"
 
