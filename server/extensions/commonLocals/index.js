@@ -22,7 +22,7 @@ export function register(app) {
     let resLocals = JSON.parse(JSON.stringify(res.locals)) || {};
 
     let staticPath = '/public';
-    if (app.config.env === 'production') {
+    if (app.config.env !== 'development') {
       if (app.cdn && app.cdn.getStaticPath) {
         staticPath = app.cdn.getStaticPath();
       }
