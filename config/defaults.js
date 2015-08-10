@@ -1,19 +1,34 @@
-"use strict";
+'use strict';
 
-import {getEnvironmentValue} from "../server/lib/Helpers";
+import fs from 'fs';
+import path from 'path';
+import {getEnvironmentValue} from '../server/lib/Helpers';
 
 module.exports = (projectRoot) => {
-  let env = getEnvironmentValue("NODE_ENV", "development");
-  let port = getEnvironmentValue("NODE_PORT", 3001);
-  let hostname = getEnvironmentValue("HOSTNAME", "localhost");
+  let env = getEnvironmentValue('NODE_ENV', 'development');
+  let port = getEnvironmentValue('NODE_PORT', 3001);
+  let hostname = getEnvironmentValue('HOSTNAME', 'localhost');
   let host = `http://${hostname}:${port}`;
 
   let databaseOptions = {};
-  if (getEnvironmentValue("DATABASE_OPTIONS", null)) {
+  if (getEnvironmentValue('DATABASE_OPTIONS', null)) {
     try {
-      databaseOptions = JSON.parse(getEnvironmentValue("DATABASE_OPTIONS", {}));
+      databaseOptions = JSON.parse(getEnvironmentValue('DATABASE_OPTIONS', {}));
     } catch (err) {
       console.error(`Error while parsing database options: ${err.message}`);
+    }
+  }
+
+  let fileLoggingOptions = {
+    enabled: false,
+    level: 'warn'
+  };
+  let fileLogPath = getEnvironmentValue('LOG_PATH', null);
+  if (fileLogPath) {
+    fileLoggingOptions.enabled = true;
+    fileLoggingOptions.filename = path.join(fileLogPath, 'general.log');
+    if (!fs.existsSync(fileLogPath)) {
+      fs.mkdirSync(fileLogPath);
     }
   }
 
@@ -23,44 +38,46 @@ module.exports = (projectRoot) => {
     logging: {
       Console: {
         enabled: true,
-        level: "warn"
-      }
+        json: false,
+        level: 'warn'
+      },
+      File: fileLoggingOptions
     },
     database: {
-      adapter: getEnvironmentValue("DATABASE_ADAPTER", "mongoose"),
+      adapter: getEnvironmentValue('DATABASE_ADAPTER', 'mongoose'),
       adapterConfig: {
-        uri: getEnvironmentValue("DATABASE_URI", `mongodb://localhost/homehapp-${env}`),
+        uri: getEnvironmentValue('DATABASE_URI', `mongodb://localhost/homehapp-${env}`),
         options: databaseOptions
       }
     },
     security: {
       csrf: true,
-      xframe: "DENY"
+      xframe: 'DENY'
     },
     authentication: {
       adapters: [],
       adapterConfigs: {
         basic: {
-          username: "homehapp",
-          password: "homehapplondon2015"
+          username: 'homehapp',
+          password: 'homehapplondon2015'
         },
         local: {
           cookie: {
             maxAge: 86000
           },
           session: {
-            name: "qvik:common",
-            secret: "really-secret-string-here"
+            name: 'qvik:common',
+            secret: 'really-secret-string-here'
           },
           routes: {
-            login: "/auth/login",
-            logout: "/auth/logout"
+            login: '/auth/login',
+            logout: '/auth/logout'
           }
         },
         jwt: {
-          secretOrKey: "really-secret-string-here-for-fwt",
-          issuer: "qvik.fi",
-          audience: "qvik.fi",
+          secretOrKey: 'really-secret-string-here-for-fwt',
+          issuer: 'qvik.fi',
+          audience: 'qvik.fi',
           lifetimeSeconds: 86000
         },
         facebook: {
@@ -79,9 +96,10 @@ module.exports = (projectRoot) => {
       includeData: false
     },
     cdn: {
-      adapter: "cloudinary",
+      adapter: 'cloudinary',
       adapterConfig: {
-        uri: getEnvironmentValue("CLOUDINARY_URI", "cloudinary://748155655238327:BxDt9A-ZMmmfVQyIXQQfSxqMS9Q@kaktus"),
+        projectName: 'homehapp',
+        uri: getEnvironmentValue('CLOUDINARY_URI', 'cloudinary://674338823352987:urOckACznNPsN58_1zewwJmasnI@homehapp'),
         transformations: {}
       }
     },
