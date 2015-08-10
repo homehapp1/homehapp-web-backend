@@ -269,6 +269,9 @@ exports.run = function(projectName, afterRun) {
                   // Pinterest styled card
                   card: 'c_fill,q_60,w_400',
 
+                  // Property list
+                  propList: 'c_fill,q_60,w_300,h_300',
+
                   // Big image view
                   large: 'c_scale,q_60,w_1920',
                   medium: 'c_scale,q_60,w_1000',
