@@ -5,6 +5,7 @@ import {merge} from '../../lib/Helpers';
 //let debug = require('debug')('Extension:commonLocals');
 
 export function register(app) {
+
   app.getLocals = function(req, res, ext = {}) {
     ext = ext || {};
 
@@ -20,9 +21,16 @@ export function register(app) {
     let appLocals = JSON.parse(JSON.stringify(app.locals)) || {};
     let resLocals = JSON.parse(JSON.stringify(res.locals)) || {};
 
+    let staticPath = '/public';
+    if (app.config.env === 'production') {
+      if (app.cdn && app.cdn.getStaticPath) {
+        staticPath = app.cdn.getStaticPath();
+      }
+    }
+
     let opts = merge({
       layout: 'layout',
-      staticPath: '/static',
+      staticPath: staticPath,
       site: {
         title: '',
         host: app.config.host
