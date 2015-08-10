@@ -29,7 +29,6 @@ class HomeContainer extends React.Component {
   }
 
   homeStoreOnChange(state) {
-    console.log('homeStoreOnChange', state);
     this.setState(state);
   }
 
