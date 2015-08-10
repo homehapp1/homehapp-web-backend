@@ -11,7 +11,7 @@
   <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>
 
   <!-- !Stylesheets -->
-  <% if (env === 'production') { %>
+  <% if (env !== 'development') { %>
     <link rel="stylesheet" href="<%= staticPath %>/admin/css/all.min.css">
   <% } else { %>
     <link rel="stylesheet" href="<%= staticPath %>/css/vendor.css">
@@ -35,7 +35,7 @@
   <%- body %>
 
   <% if (includeClient) { %>
-    <% if (env === 'production') { %>
+    <% if (env !== 'development') { %>
       <script src="<%= staticPath %>/site/js/vendor.bundle.min.js"></script>
       <script src="<%= staticPath %>/site/js/client.min.js"></script>
     <% } else { %>
