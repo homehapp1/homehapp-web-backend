@@ -10,6 +10,9 @@ import del from 'del';
 import livereload from 'gulp-livereload';
 import nodemon from 'nodemon';
 import webpack from 'webpack';
+import minifyCss from 'gulp-minify-css';
+
+import ProjectUploader from './support/cloudinaryUpload';
 
 const g = gulpLoadPlugins();
 
@@ -57,8 +60,9 @@ const paths = {
         'assets/css/shared/**/*.scss'
       ],
       images: ['assets/images/**/*'],
+      fonts: 'assets/fonts/**/*',
       statics: './build/statics/site',
-      fonts: 'assets/fonts/**/*'
+      distBase: './dist/site'
     },
     admin: {
       root: './clients/admin',
@@ -69,8 +73,9 @@ const paths = {
         'assets/css/shared/**/*.scss'
       ],
       images: ['assets/images/**/*'],
+      fonts: 'assets/fonts/**/*',
       statics: './build/statics/admin',
-      fonts: 'assets/fonts/**/*'
+      distBase: './dist/admin'
     },
     build: './build/clients'
   }
@@ -89,6 +94,33 @@ let webpackCommonConfig = {
   keepalive: false
 };
 
+let getWebpackPlugins = (project_name) => {
+  let plugins = [
+    new webpack.DefinePlugin({
+      'process': {
+        env: {
+          'DEBUG': DEBUG,
+          'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        }
+      }
+    }),
+    new webpack.ResolverPlugin(
+      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
+    ),
+    new webpack.PrefetchPlugin('react'),
+    new webpack.PrefetchPlugin('react/lib/ReactComponentBrowserEnvironment'),
+    new webpack.optimize.CommonsChunkPlugin('vendor', DEBUG ? 'vendor.bundle.js' : 'vendor.bundle.min.js')
+  ];
+
+  if (!DEBUG) {
+    plugins = plugins.concat([
+      new webpack.optimize.UglifyJsPlugin({minimize: true})
+    ]);
+  }
+
+  return plugins;
+};
+
 const siteWebpackConfig = extend(webpackCommonConfig, {
   resolve: {
     root: paths.clients.site.root,
@@ -103,24 +135,9 @@ const siteWebpackConfig = extend(webpackCommonConfig, {
   },
   output: {
     path: paths.clients.site.statics + '/js',
-    filename: 'client.js'
+    filename: DEBUG ? 'client.js' : 'client.min.js'
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process': {
-        env: {
-          'DEBUG': DEBUG,
-          'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-        }
-      }
-    }),
-    new webpack.ResolverPlugin(
-      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
-    ),
-    new webpack.PrefetchPlugin('react'),
-    new webpack.PrefetchPlugin('react/lib/ReactComponentBrowserEnvironment'),
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
-  ]
+  plugins: getWebpackPlugins('site')
 });
 const siteCompiler = webpack(siteWebpackConfig);
 
@@ -136,24 +153,9 @@ const adminWebpackConfig = extend(webpackCommonConfig, {
   },
   output: {
     path: paths.clients.admin.statics + '/js',
-    filename: 'client.js'
+    filename: DEBUG ? 'client.js' : 'client.min.js'
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process': {
-        env: {
-          'DEBUG': DEBUG,
-          'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-        }
-      }
-    }),
-    new webpack.ResolverPlugin(
-      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
-    ),
-    new webpack.PrefetchPlugin('react'),
-    new webpack.PrefetchPlugin('react/lib/ReactComponentBrowserEnvironment'),
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
-  ]
+  plugins: getWebpackPlugins('admin')
 });
 const adminCompiler = webpack(adminWebpackConfig);
 
@@ -188,15 +190,37 @@ gulp.task('compile-client-styles', () => {
     .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].statics, 'css')))
     .pipe(g.size({title: 'Client styles'}));
 });
+gulp.task('minify-client-styles', () => {
+  return gulp.src(path.join(paths.clients[PROJECT_NAME].statics, 'css', '*.css'))
+    .pipe(g.concat('all.css'))
+    .pipe(minifyCss({}))
+    .pipe(g.rename('all.min.css'))
+    .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].distBase, 'css')))
+    .pipe(g.size({title: 'Minified Client styles'}));
+});
 gulp.task('copy-client-fonts', () => {
+  if (!DEBUG) {
+    return gulp.src(path.join(paths.clients[PROJECT_NAME].statics, 'fonts', '**/*'))
+      .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].distBase, 'fonts')));
+  }
+
   return gulp.src(paths.clients[PROJECT_NAME].fonts)
     .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].statics, 'fonts')))
     .pipe(g.size({title: 'Client fonts'}));
 });
 gulp.task('copy-client-images', () => {
+  if (!DEBUG) {
+    return gulp.src(path.join(paths.clients[PROJECT_NAME].statics, 'images', '**/*'))
+      .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].distBase, 'images')));
+  }
+
   return gulp.src(paths.clients[PROJECT_NAME].images)
     .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].statics, 'images')))
     .pipe(g.size({title: 'Client images'}));
+});
+gulp.task('copy-client-min-js', () => {
+  return gulp.src(path.join(paths.clients[PROJECT_NAME].statics, 'js', '*.min.js'))
+    .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].distBase, 'js')));
 });
 
 gulp.task('webpack:build-site-client', function(callback) {
@@ -222,16 +246,6 @@ gulp.task('webpack:build-admin-client', (callback) => {
   });
 });
 
-// gulp.task('uglify-site', function() {
-//   return gulp.src(paths.clients.site.statics + '/js/*.js')
-//     .pipe(concat('site.min.js'))
-//     .pipe(uglify({
-//       mangel: true,
-//       compress: {},
-//       preserveComments: ''
-//     }))
-//     .pipe(gulp.dest(paths.clients.site.statics + '/js'));
-// });
 gulp.task('compile-site', ['compile-client-styles', 'copy-client-fonts', 'copy-client-images', 'webpack:build-site-client']);
 
 gulp.task('compile-admin', ['compile-client-styles', 'copy-client-fonts', 'copy-client-images', 'webpack:build-admin-client']);
@@ -252,6 +266,21 @@ gulp.task('build-clients', clientBuildDependencies, () => {
     .pipe(g.sourcemaps.write('.'))
     .pipe(gulp.dest(paths.clients.build))
     .pipe(g.size({title: 'Clients'}));
+});
+
+gulp.task('minify-clients', ['minify-client-styles', 'copy-client-fonts', 'copy-client-images', 'copy-client-min-js'], () => {
+});
+
+gulp.task('clean-dist', cb => del(['dist/*', '!dist/.git'], {dot: true}, cb));
+
+gulp.task('dist-clients', ['minify-clients'], (callback) => {
+  let uploader = new ProjectUploader();
+  uploader.upload(paths.clients[PROJECT_NAME].distBase, (err, status) => {
+    if (err) {
+      throw new gutil.PluginError('dist-client:ProjectUploader', err);
+    }
+    callback();
+  });
 });
 
 gulp.task('watch', function(){
@@ -277,8 +306,6 @@ gulp.task('watch', function(){
     livereload.changed(changed);
   }).on('error', gutil.log);
 });
-
-gulp.task('clean-dist', cb => del(['dist/*', '!dist/.git'], {dot: true}, cb));
 
 gulp.task('restart-dev', () => {
   if (nodemonInstance) {
