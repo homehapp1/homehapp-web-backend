@@ -278,6 +278,9 @@ exports.run = function(projectName, afterRun) {
                   // Property list
                   propList: 'c_fill,q_60,w_300,h_300',
 
+                  // Full-sized preview
+                  preview: 'c_fill,f_auto,h_960',
+
                   // Big image view
                   large: 'c_scale,q_60,w_1920',
                   medium: 'c_scale,q_60,w_1000',

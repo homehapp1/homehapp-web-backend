@@ -35,6 +35,72 @@
     }
   }
 
+  .address {
+    span + span {
+      &:before {
+        content: ' // ';
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+      }
+    }
+  }
+
+  .property-preview {
+    position: relative;
+
+    & > .container {
+      overflow: hidden;
+      $w: 3 * $contentPadding;
+      border-top: solid $w white;
+      border-bottom: solid $w white;
+
+      .property-list-item {
+        .content {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          overflow: hidden;
+
+          img {
+            min-width: 100%;
+            min-height: 100%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            @include vendors(transform, translateX(-50%) translateY(-50%));
+            @include vendors(transition-timing-function, linear);
+            @include vendors(transition-property, all);
+          }
+
+          .details {
+            position: absolute;
+            bottom: $contentPadding * 2 + $w;
+            left: $contentPadding * 2;
+            right: $contentPadding * 2;
+            font-size: 200%;
+            color: white;
+            text-align: left;
+
+            .address {
+              background-color: rgba(0, 0, 0, 0.4);
+              display: inline-block;
+              padding: $contentPadding;
+            }
+          }
+        }
+
+        &.active .content img {
+          // @include vendors(animation-name, pulse);
+          // @include vendors(animation-duration, 30000ms);
+          // @include vendors(animation-iteration-count, infinite);
+          // @include vendors(animation-direction, alternate);
+        }
+      }
+    }
+  }
+
   .cards {
     position: relative;
 
@@ -68,16 +134,6 @@
             &:first-child {
               margin-top: 0;
             }
-
-            &.address {
-              span + span {
-                &:before {
-                  content: ' // ';
-                  margin-left: 0.5em;
-                  margin-right: 0.5em;
-                }
-              }
-            }
           }
 
           p + p {
@@ -97,5 +153,15 @@
       margin-left: auto;
       margin-right: auto;
     }
+  }
+}
+
+@include animate(pulse) {
+  0% {
+    @include vendors(transform, translateX(-50%) translateY(-50%) scale(1));
+  }
+
+  100% {
+    @include vendors(transform, translateX(-50%) translateY(-50%) scale(1.1));
   }
 }

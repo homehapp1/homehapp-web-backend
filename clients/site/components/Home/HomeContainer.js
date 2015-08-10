@@ -3,6 +3,7 @@
 import React from 'react';
 import HomeStore from '../../stores/HomeStore';
 import HomeStory from './Story';
+import { setFullHeight } from '../../../common/Helpers';
 
 class HomeContainer extends React.Component {
   static propTypes = {
@@ -17,6 +18,7 @@ class HomeContainer extends React.Component {
   componentDidMount() {
     HomeStore.listen(this.homeStoreListener);
     HomeStore.fetchHomeBySlug(this.props.params.slug);
+    setFullHeight();
   }
 
   componentWillUnmount() {

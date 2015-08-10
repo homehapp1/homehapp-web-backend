@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
+import { setFullHeight } from '../../../common/Helpers';
 
 class HomeStory extends React.Component {
   static propTypes = {
@@ -10,6 +11,10 @@ class HomeStory extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    setFullHeight();
   }
 
   render() {
