@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, NotFound } from 'react-router';
 
 // List modes
 import PropertyList from './List';
@@ -14,37 +14,13 @@ class PropertyFilter extends React.Component {
     params: React.PropTypes.object
   }
 
-  static listModes = [
-      {
-        type: 'cards',
-        icon: 'fa-th',
-        label: 'Cards'
-      },
-      {
-        type: 'list',
-        icon: 'fa-th-list',
-        label: 'List'
-      },
-      {
-        type: 'preview',
-        icon: 'fa-stop',
-        label: 'Preview'
-      }
-    ];
-
   render() {
-    var displayMode = this.props.params.mode || 'list';
+    console.log('regexp test', this);
+    let mode = this.props.params.mode || 'list';
+    let modes = ['cards', 'list', 'preview'];
 
-    let found = false;
-    for (let i = 0; i < this.listModes.length; i++) {
-      if (this.listModes[i].type === displayMode) {
-        found = true;
-        break;
-      }
-    }
-
-    if (!found) {
-      return res.send(404);
+    if (modes.indexOf(mode) === -1) {
+      return (<NotFound />);
     }
 
     // @TODO: This part is to be removed when the API connection provides proper data
@@ -89,16 +65,12 @@ class PropertyFilter extends React.Component {
         <ul className='mode-selector'>
           <li><Link to='propertiesMode' params={{mode: 'cards'}}><i className='fa fa-th' title='cards'></i></Link></li>
           <li><Link to='propertiesMode' params={{mode: 'list'}}><i className='fa fa-th-list' title='list'></i></Link></li>
-          <li><Link to='propertiesMode' params={{mode: 'single'}}><i className='fa fa-stop' title='single'></i></Link></li>
+          <li><Link to='propertiesMode' params={{mode: 'preview'}}><i className='fa fa-stop' title='single'></i></Link></li>
         </ul>
-        <div className={displayMode}>
+        <div className={mode}>
           {
             (() => {
-              switch (displayMode) {
-                case 'cards':
-                  return (
-                    <PropertyCards items={items} />
-                  );
+              switch (mode) {
                 case 'list':
                   return (
                     <PropertyList items={items} />
@@ -106,6 +78,11 @@ class PropertyFilter extends React.Component {
                 case 'preview':
                   return (
                     <PropertyPreview items={items} />
+                  );
+                case 'cards':
+                default:
+                  return (
+                    <PropertyCards items={items} />
                   );
               }
             })()
