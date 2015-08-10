@@ -6,11 +6,12 @@ import { Link } from 'react-router';
 // List modes
 import PropertyList from './List';
 import PropertyCards from './Cards';
+import PropertyPreview from './Preview';
 
 class PropertyFilter extends React.Component {
   static propTypes = {
-    home: React.PropTypes.object.isRequired,
-    listModes: React.PropTypes.array
+    // home: React.PropTypes.object.isRequired,
+    params: React.PropTypes.object
   }
 
   static listModes = [
@@ -25,14 +26,26 @@ class PropertyFilter extends React.Component {
         label: 'List'
       },
       {
-        type: 'single',
+        type: 'preview',
         icon: 'fa-stop',
-        label: 'Single'
+        label: 'Preview'
       }
     ];
 
   render() {
     var displayMode = this.props.params.mode || 'list';
+
+    let found = false;
+    for (let i = 0; i < this.listModes.length; i++) {
+      if (this.listModes[i].type === displayMode) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      return res.send(404);
+    }
 
     // @TODO: This part is to be removed when the API connection provides proper data
     var randomSeed = function(min, max) {
@@ -89,6 +102,10 @@ class PropertyFilter extends React.Component {
                 case 'list':
                   return (
                     <PropertyList items={items} />
+                  );
+                case 'preview':
+                  return (
+                    <PropertyPreview items={items} />
                   );
               }
             })()
