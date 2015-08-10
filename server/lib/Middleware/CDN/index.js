@@ -9,7 +9,7 @@ exports.configure = function(app, config) {
     } catch (err) {
       return reject(err);
     }
-    app.cdb = instance;
+    app.cdn = instance;
     resolve();
   });
 };
