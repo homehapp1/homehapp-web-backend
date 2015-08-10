@@ -28,7 +28,12 @@ module.exports = (projectRoot) => {
     fileLoggingOptions.enabled = true;
     fileLoggingOptions.filename = path.join(fileLogPath, 'general.log');
     if (!fs.existsSync(fileLogPath)) {
-      fs.mkdirSync(fileLogPath);
+      try {
+        fs.mkdirSync(fileLogPath);
+      } catch (err) {
+        console.error('Error creating log path', err);
+        fileLoggingOptions.enabled = false;
+      }
     }
   }
 
