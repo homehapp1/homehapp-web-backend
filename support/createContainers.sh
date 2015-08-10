@@ -54,11 +54,6 @@ function pushContainers() {
   gcloud docker push $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME
 }
 
-echo "Cleaning old Docker containers"
-echo ""
-cleanOldImages
-echo ""
-
 echo "Building and tagging staging container"
 echo ""
 buildContainer "stg"
@@ -78,6 +73,11 @@ echo ""
 echo "Pushing product containers to registry"
 echo ""
 pushContainers
+
+echo "Cleaning old Docker containers"
+echo ""
+cleanOldImages
+echo ""
 
 echo "Finished!"
 exit
