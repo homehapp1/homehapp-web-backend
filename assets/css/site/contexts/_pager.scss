@@ -1,30 +1,35 @@
+$pagerButtonSize: 40px;
 .pager {
-  $s: 40px;
 
   & > .prev, & > .previous, & > .next {
     position: absolute;
     top: 50%;
-
+    z-index: 1000;
     @include ball();
 
-    &:hover {
-      opacity: 0.8;
-    }
   }
 
   & > .prev, & > .previous {
     left: 2 * $contentPadding;
-
-    @include large() {
-      left: -1 * ($s + $contentPadding);
-    }
   }
 
   & > .next {
     right: 2 * $contentPadding;
+  }
+}
 
-    @include large() {
-      right: -1 * ($s + $contentPadding);
+.width-wrapper {
+  .pager {
+    & > .prev, & > .previous {
+      @include large() {
+        left: -1 * ($pagerButtonSize + $contentPadding);
+      }
+    }
+
+    & > .next {
+      @include large() {
+        right: -1 * ($pagerButtonSize + $contentPadding);
+      }
     }
   }
 }
