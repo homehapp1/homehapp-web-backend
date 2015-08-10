@@ -106,4 +106,10 @@ exports.setFullHeight = function(){
   for (let i = 0; i < items.length; i++) {
     items[i].style.minHeight = `${height}px`;
   }
+
+  items = document.getElementsByClassName('full-height-strict');
+
+  for (let i = 0; i < items.length; i++) {
+    items[i].style.height = `${height}px`;
+  }
 };
