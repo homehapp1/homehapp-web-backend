@@ -3,9 +3,9 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import ApplicationStore from '../../stores/ApplicationStore';
+import ApplicationStore from '../../../common/stores/ApplicationStore';
 
-class Cards extends React.Component {
+class PropertyCards extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired
   }
@@ -139,4 +139,4 @@ class Cards extends React.Component {
   }
 }
 
-export default Cards;
+export default PropertyCards;

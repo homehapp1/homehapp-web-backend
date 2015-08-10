@@ -12,7 +12,7 @@ import HomeContainer from './Home/HomeContainer';
 import HomeDetailsContainer from './Home/HomeDetailsContainer';
 import HomeRouteNotFound from './ErrorPages/HomeRouteNotFound';
 
-import PropertyFilter from './Property/PropertyFilter';
+import PropertyFilter from './Property/Filter';
 
 let routes = (
   <Route name='app' path='/' handler={Application}>
