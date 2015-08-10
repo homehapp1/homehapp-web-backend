@@ -25,6 +25,7 @@ let routes = (
     <Route name='properties' path='/properties'>
       <Route name='propertiesMode' path=':mode' handler={PropertyFilter} />
       <DefaultRoute handler={PropertyFilter} />
+      <NotFoundRoute handler={HomeRouteNotFound} />
     </Route>
   </Route>
 );
