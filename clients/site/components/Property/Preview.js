@@ -44,11 +44,23 @@ class PropertyPreview extends React.Component {
       this.pager[i].addEventListener('click', this.pagerClick);
       this.pager[i].addEventListener('touchstart', this.pagerClick);
     }
+
+    this.refs.properties.getDOMNode().getElementsByClassName('property-list-item')[0].className += ' active';
+    //.shouldUpdate
   }
 
   render() {
+    let changeSlide = (i, el) => {
+      let slides = el.parentNode.childNodes;
+
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].className = slides[i].className.replace(/ ?active/, '');
+      }
+      el.className += ' active';
+    };
+
     return (
-      <div className='property-preview width-wrapper'>
+      <div className='property-preview full-height width-wrapper'>
         <div className='pager' ref='pager'>
           <span className='prev'>
             <i className='fa fa-angle-left prev'></i>
@@ -57,16 +69,19 @@ class PropertyPreview extends React.Component {
             <i className='fa fa-angle-right next'></i>
           </span>
         </div>
-        <ReactSwipe continuous={false} ref='properties'>
+        <ReactSwipe continuous={false} callback={changeSlide} ref='properties' className='container full-height-strict'>
         {
           this.props.items.map((item, index) => {
-            let src = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.propList}/${item.images[0]}`;
+            let smallImage = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.small}/${item.images[0]}`;
+            let mediumImage = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.preview}/${item.images[0]}`;
+            let largeImage = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.large}/${item.images[0]}`;
 
             return (
-              <div className='property-list-item' key={index}>
+              <div className='property-list-item full-height-strict' key={index}>
                 <div className='content'>
                   <Link to='home' params={{slug: item.slug}} className='thumbnail'>
-                    <img src={src} />
+                    <img src={smallImage} alt={item.label} className='show-for-small' />
+                    <img src={mediumImage} alt={item.label} className='hide-for-small' />
                   </Link>
                   <div className='details'>
                     <p className='address'>
