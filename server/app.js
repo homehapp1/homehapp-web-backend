@@ -278,6 +278,9 @@ exports.run = function(projectName, afterRun) {
                   // Property list
                   propList: 'c_fill,q_60,w_300,h_300',
 
+                  thumbNail: 'c_thumb,q_60,w_100,h_100',
+                  pinkyNail: 'c_thumb,q_60,w_50,h_50',
+
                   // Full-sized preview
                   preview: 'c_fill,f_auto,h_960',
 

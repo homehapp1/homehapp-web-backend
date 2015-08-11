@@ -43,6 +43,7 @@ class PropertyCards extends React.Component {
     }
 
     let width = cards[0].offsetWidth;
+    console.log('width', width);
     let cols = Math.min(4, Math.floor(container.offsetWidth / width));
     let heights = [];
 

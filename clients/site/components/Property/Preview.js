@@ -7,6 +7,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import ReactSwipe from 'react-swipe';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
+import { setFullHeight } from '../../../common/Helpers';
 
 class PropertyPreview extends React.Component {
   static propTypes = {
@@ -46,11 +47,12 @@ class PropertyPreview extends React.Component {
     }
 
     this.refs.properties.getDOMNode().getElementsByClassName('property-list-item')[0].className += ' active';
+    setFullHeight();
     //.shouldUpdate
   }
 
   render() {
-    let changeSlide = (i, el) => {
+    let changeSlide = (index, el) => {
       let slides = el.parentNode.childNodes;
 
       for (let i = 0; i < slides.length; i++) {
