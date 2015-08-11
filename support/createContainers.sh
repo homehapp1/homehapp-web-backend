@@ -65,17 +65,17 @@ echo ""
 buildContainer "prod"
 tagContainer "prod"
 
-echo ""
-echo "Pushing containers to registry"
-echo ""
-pushContainers
-
 if [ "$NO_CLEAN" = "" ]; then
   echo "Cleaning old Docker containers"
   echo ""
   cleanOldImages
   echo ""
 fi
+
+echo ""
+echo "Pushing containers to registry"
+echo ""
+pushContainers
 
 echo "Finished!"
 exit
