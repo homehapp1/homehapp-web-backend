@@ -4,13 +4,14 @@
 REV=`git rev-parse --short HEAD`
 CWD=`pwd`
 CONTAINER_REGISTRY_HOST=eu.gcr.io
-ENV=$1
+PNAME=$1
+ENV=$2
 
 function printUsage() {
   echo "Required environment variables:"
   echo "  PROJECT_ID:     Google Project ID"
   echo ""
-  echo "Usage PROJECT_NAME=name ./support/updateCluster.sh [stg,prod]"
+  echo "Usage PROJECT_ID=id ./support/updateCluster.sh [project_name] [stg|prod]"
 }
 function printUsageAndExit() {
   printUsage
@@ -22,17 +23,22 @@ if [ "$PROJECT_ID" = "" ]; then
   printUsageAndExit
 fi
 
-if [ "$PROJECT_NAME" = "" ]; then
+if [ "$PNAME" = "" ]; then
   echo "No project defined!"
   printUsageAndExit
 fi
 
-echo "Updating Cluster Pods for project '$PROJECT_NAME' to revision $REV for environment $ENV"
+if [ "$ENV" = "" ]; then
+  echo "No environment defined!"
+  printUsageAndExit
+fi
+
+echo "Updating Cluster Pods for project '$PNAME' to revision $REV for environment $ENV"
 
 # Arguments:
 # envName: Enum(prod, stg)
 function updateCluster() {
-  kubectl rolling-update "$PROJECT_NAME-controller" --image="$CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PROJECT_NAME:$REV-$1"
+  kubectl rolling-update "$PNAME-controller" --image="$CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME:$REV-$1"
 }
 
 updateCluster $ENV
