@@ -22,7 +22,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y -qq install google-fluentd google-
 # Install Fluentd config for application
 ADD ./support/gce/fluentd.conf /etc/google-fluentd/config.d/app.conf
 RUN sed -i "s/PROJECT_NAME/site\-stg/g" /etc/google-fluentd/config.d/app.conf
-CMD service google-fluentd restart
 
 ADD package.json /app/package.json
 RUN cd /app && npm install
@@ -30,4 +29,5 @@ RUN mkdir /app/logs
 ADD . /app
 
 EXPOSE 8080
+CMD ["sh", "-c", "service", "google-fluentd", "restart"]
 ENTRYPOINT cd /app && npm run server
