@@ -15,23 +15,11 @@ ENV PROJECT_NAME=site
 
 ENV NODE_PORT=8080
 ENV GOOGLE_PROJECT_ID=homehappweb
-#ENV LOG_PATH=/app/logs
 ENV LOG_PATH=/mnt/log
-
-# Install Fluentd
-#RUN curl -s -S -f -o /etc/apt/sources.list.d/stackdriver.list "https://repo.stackdriver.com/$(lsb_release -sc).list"
-#RUN curl -s -f https://app.stackdriver.com/RPM-GPG-KEY-stackdriver | apt-key add -
-#RUN apt-get -qq update
-#RUN apt-get -y -qq install google-fluentd google-fluentd-catch-all-config
-# Install Fluentd config for application
-#ADD ./support/gce/fluentd.conf /etc/google-fluentd/config.d/app.conf
-#RUN sed -i "s/PROJECT_NAME/site\-stg/g" /etc/google-fluentd/config.d/app.conf
 
 ADD package.json /app/package.json
 RUN cd /app && npm install
-#RUN mkdir /app/logs
 ADD . /app
 
 EXPOSE 8080
-#ENTRYPOINT service google-fluentd restart && cd /app && npm run server
 ENTRYPOINT cd /app && npm run server
