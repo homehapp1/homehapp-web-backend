@@ -29,5 +29,4 @@ RUN mkdir /app/logs
 ADD . /app
 
 EXPOSE 8080
-CMD ["sh", "-c", "service", "google-fluentd", "restart"]
-ENTRYPOINT cd /app && npm run server
+ENTRYPOINT service google-fluentd restart && cd /app && npm run server
