@@ -5,7 +5,7 @@ REV=`git rev-parse --short HEAD`
 CWD=`pwd`
 CONTAINER_REGISTRY_HOST=eu.gcr.io
 PNAME=$1
-NO_CLEAN=$2
+CLEAN=$2
 
 function printUsage() {
   echo "Required environment variables:"
@@ -65,7 +65,7 @@ echo ""
 buildContainer "prod"
 tagContainer "prod"
 
-if [ "$NO_CLEAN" = "" ]; then
+if [ "$CLEAN" = "1" ]; then
   echo "Cleaning old Docker containers"
   echo ""
   cleanOldImages
