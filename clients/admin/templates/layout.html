@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
   <title><%- site.title %></title>
 
-  <meta charset='utf-8'>
-  <meta http-equiv='X-UA-Compatible' content='IE=EDGE, IE=10, IE=9, IE=8' />
-  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <meta name='apple-mobile-web-app-capable' content='yes'>
-  <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=EDGE, IE=10, IE=9, IE=8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <!-- !Stylesheets -->
   <% if (env !== 'development') { %>
@@ -20,24 +20,24 @@
   <%- cssIncludeHtml %>
 
   <!-- !Favicons -->
-  <meta itemprop='image' content='/public/images/favicon-64.png' />
-  <link rel='shortcut icon' type='image/x-icon' href='/public/images/favicon.ico' />
-  <link rel='icon' type='image/png' href='/public/images/favicon-64.png' />
-  <link rel='shortcut icon'  type='image/png' href='/public/images/favicon-64.png' />
-  <link rel='icon' type='image/vnd.microsoft.icon' href='/public/images/favicon.ico' />
+  <meta itemprop="image" content="/public/images/favicon-64.png" />
+  <link rel="shortcut icon" type="image/x-icon" href="/public/images/favicon.ico" />
+  <link rel="icon" type="image/png" href="/public/images/favicon-64.png" />
+  <link rel="shortcut icon"  type="image/png" href="/public/images/favicon-64.png" />
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/public/images/favicon.ico" />
 
   <!--[if lt IE 9]>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js'></script>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js'></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
   <![endif]-->
 </head>
-<body class='<%= bodyClass %>'>
+<body class="<%= bodyClass %>">
   <%- body %>
 
   <% if (includeClient) { %>
     <% if (env !== 'development') { %>
-      <script src="<%= staticPath %>/site/js/vendor.bundle.min.js"></script>
-      <script src="<%= staticPath %>/site/js/client.min.js"></script>
+      <script src="<%= staticPath %>/admin/js/vendor.bundle.min.js"></script>
+      <script src="<%= staticPath %>/admin/js/client.min.js"></script>
     <% } else { %>
       <script src="<%= staticPath %>/js/vendor.bundle.js"></script>
       <script src="<%= staticPath %>/js/client.js"></script>
