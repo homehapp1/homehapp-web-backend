@@ -21,7 +21,7 @@ module.exports = (projectRoot) => {
 
   let fileLoggingOptions = {
     enabled: false,
-    level: 'warn'
+    level: 'info'
   };
   let fileLogPath = getEnvironmentValue('LOG_PATH', null);
   if (fileLogPath) {
