@@ -64,7 +64,7 @@ module.exports = (projectRoot) => {
       adapterConfigs: {
         basic: {
           username: 'homehapp',
-          password: 'homehapplondon2015'
+          password: 'londonhomestory2015'
         },
         local: {
           cookie: {
@@ -115,10 +115,6 @@ module.exports = (projectRoot) => {
       enabled: false
     },
     extensions: {
-      twilio: {
-        sid: 'ACfe13687d3f1fc9f6217a3c5af02e1d76',
-        token: '184d32f9b009255e676cc15b87636331'
-      }
     }
   };
 
