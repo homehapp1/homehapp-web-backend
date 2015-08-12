@@ -13,8 +13,6 @@ class Navigation extends React.Component {
   }
 
   mouseover() {
-    console.log('mouseover');
-
     if (!this.icon.hasClass('open')) {
       this.icon.addClass('loading');
     }
@@ -25,8 +23,6 @@ class Navigation extends React.Component {
   }
 
   click() {
-    console.log('click');
-
     if (this.icon.hasClass('open')) {
       this.icon.removeClass('open');
     } else {
