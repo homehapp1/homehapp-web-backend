@@ -46,7 +46,8 @@ class ProjectUploader {
           resolve();
         }, {
           public_id: `${PROJECT_NAME}/${resourceName}/${baseName}`,
-          resource_type: 'raw'
+          resource_type: 'raw',
+          invalidate: true
         });
       }));
     });
