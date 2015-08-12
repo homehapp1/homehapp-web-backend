@@ -1,5 +1,4 @@
 .property-list {
-  $w: 400px;
   padding: $contentPadding * 10 $contentPadding / 2;
   margin-left: auto;
   margin-right: auto;
@@ -11,7 +10,7 @@
   }
 
   .list-container {
-    width: $w + 2 * $contentPadding;
+    width: $cardWidth + 2 * $contentPadding;
     display: inline-block;
     vertical-align: top;
   }
@@ -207,7 +206,7 @@
 
           .details {
             position: absolute;
-            bottom: $contentPadding * 2 + $w;
+            bottom: $contentPadding * 2 + $cardWidth;
             left: $contentPadding * 2;
             right: $contentPadding * 2;
             font-size: 200%;
@@ -234,9 +233,13 @@
 
   .cards {
     position: relative;
+    width: 100%;
+    max-width: $cardColumns * $cardWidth;
+    margin-left: auto;
+    margin-right: auto;
 
     .card {
-      width: $w + $contentPadding * 2;
+      width: $cardWidth;
       display: block;
       text-align: left;
       padding: 0 $contentPadding $contentPadding * 2;
