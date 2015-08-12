@@ -16,7 +16,7 @@ class PropertyDetail extends React.Component {
 
     return (
       <div className='detail'>
-        <span className='label'>{label}: </span> 
+        <span className='label'>{label}: </span>
         <span className='values'>{values.join(', ')}</span>
       </div>
     );
