@@ -54,3 +54,21 @@ To remove the old docker image before running it again do:
 Search and create MongoDB image (ie. tutum/mongodb)
 Once installed, Go to the settings and find the name of the container (usually: mongodb). This will be used when connecting the containers together.
 Change the environment variable "AUTH" to be "no" and restart the instance.
+
+
+# Google Cloud notes
+
+export PROJECT_ID=homehappweb
+
+cd support/docker/fluentd-sidecar-gcp
+make build push
+
+./support/createContainers.sh site
+./support/createContainers.sh admin
+
+cd ../../../
+./support/createCluster.sh site
+./support/createCluster.sh admin
+
+./support/updateCluster.sh site stg
+./support/updateCluster.sh admin stg

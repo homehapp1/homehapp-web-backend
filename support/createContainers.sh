@@ -48,7 +48,7 @@ function tagContainer() {
 }
 
 function cleanOldImages() {
-  docker images | grep 'homehappweb/site' | grep -v 'latest' | grep -v $REV-prod | grep -v $REV-stg | awk '{print $3}' | xargs docker rmi
+  docker images | grep "$PROJECT_ID/$PNAME" | grep -v 'latest' | grep -v $REV-prod | grep -v $REV-stg | awk '{print $3}' | xargs docker rmi
 }
 
 function pushContainers() {

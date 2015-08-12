@@ -33,12 +33,25 @@ if [ "$ENV" = "" ]; then
   printUsageAndExit
 fi
 
-echo "Updating Cluster Pods for project '$PNAME' to revision $REV for environment $ENV"
-
-# Arguments:
-# envName: Enum(prod, stg)
 function updateCluster() {
-  kubectl rolling-update "$PNAME-controller" --image="$CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME:$REV-$1"
+  local SOURCE_CONFIG="$CWD/infrastructure/configs/project-controller-tpl.json"
+  local TARGET_CONFIG="$CWD/tmp/$PNAME-controller.json"
+  local TMP_FILE="/tmp/$PNAME-controller.json"
+  local CURRENT_CONTROLLER=`kubectl get rc | awk '{print $1}' | grep "controller"`
+
+  sed "s/:PROJECT_NAME/$PNAME/g" $SOURCE_CONFIG > $TARGET_CONFIG
+  sed "s/:PROJECT_ID/$PROJECT_ID/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+  sed "s/:CONTROLLER_NAME/$PNAME-controller-$REV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+  sed "s/:REV/$REV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+  sed "s/:ENV/$ENV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+
+  kubectl rolling-update $CURRENT_CONTROLLER -f "$CWD/tmp/$PNAME-controller.json"
+  rm $TARGET_CONFIG
 }
 
-updateCluster $ENV
+echo ""
+echo "Updating Cluster Pods for project '$PNAME' to revision $REV for environment $ENV"
+
+updateCluster
+
+echo ""
