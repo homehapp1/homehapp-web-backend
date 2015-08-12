@@ -113,35 +113,3 @@ exports.setFullHeight = function() {
     items[i].style.height = `${height}px`;
   }
 };
-
-exports.hasClass = function(node, className) {
-  let regexp = new RegExp(`(^| )${className}($| )`);
-  if (node.className.match(regexp)) {
-    return true;
-  }
-
-  return false;
-};
-
-exports.addClass = function(node, className) {
-  if (exports.hasClass(node, className)) {
-    return node;
-  }
-
-  if (node.className) {
-    node.className += ` ${className}`;
-  } else {
-    node.className = className;
-  }
-
-  return node;
-};
-
-exports.removeClass = function(node, className) {
-  if (!exports.hasClass(node, className)) {
-    return node;
-  }
-  let regexp = new RegExp(`(^| )${className}($| )`);
-  node.className = node.className.replace(regexp, ' ').replace(/[ ]{2,}/, ' ').replace(/^ /, '').replace(/ $/, '');
-  return node;
-};

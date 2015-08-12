@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import { hasClass, addClass, removeClass } from '../../../common/Helpers';
+import DOMManipulator from '../../../common/DOMManipulator';
 
 class Navigation extends React.Component {
   constructor() {
@@ -15,31 +15,31 @@ class Navigation extends React.Component {
   mouseover() {
     console.log('mouseover');
 
-    if (!hasClass(this.icon, 'open')) {
-      addClass(this.icon, 'loading');
+    if (!this.icon.hasClass('open')) {
+      this.icon.addClass('loading');
     }
   }
 
   mouseout() {
-    removeClass(this.icon, 'loading');
+    this.icon.removeClass('loading');
   }
 
   click() {
     console.log('click');
 
-    if (hasClass(this.icon, 'open')) {
-      removeClass(this.icon, 'open');
+    if (this.icon.hasClass('open')) {
+      this.icon.removeClass('open');
     } else {
-      removeClass(this.icon, 'loading');
-      addClass(this.icon, 'open');
+      this.icon.removeClass('loading');
+      this.icon.addClass('open');
     }
   }
 
   componentDidMount() {
-    this.icon = this.refs.icon.getDOMNode();
-    this.icon.addEventListener('mouseover', this.mouseover, true);
-    this.icon.addEventListener('mouseout', this.mouseout, true);
-    this.icon.addEventListener('click', this.click, true);
+    this.icon = new DOMManipulator(this.refs.icon.getDOMNode());
+    this.icon.addEvent('mouseover', this.mouseover);
+    this.icon.addEvent('mouseout', this.mouseout);
+    this.icon.addEvent('click', this.click);
   }
   render() {
     return (
