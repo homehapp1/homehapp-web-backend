@@ -110,9 +110,14 @@ class PropertyCards extends React.Component {
           let h = heights[seed];
 
           let src = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.card},h_${h}/${item.images[0]}`;
+          let classes = ['card'];
+
+          if (item.storified) {
+            classes.push('storified');
+          }
 
           return (
-            <div className='card' key={index}>
+            <div className={classes.join(' ')} key={index}>
               <div className='card-content'>
                 <Link to='home' params={{slug: item.slug}} className='thumbnail'>
                   <img src={src} height={h} />
