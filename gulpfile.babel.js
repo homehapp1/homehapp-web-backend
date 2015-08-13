@@ -89,10 +89,12 @@ let webpackCommonConfig = {
       // ,{ test: /\.(js)$/, exclude: /node_modules/, loaders: ['eslint-loader'] }
     ]
   },
-  devtool: 'eval-source-map',
   watch: false,
   keepalive: false
 };
+if (DEBUG) {
+  webpackCommonConfig.devtool = 'eval-source-map';
+}
 
 let getWebpackPlugins = (project_name) => {
   let plugins = [
@@ -193,7 +195,9 @@ gulp.task('compile-client-styles', () => {
 gulp.task('minify-client-styles', () => {
   return gulp.src(path.join(paths.clients[PROJECT_NAME].statics, 'css', '*.css'))
     .pipe(g.concat('all.css'))
-    .pipe(minifyCss({}))
+    .pipe(minifyCss({
+      advanced: false
+    }))
     .pipe(g.rename('all.min.css'))
     .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].distBase, 'css')))
     .pipe(g.size({title: 'Minified Client styles'}));
