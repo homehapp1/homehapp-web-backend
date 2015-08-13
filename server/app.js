@@ -238,6 +238,9 @@ exports.run = function(projectName, afterRun) {
         if (config.isomorphic.enabled) {
           app.get('*', function populateCommonData(req, res, next) {
             debug('populateCommonData');
+            if (!res.locals.metadatas) {
+              res.locals.metadatas = [];
+            }
             if (!res.locals.data) {
               res.locals.data = {};
             }
@@ -276,6 +279,7 @@ exports.run = function(projectName, afterRun) {
             res.locals.data.ApplicationStore.config = clientConfig;
 
             debug('res.locals.data', res.locals.data);
+            debug('res.locals.metadatas', res.locals.metadatas);
 
             alt.bootstrap(JSON.stringify(res.locals.data));
 
@@ -295,7 +299,8 @@ exports.run = function(projectName, afterRun) {
 
               app.getLocals(req, res, {
                 html: html,
-                includeClient: true
+                includeClient: true,
+                metadatas: res.locals.metadatas
               })
               .then((locals) => {
                 res.render('index', locals);

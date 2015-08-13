@@ -14,7 +14,7 @@ module.exports = (projectRoot) => {
         baseUrl: '//res.cloudinary.com/kaktus/image/upload/',
         transformations: {
           // Pinterest styled card
-          card: 'c_fill,q_60,w_400',
+          card: 'c_fill,q_60,w_300',
 
           // Property list
           propList: 'c_fill,q_60,w_300,h_300',
