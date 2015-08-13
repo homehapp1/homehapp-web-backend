@@ -3,18 +3,20 @@
   float: right;
   line-height: $headerHeight - 2 * $pv;
   text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+  $iconSize: 20px;
+  $spacing: 5px;
+  $h: $iconSize / 3 - $spacing;
+  $oSquared: $h / 1.44;
+  $oThirds: 0.5 * $h;
 
   .icon {
-    $iconSize: 24px;
-    $spacing: 2px;
-    $h: $iconSize / 3 - $spacing;
-    $oSquared: $h / 1.44;
-    $oThirds: 0.5 * $h;
     display: block;
     width: $iconSize;
     height: $iconSize;
-    position: relative;
-    background-color: white;
+    position: fixed;
+    top: ($headerHeight - $iconSize) / 2;
+    right: ($headerHeight - $iconSize) / 2;
+    z-index: 100;
     @include vendors(transition-timing-function, linear);
     @include vendors(transition-property, all);
     @include vendors(transition-duration, 1000ms);
@@ -24,7 +26,8 @@
       position: absolute;
       width: $iconSize;
       height: $h;
-      background-color: #000000;
+      background-color: #ffffff;
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
       border-radius: 2px;
       @include vendors(transition-property, all);
       @include vendors(transition-duration, 500ms);
@@ -33,6 +36,7 @@
       &.top {
         top: 0;
         @include vendors(transform-origin, 50% 0 0);
+        @include vendors(transform, translateY(2px));
       }
 
       &.middle {
@@ -44,12 +48,14 @@
         top: 100%;
         margin-top: -1 * $h;
         @include vendors(transform-origin, 50% 100% 0);
+        @include vendors(transform, translateY(-2px));
       }
     }
 
     &.open {
       & > * {
         background-color: $red;
+        box-shadow: none;
 
         &.middle {
           opacity: 0;
@@ -74,9 +80,11 @@
       @include vendors(animation-iteration-count, infinite);
       @include vendors(animation-duration, 1000ms);
       @include vendors(animation-direction, initial);
+      @include vendors(animation-timing-function, linear);
 
       & > * {
         background-color: $orange;
+        box-shadow: none;
         $x: 0.866 * $oThirds;
         &.top {
           $m: 0.5 * ($iconSize - $oThirds);
@@ -93,27 +101,52 @@
     }
   }
 
-  ul {
-    margin: 0;
-    padding: 0;
-    display: block;
+  & > .container {
+    position: absolute;
+    background-color: white;
+    top: $contentPadding;
+    right: $contentPadding;
+    z-index: 99;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    //padding-top: $iconSize + $contentPadding;
+    width: 0;
+    overflow: hidden;
+    @include vendors(transition-property, width);
+    @include vendors(transition-duration, 500ms);
 
-    & > li {
-      display: inline;
+    @include small() {
+      left: 0;
+      right: 0;
+      top: 0;
+      width: 100%;
+    }
 
-      & + li {
-        &:before {
-          content: '//';
-          margin-left: 1em;
-          margin-right: 1em;
+    ul {
+      margin: 0;
+      padding: $contentPadding * 2;
+      list-style: none;
+
+      li {
+        display: block;
+        white-space: nowrap;
+
+        a {
+          display: block;
+          padding: $contentPadding / 2 0;
+          color: black;
+          font-style: italic;
+
+          &:hover, &.active {
+            color: $turquoise;
+          }
         }
       }
-
-      a {
-        color: black;
-        font-weight: $navigationWeight;
-      }
     }
+  }
+
+  .icon.open + .container {
+    display: block;
+    width: 200px;
   }
 }
 

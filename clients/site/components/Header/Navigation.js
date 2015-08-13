@@ -40,10 +40,21 @@ class Navigation extends React.Component {
   render() {
     return (
       <div id='navigation'>
-        <div ref='icon' className='icon'>
+        <div ref='icon' className='icon open'>
           <div className='bar top'></div>
           <div className='bar middle'></div>
           <div className='bar bottom'></div>
+        </div>
+        <div className='container'>
+          <ul>
+            <li><Link to='properties'>Buy</Link></li>
+            <li><Link to='propertiesMode' params={{mode: 'cards'}}>Sell</Link></li>
+            <li><Link to='propertiesMode' params={{mode: 'list'}}>Sell</Link></li>
+            <li><Link to='propertiesMode' params={{mode: 'single'}}>Sell</Link></li>
+            <li><Link to='content' params={{slug: 'about-us'}}>About us</Link></li>
+            <li><Link to='content' params={{slug: 'terms'}}>Terms & conditions</Link></li>
+            <li><Link to='content' params={{slug: 'privacy'}}>Privacy</Link></li>
+          </ul>
         </div>
       </div>
     );
