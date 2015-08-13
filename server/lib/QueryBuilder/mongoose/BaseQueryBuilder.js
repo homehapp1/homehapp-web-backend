@@ -2,6 +2,7 @@
 
 import async from 'async';
 import moment from 'moment';
+import {NotFound} from '../../Errors';
 
 class BaseQueryBuilder {
   constructor(app, modelName) {
@@ -202,7 +203,7 @@ class BaseQueryBuilder {
     return new Promise((resolve, reject) => {
       async.series(this.queries, (err) => {
         this.queries = [];
-        if(err) {
+        if (err) {
           return reject(err);
         } else {
           resolve(this._opts.count ? this.result.count : this.result);
