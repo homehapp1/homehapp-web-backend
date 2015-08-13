@@ -36,6 +36,22 @@ exports.registerRoutes = (app) => {
 
   });
 
+  app.put('/api/users/:uuid', function(req, res, next) {
+    let data = req.body.user;
+
+    QB
+    .query('User')
+    .findByUuid(req.params.uuid)
+    .update(data)
+    .then((user) => {
+      res.json({
+        status: 'ok', user: user
+      });
+    })
+    .catch(next);
+
+  });
+
   app.post('/api/users', function(req, res, next) {
     let data = req.body.user;
 
