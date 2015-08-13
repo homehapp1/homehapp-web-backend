@@ -62,13 +62,13 @@ export PROJECT_ID=homehappweb
 
 cd support/docker/fluentd-sidecar-gcp
 make build push
+cd ../../../
 
 ./support/createContainers.sh site
 ./support/createContainers.sh admin
 
-cd ../../../
-./support/createCluster.sh site
-./support/createCluster.sh admin
+./support/createCluster.sh site stg
+./support/createCluster.sh admin stg
 
 ./support/updateCluster.sh site stg
 ./support/updateCluster.sh admin stg

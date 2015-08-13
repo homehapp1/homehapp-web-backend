@@ -59,6 +59,7 @@ class HomesEditContainer extends React.Component {
     if (this.state.error) {
       return this.handleErrorState();
     }
+
     if (HomeListStore.isLoading() || !this.state.home) {
       return this.handlePendingState();
     }

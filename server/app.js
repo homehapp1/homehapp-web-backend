@@ -259,6 +259,7 @@ exports.run = function(projectName, afterRun) {
             }
 
             let alt = require(path.join(COMMON_CLIENT_ROOT, 'alt.js'));
+            var iso = new Iso();
 
             if (!res.locals.data.ApplicationStore) {
               res.locals.data.ApplicationStore = {};
@@ -268,47 +269,30 @@ exports.run = function(projectName, afterRun) {
               res.locals.data.ApplicationStore.csrf = req.csrfToken();
             }
 
-            res.locals.data.ApplicationStore.config = {
-              cloudinary: {
-                baseUrl: '//res.cloudinary.com/kaktus/image/upload/',
-                transformations: {
-                  // Pinterest styled card
-                  card: 'c_fill,q_60,w_400',
+            let clientConfig = app.config.clientConfig || {};
+            // Extra configs could be defined here
+            clientConfig = Helpers.merge(clientConfig, {});
 
-                  // Property list
-                  propList: 'c_fill,q_60,w_300,h_300',
-
-                  thumbNail: 'c_thumb,q_60,w_100,h_100',
-                  pinkyNail: 'c_thumb,q_60,w_50,h_50',
-
-                  // Full-sized preview
-                  preview: 'c_fill,f_auto,h_960',
-
-                  // Big image view
-                  large: 'c_scale,q_60,w_1920',
-                  medium: 'c_scale,q_60,w_1000',
-                  small: 'c_scale,q_60,w_600'
-                }
-              }
-            };
+            res.locals.data.ApplicationStore.config = clientConfig;
 
             debug('res.locals.data', res.locals.data);
 
-            alt.bootstrap(JSON.stringify(res.locals.data || {}));
-
-            var iso = new Iso();
+            alt.bootstrap(JSON.stringify(res.locals.data));
 
             let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
 
             Router.run(routes, req.url, function (Handler) {
-              var content = React.renderToString(React.createElement(Handler));
-              iso.add(content, alt.flush());
+              let content = React.renderToString(React.createElement(Handler));
+              let flushedState = alt.flush();
+
+              iso.add(content, flushedState);
 
               if (!res.locals.styleSheets) {
                 res.locals.styleSheets = [];
               }
 
-              var html = iso.render();
+              let html = iso.render();
+
               app.getLocals(req, res, {
                 html: html,
                 includeClient: true

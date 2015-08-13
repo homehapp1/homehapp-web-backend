@@ -115,6 +115,11 @@ module.exports = (projectRoot) => {
       enabled: false
     },
     extensions: {
+    },
+    clientConfig: {
+      google: {
+        apiKey: "AIzaSyAKffMTuwbg4NSSil9qahcTyTd8FL9Q8zQ"
+      }
     }
   };
 

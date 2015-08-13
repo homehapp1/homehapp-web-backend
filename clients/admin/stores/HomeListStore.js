@@ -5,16 +5,13 @@ import HomeListActions from '../actions/HomeListActions';
 import HomeListSource from '../sources/HomeListSource';
 import Cache from '../../common/Cache';
 
-let debug = require('../../common/debugger')('HomeStore');
+let debug = require('../../common/debugger')('HomeListStore');
 
 @alt.createStore
 class HomeListStore {
   constructor() {
     this.on('bootstrap', () => {
-      debug('bootstrapping', this.home);
-      if (this.home) {
-        Cache.set('homesBySlug', this.home.slug, this.home);
-      }
+      debug('bootstrapping', this.homes);
     });
 
     this.bindListeners({
@@ -34,6 +31,7 @@ class HomeListStore {
   }
 
   getHome(id) {
+    debug('getHome', id);
     let { homes } = this.getState();
     for (let home of homes) {
       if (home.id === id) {

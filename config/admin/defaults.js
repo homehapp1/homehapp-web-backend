@@ -22,6 +22,8 @@ module.exports = (projectRoot) => {
           }
         }
       }
+    },
+    clientConfig: {
     }
   };
 
