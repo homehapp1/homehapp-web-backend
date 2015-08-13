@@ -99,7 +99,7 @@ exports.windowScroller = function(offset = 0, speed = 500) {
   nextHop();
 };
 
-exports.setFullHeight = function(){
+exports.setFullHeight = function() {
   let items = document.getElementsByClassName('full-height');
   let height = window.innerHeight;
 

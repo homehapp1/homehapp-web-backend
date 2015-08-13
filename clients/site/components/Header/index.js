@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
+import Navigation from './Navigation';
 
 class Header extends React.Component {
   render() {
@@ -10,7 +11,7 @@ class Header extends React.Component {
         <Link to='app' className='logo'>
           <img src='/public/images/homehapp-logo.svg' alt='Homehapp' />
         </Link>
-        <div id='navigation'>Nav component here</div>
+        <Navigation />
       </div>
     );
   }

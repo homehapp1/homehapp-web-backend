@@ -3,15 +3,104 @@
   float: right;
   line-height: $headerHeight - 2 * $pv;
   text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
-  
+
+  .icon {
+    $iconSize: 24px;
+    $spacing: 2px;
+    $h: $iconSize / 3 - $spacing;
+    $oSquared: $h / 1.44;
+    $oThirds: 0.5 * $h;
+    display: block;
+    width: $iconSize;
+    height: $iconSize;
+    position: relative;
+    background-color: white;
+    @include vendors(transition-timing-function, linear);
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, 1000ms);
+
+    & > * {
+      display: block;
+      position: absolute;
+      width: $iconSize;
+      height: $h;
+      background-color: #000000;
+      border-radius: 2px;
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, 500ms);
+      @include vendors(transition-timing-function, ease-out);
+
+      &.top {
+        top: 0;
+        @include vendors(transform-origin, 50% 0 0);
+      }
+
+      &.middle {
+        top: 50%;
+        margin-top: -0.5 * $h;
+      }
+
+      &.bottom {
+        top: 100%;
+        margin-top: -1 * $h;
+        @include vendors(transform-origin, 50% 100% 0);
+      }
+    }
+
+    &.open {
+      & > * {
+        background-color: $red;
+
+        &.middle {
+          opacity: 0;
+        }
+
+        &.top {
+          $m: 0.5 * ($iconSize - $oSquared);
+          $t: translateY($m) rotate(45deg);
+          @include vendors(transform, $t);
+        }
+
+        &.bottom {
+          $m: -0.5 * ($iconSize - $oSquared);
+          $t: translateY($m) rotate(-45deg);
+          @include vendors(transform, $t);
+        }
+      }
+    }
+
+    &.loading {
+      @include vendors(animation-name, rotate);
+      @include vendors(animation-iteration-count, infinite);
+      @include vendors(animation-duration, 1000ms);
+      @include vendors(animation-direction, initial);
+
+      & > * {
+        background-color: $orange;
+        $x: 0.866 * $oThirds;
+        &.top {
+          $m: 0.5 * ($iconSize - $oThirds);
+          $t: translateX($x) translateY($m) rotate(60deg);
+          @include vendors(transform, $t);
+        }
+
+        &.bottom {
+          $m: -0.5 * ($iconSize - $oThirds);
+          $t: translateX($x) translateY($m) rotate(-60deg);
+          @include vendors(transform, $t);
+        }
+      }
+    }
+  }
+
   ul {
     margin: 0;
     padding: 0;
     display: block;
-    
+
     & > li {
       display: inline;
-      
+
       & + li {
         &:before {
           content: '//';
@@ -19,11 +108,21 @@
           margin-right: 1em;
         }
       }
-      
+
       a {
         color: black;
         font-weight: $navigationWeight;
       }
     }
+  }
+}
+
+@include animate(rotate) {
+  0% {
+    @include vendors(transform, rotate(0));
+  }
+
+  100% {
+    @include vendors(transform, rotate(360deg));
   }
 }
