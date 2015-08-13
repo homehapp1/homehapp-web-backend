@@ -14,6 +14,8 @@ import HomeRouteNotFound from './ErrorPages/HomeRouteNotFound';
 
 import PropertyFilter from './Property/Filter';
 
+import Content from './Content';
+
 let routes = (
   <Route name='app' path='/' handler={Application}>
     <DefaultRoute handler={Homepage}/>
@@ -25,6 +27,10 @@ let routes = (
     <Route name='properties' path='/properties'>
       <Route name='propertiesMode' path=':mode' handler={PropertyFilter} />
       <DefaultRoute handler={PropertyFilter} />
+      <NotFoundRoute handler={HomeRouteNotFound} />
+    </Route>
+    <Route name='content' path='/:slug' handler={Content}>
+      <DefaultRoute handler={Content} />
       <NotFoundRoute handler={HomeRouteNotFound} />
     </Route>
   </Route>
