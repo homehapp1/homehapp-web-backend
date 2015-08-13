@@ -4,6 +4,7 @@ import path from 'path';
 import cloudinary from 'cloudinary';
 import Configuration from '../server/lib/Configuration';
 import {merge, walkDirSync} from '../server/lib/Helpers';
+let debug = require('debug')('ProjectUploader');
 
 const PROJECT_ROOT = path.join(__dirname, '..');
 const PROJECT_NAME = process.env.PROJECT_NAME || 'site';
@@ -22,7 +23,7 @@ class ProjectUploader {
     .then(() => this._uploadResouces('css'))
     .then(() => this._uploadResouces('js'))
     .then(() => {
-      console.log('Finished Uploading all assets');
+      debug('Finished Uploading all assets');
       callback(null, status);
     })
     .catch((err) => {
@@ -31,7 +32,7 @@ class ProjectUploader {
   }
 
   _uploadResouces(resourceName) {
-    console.log(`Uploading ${resourceName} resources`);
+    debug(`Uploading ${resourceName} resources`);
     let tasks = [];
 
     let filesPath = path.join(this.sourceFolder, resourceName);
@@ -40,14 +41,20 @@ class ProjectUploader {
     files.forEach((filePath) => {
       let baseName = path.basename(filePath);
       tasks.push(new Promise((resolve, reject) => {
-        console.log(`Uploading ${baseName}`);
-        this.cloudinary.uploader.upload(filePath, (result) => {
-          //console.log(`Upload finished for ${baseName}`);
-          resolve();
+        let publicId = `${PROJECT_NAME}/${resourceName}/${baseName}`;
+        debug(`Removing old ${baseName}`);
+        this.cloudinary.uploader.destroy(publicId, () => {
+          debug(`Uploading ${baseName}`);
+          this.cloudinary.uploader.upload(filePath, (result) => {
+            //console.log(`Upload finished for ${baseName}`);
+            resolve();
+          }, {
+            public_id: publicId,
+            resource_type: 'raw',
+            invalidate: true
+          });
         }, {
-          public_id: `${PROJECT_NAME}/${resourceName}/${baseName}`,
-          resource_type: 'raw',
-          invalidate: true
+          resource_type: 'raw'
         });
       }));
     });
