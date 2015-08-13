@@ -15,8 +15,6 @@ class PropertyFilter extends React.Component {
   }
 
   render() {
-    console.log('regexp test', this);
-    let mode = this.props.params.mode || 'list';
     let modes = [
       {
         mode: 'cards',
@@ -31,6 +29,7 @@ class PropertyFilter extends React.Component {
         icon: 'fa fa-stop'
       }
     ];
+    let mode = this.props.params.mode || modes[0].mode;
 
     // @TODO: This part is to be removed when the API connection provides proper data
     var randomSeed = function(min, max, precision = 0) {
@@ -83,6 +82,7 @@ class PropertyFilter extends React.Component {
         flooring: getRandom(['Carpeting', 'Concrete', 'Bamboo', 'Stone', 'Tile', 'Laminate', 'Cork', 'Vinyl / Linoleum', 'Manufactured Wood', 'Marble', 'Wood'], randomSeed(0, 4)),
         energy: getRandom(['Attic Fans', 'Ceiling Fans', 'Dual or Triple Pane Windows', 'Programmable Thermostats', 'Single Flush Toilets', 'Window Shutters', 'Solar Heat', 'Solar Plumbing', 'Solar Screens', 'Storm Windows', 'Tankless Water Heater', 'Skylights or Sky Tubes', 'Whole House Fan'], randomSeed(0, 4)),
         disabilityFeatures: getRandom(['Extra-Wide Doorways', 'Ramps', 'Grab Bars', 'Lower Counter Heights', 'Walk-in Tubs and Showers'], randomSeed(0, 2)),
+        storified: (randomSeed(0, 4)) ? false : true,
 
         address: {
           street: '221 B Baker Street',

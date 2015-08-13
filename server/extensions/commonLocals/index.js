@@ -43,7 +43,8 @@ export function register(app) {
       html: '',
       cssIncludeHtml: '',
       jsIncludeHtml: '',
-      bodyClass: ''
+      bodyClass: '',
+      metadatas: []
     }, appLocals, resLocals, ext);
 
     if (!opts.body) {

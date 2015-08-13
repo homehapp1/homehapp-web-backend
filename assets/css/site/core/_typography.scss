@@ -1,9 +1,10 @@
 // @import url("//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
 @import url("../fonts/font-awesome/css/font-awesome.min.css");
-@import url("http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,200italic,300italic,400italic,600italic");
+@import url("//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700italic,700,400italic|Roboto+Slab:400,300,700");
+
 
 * {
-  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
 }
 
 table {
@@ -56,6 +57,7 @@ h1, h2, h3, h4, h5, h6, li, p {
 h1 {
   font-size: 200%;
   font-weight: $titleWeight;
+  font-family: "Roboto Slab";
 }
 
 h2 {

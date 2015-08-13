@@ -11,6 +11,9 @@ exports.registerRoutes = (app) => {
     .findBySlug(slug)
     .fetch()
     .then((result) => {
+      res.locals.metadatas = [
+        {property: 'testProp', content: 'testCont'}
+      ];
       res.locals.data.HomeStore = {
         home: result.homeJson
       };

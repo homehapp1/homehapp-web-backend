@@ -18,23 +18,19 @@
     <link rel="stylesheet" href="<%= staticPath %>/css/site.css">
   <% } %>
   <% if (styleSheets.length) { %>
-    <% for (var i=0; i < styleSheets.length; i++) { %>
+    <% for (var i = 0; i < styleSheets.length; i++) { %>
       <link rel="stylesheet" href="<%- styleSheets[i] %>">
     <% } %>
   <% } %>
 
   <!-- !OpenGraph -->
-  <meta property="og:title" content="homehapp" />
-  <meta property="og:description" name="description" content="homehapp" />
-  <meta property="og:site_name" content="homehapp" />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="http://homehapp.co.uk/" />
-  <meta property="og:image" content="http://homehapp.co.uk/images/metadata.png" />
-  <meta property="fb:admins" content="vapaaradikaali" />
-  <meta itemprop="image" content="images/favicon-64.png" />
+  <% if (metadatas.length) { %>
+    <% for (var i = 0; i < metadatas.length; i++) { %>
+      <meta property="<%- metadatas[i].property %>" content="<%- metadatas[i].content %>" />
+    <% } %>
+  <% } %>
 
   <!-- !Favicons -->
-  <meta itemprop="image" content="/public/images/favicon-64.png" />
   <link rel="shortcut icon" type="image/x-icon" href="/public/images/favicon.ico" />
   <link rel="icon" type="image/png" href="/public/images/favicon-64.png" />
   <link rel="shortcut icon"  type="image/png" href="/public/images/favicon-64.png" />
