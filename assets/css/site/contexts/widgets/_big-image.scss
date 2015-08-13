@@ -1,63 +1,105 @@
 &.big-image, &.video {
-  background-position: center center;
-  //background-attachment: fixed;
-  background-size: cover;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
   color: white;
   text-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5), 0 0 1em rgba(0, 0, 0, 0.3);
   background-color: transparent;
-  $transform: translateX(-50%) translateY(-50%);
-  
-  & > img, & > video, & > .image-content {
+
+  & > .image-content {
     position: absolute;
-    min-width: 100%;
-    min-height: 100%;
-    left: 50%;
-    top: 50%;
-    @include vendors(transform, $transform);
-    
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
     @include small() {
       position: static;
       @include vendors(transform, none);
     }
-    
+
     & > img, & > video {
       position: absolute;
+      width: 100%;
       min-width: 100%;
       min-height: 100%;
       left: 50%;
-      top: 50%;
-      @include vendors(transform, $transform);
-      
+      top:0;
+      @include vendors(transform, translateX(-50%));
+
       @include small() {
         position: static;
         @include vendors(transform, none);
       }
     }
-    
+
+    &[data-vertical="middle"] {
+      & > img, & > video {
+        top: 50%;
+        @include vendors(transform, translateX(-50%) translateY(-50%));
+      }
+    }
+
+    &[data-vertical="bottom"] {
+      & > img, & > video {
+        top: auto;
+        bottom: 0;
+      }
+    }
+
     & > video + img {
       display: none;
     }
   }
-  
+
   &.fixed > img, &.fixed > video, &.fixed > .image-content {
     position: fixed;
     z-index: -10;
     @include vendors(transition-property, opacity);
     @include vendors(transition-duration, 500ms);
     opacity: 1;
-    
+
     @include small() {
       position: static;
     }
   }
-  
+
   &.content-hidden > img, &.content-hidden video, &.content-hidden .image-content {
     z-index: -20;
     opacity: 0;
   }
-  
+
   & + .fluid {
     height: 100%;
+  }
+
+  & > .width-wrapper {
+    position: absolute;
+    display: table;
+    height: 100%;
+    left: 50%;
+    margin-left: -0.5 * $pageWidth;
+
+    @include noOverflow() {
+      left: 0;
+      right: 0;
+      margin-left: 0;
+    }
+
+    & > * {
+      display: table-cell;
+      width: 100%;
+      height: 100%;
+    }
+
+    & > .large-text {
+      font-size: 200%;
+    }
+
+    [data-vertical="center"] {
+      vertical-align: middle;
+    }
+
+    [data-vertical="bottom"] {
+      vertical-align: bottom;
+    }
   }
 }
