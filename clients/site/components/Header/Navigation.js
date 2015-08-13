@@ -40,7 +40,7 @@ class Navigation extends React.Component {
   render() {
     return (
       <div id='navigation'>
-        <div ref='icon' className='icon open'>
+        <div ref='icon' className='icon'>
           <div className='bar top'></div>
           <div className='bar middle'></div>
           <div className='bar bottom'></div>
