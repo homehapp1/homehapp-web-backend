@@ -16,8 +16,8 @@ class Homepage extends React.Component {
     };
     return (
       <div id='container'>
-        <div className='item big-image fixed ng-scope full-height'>
-          <div className='image-content ng-scope' data-vertical='middle'>
+        <div className='item big-image full-height'>
+          <div className='image-content' data-vertical='middle'>
             <img alt='Live your dream' className='parallax-move show-for-large' src={images.small} />
             <img alt='Live your dream' className='parallax-move show-for-medium' src={images.medium} />
             <img alt='Live your dream' className='parallax-move show-for-small' src={images.large} />
