@@ -1,3 +1,30 @@
 .item {
+  [data-vertical="middle"] {
+    vertical-align: middle;
+  }
+
+  [data-vertical="bottom"] {
+    vertical-align: bottom;
+  }
+
+  [data-align="center"] {
+    text-align: center;
+  }
+
+  [data-align="right"] {
+    text-align: right;
+  }
+
+  &.gradient {
+    $d: bottom;
+    $g1: rgba(36, 196, 192, 0.4);
+    $g2: rgba(36, 196, 192, 0);
+    background-image: -webkit-linear-gradient($d, $g1, $g2);
+    background-image: -moz-linear-gradient($d, $g1, $g2);
+    background-image: -ms-linear-gradient($d, $g1, $g2);
+    background-image: -o-linear-gradient($d, $g1, $g2);
+    background-image: linear-gradient($d, $g1, $g2);
+}
+
   @import "contexts/widgets/big-image";
 }
