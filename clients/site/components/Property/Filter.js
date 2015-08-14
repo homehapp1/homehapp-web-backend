@@ -32,9 +32,9 @@ class PropertyFilter extends React.Component {
       }
     ];
     let mode = this.props.params.mode || modes[0].mode;
-    var items = [];
 
     // Populate fake properties
+    let items = [];
     for (let i = 0; i < 20; i++) {
       items.push(createProperty(i));
     }
@@ -53,27 +53,25 @@ class PropertyFilter extends React.Component {
             })
           }
         </ul>
-        <div className={mode}>
-          {
-            (() => {
-              switch (mode) {
-                case 'list':
-                  return (
-                    <PropertyList items={items} />
-                  );
-                case 'preview':
-                  return (
-                    <PropertyPreview items={items} />
-                  );
-                case 'cards':
-                default:
-                  return (
-                    <PropertyCards items={items} />
-                  );
-              }
-            })()
-          }
-        </div>
+        {
+          (() => {
+            switch (mode) {
+              case 'list':
+                return (
+                  <PropertyList items={items} />
+                );
+              case 'preview':
+                return (
+                  <PropertyPreview items={items} />
+                );
+              case 'cards':
+              default:
+                return (
+                  <PropertyCards items={items} />
+                );
+            }
+          })()
+        }
       </div>
     );
   }
