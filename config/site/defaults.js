@@ -11,7 +11,7 @@ module.exports = (projectRoot) => {
   let config = {
     clientConfig: {
       cloudinary: {
-        baseUrl: '//res.cloudinary.com/kaktus/image/upload/',
+        baseUrl: '//res.cloudinary.com/homehapp/image/upload/',
         transformations: {
           // Pinterest styled card
           card: 'c_fill,q_60,w_300',
@@ -28,7 +28,7 @@ module.exports = (projectRoot) => {
           // Big image view
           large: 'c_scale,q_60,w_1920',
           medium: 'c_scale,q_60,w_1000',
-          small: 'c_scale,q_60,w_600'
+          small: 'c_fill,q_60,h_600'
         }
       }
     }

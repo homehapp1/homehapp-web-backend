@@ -42,12 +42,4 @@
       height: $headerHeight - 2 * $pv;
     }
   }
-
-  & + * {
-    padding-top: $headerHeight;
-
-    & > .item:first-child {
-      margin-top: -1 * $headerHeight;
-    }
-  }
 }

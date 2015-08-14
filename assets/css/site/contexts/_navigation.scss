@@ -2,6 +2,7 @@
   $pv: $contentPadding;
   display: block;
   position: absolute;
+  z-index: $zNavigation;
   width: 100%;
   line-height: $headerHeight - 2 * $pv;
   text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
@@ -138,6 +139,7 @@
       left: 100%;
       right: auto;
       top: 0;
+      bottom: 0;
       box-shadow: none;
     }
 

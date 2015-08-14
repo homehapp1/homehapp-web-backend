@@ -3,20 +3,26 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import ApplicationStore from '../../../common/stores/ApplicationStore';
 import PropertyCards from '../Property/Cards';
 import { createProperty } from '../../../common/Helpers';
 
 class Homepage extends React.Component {
+  constructor() {
+    super();
+    this.config = ApplicationStore.getState().config;
+  }
   componentDidMount() {
     // Trigger the resize events defined in layout
     window.dispatchEvent(new Event('resize'));
   }
 
   render() {
+    let imageSrc = 'v1439564093/london-view.jpg';
     let images = {
-      small: 'https://images.unsplash.com/photo-1428342628092-61f9e5d578f2?q=80&fm=jpg&s=82762926d328127b919301ae643d63ac',
-      medium: 'https://images.unsplash.com/photo-1428342628092-61f9e5d578f2?q=80&fm=jpg&s=82762926d328127b919301ae643d63ac',
-      large: 'https://images.unsplash.com/photo-1428342628092-61f9e5d578f2?q=80&fm=jpg&s=82762926d328127b919301ae643d63ac'
+      small: `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.small}/${imageSrc}`,
+      medium: `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.medium}/${imageSrc}`,
+      large: `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.large}/${imageSrc}`
     };
     // Populate fake properties
     let items = [];
@@ -28,9 +34,9 @@ class Homepage extends React.Component {
       <div id='mainpage' className='mainpage'>
         <div className='item big-image gradient full-height fixed'>
           <div className='image-content' data-vertical='middle'>
-            <img alt='Live your dream' className='parallax-move show-for-large' src={images.small} />
+            <img alt='Live your dream' className='parallax-move show-for-large' src={images.large} />
             <img alt='Live your dream' className='parallax-move show-for-medium' src={images.medium} />
-            <img alt='Live your dream' className='parallax-move show-for-small' src={images.large} />
+            <img alt='Live your dream' className='parallax-move show-for-small' src={images.small} />
           </div>
           <div className='width-wrapper'>
             <div className='large-text' data-vertical='center' data-align='center'>

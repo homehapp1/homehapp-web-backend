@@ -13,24 +13,13 @@
     bottom: 0;
     z-index: -1;
 
-    @include small() {
-      position: static;
-      @include vendors(transform, none);
-    }
-
     & > img, & > video {
       position: absolute;
-      width: 100%;
       min-width: 100%;
       min-height: 100%;
       left: 50%;
       top:0;
       @include vendors(transform, translateX(-50%));
-
-      @include small() {
-        position: static;
-        @include vendors(transform, none);
-      }
     }
 
     &[data-vertical="middle"] {
@@ -79,7 +68,7 @@
       opacity: 1;
 
       @include small() {
-        position: static;
+        @include vendors(transition-property, none);
       }
     }
 

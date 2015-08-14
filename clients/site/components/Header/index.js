@@ -10,10 +10,12 @@ class Header extends React.Component {
   constructor() {
     super();
     this.onScrollTop = this.onScrollTop.bind(this);
+    this.onMouseOver = this.onMouseOver.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('scroll', this.onScrollTop);
+    window.addEventListener('mouseover', this.onMouseOver);
     this.header = new DOMManipulator(this.refs.header);
     this.prevTop = scrollTop();
     this.onScrollTop();
@@ -21,6 +23,11 @@ class Header extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.onScrollTop);
+    window.removeEventListener('mouseover', this.onMouseOver);
+  }
+
+  onMouseOver(e) {
+    this.header.removeClass('away');
   }
 
   // Generic stuff that should happen on scrollTop
