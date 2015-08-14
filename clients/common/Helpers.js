@@ -75,7 +75,11 @@ exports.checkElementInViewport = function checkElementInViewport(element, viewpo
   return elementOffsetTop < (viewportHeight + offset);
 };
 
-exports.windowScroller = function(offset = 0, speed = 500) {
+exports.scrollTop = function(offset = null, speed = 500) {
+  if (offset === null) {
+    return window.pageYOffset || document.documentElement.scrollTop;
+  }
+
   let f = 5;
   let init = document.documentElement.scrollTop + document.body.scrollTop;
   let c = Math.ceil(speed / f);
@@ -83,7 +87,7 @@ exports.windowScroller = function(offset = 0, speed = 500) {
 
   // Invalid count
   if (c <= 0) {
-    return;
+    return null;
   }
 
   let dy = (offset - init) / c;
