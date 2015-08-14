@@ -2,10 +2,13 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
-import ApplicationStore from '../../../common/stores/ApplicationStore';
 
 class PropertyDetail extends React.Component {
+  static propTypes = {
+    label: Reat.ProtoTypes.string.isRequired,
+    values: React.PropTypes.array.isRequired
+  }
+
   render() {
     let values = this.props.values;
     let label = this.props.label;
