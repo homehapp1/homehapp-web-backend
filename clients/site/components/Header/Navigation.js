@@ -10,13 +10,46 @@ class Navigation extends React.Component {
     this.mouseover = this.mouseover.bind(this);
     this.mouseout = this.mouseout.bind(this);
     this.click = this.click.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.body = null;
   }
 
   componentDidMount() {
     this.icon = new DOMManipulator(this.refs.icon.getDOMNode());
     this.icon.addEvent('mouseover', this.mouseover);
     this.icon.addEvent('mouseout', this.mouseout);
-    this.icon.addEvent('click', this.click);
+    this.icon.addEvent('click', this.click, true);
+  }
+
+  componentWillUnmount() {
+    this.icon.removeEvent('mouseover', this.mouseover);
+    this.icon.removeEvent('mouseout', this.mouseout);
+    this.icon.removeEvent('click', this.click, true);
+  }
+
+  hideNavigation() {
+    document.removeEventListener('click', this.toggle, false);
+    document.removeEventListener('touch', this.toggle, false);
+    this.icon.removeClass('open');
+
+    if (this.body) {
+      this.body.removeClass('no-scroll-small');
+    }
+  }
+
+  toggle(e) {
+    this.hideNavigation();
+    for (let i = 0; i < e.path.length; i++) {
+      // Allow default action for anything inside navigation
+      if (e.path[i].id === 'navigation') {
+        return true;
+      }
+    }
+
+    // Otherwise prevent default actions on the first click
+    e.stopPropagation();
+    e.preventDefault();
+    return false;
   }
 
   mouseover() {
@@ -29,13 +62,23 @@ class Navigation extends React.Component {
     this.icon.removeClass('loading');
   }
 
-  click() {
+  click(e) {
+    this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
+
     if (this.icon.hasClass('open')) {
-      this.icon.removeClass('open');
+      this.hideNavigation();
     } else {
       this.icon.removeClass('loading');
       this.icon.addClass('open');
+
+      document.addEventListener('click', this.toggle, false);
+      document.addEventListener('touch', this.toggle, false);
+      this.body.addClass('no-scroll-small');
     }
+
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
   }
 
   render() {
