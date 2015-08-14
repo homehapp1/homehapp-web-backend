@@ -1,6 +1,7 @@
 'use strict';
 
 import ReactUpdates from 'react/lib/ReactUpdates';
+import DOMManipulator from './DOMManipulator';
 
 exports.floor = function floor(v) {
   v = Math.floor(v * 100) / 100;
@@ -175,4 +176,21 @@ exports.createProperty = function(index = 1) {
       country: 'GB'
     }
   };
+};
+
+exports.itemViews = function() {
+  let items = document.getElementsByClassName('item');
+
+  if (!items.length) {
+    return null;
+  }
+
+  for (let i = 0; i < items.length; i++) {
+    let item = new DOMManipulator(items[i]);
+    if (!item.visible()) {
+      item.addClass('outside-viewport');
+    } else {
+      item.removeClass('outside-viewport');
+    }
+  }
 };

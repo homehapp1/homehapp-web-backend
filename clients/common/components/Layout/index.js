@@ -2,7 +2,7 @@
 'use strict';
 
 import React from 'react';
-import { scrollTop, setFullHeight } from '../../Helpers';
+import { scrollTop, setFullHeight, itemViews } from '../../Helpers';
 
 class Layout extends React.Component {
   static propTypes = {
@@ -19,16 +19,19 @@ class Layout extends React.Component {
 
   componentDidMount() {
     window.addEventListener('resize', setFullHeight);
+    window.addEventListener('scroll', itemViews);
 
     this.refs.scroller.getDOMNode().addEventListener('click', this.pageScroller, true);
     this.refs.scroller.getDOMNode().addEventListener('touchstart', this.pageScroller, true);
 
     // Trigger the events on load
     setFullHeight();
+    itemViews();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', setFullHeight);
+    window.removeEventListener('scroll', itemViews);
     this.refs.scroller.getDOMNode().removeEventListener('click', this.pageScroller);
     this.refs.scroller.getDOMNode().removeEventListener('touchstart', this.pageScroller);
   }
