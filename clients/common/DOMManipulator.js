@@ -41,12 +41,12 @@ class DOMManipulator {
     return this;
   }
 
-  addEvent(eventName, fn) {
-    this.node.addEventListener(eventName, fn, true);
+  addEvent(eventName, fn, capture = false) {
+    this.node.addEventListener(eventName, fn, capture);
   }
 
   removeEvent(eventName, fn) {
-    this.node.removeEventListener(eventName, fn);
+    this.node.removeEventListener(eventName, fn, capture);
   }
 
   css(args, value = null) {
