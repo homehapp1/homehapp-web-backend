@@ -12,6 +12,13 @@ class Navigation extends React.Component {
     this.click = this.click.bind(this);
   }
 
+  componentDidMount() {
+    this.icon = new DOMManipulator(this.refs.icon.getDOMNode());
+    this.icon.addEvent('mouseover', this.mouseover);
+    this.icon.addEvent('mouseout', this.mouseout);
+    this.icon.addEvent('click', this.click);
+  }
+
   mouseover() {
     if (!this.icon.hasClass('open')) {
       this.icon.addClass('loading');
@@ -31,12 +38,6 @@ class Navigation extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.icon = new DOMManipulator(this.refs.icon.getDOMNode());
-    this.icon.addEvent('mouseover', this.mouseover);
-    this.icon.addEvent('mouseout', this.mouseout);
-    this.icon.addEvent('click', this.click);
-  }
   render() {
     return (
       <div id='navigation'>
