@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { Link, NotFound } from 'react-router';
+import { Link } from 'react-router';
 
 // List modes
 import PropertyList from './List';
@@ -101,7 +101,7 @@ class PropertyFilter extends React.Component {
         <h2>Properties</h2>
         <ul className='mode-selector'>
           {
-            modes.map((item, index) => {
+            modes.map((item) => {
               let className = (mode === item.mode) ? 'active' : '';
 
               return (
