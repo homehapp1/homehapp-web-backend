@@ -279,7 +279,7 @@
 
     .card-list.animate .card {
       @include vendors(transition-property, all);
-      @include vendors(transition-duration, 500ms);
+      @include vendors(transition-duration, $transitionDuration);
     }
 
     .card-list.single .card {

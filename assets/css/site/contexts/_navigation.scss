@@ -1,6 +1,10 @@
 #navigation {
+  $pv: $contentPadding;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: $zNavigation;
   display: block;
-  float: right;
   line-height: $headerHeight - 2 * $pv;
   text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
   $iconSize: 20px;
@@ -13,10 +17,10 @@
     display: block;
     width: $iconSize;
     height: $iconSize;
-    position: fixed;
+    position: absolute;
+    z-index: 10;
     top: ($headerHeight - $iconSize) / 2;
     right: ($headerHeight - $iconSize) / 2;
-    z-index: 100;
     border-radius: $iconSize;
 
     &:before {
@@ -45,8 +49,12 @@
       background-color: black;
       border-radius: 2px;
       @include vendors(transition-property, all);
-      @include vendors(transition-duration, 500ms);
+      @include vendors(transition-duration, $transitionDuration);
       @include vendors(transition-timing-function, ease-out);
+
+      @include small() {
+        @include vendors(transition-property, none);
+      }
 
       &.top {
         top: 0;
@@ -98,7 +106,7 @@
       @include vendors(animation-timing-function, linear);
 
       & > * {
-        background-color: $orange;
+        background-color: $turquoise;
         box-shadow: none;
         $x: 0.866 * $oThirds;
         &.top {
@@ -121,13 +129,20 @@
     background-color: white;
     top: $contentPadding;
     right: $contentPadding;
-    z-index: 99;
+    z-index: 9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    //padding-top: $iconSize + $contentPadding;
     width: 0;
     overflow: hidden;
     @include vendors(transition-property, width);
-    @include vendors(transition-duration, 500ms);
+    @include vendors(transition-duration, $transitionDuration);
+
+    @include small() {
+      width: 100%;
+      right: 0;
+      top: 0;
+      @include vendors(transform, translateX(100%));
+      box-shadow: none;
+    }
 
     ul {
       margin: 0;
@@ -152,16 +167,29 @@
     }
   }
 
-  .icon.open + .container {
-    display: block;
-    width: 200px;
-
+  &.open {
     @include small() {
       left: 0;
       right: 0;
       top: 0;
-      width: 100%;
+      height: 100%;
+      @include vendors(transform, translateX(100%));
     }
+
+    & > .icon {
+      float: right;
+    }
+
+    & > .container {
+      display: block;
+      width: 200px;
+      @include vendors(transform, translateX(0));
+
+      @include small() {
+        width: 100%;
+      }
+    }
+
   }
 }
 

@@ -9,7 +9,7 @@
   height: $headerHeight;
   z-index: $zHeader;
   @include vendors(transition-property, all);
-  @include vendors(transition-duration, 500ms);
+  @include vendors(transition-duration, $transitionDuration);
 
   &:before {
     display: block;
@@ -42,8 +42,6 @@
       height: $headerHeight - 2 * $pv;
     }
   }
-
-  @import "navigation";
 
   & + * {
     padding-top: $headerHeight;

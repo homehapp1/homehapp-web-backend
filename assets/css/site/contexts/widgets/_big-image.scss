@@ -54,7 +54,7 @@
     position: fixed;
     z-index: -10;
     @include vendors(transition-property, opacity);
-    @include vendors(transition-duration, 500ms);
+    @include vendors(transition-duration, $transitionDuration);
     opacity: 1;
 
     @include small() {

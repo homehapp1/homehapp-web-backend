@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import Navigation from './Navigation';
 import DOMManipulator from '../../../common/DOMManipulator';
 import { scrollTop } from '../../../common/Helpers';
 
@@ -45,7 +44,6 @@ class Header extends React.Component {
         <Link to='app' className='logo'>
           <img className='logo' src='/public/images/homehapp-logo-horizontal.svg' alt='Homehapp' />
         </Link>
-        <Navigation />
       </div>
     );
   }

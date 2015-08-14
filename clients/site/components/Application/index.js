@@ -6,6 +6,7 @@ let {RouteHandler} = require('react-router');
 //import ApplicationStore from '../../../common/stores/ApplicationStore';
 
 import Header from '../Header';
+import Navigation from '../Navigation';
 import Footer from '../Footer';
 import Layout from '../../../common/components/Layout';
 
@@ -30,6 +31,7 @@ class Application extends React.Component {
   render() {
     return (
       <Layout>
+        <Navigation {...this.props} />
         <Header {...this.props} />
         <RouteHandler />
         <Footer {...this.props} />

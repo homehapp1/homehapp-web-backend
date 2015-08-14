@@ -15,10 +15,12 @@ class Navigation extends React.Component {
   }
 
   componentDidMount() {
-    this.icon = new DOMManipulator(this.refs.icon.getDOMNode());
+    this.icon = new DOMManipulator(this.refs.icon);
     this.icon.addEvent('mouseover', this.mouseover);
     this.icon.addEvent('mouseout', this.mouseout);
     this.icon.addEvent('click', this.click, true);
+
+    this.navigation = new DOMManipulator(this.refs.navigation);
   }
 
   componentWillUnmount() {
@@ -30,10 +32,11 @@ class Navigation extends React.Component {
   hideNavigation() {
     document.removeEventListener('click', this.toggle, false);
     document.removeEventListener('touch', this.toggle, false);
+    this.navigation.removeClass('open');
     this.icon.removeClass('open');
 
     if (this.body) {
-      this.body.removeClass('no-scroll-small');
+      this.body.removeClass('no-scroll-small').removeClass('away-for-small');
     }
   }
 
@@ -53,7 +56,7 @@ class Navigation extends React.Component {
   }
 
   mouseover() {
-    if (!this.icon.hasClass('open')) {
+    if (!this.navigation.hasClass('open')) {
       this.icon.addClass('loading');
     }
   }
@@ -65,15 +68,15 @@ class Navigation extends React.Component {
   click(e) {
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
 
-    if (this.icon.hasClass('open')) {
+    if (this.navigation.hasClass('open')) {
       this.hideNavigation();
     } else {
-      this.icon.removeClass('loading');
-      this.icon.addClass('open');
+      this.icon.removeClass('loading').addClass('open');
+      this.navigation.addClass('open');
 
       document.addEventListener('click', this.toggle, false);
       document.addEventListener('touch', this.toggle, false);
-      this.body.addClass('no-scroll-small');
+      this.body.addClass('no-scroll-small').addClass('away-for-small');
     }
 
     e.preventDefault();
@@ -83,7 +86,7 @@ class Navigation extends React.Component {
 
   render() {
     return (
-      <div id='navigation'>
+      <div id='navigation' ref='navigation'>
         <div ref='icon' className='icon'>
           <div className='bar top'></div>
           <div className='bar middle'></div>
