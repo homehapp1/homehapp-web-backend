@@ -4,6 +4,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
+import DOMManipulator from '../../../common/DOMManipulator';
 
 class PropertyCards extends React.Component {
   static propTypes = {
@@ -34,17 +35,16 @@ class PropertyCards extends React.Component {
       return;
     }
 
-    let container = this.refs.cards.getDOMNode();
-    let cards = container.getElementsByClassName('card');
+    let container = new DOMManipulator(this.refs.cards);
+    let cards = container.getByClass('card');
 
     // No cards available
     if (cards.length < 1) {
       return;
     }
 
-    let width = cards[0].offsetWidth;
-    console.log('width', width);
-    let cols = Math.min(4, Math.floor(container.offsetWidth / width));
+    let width = cards[0].width();
+    let cols = Math.min(4, Math.floor(container.width() / width));
     let heights = [];
 
     if (cols === this.cols) {
@@ -53,24 +53,17 @@ class PropertyCards extends React.Component {
 
     if (cols === 1) {
       for (let i = 0; i < cards.length; i++) {
-        cards[i].style.marginLeft = null;
-        cards[i].style.marginTop = null;
+        cards[i].css({
+          marginLeft: null,
+          marginTop: null
+        });
       }
 
-      if (!container.className.match(/single/)) {
-        container.className += ' single';
-      }
-
-      if (container.className.match(/animate/)) {
-        container.className = container.className.replace(/ ?animate/, '');
-      }
-
+      container.addClass('single').removeClass('animate');
       return;
     }
 
-    if (container.className.match(/single/)) {
-      container.className = container.className.replace(/ ?single/, '');
-    }
+    container.removeClass('single');
 
     // Populate zero heights
     for (let i = 0; i < cols; i++) {
@@ -87,17 +80,15 @@ class PropertyCards extends React.Component {
       let c = getMinHeight(heights);
       let offset = (c / cols - 0.5) * (cols * width);
 
-      cards[i].style.marginLeft = `${offset}px`;
-      cards[i].style.marginTop = `${heights[c]}px`;
-      heights[c] += cards[i].offsetHeight;
+      cards[i].css({
+        marginLeft: `${offset}px`,
+        marginTop: `${heights[c]}px`
+      });
+      heights[c] += cards[i].height();
     }
 
     let max = Math.max.apply(Math, heights);
-    container.style.minHeight = `${max}px`;
-
-    if (!container.className.match(/animate/)) {
-      container.className += ' animate';
-    }
+    container.css('min-height', `${max}px`).addClass('animate');
   }
 
   render() {

@@ -3,6 +3,10 @@
 class DOMManipulator {
   constructor(node) {
     this.node = node;
+
+    if (typeof this.node.getDOMNode === 'function') {
+      this.node = this.node.getDOMNode();
+    }
   }
 
   hasClass(className) {
@@ -43,6 +47,43 @@ class DOMManipulator {
 
   removeEvent(eventName, fn) {
     this.node.removeEventListener(eventName, fn);
+  }
+
+  css(args, value = null) {
+    if (typeof args === 'string' && typeof value === 'string') {
+      this.node.style[args] = value;
+      return this;
+    }
+
+    for (let i in args) {
+      this.node.style[i] = args[i];
+    }
+    return this;
+  }
+
+  width(width = null) {
+    if (width === null) {
+      return this.node.offsetWidth;
+    }
+
+    return this.css('width', width);
+  }
+
+  height(height = null) {
+    if (height === null) {
+      return this.node.offsetHeight;
+    }
+
+    return this.css('height', height);
+  }
+
+  getByClass(className) {
+    let tmp = [];
+    let objects = this.node.getElementsByClassName(className);
+    for (let i = 0; i < objects.length; i++) {
+      tmp.push(new DOMManipulator(objects[i]));
+    }
+    return tmp;
   }
 }
 
