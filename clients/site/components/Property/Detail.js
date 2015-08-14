@@ -5,7 +5,7 @@ import React from 'react';
 
 class PropertyDetail extends React.Component {
   static propTypes = {
-    label: Reat.ProtoTypes.string.isRequired,
+    label: React.PropTypes.string.isRequired,
     values: React.PropTypes.array.isRequired
   }
 
