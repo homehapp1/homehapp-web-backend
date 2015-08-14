@@ -29,7 +29,7 @@ class Header extends React.Component {
     let top = scrollTop();
     let header = document.getElementById('header');
 
-    if (top < this.prevTop || top < header.height()) {
+    if (top < this.prevTop || top < this.header.height()) {
       this.header.removeClass('away');
     } else {
       this.header.addClass('away');
