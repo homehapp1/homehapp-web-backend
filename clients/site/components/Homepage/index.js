@@ -3,6 +3,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import PropertyCards from '../Property/Cards';
+import { createProperty } from '../../../common/Helpers';
+
 class Homepage extends React.Component {
   componentDidMount() {
     // Trigger the resize events defined in layout
@@ -15,6 +18,12 @@ class Homepage extends React.Component {
       medium: 'https://images.unsplash.com/photo-1428342628092-61f9e5d578f2?q=80&fm=jpg&s=82762926d328127b919301ae643d63ac',
       large: 'https://images.unsplash.com/photo-1428342628092-61f9e5d578f2?q=80&fm=jpg&s=82762926d328127b919301ae643d63ac'
     };
+    // Populate fake properties
+    let items = [];
+    for (let i = 0; i < 20; i++) {
+      items.push(createProperty(i));
+    }
+
     return (
       <div id='container' className='mainpage'>
         <div className='item big-image gradient full-height fixed'>
@@ -34,6 +43,9 @@ class Homepage extends React.Component {
               </div>
             </div>
           </div>
+        </div>
+        <div className='property-list item'>
+          <PropertyCards items={items} max={6} />
         </div>
       </div>
     );
