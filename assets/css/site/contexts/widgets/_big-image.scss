@@ -51,15 +51,35 @@
     }
   }
 
-  &.fixed > img, &.fixed > video, &.fixed > .image-content {
-    position: fixed;
-    z-index: -10;
-    @include vendors(transition-property, opacity);
-    @include vendors(transition-duration, $transitionDuration);
-    opacity: 1;
+  &.fixed {
+    &:before, &:after {
+      display: block;
+      content: ' ';
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+      background-color: white;
+    }
 
-    @include small() {
-      position: static;
+    &:before {
+      bottom: 100%;
+    }
+
+    &:after {
+      top: 100%;
+    }
+
+    & > img, &.fixed > video, &.fixed > .image-content {
+      position: fixed;
+      z-index: -10;
+      @include vendors(transition-property, opacity);
+      @include vendors(transition-duration, $transitionDuration);
+      opacity: 1;
+
+      @include small() {
+        position: static;
+      }
     }
   }
 
