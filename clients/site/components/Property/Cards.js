@@ -8,7 +8,8 @@ import DOMManipulator from '../../../common/DOMManipulator';
 
 class PropertyCards extends React.Component {
   static propTypes = {
-    items: React.PropTypes.array.isRequired
+    items: React.PropTypes.array.isRequired,
+    max: React.PropTypes.number
   }
 
   constructor() {
@@ -96,6 +97,10 @@ class PropertyCards extends React.Component {
       <div ref='cards' className='card-list'>
       {
         this.props.items.map((item, index) => {
+          if (this.props.max && this.props.max <= index) {
+            return null;
+          }
+
           let heights = [250, 300, 340, 380, 420, 450, 460, 500, 520, 540, 560, 600, 610];
           let seed = Math.floor(Math.random() * heights.length);
           let h = heights[seed];
