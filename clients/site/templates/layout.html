@@ -12,7 +12,7 @@
 
   <!-- !Stylesheets -->
   <% if (env !== 'development') { %>
-    <link rel="stylesheet" href="<%= staticPath %>/site/css/all.min.css">
+    <link rel="stylesheet" href="<%= staticPath %>/v0/site/css/all.min.css">
   <% } else { %>
     <link rel="stylesheet" href="<%= staticPath %>/css/vendor.css">
     <link rel="stylesheet" href="<%= staticPath %>/css/site.css">
@@ -45,8 +45,8 @@
   <%- body %>
 
   <% if (env !== 'development') { %>
-    <script src="<%= staticPath %>/site/js/vendor.bundle.min.js"></script>
-    <script src="<%= staticPath %>/site/js/client.min.js"></script>
+    <script src="<%= staticPath %>/v0/site/js/vendor.bundle.min.js"></script>
+    <script src="<%= staticPath %>/v0/site/js/client.min.js"></script>
   <% } else { %>
     <script src="<%= staticPath %>/js/vendor.bundle.js"></script>
     <script src="<%= staticPath %>/js/client.js"></script>
