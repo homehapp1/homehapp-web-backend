@@ -3,6 +3,9 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  background-color: white;
+  background-image: url('../images/stripe.png');
+  background-repeat: repeat;
 
   h2 {
     margin-bottom: $contentPadding * 10;
@@ -231,7 +234,7 @@
     }
   }
 
-  .cards {
+  .card-list {
     position: relative;
     width: 100%;
     max-width: $cardColumns * $cardWidth;
@@ -277,12 +280,12 @@
       }
     }
 
-    .card-list.animate .card {
+    &.animate .card {
       @include vendors(transition-property, all);
       @include vendors(transition-duration, $transitionDuration);
     }
 
-    .card-list.single .card {
+    &.single .card {
       position: static;
       margin-left: auto;
       margin-right: auto;

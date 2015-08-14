@@ -25,7 +25,7 @@ class Homepage extends React.Component {
     }
 
     return (
-      <div id='container' className='mainpage'>
+      <div id='mainpage' className='mainpage'>
         <div className='item big-image gradient full-height fixed'>
           <div className='image-content' data-vertical='middle'>
             <img alt='Live your dream' className='parallax-move show-for-large' src={images.small} />

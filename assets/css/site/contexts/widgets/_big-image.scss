@@ -3,6 +3,7 @@
   color: white;
   text-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5), 0 0 1em rgba(0, 0, 0, 0.3);
   background-color: transparent;
+  opacity: 1;
 
   & > .image-content {
     position: absolute;
@@ -74,11 +75,19 @@
       position: fixed;
       z-index: -10;
       @include vendors(transition-property, opacity);
-      @include vendors(transition-duration, $transitionDuration);
+      @include vendors(transition-duration, $transitionDurationFast);
       opacity: 1;
 
       @include small() {
         position: static;
+      }
+    }
+
+    &.outside-viewport {
+      z-index: -100;
+
+      & > img, &.fixed > video, &.fixed > .image-content {
+        opacity: 0;
       }
     }
   }

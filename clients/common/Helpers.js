@@ -187,7 +187,10 @@ exports.itemViews = function() {
 
   for (let i = 0; i < items.length; i++) {
     let item = new DOMManipulator(items[i]);
-    if (!item.visible()) {
+
+    // Check if the element is in the viewport with a small tolerance AFTER
+    // the element should be displayed
+    if (!item.visible(-100)) {
       item.addClass('outside-viewport');
     } else {
       item.removeClass('outside-viewport');

@@ -33,7 +33,9 @@ class Application extends React.Component {
       <Layout>
         <Navigation {...this.props} />
         <Header {...this.props} />
-        <RouteHandler />
+        <div id='container'>
+          <RouteHandler />
+        </div>
         <Footer {...this.props} />
       </Layout>
     );

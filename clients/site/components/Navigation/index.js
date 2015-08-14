@@ -92,7 +92,7 @@ class Navigation extends React.Component {
           <div className='bar middle'></div>
           <div className='bar bottom'></div>
         </div>
-        <div className='container'>
+        <div className='container full-height-strict'>
           <ul>
             <li><Link to='properties'>Buy</Link></li>
             <li><Link to='propertiesMode' params={{mode: 'cards'}}>Sell</Link></li>

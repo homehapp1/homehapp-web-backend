@@ -1,10 +1,8 @@
 #navigation {
   $pv: $contentPadding;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: $zNavigation;
   display: block;
+  position: absolute;
+  width: 100%;
   line-height: $headerHeight - 2 * $pv;
   text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
   $iconSize: 20px;
@@ -17,8 +15,8 @@
     display: block;
     width: $iconSize;
     height: $iconSize;
-    position: absolute;
-    z-index: 10;
+    position: fixed;
+    z-index: $zNavigation - 1;
     top: ($headerHeight - $iconSize) / 2;
     right: ($headerHeight - $iconSize) / 2;
     border-radius: $iconSize;
@@ -125,22 +123,21 @@
   }
 
   & > .container {
-    position: absolute;
+    position: fixed;
     background-color: white;
     top: $contentPadding;
     right: $contentPadding;
     z-index: 9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     width: 0;
-    overflow: hidden;
-    @include vendors(transition-property, width);
+    @include vendors(transition-property, all);
     @include vendors(transition-duration, $transitionDuration);
 
     @include small() {
       width: 100%;
-      right: 0;
+      left: 100%;
+      right: auto;
       top: 0;
-      @include vendors(transform, translateX(100%));
       box-shadow: none;
     }
 
@@ -168,14 +165,6 @@
   }
 
   &.open {
-    @include small() {
-      left: 0;
-      right: 0;
-      top: 0;
-      height: 100%;
-      @include vendors(transform, translateX(100%));
-    }
-
     & > .icon {
       float: right;
     }
@@ -183,10 +172,10 @@
     & > .container {
       display: block;
       width: 200px;
-      @include vendors(transform, translateX(0));
 
       @include small() {
         width: 100%;
+        left: 0;
       }
     }
 
