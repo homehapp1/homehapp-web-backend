@@ -308,6 +308,28 @@
       left: 50%;
       top: 0;
 
+      &.storified {
+        &:before {
+          $w: 60px;
+          position: absolute;
+          content: 'Story';
+          display: block;
+          top: $contentPadding;
+          right: $contentPadding;
+          background-image: url('../images/hexagon-white.svg');
+          background-size: contain;
+          background-position: center center;
+          width: $w;
+          height: (99 / 115) * $w;
+          line-height: (99 / 115) * $w;
+          text-align: center;
+          z-index: 1;
+          font-family: "Roboto Slab", monospace, serif;
+          font-weight: 500;
+          font-size: 90%;
+        }
+      }
+
       @include small() {
         position: static;
       }
