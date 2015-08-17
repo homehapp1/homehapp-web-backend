@@ -1,0 +1,12 @@
+&.gallery {
+  position: relative;
+  
+  & > img {
+    display: none;
+    position: absolute;
+
+    &.positioned {
+      display: block;
+    }
+  }
+}
