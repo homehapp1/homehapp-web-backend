@@ -101,7 +101,7 @@ class PropertyCards extends React.Component {
             return null;
           }
 
-          let heights = [250, 300, 340, 380, 420, 450, 460, 500, 520, 540, 560, 600, 610];
+          let heights = [200, 220, 230, 250, 280, 300, 320, 340, 380, 420, 450, 460];
           let seed = Math.floor(Math.random() * heights.length);
           let h = heights[seed];
 

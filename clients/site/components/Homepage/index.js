@@ -15,6 +15,11 @@ class Homepage extends React.Component {
   componentDidMount() {
     // Trigger the resize events defined in layout
     window.dispatchEvent(new Event('resize'));
+    document.getElementsByTagName('body')[0].setAttribute('data-handler', 'homepage');
+  }
+
+  componentWillUnmount() {
+    document.getElementsByTagName('body')[0].removeAttribute('data-handler');
   }
 
   render() {
@@ -50,8 +55,19 @@ class Homepage extends React.Component {
             </div>
           </div>
         </div>
-        <div className='property-list item'>
-          <PropertyCards items={items} max={6} />
+        <div className='item property-list partial-list'>
+          <PropertyCards items={items} max={12} />
+          <Link to='properties' className='button read-more'>View more</Link>
+        </div>
+        <div className='item content-block item-separator'>
+          <div className='width-wrapper'>
+            <h2>Find your home and continue the story</h2>
+            <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+            <iframe src="https://player.vimeo.com/video/74145280" width="100%" height="500" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            <h2>Find your home and continue the story</h2>
+            <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+            <iframe src="https://player.vimeo.com/video/74145280" width="100%" height="500" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
         </div>
       </div>
     );

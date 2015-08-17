@@ -77,3 +77,20 @@ h1, h2, h3 {
 p {
   margin: 1em 0;
 }
+
+button, .button, .btn {
+  display: inline-block;
+  color: white;
+  background-color: $darkGray;
+  height: $buttonHeight;
+  line-height: $buttonHeight;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0 $contentPadding * 3;
+  font-size: $fontSizeButton;
+  text-decoration: none !important;
+
+  &:hover, &:active {
+    background-color: lighten($darkGray, 5%);
+  }
+}

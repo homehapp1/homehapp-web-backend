@@ -3,9 +3,67 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  background-color: white;
+  background-color: $extraLightGray;
   background-image: url('../images/stripe.png');
   background-repeat: repeat;
+
+  &.partial-list {
+    $maxHeight: 800px;
+    $paddingTop: 100px;
+    $paddingBottom: 100px;
+    $maskHeight: 300px;
+    $q: 0.7;
+    $d: top;
+    $g1: rgba(241, 241, 241, 0);
+    $g2: rgba(241, 241, 241, 1);
+    padding-top: $paddingTop;
+    padding-bottom: $paddingBottom;
+    min-height: 0 !important;
+    height: $maxHeight;
+    overflow: hidden;
+    background-image: none;
+    position: relative;
+    background-color: $g2;
+
+    &:before {
+      display: block;
+      content: ' ';
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      right: 0;
+      height: $maskHeight * $q;
+      bottom: $maskHeight * (1 - $q) + $paddingBottom;
+      background-image: -webkit-linear-gradient($d, $g1, $g2);
+      background-image: -moz-linear-gradient($d, $g1, $g2);
+      background-image: -ms-linear-gradient($d, $g1, $g2);
+      background-image: -o-linear-gradient($d, $g1, $g2);
+      background-image: linear-gradient($d, $g1, $g2);
+    }
+
+    &:after {
+      display: block;
+      content: ' ';
+      position: absolute;
+      z-index: 1;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: $maskHeight * (1 - $q) + $paddingBottom;
+      background-color: $g2;
+    }
+
+    .read-more {
+      $width: 300px;
+      display: block;
+      width: $width;
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      bottom: $contentPadding * 2 + $paddingBottom;
+      margin-left: -0.5 * $width;
+    }
+  }
 
   h2 {
     margin-bottom: $contentPadding * 10;

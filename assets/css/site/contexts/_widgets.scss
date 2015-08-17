@@ -1,4 +1,6 @@
 .item {
+  position: relative;
+
   [data-vertical="middle"] {
     vertical-align: middle;
   }
@@ -24,7 +26,28 @@
     background-image: -ms-linear-gradient($d, $g1, $g2);
     background-image: -o-linear-gradient($d, $g1, $g2);
     background-image: linear-gradient($d, $g1, $g2);
-}
+  }
+
+  &.item-separator {
+    $size: 100px;
+
+    &:before {
+      display: block;
+      content: ' ';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: $size;
+      height: $size;
+      margin-top: -0.5 * $size;
+      margin-left: -0.5 * $size;
+      background-image: url('../images/homehapp-symbol.svg');
+      background-size: contain;
+      background-position: center center;
+      z-index: 10;
+    }
+  }
 
   @import "contexts/widgets/big-image";
+  @import "contexts/widgets/content-block";
 }

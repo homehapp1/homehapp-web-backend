@@ -26,14 +26,13 @@ class Header extends React.Component {
     window.removeEventListener('mouseover', this.onMouseOver);
   }
 
-  onMouseOver(e) {
+  onMouseOver() {
     this.header.removeClass('away');
   }
 
   // Generic stuff that should happen on scrollTop
   onScrollTop() {
     let top = scrollTop();
-    let header = document.getElementById('header');
 
     if (top < this.prevTop || top < this.header.height()) {
       this.header.removeClass('away');

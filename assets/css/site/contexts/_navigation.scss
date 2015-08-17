@@ -125,12 +125,11 @@
 
   & > .container {
     position: fixed;
-    background-color: white;
     top: $contentPadding;
     right: $contentPadding;
     z-index: 9;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     width: 0;
+    overflow: hidden;
     @include vendors(transition-property, all);
     @include vendors(transition-duration, $transitionDuration);
 
@@ -147,6 +146,12 @@
       margin: 0;
       padding: $contentPadding * 2;
       list-style: none;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+      @include small() {
+        box-shadow: none;
+      }
 
       li {
         display: block;
@@ -157,6 +162,7 @@
           padding: $contentPadding / 2 0;
           color: black;
           font-style: italic;
+          text-decoration: none;
 
           &:hover, &.active {
             color: $turquoise;
@@ -181,6 +187,42 @@
       }
     }
 
+  }
+}
+
+[data-handler="homepage"] #navigation {
+  .icon {
+    display: none;
+  }
+
+  & > .container {
+    display: block;
+    width: auto;
+    box-shadow: none;
+
+    ul {
+      padding: 0 $contentPadding 0 0;
+      background-color: transparent;
+      text-transform: uppercase;
+      box-shadow: none;
+
+      li {
+        &, & > a {
+          display: inline;
+          color: white;
+          font-style: normal;
+          font-weight: 400;
+
+          &:hover, &.active {
+            color: $turquoise;
+          }
+        }
+
+        & + li {
+          margin-left: 1em;
+        }
+      }
+    }
   }
 }
 

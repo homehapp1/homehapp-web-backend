@@ -6,6 +6,7 @@ $lightGray: #eeeeee;
 $extraLightGray: #f1f1f1;
 $borderGray: #dddddd;
 $linkGray: #666666;
+$darkGray: #2b3b3d;
 $linkBlue: #000088;
 
 $fontGray: #444444;
@@ -42,3 +43,7 @@ $transitionDurationSlow: 1000ms;
 // Pinterest styled property cards
 $cardWidth: 320px; // How wide should one card be
 $cardColumns: 4;   // Maximum quantity of columns
+
+// Element sizes
+$buttonHeight: 32px;
+$fontSizeButton: $fontSize;
