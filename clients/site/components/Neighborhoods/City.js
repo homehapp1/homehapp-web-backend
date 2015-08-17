@@ -5,8 +5,13 @@ import React from 'react';
 
 class NeighborhoodsCity extends React.Component {
   render() {
+    console.log('NeighborhoodsCity');
     return (
-      <div />
+      <div className='full-height item'>
+        <div className='width-wrapper'>
+          London
+        </div>
+      </div>
     );
   }
 }
