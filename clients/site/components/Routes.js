@@ -37,10 +37,9 @@ let routes = (
       <DefaultRoute handler={PropertyFilter} />
       <NotFoundRoute handler={HomeRouteNotFound} />
     </Route>
-    <Route name='neighborhoods' path='/neighborhoods' handler={NeighborhoodsCities}>
-      <Route name='neighborhoodsCity' path='/:city' handler={NeighborhoodsCity} />
-      <Route name='neighborhoodsView' path='/:city/:neighborhood' handler={NeighborhoodsStory} />
-      <DefaultRoute handler={NeighborhoodsCities} />
+    <Route name='neighborhoods' path='/neighborhoods'>
+      <Route name='neighborhoodsCity' path=':city' handler={NeighborhoodsCity} />
+      <Route name='neighborhoodsView' path=':city/:neighborhood' handler={NeighborhoodsStory} />
       <NotFoundRoute handler={HomeRouteNotFound} />
     </Route>
     <Route name='content' path='/:slug' handler={Content}>
