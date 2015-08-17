@@ -58,6 +58,7 @@ h1 {
   font-size: 200%;
   font-weight: $titleWeight;
   font-family: "Roboto Slab";
+  font-weight: 400;
 }
 
 h2 {
@@ -93,4 +94,10 @@ button, .button, .btn {
   &:hover, &:active {
     background-color: lighten($darkGray, 5%);
   }
+}
+
+blockquote {
+  margin: 0;
+  padding: 0 0 0 2em;
+  border-left: solid 4px $lightGray;
 }
