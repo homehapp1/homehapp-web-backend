@@ -46,8 +46,9 @@ class Gallery extends React.Component {
 
   updateGallery() {
     let images = this.refs.gallery.getDOMNode().getElementsByTagName('img');
-    let rows = Math.ceil(images.length / 4);
-    let height = 300;
+    let itemsPerRow = Math.min(Math.round(this.gallery.width() / 400), 4);
+
+    let rows = Math.ceil(images.length / itemsPerRow);
     let width = this.gallery.width();
 
     switch (this.loadState) {
@@ -58,6 +59,8 @@ class Gallery extends React.Component {
         for (let i = 0; i < partitioned.length; i++) {
           let row = partitioned[i];
           let total = 0;
+          let h = 0;
+
           for (let j = 0; j < row.length; j++) {
             total += row[j];
           }
@@ -71,10 +74,15 @@ class Gallery extends React.Component {
 
             if (!j) {
               image.addClass('first');
+              // One height per row to prevent rounding corner cases
+              h = Math.round(col / total * width / this.aspectRatios[index]);
             }
 
+            // Relative width to fill the space fully, absolute height
+            // to snap everything in place horizontally
             image.css({
-              width: `${w}%`
+              width: `${w}%`,
+              height: `${h}px`
             });
             index++;
           }
