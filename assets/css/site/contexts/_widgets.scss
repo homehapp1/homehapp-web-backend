@@ -18,15 +18,28 @@
     text-align: right;
   }
 
-  &.gradient {
+  &[data-gradient] {
     $d: bottom;
-    $g1: rgba(36, 196, 192, 0.4);
-    $g2: rgba(36, 196, 192, 0);
-    background-image: -webkit-linear-gradient($d, $g1, $g2);
-    background-image: -moz-linear-gradient($d, $g1, $g2);
-    background-image: -ms-linear-gradient($d, $g1, $g2);
-    background-image: -o-linear-gradient($d, $g1, $g2);
-    background-image: linear-gradient($d, $g1, $g2);
+
+    &[data-gradient="green"], &[data-gradient="turquoise"], &[data-gradient="cyan"] {
+      $g1: rgba(36, 196, 192, 0.4);
+      $g2: rgba(36, 196, 192, 0);
+      background-image: -webkit-linear-gradient($d, $g1, $g2);
+      background-image: -moz-linear-gradient($d, $g1, $g2);
+      background-image: -ms-linear-gradient($d, $g1, $g2);
+      background-image: -o-linear-gradient($d, $g1, $g2);
+      background-image: linear-gradient($d, $g1, $g2);
+    }
+
+    &[data-gradient="black"] {
+      $g1: rgba(0, 0, 0, 0.4);
+      $g2: rgba(0, 0, 0, 0.0);
+      background-image: -webkit-linear-gradient($d, $g1, $g2);
+      background-image: -moz-linear-gradient($d, $g1, $g2);
+      background-image: -ms-linear-gradient($d, $g1, $g2);
+      background-image: -o-linear-gradient($d, $g1, $g2);
+      background-image: linear-gradient($d, $g1, $g2);
+    }
   }
 
   &.item-separator {
@@ -51,4 +64,5 @@
 
   @import "contexts/widgets/big-image";
   @import "contexts/widgets/content-block";
+  @import "contexts/widgets/gallery";
 }
