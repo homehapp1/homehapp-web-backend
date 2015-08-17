@@ -98,6 +98,7 @@ class Navigation extends React.Component {
             <li><Link to='propertiesMode' params={{mode: 'cards'}}>Sell</Link></li>
             <li><Link to='propertiesMode' params={{mode: 'list'}}>Sell</Link></li>
             <li><Link to='propertiesMode' params={{mode: 'single'}}>Sell</Link></li>
+            <li><Link to='neighborhoods'>Neighbourhoods</Link></li>
             <li><Link to='content' params={{slug: 'about-us'}}>About us</Link></li>
             <li><Link to='content' params={{slug: 'terms'}}>Terms & conditions</Link></li>
             <li><Link to='content' params={{slug: 'privacy'}}>Privacy</Link></li>
