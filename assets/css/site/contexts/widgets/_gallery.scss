@@ -1,12 +1,13 @@
 &.gallery {
   position: relative;
-  
+  background-color: $extraLightGray;
+
   & > img {
     display: none;
-    position: absolute;
 
-    &.positioned {
+    &.visible {
       display: block;
+      float: left;
     }
   }
 }

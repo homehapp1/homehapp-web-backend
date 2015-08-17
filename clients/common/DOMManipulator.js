@@ -86,6 +86,14 @@ class DOMManipulator {
     return tmp;
   }
 
+  parent() {
+    if (this.node.parent) {
+      return new DOMManipulator(this.node.parent);
+    }
+
+    throw new Exception('This node has no parents', this.node);
+  }
+
   visible(tolerance = 0) {
     let el = this.node;
     var top = el.offsetTop;
