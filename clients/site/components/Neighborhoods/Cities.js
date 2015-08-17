@@ -1,12 +1,15 @@
 'use strict';
 
 import React from 'react';
-//import { Link } from 'react-router';
+import NeighborhoodsCity from './City';
 
 class NeighborhoodsCities extends React.Component {
+  componentDidMount() {
+    window.location.href = '/neighborhoods/london';
+  }
   render() {
     return (
-      <div />
+      <NeighborhoodsCity city='london' />
     );
   }
 }
