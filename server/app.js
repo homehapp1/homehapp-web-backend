@@ -379,9 +379,9 @@ exports.run = function(projectName, afterRun) {
             return next();
           }
 
-          // if (err.stack && app.config.env === 'development') {
-          //   debug('Error stacktrace: ', err.stack);
-          // }
+          if (err.stack && app.config.env === 'development') {
+            debug('Error stacktrace: ', err.stack);
+          }
 
           if (!app.config.errors.includeData) {
             delete payload.data;

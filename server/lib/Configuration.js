@@ -74,7 +74,7 @@ Configuration.load = function load(projectRoot, projectName, configDir, defs={},
 
   // Load local overrides
   if (exists(path.join(configDir, 'locals.js'))) {
-    let envCfg = getConfigForEnvironment(configDir, projectName, locals);
+    let envCfg = getConfigForEnvironment(configDir, projectName, 'locals');
     config = Helpers.merge(config, envCfg);
   }
 
