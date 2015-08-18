@@ -59,6 +59,7 @@ Change the environment variable "AUTH" to be "no" and restart the instance.
 # Google Cloud notes
 
 export PROJECT_ID=homehappweb
+gcloud config set project $PROJECT_ID
 
 cd support/docker/fluentd-sidecar-gcp
 make build push
