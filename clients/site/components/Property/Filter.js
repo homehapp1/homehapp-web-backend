@@ -9,6 +9,7 @@ import PropertyCards from './Cards';
 import PropertyPreview from './Preview';
 
 import { createProperty } from '../../../common/Helpers';
+import BigImage from '../../../common/components/Widgets/BigImage';
 
 class PropertyFilter extends React.Component {
   static propTypes = {
@@ -39,39 +40,44 @@ class PropertyFilter extends React.Component {
       items.push(createProperty(i));
     }
 
-    return (
-      <div className='details property-list clearfix gray'>
-        <h2>Properties</h2>
-        <ul className='mode-selector'>
-          {
-            modes.map((item) => {
-              let className = (mode === item.mode) ? 'active' : '';
+    let imageSrc = 'v1439885926/site/images/content/staircase.jpg';
 
-              return (
-                <li className={className}><Link to='propertiesMode' params={{mode: item.mode}}><i className={item.icon}></i></Link></li>
-              );
-            })
-          }
-        </ul>
-        {
-          (() => {
-            switch (mode) {
-              case 'list':
+    return (
+      <div className='property-filter'>
+        <BigImage src={imageSrc} />
+        <div className='details property-list clearfix gray'>
+          <h2>Properties</h2>
+          <ul className='mode-selector'>
+            {
+              modes.map((item) => {
+                let className = (mode === item.mode) ? 'active' : '';
+
                 return (
-                  <PropertyList items={items} />
+                  <li className={className}><Link to='propertiesMode' params={{mode: item.mode}}><i className={item.icon}></i></Link></li>
                 );
-              case 'preview':
-                return (
-                  <PropertyPreview items={items} />
-                );
-              case 'cards':
-              default:
-                return (
-                  <PropertyCards items={items} />
-                );
+              })
             }
-          })()
-        }
+          </ul>
+          {
+            (() => {
+              switch (mode) {
+                case 'list':
+                  return (
+                    <PropertyList items={items} />
+                  );
+                case 'preview':
+                  return (
+                    <PropertyPreview items={items} />
+                  );
+                case 'cards':
+                default:
+                  return (
+                    <PropertyCards items={items} />
+                  );
+              }
+            })()
+          }
+        </div>
       </div>
     );
   }
