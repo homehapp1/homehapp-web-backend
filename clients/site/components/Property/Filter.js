@@ -44,7 +44,7 @@ class PropertyFilter extends React.Component {
 
     return (
       <div className='property-filter'>
-        <BigImage src={imageSrc} />
+        <BigImage src={imageSrc} gradient='black' fixed={true} />
         <div className='details property-list clearfix gray'>
           <h2>Properties</h2>
           <ul className='mode-selector'>
