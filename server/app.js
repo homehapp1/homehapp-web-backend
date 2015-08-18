@@ -17,9 +17,12 @@ import Errors from './lib/Errors';
 import Logger from './lib/Logger';
 
 let PROJECT_NAME = 'site';
-const PROJECT_ROOT = path.resolve(__dirname, '..');
-const COMMON_CLIENT_ROOT = path.resolve(PROJECT_ROOT, 'clients', 'common');
-const STATICS_ROOT = path.resolve(PROJECT_ROOT, 'build', 'statics');
+let PROJECT_ROOT = path.resolve(__dirname, '..');
+let COMMON_CLIENT_ROOT = path.resolve(PROJECT_ROOT, 'clients', 'common');
+let STATICS_ROOT = path.resolve(PROJECT_ROOT, 'build', 'statics');
+if (path.basename(PROJECT_ROOT) === 'build') {
+  STATICS_ROOT = path.resolve(PROJECT_ROOT, 'statics');
+}
 const SOURCE_PATH = __dirname;
 let CLIENT_ROOT = null;
 let PROJECT_REVISION = null;
@@ -82,6 +85,7 @@ exports.run = function(projectName, afterRun) {
     function resolveCurrentRevision() {
       return new Promise((resolve, reject) => {
         PROJECT_REVISION = require('moment')().format('YYYYMMDD');
+        app.PROJECT_REVISION = PROJECT_REVISION;
         let revPath = path.join(PROJECT_ROOT, 'BUILD_REVISION');
         fs.readFile(revPath, (err, content) => {
           if (err) {
@@ -90,6 +94,8 @@ exports.run = function(projectName, afterRun) {
           if (content) {
             PROJECT_REVISION = parseInt(content);
           }
+
+          app.PROJECT_REVISION = PROJECT_REVISION;
           return resolve(PROJECT_REVISION);
         });
       });
@@ -261,6 +267,9 @@ exports.run = function(projectName, afterRun) {
             if (!res.locals.data) {
               res.locals.data = {};
             }
+            if (!res.locals.styleSheets) {
+              res.locals.styleSheets = [];
+            }
             if (app.authentication) {
               if (!res.locals.data.AuthStore) {
                 res.locals.data.AuthStore = {};
@@ -273,7 +282,7 @@ exports.run = function(projectName, afterRun) {
 
         if (config.isomorphic.enabled) {
           app.use(function mainRoute(req, res, next) {
-            debug('mainRoute');
+            debug('mainRoute', req.skipMain);
             if (req.skipMain) {
               return next();
             }
@@ -295,6 +304,7 @@ exports.run = function(projectName, afterRun) {
 
             res.locals.data.ApplicationStore.config = clientConfig;
 
+            debug('clientConfig', clientConfig);
             debug('res.locals.data', res.locals.data);
             debug('res.locals.metadatas', res.locals.metadatas);
 
@@ -303,14 +313,11 @@ exports.run = function(projectName, afterRun) {
             let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
 
             Router.run(routes, req.url, function (Handler) {
-              let content = React.renderToString(React.createElement(Handler));
               let flushedState = alt.flush();
+              let content = React.renderToString(React.createElement(Handler));
 
+              //console.log('flushedState', flushedState);
               iso.add(content, flushedState);
-
-              if (!res.locals.styleSheets) {
-                res.locals.styleSheets = [];
-              }
 
               let html = iso.render();
 
@@ -320,6 +327,7 @@ exports.run = function(projectName, afterRun) {
                 metadatas: res.locals.metadatas
               })
               .then((locals) => {
+                //console.log('locals.html', locals.html);
                 res.render('index', locals);
               });
             });
