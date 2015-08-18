@@ -1,0 +1,15 @@
+&.gallery {
+  position: relative;
+  background-color: $extraLightGray;
+  padding: $contentPadding / 2;
+
+  & > img {
+    display: none;
+
+    &.visible {
+      display: block;
+      float: left;
+      padding: $contentPadding / 2;
+    }
+  }
+}

@@ -3,6 +3,7 @@
   color: white;
   text-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5), 0 0 1em rgba(0, 0, 0, 0.3);
   background-color: transparent;
+  opacity: 1;
 
   & > .image-content {
     position: absolute;
@@ -10,25 +11,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-
-    @include small() {
-      position: static;
-      @include vendors(transform, none);
-    }
+    z-index: -1;
 
     & > img, & > video {
       position: absolute;
-      width: 100%;
       min-width: 100%;
       min-height: 100%;
       left: 50%;
       top:0;
       @include vendors(transform, translateX(-50%));
-
-      @include small() {
-        position: static;
-        @include vendors(transform, none);
-      }
     }
 
     &[data-vertical="middle"] {
@@ -50,15 +41,43 @@
     }
   }
 
-  &.fixed > img, &.fixed > video, &.fixed > .image-content {
-    position: fixed;
-    z-index: -10;
-    @include vendors(transition-property, opacity);
-    @include vendors(transition-duration, 500ms);
-    opacity: 1;
+  &.fixed {
+    &:before, &:after {
+      display: block;
+      content: ' ';
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+      background-color: white;
+    }
 
-    @include small() {
-      position: static;
+    &:before {
+      bottom: 100%;
+    }
+
+    &:after {
+      top: 100%;
+    }
+
+    & > img, &.fixed > video, &.fixed > .image-content {
+      position: fixed;
+      z-index: -10;
+      @include vendors(transition-property, opacity);
+      @include vendors(transition-duration, $transitionDurationSlow);
+      opacity: 1;
+
+      @include small() {
+        @include vendors(transition-property, none);
+      }
+    }
+
+    &.outside-viewport {
+      z-index: -100;
+
+      & > img, &.fixed > video, &.fixed > .image-content {
+        opacity: 0;
+      }
     }
   }
 
@@ -74,7 +93,6 @@
   & > .width-wrapper {
     position: absolute;
     display: table;
-    height: 100%;
     left: 50%;
     margin-left: -0.5 * $pageWidth;
 

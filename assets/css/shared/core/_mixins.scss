@@ -153,7 +153,7 @@
   opacity: 0.2;
   font-size: 0.8 * $s;
   @include vendors(transition-property, all);
-  @include vendors(transition-duration, 200ms);
+  @include vendors(transition-duration, $transitionDurationFast);
 
   &:hover {
     opacity: 0.8;

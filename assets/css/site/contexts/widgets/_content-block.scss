@@ -1,0 +1,18 @@
+&.content-block {
+  padding-top: $contentPadding * 10;
+  padding-bottom: $contentPadding * 10;
+
+  h2 {
+    font-size: 52px;
+    text-align: center;
+    font-weight: 400;
+  }
+
+  & > *:first-child, & > .width-wrapper > *:first-child {
+    margin-top: 0;
+  }
+
+  p {
+    margin-bottom: 1em;
+  }
+}

@@ -1,0 +1,29 @@
+.mainpage {
+  .splash {
+    $q: 14px;
+
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .symbol {
+      width: 7 * $q;
+    }
+
+    .logotype {
+      width: 25 * $q;
+      margin-top: $q;
+    }
+
+    .slogan {
+      width: 13 * $q;
+      margin-top: $q;
+    }
+
+    h1, p {
+      margin: 0;
+    }
+  }
+}

@@ -1,6 +1,9 @@
 #navigation {
+  $pv: $contentPadding;
   display: block;
-  float: right;
+  position: absolute;
+  z-index: $zNavigation;
+  width: 100%;
   line-height: $headerHeight - 2 * $pv;
   text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
   $iconSize: 20px;
@@ -14,9 +17,9 @@
     width: $iconSize;
     height: $iconSize;
     position: fixed;
+    z-index: $zNavigation - 1;
     top: ($headerHeight - $iconSize) / 2;
     right: ($headerHeight - $iconSize) / 2;
-    z-index: 100;
     border-radius: $iconSize;
 
     &:before {
@@ -45,8 +48,12 @@
       background-color: black;
       border-radius: 2px;
       @include vendors(transition-property, all);
-      @include vendors(transition-duration, 500ms);
+      @include vendors(transition-duration, $transitionDuration);
       @include vendors(transition-timing-function, ease-out);
+
+      @include small() {
+        @include vendors(transition-property, none);
+      }
 
       &.top {
         top: 0;
@@ -98,7 +105,7 @@
       @include vendors(animation-timing-function, linear);
 
       & > * {
-        background-color: $orange;
+        background-color: $turquoise;
         box-shadow: none;
         $x: 0.866 * $oThirds;
         &.top {
@@ -117,29 +124,34 @@
   }
 
   & > .container {
-    position: absolute;
-    background-color: white;
+    position: fixed;
     top: $contentPadding;
     right: $contentPadding;
-    z-index: 99;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    //padding-top: $iconSize + $contentPadding;
+    z-index: 9;
     width: 0;
     overflow: hidden;
-    @include vendors(transition-property, width);
-    @include vendors(transition-duration, 500ms);
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, $transitionDuration);
 
     @include small() {
-      left: 0;
-      right: 0;
-      top: 0;
       width: 100%;
+      left: 100%;
+      right: auto;
+      top: 0;
+      bottom: 0;
+      box-shadow: none;
     }
 
     ul {
       margin: 0;
       padding: $contentPadding * 2;
       list-style: none;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+      @include small() {
+        box-shadow: none;
+      }
 
       li {
         display: block;
@@ -150,6 +162,7 @@
           padding: $contentPadding / 2 0;
           color: black;
           font-style: italic;
+          text-decoration: none;
 
           &:hover, &.active {
             color: $turquoise;
@@ -159,9 +172,58 @@
     }
   }
 
-  .icon.open + .container {
+  &.open {
+    & > .icon {
+      float: right;
+    }
+
+    & > .container {
+      display: block;
+      width: 200px;
+
+      @include small() {
+        width: 100%;
+        left: 0;
+      }
+    }
+
+  }
+}
+
+[data-handler="homepage"] #navigation {
+  .icon {
+    display: none;
+  }
+
+  & > .container {
     display: block;
-    width: 200px;
+    width: auto;
+    box-shadow: none;
+    position: absolute;
+
+    ul {
+      padding: 0 $contentPadding 0 0;
+      background-color: transparent;
+      text-transform: uppercase;
+      box-shadow: none;
+
+      li {
+        &, & > a {
+          display: inline;
+          color: white;
+          font-style: normal;
+          font-weight: 400;
+
+          &:hover, &.active {
+            color: $turquoise;
+          }
+        }
+
+        & + li {
+          margin-left: 1em;
+        }
+      }
+    }
   }
 }
 

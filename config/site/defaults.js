@@ -28,7 +28,7 @@ module.exports = (projectRoot) => {
           // Big image view
           large: 'c_scale,q_60,w_1920',
           medium: 'c_scale,q_60,w_1000',
-          small: 'c_scale,q_60,w_600'
+          small: 'c_fill,q_60,h_600'
         }
       }
     }

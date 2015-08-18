@@ -20,23 +20,6 @@ class PropertyPreview extends React.Component {
     this.pager = [];
   }
 
-  pagerClick(e) {
-    let dx = 0;
-
-    // Get direction
-    if (e.target.className.match(/next/)) {
-      dx = 1;
-      this.refs.properties.swipe.next();
-    } else if (e.target.className.match(/prev/)) {
-      dx = -1;
-      this.refs.properties.swipe.prev();
-    } else {
-      return true;
-    }
-
-    return false;
-  }
-
   componentDidMount() {
     this.pagerClick = this.pagerClick.bind(this);
 
@@ -49,6 +32,18 @@ class PropertyPreview extends React.Component {
     this.refs.properties.getDOMNode().getElementsByClassName('property-list-item')[0].className += ' active';
     setFullHeight();
     //.shouldUpdate
+  }
+
+  pagerClick(e) {
+    // Get direction
+    if (e.target.className.match(/next/)) {
+      this.refs.properties.swipe.next();
+    } else if (e.target.className.match(/prev/)) {
+      this.refs.properties.swipe.prev();
+    } else {
+      return true;
+    }
+    return false;
   }
 
   render() {
@@ -76,7 +71,7 @@ class PropertyPreview extends React.Component {
           this.props.items.map((item, index) => {
             let smallImage = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.small}/${item.images[0]}`;
             let mediumImage = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.preview}/${item.images[0]}`;
-            let largeImage = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.large}/${item.images[0]}`;
+            // let largeImage = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.large}/${item.images[0]}`;
 
             return (
               <div className='property-list-item full-height-strict' key={index}>

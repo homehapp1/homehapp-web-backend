@@ -17,9 +17,36 @@ html, body {
 
 body {
   margin: 0;
-  
+
   &.no-scroll {
     overflow-y: hidden;
+  }
+
+  @include small() {
+    overflow-x: hidden;
+  }
+
+  &.no-scroll-mobile, &.no-scroll-small {
+    @include small() {
+      overflow-y: hidden;
+    }
+  }
+
+  &.no-scroll-medium {
+    @include small() {
+      overflow-y: hidden;
+    }
+  }
+
+  @include vendors(transition-property, transform);
+  @include vendors(transition-duration, $transitionDuration);
+
+  &.away-for-small {
+    #container {
+      @include small() {
+        @include vendors(transform, translateX(-100%));
+      }
+    }
   }
 }
 
@@ -34,12 +61,18 @@ body {
 
 #app {
   min-height: 100%;
+
+  #container {
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, $transitionDuration);
+    @include vendors(transition-timing-function, ease-out);
+  }
 }
 
 // Display only for small screens
 .show-for-small {
   display: none;
-  
+
   @include small() {
     display: block;
   }
@@ -55,7 +88,7 @@ body {
 // Display only for medium screens
 .show-for-medium {
   display: none !important;
-  
+
   @include medium(false) {
     display: block !important;
   }
@@ -78,7 +111,7 @@ body {
 // Hide only for large screens
 .hide-for-large {
   display: none !important;
-  
+
   @include noOverflow() {
     display: block !important;
   }
@@ -94,7 +127,7 @@ body {
 // Hide only for large screens
 .hide-for-large-and-medium, .hide-for-medium-and-large {
   display: none !important;
-  
+
   @include small() {
     display: block !important;
   }
@@ -103,7 +136,7 @@ body {
 // Display only for small and medium screens
 .show-for-small-and-medium, .show-for-medium-and-small {
   display: none;
-  
+
   @include medium() {
     display: block !important;
   }
@@ -112,7 +145,7 @@ body {
 // Hide only for small screens
 .hide-for-small-and-medium, .hide-for-medium-and-small {
   display: block;
-  
+
   @include medium() {
     display: none !important;
   }
@@ -121,7 +154,7 @@ body {
 .row {
   @include clearfix();
   display: table;
-  
+
   & > * {
     display: table-cell;
   }

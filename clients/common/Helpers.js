@@ -1,6 +1,7 @@
 'use strict';
 
 import ReactUpdates from 'react/lib/ReactUpdates';
+import DOMManipulator from './DOMManipulator';
 
 exports.floor = function floor(v) {
   v = Math.floor(v * 100) / 100;
@@ -75,7 +76,11 @@ exports.checkElementInViewport = function checkElementInViewport(element, viewpo
   return elementOffsetTop < (viewportHeight + offset);
 };
 
-exports.windowScroller = function(offset = 0, speed = 500) {
+exports.scrollTop = function(offset = null, speed = 500) {
+  if (offset === null) {
+    return window.pageYOffset || document.documentElement.scrollTop;
+  }
+
   let f = 5;
   let init = document.documentElement.scrollTop + document.body.scrollTop;
   let c = Math.ceil(speed / f);
@@ -83,7 +88,7 @@ exports.windowScroller = function(offset = 0, speed = 500) {
 
   // Invalid count
   if (c <= 0) {
-    return;
+    return null;
   }
 
   let dy = (offset - init) / c;
@@ -111,5 +116,84 @@ exports.setFullHeight = function() {
 
   for (let i = 0; i < items.length; i++) {
     items[i].style.height = `${height}px`;
+  }
+};
+
+exports.createProperty = function(index = 1) {
+  // @TODO: This part is to be removed when the API connection provides proper data
+  var randomSeed = function(min, max, precision = 0) {
+    if (precision) {
+      return Number((min + max * Math.random()).toFixed(precision));
+    }
+
+    return min + Math.floor(max * Math.random());
+  };
+
+  var getRandom = function (arr, l = 0) {
+    if (l) {
+      l = Math.min(arr.length, l);
+      let rval = [];
+      let i = 0;
+
+      while (rval.length < l) {
+        let opt = getRandom(arr);
+        if (rval.indexOf(opt) === -1) {
+          rval.push(opt);
+        }
+
+        i++;
+
+        // Overflow protection and throttling
+        if (i > 100) {
+          break;
+        }
+      }
+      return rval;
+    }
+
+    let seed = randomSeed(0, arr.length);
+    return arr[seed];
+  };
+
+  // Create a random card for demo purposes only
+  return {
+    slug: index,
+    images: getRandom(['v1439796815/contentMockup/DSCF9347.jpg', 'v1439796815/contentMockup/DSCF9253.jpg', 'v1439796812/contentMockup/DSCF9310.jpg', 'v1439796810/contentMockup/DSCF9299.jpg', 'v1439796803/contentMockup/DSCF9261.jpg', 'v1439796800/contentMockup/DSCF9339.jpg', 'v1439796799/contentMockup/DSCF9328.jpg', 'v1439796797/contentMockup/DSCF9272.jpg', 'v1439796794/contentMockup/DSCF9301.jpg', 'v1439796791/contentMockup/DSCF9188.jpg', 'v1439796791/contentMockup/DSCF9306.jpg', 'v1439796791/contentMockup/DSCF9280.jpg', 'v1439796780/contentMockup/DSCF9257.jpg', 'v1439796776/contentMockup/DSCF9245.jpg', 'v1439796775/contentMockup/DSCF9201.jpg', 'v1439796764/contentMockup/DSCF9227.jpg', 'v1439796763/contentMockup/DSCF9111.jpg', 'v1439796759/contentMockup/DSCF9158.jpg', 'v1439796753/contentMockup/DSCF9225.jpg', 'v1439796748/contentMockup/DSCF9144.jpg', 'v1439796743/contentMockup/DSCF9178.jpg', 'v1439796741/contentMockup/DSCF9156.jpg', 'v1439796733/contentMockup/DSCF9177.jpg', 'v1439796732/contentMockup/DSCF9160.jpg', 'v1439796719/contentMockup/DSCF9102.jpg', 'v1439796718/contentMockup/DSCF9155.jpg', 'v1439796708/contentMockup/DSCF9141.jpg', 'v1439796701/contentMockup/DSCF9097.jpg', 'v1439796699/contentMockup/DSCF9095.jpg', 'v1439796693/contentMockup/DSCF9108.jpg', 'v1439796687/contentMockup/DSCF9105.jpg', 'v1439796684/contentMockup/DSCF9103.jpg'], randomSeed(2, 10)),
+    price: randomSeed(1, 5, 4),
+    construction: getRandom(['Adobe', 'Brick', 'Concrete Block', 'Log', 'Metal', 'Stone', 'Straw', 'Wood']),
+    exterior: getRandom(['Coastal view', 'City view', 'Hill view', 'By a river', 'Ocean view', 'Lakefront', 'Greenbelt', 'Golf Course', 'Suburban', 'City', 'Cul De Sac', 'Dead End Street', 'Gated Community']),
+    style: getRandom(['A-Frame', 'Bungalow', 'Colonial', 'Contemporary', 'Cottage', 'Dome', 'Log', 'Mediterranean', 'Ranch', 'Spanish', 'Tudor', 'Victorian']),
+    roof: getRandom(['Composition Shingle', 'Concrete Tile', 'Metal', 'Rock', 'Shake', 'Slate', 'Tar', 'Tile', 'Wood']),
+    yard: getRandom(['Swimming Pool', 'Sport pool', 'Spa', 'Sauna', 'Steam Room', 'Fireplace or fire pit', 'Built-in BBQ', 'Outdoor Kitchen', 'Courtyard', 'Covered Patio', 'Uncovered Patio', 'Deck', 'Tennis Courts', 'Trees and Landscaping', 'Gardens', 'Lawn', 'Automatic Sprinklers', 'Drip', 'Misting System'], randomSeed(0, 4)),
+    flooring: getRandom(['Carpeting', 'Concrete', 'Bamboo', 'Stone', 'Tile', 'Laminate', 'Cork', 'Vinyl / Linoleum', 'Manufactured Wood', 'Marble', 'Wood'], randomSeed(0, 4)),
+    energy: getRandom(['Attic Fans', 'Ceiling Fans', 'Dual or Triple Pane Windows', 'Programmable Thermostats', 'Single Flush Toilets', 'Window Shutters', 'Solar Heat', 'Solar Plumbing', 'Solar Screens', 'Storm Windows', 'Tankless Water Heater', 'Skylights or Sky Tubes', 'Whole House Fan'], randomSeed(0, 4)),
+    disabilityFeatures: getRandom(['Extra-Wide Doorways', 'Ramps', 'Grab Bars', 'Lower Counter Heights', 'Walk-in Tubs and Showers'], randomSeed(0, 2)),
+    storified: (randomSeed(0, 4)) ? false : true,
+
+    address: {
+      street: '221 B Baker Street',
+      city: 'London',
+      country: 'GB'
+    }
+  };
+};
+
+exports.itemViews = function() {
+  let items = document.getElementsByClassName('item');
+
+  if (!items.length) {
+    return null;
+  }
+
+  for (let i = 0; i < items.length; i++) {
+    let item = new DOMManipulator(items[i]);
+
+    // Check if the element is in the viewport with a small tolerance AFTER
+    // the element should be displayed
+    if (!item.visible(-100)) {
+      item.addClass('outside-viewport');
+    } else {
+      item.removeClass('outside-viewport');
+    }
   }
 };
