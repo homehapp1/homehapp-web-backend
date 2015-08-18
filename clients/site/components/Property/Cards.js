@@ -5,6 +5,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 import DOMManipulator from '../../../common/DOMManipulator';
+import classNames from 'classnames';
 
 class PropertyCards extends React.Component {
   static propTypes = {
@@ -14,11 +15,13 @@ class PropertyCards extends React.Component {
 
   constructor() {
     super();
-    this.config = ApplicationStore.getState().config;
     this.columns = 0;
+    this.storeListener = this.onChange.bind(this);
   }
 
   componentDidMount() {
+    ApplicationStore.listen(this.storeListener);
+
     this.resize = this.resize.bind(this);
     window.addEventListener('resize', this.resize);
 
@@ -27,7 +30,19 @@ class PropertyCards extends React.Component {
   }
 
   componentWillUnmount() {
+    ApplicationStore.unlisten(this.storeListener);
     window.removeEventListener('resize', this.resize);
+  }
+
+  state = {
+    config: ApplicationStore.getState().config
+  }
+
+  onChange(state) {
+    console.log('onChange', state);
+    this.setState({
+      config: ApplicationStore.getState().config
+    });
   }
 
   // Generic stuff that should happen when the window is resized
@@ -93,6 +108,10 @@ class PropertyCards extends React.Component {
   }
 
   render() {
+    //console.log('Cards this.state.config', this.state.config);
+    if (!this.state.config) {
+      return null;
+    }
     return (
       <div ref='cards' className='card-list'>
       {
@@ -105,7 +124,7 @@ class PropertyCards extends React.Component {
           let seed = Math.floor(Math.random() * heights.length);
           let h = heights[seed];
 
-          let src = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.card},h_${h}/${item.images[0]}`;
+          let src = `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.card},h_${h}/${item.images[0]}`;
           let classes = ['card'];
 
           if (item.storified) {
@@ -113,7 +132,7 @@ class PropertyCards extends React.Component {
           }
 
           return (
-            <div className={classes.join(' ')} key={index}>
+            <div className={classNames(classes)} key={index}>
               <div className='card-content'>
                 <Link to='home' params={{slug: item.slug}} className='thumbnail'>
                   <img src={src} height={h} />
