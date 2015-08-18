@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ApplicationStore from '../../stores/ApplicationStore';
+import { setFullHeight } from '../../Helpers';
 
 class BigImage extends React.Component {
   constructor() {
@@ -12,9 +13,13 @@ class BigImage extends React.Component {
   static propTypes = {
     src: React.PropTypes.string,
     alt: React.PropTypes.string,
-    fixed: React.PropTypes.boolean,
+    fixed: React.PropTypes.bool,
     gradient: React.PropTypes.string
   };
+
+  componentDidMount() {
+    setFullHeight();
+  }
 
   render() {
     let classes = [
