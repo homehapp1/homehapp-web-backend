@@ -8,6 +8,7 @@ import { createProperty } from '../../../common/Helpers';
 
 import PropertyCards from '../Property/Cards';
 import BigImage from '../../../common/components/Widgets/BigImage';
+import LargeText from '../../../common/components/Widgets/LargeText';
 
 class Homepage extends React.Component {
   constructor() {
@@ -35,7 +36,7 @@ class Homepage extends React.Component {
     return (
       <div id='mainpage' className='mainpage'>
         <BigImage gradient='green' fixed={true} src='v1439564093/london-view.jpg'>
-          <div className='large-text' data-vertical='center' data-align='center'>
+          <LargeText align='center' vertical='center'>
             <div className='splash'>
               <h1>
                 <img className='symbol' src='/public/images/homehapp-symbol.svg' alt='' />
@@ -43,7 +44,7 @@ class Homepage extends React.Component {
               </h1>
               <p><img className='slogan' src='/public/images/slogan-discovery.svg' alt='Discover y' /></p>
             </div>
-          </div>
+          </LargeText>
         </BigImage>
         <div className='item property-list partial-list'>
           <PropertyCards items={items} max={12} />

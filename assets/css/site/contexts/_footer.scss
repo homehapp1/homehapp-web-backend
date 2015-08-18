@@ -1,34 +1,47 @@
 #footer {
-  border-top: solid 1px $borderGray;
-  padding: 3 * $contentPadding 0;
-  background-color: $lightGray;
-  
+  padding: 5 * $contentPadding 0;
+  background-color: white;
+  text-align: center;
+  font-weight: 400;
+
   h3 {
     img {
       vertical-align: middle;
       height: 40px;
     }
   }
-  
+
   ul {
     margin: 1em 0;
     padding: 0;
     list-style: none;
-    @include vendors(column-count, 4);
-    
-    @include medium() {
-      @include vendors(column-count, 3);
+    text-transform: uppercase;
+
+    & + ul {
+      margin-top: 2em;
     }
-    
-    @include small() {
-      @include vendors(column-count, 1);
+
+    &.social img {
+      height: 30px;
     }
-    
+
     li {
-      display: block;
+      display: inline;
+
+      @include small() {
+        display: block;
+      }
+
+      & + li {
+        margin-left: 2em;
+
+        @include small() {
+          margin-left: 0;
+        }
+      }
     }
   }
-  
+
   a {
     color: $linkGray;
   }
