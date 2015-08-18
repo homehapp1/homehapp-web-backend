@@ -34,6 +34,7 @@ export function register(app) {
     let opts = merge({
       layout: 'layout',
       staticPath: staticPath,
+      revision: app.PROJECT_REVISION,
       site: {
         title: '',
         host: app.config.host

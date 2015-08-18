@@ -22,6 +22,7 @@ const COMMON_CLIENT_ROOT = path.resolve(PROJECT_ROOT, 'clients', 'common');
 const STATICS_ROOT = path.resolve(PROJECT_ROOT, 'build', 'statics');
 const SOURCE_PATH = __dirname;
 let CLIENT_ROOT = null;
+let PROJECT_REVISION = null;
 
 let debug = require('debug')('app');
 
@@ -76,6 +77,24 @@ exports.run = function(projectName, afterRun) {
       if (!config.isomorphic.enabled) {
         app.use(require('express-layout')());
       }
+    }
+
+    function resolveCurrentRevision() {
+      return new Promise((resolve, reject) => {
+        PROJECT_REVISION = require('moment')().format('YYYYMMDD');
+        let exec = require('child_process').exec;
+        let git = exec('echo "$(git rev-parse --short HEAD)"', (err, stdout, stderr) => {
+          if (err) {
+            return reject(err);
+          }
+
+          if (stdout) {
+            PROJECT_REVISION = stdout.trim();
+          }
+          app.PROJECT_REVISION = PROJECT_REVISION;
+          return resolve(PROJECT_REVISION);
+        });
+      });
     }
 
     function configureLogger() {
@@ -412,7 +431,8 @@ exports.run = function(projectName, afterRun) {
 
     // Application initialization flow
 
-    configureLogger()
+    resolveCurrentRevision()
+    .then( () => configureLogger() )
     .then( () => connectToDatabase() )
     .then( () => setupStaticRoutes() )
     .then( () => configureMiddleware() )
@@ -421,6 +441,8 @@ exports.run = function(projectName, afterRun) {
     .then( () => additionalConfig() )
     .then( () => {
       debug('Application initialization flow done!');
+
+      app.log.debug('Using configuration', app.config);
 
       if (app.config.env !== 'test') {
         app.server.listen(app.config.port, function() {

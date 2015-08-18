@@ -6,6 +6,9 @@ module.exports = function (projectRoot) {
       Console: {
         enabled: true,
         level: 'debug'
+      },
+      File: {
+        level: 'debug'
       }
     },
     database: {

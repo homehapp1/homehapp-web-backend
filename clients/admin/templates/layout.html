@@ -12,7 +12,7 @@
 
   <!-- !Stylesheets -->
   <% if (env !== 'development') { %>
-    <link rel="stylesheet" href="<%= staticPath %>/v0/admin/css/all.min.css">
+    <link rel="stylesheet" href="<%= staticPath %>/v<%= revision %>/admin/css/all.min.css">
   <% } else { %>
     <link rel="stylesheet" href="<%= staticPath %>/css/vendor.css">
     <link rel="stylesheet" href="<%= staticPath %>/css/admin.css">
@@ -36,8 +36,8 @@
 
   <% if (includeClient) { %>
     <% if (env !== 'development') { %>
-      <script src="<%= staticPath %>/v0/admin/js/vendor.bundle.min.js"></script>
-      <script src="<%= staticPath %>/v0/admin/js/client.min.js"></script>
+      <script src="<%= staticPath %>/v<%= revision %>/admin/js/vendor.bundle.min.js"></script>
+      <script src="<%= staticPath %>/v<%= revision %>/admin/js/client.min.js"></script>
     <% } else { %>
       <script src="<%= staticPath %>/js/vendor.bundle.js"></script>
       <script src="<%= staticPath %>/js/client.js"></script>
