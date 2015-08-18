@@ -82,16 +82,14 @@ exports.run = function(projectName, afterRun) {
     function resolveCurrentRevision() {
       return new Promise((resolve, reject) => {
         PROJECT_REVISION = require('moment')().format('YYYYMMDD');
-        let exec = require('child_process').exec;
-        let git = exec('echo "$(git rev-parse --short HEAD)"', (err, stdout, stderr) => {
+        let revPath = path.join(PROJECT_ROOT, 'BUILD_REVISION');
+        fs.readFile(revPath, (err, content) => {
           if (err) {
-            return reject(err);
+            return resolve(PROJECT_REVISION);
           }
-
-          if (stdout) {
-            PROJECT_REVISION = stdout.trim();
+          if (content) {
+            PROJECT_REVISION = parseInt(content);
           }
-          app.PROJECT_REVISION = PROJECT_REVISION;
           return resolve(PROJECT_REVISION);
         });
       });
