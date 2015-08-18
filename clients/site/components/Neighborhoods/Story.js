@@ -4,6 +4,7 @@ import React from 'react';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 import Gallery from '../../../common/components/Widgets/Gallery';
 import BigImage from '../../../common/components/Widgets/BigImage';
+import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
 class NeighborhoodsStory extends React.Component {
   constructor() {
@@ -40,21 +41,19 @@ class NeighborhoodsStory extends React.Component {
           </div>
         </BigImage>
 
-        <div className='content-block item'>
-          <div className='width-wrapper'>
-            <blockquote>
-              <p>
-                St John's Wood is a district of north-west London, in the City of Westminster, and on the north-west side of Regent's Park. It is about 2.5 miles (4 km) north-west of Charing Cross. Once part of the Great Middlesex Forest, it was later owned by the Knights of St John of Jerusalem.
-              </p>
-              <p>
-                It is a very affluent neighbourhood, with the area postcode (NW8) ranked by Forbes magazine as the 5th most expensive postcode in London based on the average home price in 2007. According to a 2014 property agent survey, St. John's Wood residents pay the highest average rent in all of London.
-              </p>
-              <p>
-                In 2013, the price of housing in St John's Wood reached exceptional levels. Avenue Road had more than 10 large mansions/villas for sale. The most expensive had an asking price of £65 million, with the cheapest at £15 million. The remainder were around £25 mill.
-              </p>
-            </blockquote>
-          </div>
-        </div>
+        <ContentBlock>
+          <blockquote>
+            <p>
+              St John's Wood is a district of north-west London, in the City of Westminster, and on the north-west side of Regent's Park. It is about 2.5 miles (4 km) north-west of Charing Cross. Once part of the Great Middlesex Forest, it was later owned by the Knights of St John of Jerusalem.
+            </p>
+            <p>
+              It is a very affluent neighbourhood, with the area postcode (NW8) ranked by Forbes magazine as the 5th most expensive postcode in London based on the average home price in 2007. According to a 2014 property agent survey, St. John's Wood residents pay the highest average rent in all of London.
+            </p>
+            <p>
+              In 2013, the price of housing in St John's Wood reached exceptional levels. Avenue Road had more than 10 large mansions/villas for sale. The most expensive had an asking price of £65 million, with the cheapest at £15 million. The remainder were around £25 mill.
+            </p>
+          </blockquote>
+        </ContentBlock>
 
         <Gallery>
           {
