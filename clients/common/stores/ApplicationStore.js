@@ -5,14 +5,10 @@ import alt from '../alt';
 class ApplicationStore {
   constructor() {
     this.on('bootstrap', () => {
-      console.log('bootstrapping', this.csrf, this.config);
+      debug('bootstrapping', this.csrf, this.config);
     });
     this.csrf = null;
-    this.config = {
-      cloudinary: {
-        baseUrl: '//res.cloudinary.com/homehapp/image/upload/'
-      }
-    };
+    this.config = null;
   }
 }
 

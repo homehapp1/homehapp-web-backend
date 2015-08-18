@@ -3,11 +3,12 @@
 import React from 'react';
 import ApplicationStore from '../../stores/ApplicationStore';
 import { setFullHeight } from '../../Helpers';
+import classNames from 'classnames';
 
 class BigImage extends React.Component {
   constructor() {
     super();
-    this.config = ApplicationStore.getState().config;
+    this.storeListener = this.onChange.bind(this);
   }
 
   static propTypes = {
@@ -19,9 +20,30 @@ class BigImage extends React.Component {
 
   componentDidMount() {
     setFullHeight();
+    ApplicationStore.listen(this.storeListener);
+  }
+
+  componentWillUnmount() {
+    ApplicationStore.unlisten(this.storeListener);
+  }
+
+  state = {
+    config: ApplicationStore.getState().config
+  }
+
+  onChange(state) {
+    console.log('onChange', state);
+    this.setState({
+      config: ApplicationStore.getState().config
+    });
   }
 
   render() {
+    //console.log('BigImage this.state.config', this.state.config);
+    if (!this.state.config) {
+      return null;
+    }
+
     let classes = [
       'item',
       'big-image',
@@ -35,13 +57,13 @@ class BigImage extends React.Component {
     let alt = this.props.alt || '';
 
     let images = {
-      small: `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.small}/${this.props.src}`,
-      medium: `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.medium}/${this.props.src}`,
-      large: `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.large}/${this.props.src}`
+      small: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.small}/${this.props.src}`,
+      medium: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.medium}/${this.props.src}`,
+      large: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.large}/${this.props.src}`
     };
 
     return (
-      <div className={classes.join(' ')} data-gradient={this.props.gradient}>
+      <div className={classNames(classes)} data-gradient={this.props.gradient}>
         <div className='image-content'>
           <img alt={alt} className='show-for-large' src={images.large} />
           <img alt={alt} className='show-for-medium' src={images.medium} />
