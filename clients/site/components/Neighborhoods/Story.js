@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import Gallery from '../../../common/components/Gallery';
+import Gallery from '../../../common/components/Widgets/Gallery';
 //import { Link } from 'react-router';
 
 class NeighborhoodsStory extends React.Component {
