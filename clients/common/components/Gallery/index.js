@@ -6,20 +6,44 @@ import DOMManipulator from '../../DOMManipulator';
 
 class Gallery extends React.Component {
   static propTypes = {
-    children: React.PropTypes.array.isRequired
+    children: React.PropTypes.array.isRequired,
+    columns: React.PropTypes.number,
+    imagewidth: React.PropTypes.number
   }
-
-  static INIT = 0;
-  static LOADING = 1;
-  static READY = 2;
 
   constructor() {
     super();
     this.preloadStack = {};
     this.aspectRatios = [];
+    this.columns = null;
+    this.imageWidth = null;
 
     this.onResize = this.onResize.bind(this);
   }
+
+  componentDidMount() {
+    this.gallery = new DOMManipulator(this.refs.gallery);
+    if (!this.imageWidth) {
+      this.imageWidth = this.props.imagewidth || 500;
+    }
+
+    if (!this.columns) {
+      this.columns = this.props.columns || 10;
+    }
+
+    this.updateGallery();
+
+    window.addEventListener('resize', this.onResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
+
+  static INIT = 0;
+  static LOADING = 1;
+  static READY = 2;
 
   onResize() {
     this.updateGallery();
@@ -44,49 +68,55 @@ class Gallery extends React.Component {
     image.src = src;
   }
 
-  updateGallery() {
-    let images = this.refs.gallery.getDOMNode().getElementsByTagName('img');
-    let itemsPerRow = Math.min(Math.round(this.gallery.width() / 400), 4);
+  // Partition the gallery based on the divisions provided by
+  // linear partition algorithm
+  partition(images) {
+    let columns = Math.min(Math.round(this.gallery.width() / this.imageWidth), this.columns);
 
-    let rows = Math.ceil(images.length / itemsPerRow);
+    let rows = Math.ceil(images.length / columns);
     let width = this.gallery.width();
 
+    let partitioned = linearPartition(this.aspectRatios, rows);
+    let index = 0;
+
+    for (let i = 0; i < partitioned.length; i++) {
+      let row = partitioned[i];
+      let total = 0;
+      let h = 0;
+
+      for (let j = 0; j < row.length; j++) {
+        total += row[j];
+      }
+
+      for (let j = 0; j < row.length; j++) {
+        let col = row[j];
+        let w = col / total * 100;
+
+        let image = new DOMManipulator(images[index]);
+        image.addClass('visible');
+
+        if (!j) {
+          image.addClass('first');
+          // One height per row to prevent rounding corner cases
+          h = Math.round(col / total * width / this.aspectRatios[index]);
+        }
+
+        // Relative width to fill the space fully, absolute height
+        // to snap everything in place horizontally
+        image.css({
+          width: `${w}%`,
+          height: `${h}px`
+        });
+        index++;
+      }
+    }
+  }
+
+  updateGallery() {
+    let images = this.refs.gallery.getDOMNode().getElementsByTagName('img');
     switch (this.loadState) {
       case Gallery.READY:
-        let partitioned = linearPartition(this.aspectRatios, rows);
-        let index = 0;
-
-        for (let i = 0; i < partitioned.length; i++) {
-          let row = partitioned[i];
-          let total = 0;
-          let h = 0;
-
-          for (let j = 0; j < row.length; j++) {
-            total += row[j];
-          }
-
-          for (let j = 0; j < row.length; j++) {
-            let col = row[j];
-            let w = col / total * 100;
-
-            let image = new DOMManipulator(images[index]);
-            image.addClass('visible');
-
-            if (!j) {
-              image.addClass('first');
-              // One height per row to prevent rounding corner cases
-              h = Math.round(col / total * width / this.aspectRatios[index]);
-            }
-
-            // Relative width to fill the space fully, absolute height
-            // to snap everything in place horizontally
-            image.css({
-              width: `${w}%`,
-              height: `${h}px`
-            });
-            index++;
-          }
-        }
+        this.partition(images);
         break;
 
       case Gallery.INIT:
@@ -105,17 +135,6 @@ class Gallery extends React.Component {
         this.updateGallery();
         break;
     }
-  }
-
-  componentDidMount() {
-    this.gallery = new DOMManipulator(this.refs.gallery);
-    this.updateGallery();
-
-    window.addEventListener('resize', this.onResize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize);
   }
 
   render() {
