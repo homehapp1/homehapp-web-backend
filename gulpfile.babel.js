@@ -306,6 +306,11 @@ gulp.task('watch', function(){
     gulp.start('restart-dev', done);
   })).on('error', gutil.log);
 
+  gulp.watch('./configs/**', g.batch(function(events, done) {
+    //console.log('configs changed', events);
+    gulp.start('restart-dev', done);
+  })).on('error', gutil.log);
+
   gulp.watch('./build/**', function(changed) {
     livereload.changed(changed);
   }).on('error', gutil.log);
@@ -320,7 +325,8 @@ gulp.task('restart-dev', () => {
   }
 });
 
-gulp.task('dev', ['lint', 'build-server', 'build-clients', 'watch'], () => {
+//, 'build-server'
+gulp.task('dev', ['lint', 'build-clients', 'watch'], () => {
   nodemonInstance = nodemon({
     execMap: {
       js: 'node'
