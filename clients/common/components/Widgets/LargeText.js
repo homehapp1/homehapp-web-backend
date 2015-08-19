@@ -5,7 +5,8 @@ import React from 'react';
 class LargeText extends React.Component {
   static propTypes = {
     align: React.PropTypes.string,
-    vertical: React.PropTypes.string
+    vertical: React.PropTypes.string,
+    children: React.PropTypes.array.isRequired
   };
 
   render() {

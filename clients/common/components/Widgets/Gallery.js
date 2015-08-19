@@ -9,6 +9,7 @@ import Pager from './Pager';
 
 class Gallery extends React.Component {
   static propTypes = {
+    items: React.PropTypes.array,
     columns: React.PropTypes.number,
     imagewidth: React.PropTypes.number,
     links: React.PropTypes.bool
@@ -20,10 +21,16 @@ class Gallery extends React.Component {
     this.aspectRatios = [];
     this.columns = null;
     this.imageWidth = null;
+    this.galleryImages = [];
+    this.preloaded = [];
 
+    // Bind to this
     this.onResize = this.onResize.bind(this);
     this.onClick = this.onClick.bind(this);
     this.storeListener = this.onStateChange.bind(this);
+    this.changeImage = this.changeImage.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.currentImage = null;
   }
 
   componentDidMount() {
@@ -68,6 +75,7 @@ class Gallery extends React.Component {
   static LOADING = 1;
   static READY = 2;
 
+  // Update the sizes and positions in the gallery
   onResize() {
     this.updateGallery();
   }
@@ -85,21 +93,127 @@ class Gallery extends React.Component {
       }
     }
 
-    let modal = this.createModal(target.getAttribute('href'));
-    React.render(modal, document.getElementById('modals'));
+    this.modal = this.createModal();
+    this.modalContainer = null;
+
+    // Reference to self
+    let app = this;
+
+    React.render(this.modal, document.getElementById('modals'), function() {
+      try {
+        app.modalContainer = this.refs.modal.getDOMNode();
+        app.createImage(target.getAttribute('href'));
+      } catch (err) {
+        console.error(err.message);
+      }
+    });
+
     e.preventDefault();
     return false;
   }
 
-  createModal(src) {
+  // Create the modal view
+  createModal() {
     return (
       <Modal>
-        <Pager />
-        <img src={src} className='gallery-image' />
+        <div id='galleryImages'>
+          <Pager onchange={this.changeImage} onclose={this.closeModal} />
+        </div>
       </Modal>
     );
   }
 
+  closeModal() {
+    this.modalContainer.click();
+  }
+
+  createImage(src, d = null) {
+    // Preload the surrounding images
+    this.preloadSurrounding(src);
+    this.currentImage = src;
+
+    // These do not require any server-side rendering and thus the liberty
+    // of direct DOM manipulation has been used in favor of loading only
+    // the images that are needed
+    let img = document.createElement('img');
+    img.src = src;
+    img.className = 'gallery-image';
+
+    if (d) {
+      img.setAttribute('data-away', d);
+    }
+
+    document.getElementById('galleryImages').appendChild(img);
+    this.currentImage = src;
+    return img;
+  }
+
+  preloadSurrounding(src) {
+    let index = this.galleryImages.indexOf(src);
+    let prev = index - 1;
+    let next = index + 1;
+
+    if (typeof this.galleryImages[prev] !== 'undefined') {
+      let imgPrev = new Image();
+      imgPrev.src = this.galleryImages[prev];
+      this.preloaded.push(this.galleryImages[prev]);
+    }
+
+    if (typeof this.galleryImages[next] !== 'undefined') {
+      let imgNext = new Image();
+      imgNext.src = this.galleryImages[next];
+      this.preloaded.push(this.galleryImages[next]);
+    }
+  }
+
+  // Change the image, direction as integer
+  changeImage(dir) {
+    let images = this.modalContainer.getElementsByTagName('img');
+    let current = this.galleryImages.indexOf(this.currentImage);
+    let next = current + dir;
+    let d = (dir === 1) ? 'next' : 'prev';
+
+    if (next < 0) {
+      next = this.galleryImages.length - 1;
+      d = 'next';
+    }
+    if (next >= this.galleryImages.length) {
+      next = 0;
+      d = 'prev';
+    }
+    let found = false;
+
+    for (let i = 0; i < images.length; i++) {
+      let src = images[i].src;
+      let io = this.galleryImages.indexOf(src);
+
+      if (io < next) {
+        images[i].setAttribute('data-away', 'prev');
+      }
+
+      if (io === next) {
+        images[i].removeAttribute('data-away');
+        found = true;
+      }
+
+      if (io > next) {
+        images[i].setAttribute('data-away', 'next');
+      }
+    }
+
+    this.currentImage = this.galleryImages[next];
+
+    // Create the big images one by one if needed
+    if (!found) {
+      let img = this.createImage(this.currentImage, d);
+
+      window.setTimeout(function() {
+        img.removeAttribute('data-away');
+      }, 50);
+    }
+  }
+
+  // Preload an image and store its aspect ratio for the gallery
   preloadImage(src, index) {
     if (typeof this.preloadStack[src] !== 'undefined') {
       return null;
@@ -209,6 +323,8 @@ class Gallery extends React.Component {
                 <img src={images.medium} key={index} />
               );
             }
+
+            this.galleryImages.push(images.large);
 
             return (
               <a href={images.large} key={index}><img src={images.medium} /></a>

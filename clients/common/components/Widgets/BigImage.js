@@ -6,17 +6,18 @@ import { setFullHeight } from '../../Helpers';
 import classNames from 'classnames';
 
 class BigImage extends React.Component {
-  constructor() {
-    super();
-    this.storeListener = this.onStateChange.bind(this);
-  }
-
   static propTypes = {
     src: React.PropTypes.string,
     alt: React.PropTypes.string,
     fixed: React.PropTypes.bool,
-    gradient: React.PropTypes.string
+    gradient: React.PropTypes.string,
+    children: React.PropTypes.object
   };
+
+  constructor() {
+    super();
+    this.storeListener = this.onStateChange.bind(this);
+  }
 
   componentDidMount() {
     setFullHeight();
@@ -31,7 +32,7 @@ class BigImage extends React.Component {
     config: ApplicationStore.getState().config
   }
 
-  onStateChange(state) {
+  onStateChange() {
     this.setState({
       config: ApplicationStore.getState().config
     });

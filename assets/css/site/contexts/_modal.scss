@@ -4,12 +4,26 @@
     width: 100%;
     height: 100%;
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0 0 160px rgba(0, 0, 0, 1);
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
     z-index: $zModal;
+
+    & > .modal-close {
+      position: absolute;
+      z-index: 1;
+      top: $contentPadding;
+      right: $contentPadding;
+      @include ball();
+      margin-top: 0;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
 
     & > .modal-container {
       display: table-cell;
@@ -19,7 +33,6 @@
       text-align: center;
 
       & > .modal-content {
-        padding: $contentPadding;
         background-color: white;
         width: auto;
         display: inline-block;
@@ -31,7 +44,17 @@
           left: 50%;
           max-width: 100%;
           max-height: 100%;
+          @include vendors(transition-property, all);
+          @include vendors(transition-duration, $transitionDuration);
           @include vendors(transform, translateX(-50%) translateY(-50%));
+
+          &[data-away="prev"] {
+            margin-left: -100%;
+          }
+
+          &[data-away="next"] {
+            margin-left: 100%;
+          }
         }
       }
     }
