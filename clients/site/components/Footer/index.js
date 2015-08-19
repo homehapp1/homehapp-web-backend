@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 class Footer extends React.Component {
   render() {
     return (
-      <div id='footer'>
+      <div id='footer' className='clearfix'>
         <div className='width-wrapper'>
           <h3><img src='/public/images/homehapp-logotype-gray.svg' alt='Homehapp' /></h3>
           <ul className='footer-links'>

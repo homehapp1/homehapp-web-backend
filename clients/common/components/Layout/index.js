@@ -45,6 +45,7 @@ class Layout extends React.Component {
   render() {
     return (
       <div id='layout'>
+        <div id='modals'></div>
         {this.props.children}
         <i className='fa fa-angle-down' id='scrollDown' ref='scroller'></i>
       </div>
