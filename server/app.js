@@ -210,7 +210,7 @@ exports.run = function(projectName, afterRun) {
         if (app.config.env !== 'development') {
           if (app.cdn && app.cdn.getStaticPath) {
             staticPath = app.cdn.getStaticPath();
-            revStaticPath = `${staticPath}/${app.PROJECT_REVISION}/${app.PROJECT_NAME}`;
+            revStaticPath = `${staticPath}/v${app.PROJECT_REVISION}/${app.PROJECT_NAME}`;
           }
         }
         app.staticPath = staticPath;
