@@ -32,14 +32,13 @@ class BigImage extends React.Component {
   }
 
   onChange(state) {
-    console.log('onChange', state);
+    console.log('BigImage onChange', state);
     this.setState({
       config: ApplicationStore.getState().config
     });
   }
 
   render() {
-    //console.log('BigImage this.state.config', this.state.config);
     if (!this.state.config) {
       return null;
     }
