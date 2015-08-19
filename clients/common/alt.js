@@ -1,12 +1,12 @@
 'use strict';
 
 import Alt from 'alt';
-import chromeDebug from 'alt/utils/chromeDebug';
+//import chromeDebug from 'alt/utils/chromeDebug';
 
-var alt = new Alt();
+const alt = new Alt();
 
-if (process.env.DEBUG) {
-  chromeDebug(alt);
-}
+// if (process.env.DEBUG) {
+//   chromeDebug(alt);
+// }
 
 module.exports = alt;

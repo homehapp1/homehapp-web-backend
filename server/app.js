@@ -308,9 +308,9 @@ exports.run = function(projectName, afterRun) {
             debug('res.locals.data', res.locals.data);
             debug('res.locals.metadatas', res.locals.metadatas);
 
-            alt.bootstrap(JSON.stringify(res.locals.data));
-
             let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
+
+            alt.bootstrap(JSON.stringify(res.locals.data));
 
             Router.run(routes, req.url, function (Handler) {
               let flushedState = alt.flush();

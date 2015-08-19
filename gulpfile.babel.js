@@ -298,7 +298,7 @@ gulp.task('watch', function(){
     this.emit('end');
   });
 
-  gulp.watch(paths.clients[PROJECT_NAME].sources, ['build-clients']).on('error', gutil.log);
+  gulp.watch(paths.clients[PROJECT_NAME].sources, ['build-clients', 'restart-dev']).on('error', gutil.log);
   gulp.watch(paths.clients[PROJECT_NAME].styles, ['build-clients']).on('error', gutil.log);
 
   gulp.watch('./server/**', g.batch(function(events, done) {

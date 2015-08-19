@@ -49,11 +49,15 @@ class PropertyFilter extends React.Component {
           <h2>Properties</h2>
           <ul className='mode-selector'>
             {
-              modes.map((item) => {
+              modes.map((item, index) => {
                 let className = (mode === item.mode) ? 'active' : '';
 
                 return (
-                  <li className={className}><Link to='propertiesMode' params={{mode: item.mode}}><i className={item.icon}></i></Link></li>
+                  <li className={className} key={index}>
+                    <Link to='propertiesMode' params={{mode: item.mode}}>
+                      <i className={item.icon}></i>
+                    </Link>
+                  </li>
                 );
               })
             }

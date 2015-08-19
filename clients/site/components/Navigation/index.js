@@ -100,7 +100,7 @@ class Navigation extends React.Component {
             <li>
               <Link to='neighborhoods'>Neighbourhoods</Link>
               <ul>
-                <li><Link to='neighborhoodsView' params={{city: 'london', neighborhood: 'stjohnswood'}}>St. John's Wood</Link></li>
+                <li><Link to='neighborhoodsView' params={{city: 'london', neighborhood: 'stjohnswood'}}>St. John´s Wood</Link></li>
               </ul>
             </li>
             <li><Link to='content' params={{slug: 'about-us'}}>About us</Link></li>
