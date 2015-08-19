@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import ApplicationStore from '../../../common/stores/ApplicationStore';
 import { createProperty } from '../../../common/Helpers';
 
 import PropertyCards from '../Property/Cards';
@@ -10,6 +11,11 @@ import BigImage from '../../../common/components/Widgets/BigImage';
 import LargeText from '../../../common/components/Widgets/LargeText';
 
 class Homepage extends React.Component {
+  constructor() {
+    super();
+    this.config = ApplicationStore.getState().config;
+  }
+
   componentDidMount() {
     // Trigger the resize events defined in layout
     window.dispatchEvent(new Event('resize'));
@@ -33,10 +39,10 @@ class Homepage extends React.Component {
           <LargeText align='center' vertical='center'>
             <div className='splash'>
               <h1>
-                <img className='symbol' src='/public/images/homehapp-symbol.svg' alt='' />
-                <img className='logotype' src='/public/images/homehapp-logotype.svg' alt='Homehapp' />
+                <img className='symbol' src={this.config.revisionedStaticPath + '/images/homehapp-symbol.svg'} alt='' />
+                <img className='logotype' src={this.config.revisionedStaticPath + '/images/homehapp-logotype.svg'} alt='Homehapp' />
               </h1>
-              <p><img className='slogan' src='/public/images/slogan-discovery.svg' alt='Discover y' /></p>
+              <p><img className='slogan' src={this.config.revisionedStaticPath + '/images/slogan-discovery.svg'} alt='Discover y' /></p>
             </div>
           </LargeText>
         </BigImage>

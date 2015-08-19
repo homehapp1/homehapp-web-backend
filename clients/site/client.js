@@ -4,10 +4,9 @@
 
 let debug = require('../common/debugger')('site');
 
-// if (process.env.DEBUG) {
-//   debug.enable('*,-engine.io-client:polling*,-engine.io-client:*');
-// }
-debug.enable('*,-engine.io-client:polling*,-engine.io-client:*');
+if (process.env.DEBUG) {
+  debug.enable('*,-engine.io-client:polling*,-engine.io-client:*');
+}
 
 import React from 'react';
 import Router from 'react-router';

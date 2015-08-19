@@ -128,25 +128,6 @@ exports.run = function(projectName, afterRun) {
       });
     }
 
-    function setupStaticRoutes() {
-      return new Promise((resolve) => {
-        debug('setupStaticRoutes');
-
-        if (app.config.env !== 'production' && app.config.env !== 'staging') {
-          let staticDir = path.join(STATICS_ROOT, app.PROJECT_NAME);
-          app.use('/public', express.static(staticDir));
-
-          let faviconImage = path.join(staticDir, 'images', 'favicon.ico');
-          if (fs.existsSync(faviconImage)) {
-            let favicon = require('serve-favicon');
-            app.use(favicon(faviconImage));
-          }
-        }
-
-        resolve();
-      });
-    }
-
     function configureMiddleware() {
       return new Promise((resolve, reject) => {
         debug('configureMiddleware');
@@ -218,6 +199,38 @@ exports.run = function(projectName, afterRun) {
       }
 
       return Promise.all(tasks);
+    }
+
+    function setupStaticRoutes() {
+      return new Promise((resolve) => {
+        debug('setupStaticRoutes');
+
+        let staticPath = '/public';
+        let revStaticPath = '/public';
+        if (app.config.env !== 'development') {
+          if (app.cdn && app.cdn.getStaticPath) {
+            staticPath = app.cdn.getStaticPath();
+            revStaticPath = `${staticPath}/v${app.PROJECT_REVISION}/${app.PROJECT_NAME}`;
+          }
+        }
+
+        app.staticPath = staticPath;
+        app.revisionedStaticPath = revStaticPath;
+
+        let staticDir = path.join(STATICS_ROOT, app.PROJECT_NAME);
+
+        if (app.config.env === 'development') {
+          app.use(staticPath, express.static(staticDir));
+        }
+
+        let faviconImage = path.join(staticDir, 'images', 'favicon.ico');
+        if (fs.existsSync(faviconImage)) {
+          let favicon = require('serve-favicon');
+          app.use(favicon(faviconImage));
+        }
+
+        resolve();
+      });
     }
 
     function setupRoutes() {
@@ -300,7 +313,9 @@ exports.run = function(projectName, afterRun) {
 
             let clientConfig = app.config.clientConfig || {};
             // Extra configs could be defined here
-            clientConfig = Helpers.merge(clientConfig, {});
+            clientConfig = Helpers.merge(clientConfig, {
+              revisionedStaticPath: app.revisionedStaticPath
+            });
 
             res.locals.data.ApplicationStore.config = clientConfig;
 
@@ -327,7 +342,7 @@ exports.run = function(projectName, afterRun) {
                 metadatas: res.locals.metadatas
               })
               .then((locals) => {
-                //console.log('locals.html', locals.html);
+                //console.log('locals', locals);
                 res.render('index', locals);
               });
             });
@@ -336,6 +351,8 @@ exports.run = function(projectName, afterRun) {
 
         app.use(function errorHandler(err, req, res, next) {
           debug('errorHandler', err);
+          app.log.error(`Error handler received: ${err.message}`, err);
+
           var code = err.statusCode || 422;
           var msg = err.message || 'Unexpected error has occurred!';
           var payload = msg;
@@ -404,8 +421,8 @@ exports.run = function(projectName, afterRun) {
             return next();
           }
 
-          if (err.stack && app.config.env === 'development') {
-            debug('Error stacktrace: ', err.stack);
+          if (err.stack && app.config.env !== 'production') {
+            app.log.error('Error stacktrace: ', err.stack);
           }
 
           if (!app.config.errors.includeData) {
@@ -440,9 +457,9 @@ exports.run = function(projectName, afterRun) {
     resolveCurrentRevision()
     .then( () => configureLogger() )
     .then( () => connectToDatabase() )
-    .then( () => setupStaticRoutes() )
     .then( () => configureMiddleware() )
     .then( () => setupExtensions() )
+    .then( () => setupStaticRoutes() )
     .then( () => setupRoutes() )
     .then( () => additionalConfig() )
     .then( () => {

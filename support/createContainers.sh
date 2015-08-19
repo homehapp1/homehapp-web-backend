@@ -6,6 +6,7 @@ CWD=`pwd`
 CONTAINER_REGISTRY_HOST=eu.gcr.io
 PNAME=$1
 CLEAN=$2
+BUILD_REVISION_FILE="$CWD/BUILD_REVISION";
 
 function printUsage() {
   echo "Required environment variables:"
@@ -33,6 +34,18 @@ fi
 
 echo "Building Docker Containers for project '$PNAME' to revision $REV"
 
+function checkAndUpdateBuildRevision() {
+  if [ -f $BUILD_REVISION_FILE ]; then
+    local CURR_REV=`cat $BUILD_REVISION_FILE`
+    local NEW_REV=`expr $CURR_REV + 1`
+    echo "Updating build revision to ${NEW_REV}"
+    echo $NEW_REV > $BUILD_REVISION_FILE
+  else
+    echo "Setting build revision to 1"
+    echo "1" > $BUILD_REVISION_FILE
+  fi
+}
+
 # Arguments:
 # envName: Enum(prod, stg)
 function buildContainer() {
@@ -54,6 +67,8 @@ function cleanOldImages() {
 function pushContainers() {
   gcloud docker push $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME
 }
+
+checkAndUpdateBuildRevision
 
 echo "Building and tagging staging container"
 echo ""

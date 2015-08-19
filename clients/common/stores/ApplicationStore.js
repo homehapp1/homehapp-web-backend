@@ -11,6 +11,7 @@ class ApplicationStore {
     });
     this.csrf = null;
     this.config = {
+      revisionedStaticPath: '/public',
       cloudinary: {
         baseUrl: '//res.cloudinary.com/homehapp/image/upload/',
         transformations: {
