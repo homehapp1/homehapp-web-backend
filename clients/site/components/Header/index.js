@@ -4,11 +4,12 @@ import React from 'react';
 import { Link } from 'react-router';
 import DOMManipulator from '../../../common/DOMManipulator';
 import { scrollTop } from '../../../common/Helpers';
-
+import ApplicationStore from '../../../common/stores/ApplicationStore';
 
 class Header extends React.Component {
   constructor() {
     super();
+    this.config = ApplicationStore.getState().config;
     this.onScrollTop = this.onScrollTop.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
   }
@@ -48,7 +49,7 @@ class Header extends React.Component {
     return (
       <div id='header' ref='header'>
         <Link to='app' className='logo'>
-          <img className='logo' src='/public/images/homehapp-logo-horizontal.svg' alt='Homehapp' />
+          <img className='logo' src={this.config.revisionedStaticPath + '/images/homehapp-logo-horizontal.svg'} alt='Homehapp' />
         </Link>
       </div>
     );
