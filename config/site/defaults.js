@@ -11,7 +11,7 @@ module.exports = (projectRoot) => {
   let config = {
     clientConfig: {
       cloudinary: {
-        baseUrl: '//res.cloudinary.com/homehapp/image/upload/',
+        baseUrl: 'https://res.cloudinary.com/homehapp/image/upload/',
         transformations: {
           // Pinterest styled card
           card: 'c_fill,q_60,w_300',
