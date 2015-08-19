@@ -1,20 +1,14 @@
 'use strict';
 
 import React from 'react';
-import ApplicationStore from '../../stores/ApplicationStore';
 
 class ContentBlock extends React.Component {
   static propTypes = {
     src: React.PropTypes.string,
     alt: React.PropTypes.string,
-    fixed: React.PropTypes.boolean,
+    fixed: React.PropTypes.bool,
     gradient: React.PropTypes.string
   };
-
-  constructor() {
-    super();
-    this.config = ApplicationStore.getState().config;
-  }
 
   render() {
     let classes = [

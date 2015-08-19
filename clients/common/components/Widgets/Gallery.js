@@ -1,15 +1,17 @@
 'use strict';
 
 import React from 'react';
+import ApplicationStore from '../../stores/ApplicationStore';
 import linearPartition from 'linear-partition';
 import DOMManipulator from '../../DOMManipulator';
 import Modal from './Modal';
+import Pager from './Pager';
 
 class Gallery extends React.Component {
   static propTypes = {
-    children: React.PropTypes.array.isRequired,
     columns: React.PropTypes.number,
-    imagewidth: React.PropTypes.number
+    imagewidth: React.PropTypes.number,
+    links: React.PropTypes.bool
   }
 
   constructor() {
@@ -21,9 +23,16 @@ class Gallery extends React.Component {
 
     this.onResize = this.onResize.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.storeListener = this.onStateChange.bind(this);
   }
 
   componentDidMount() {
+    ApplicationStore.listen(this.storeListener);
+
+    if (!this.refs.gallery) {
+      return null;
+    }
+
     this.gallery = new DOMManipulator(this.refs.gallery);
     if (!this.imageWidth) {
       this.imageWidth = this.props.imagewidth || 500;
@@ -41,8 +50,18 @@ class Gallery extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('Gallery.componentWillUnmount');
+    ApplicationStore.unlisten(this.storeListener);
     window.removeEventListener('resize', this.onResize);
+  }
+
+  state = {
+    config: ApplicationStore.getState().config
+  }
+
+  onStateChange(state) {
+    this.setState({
+      config: ApplicationStore.getState().config
+    });
   }
 
   static INIT = 0;
@@ -55,28 +74,29 @@ class Gallery extends React.Component {
 
   onClick(e) {
     let target = e.srcElement;
-    let src = null;
 
-    if (target.tagName.toLowerCase() !== 'img') {
-      console.log('not an image');
-      return true;
+    // Get the link if clicked on a child
+    while (target.tagName.toLowerCase() !== 'a') {
+      target = target.parentNode;
+
+      // No parent, no link, end gracefully
+      if (!target || target.tagName.toLowerCase() === 'body') {
+        return true;
+      }
     }
 
-    if (target.hasAttribute('data-src')) {
-      src = target.getAttribute('data-src');
-    } else {
-      src = target.src;
-    }
-
-    let modal = this.createModal(src);
-    console.log('create modal', modal);
+    let modal = this.createModal(target.getAttribute('href'));
     React.render(modal, document.getElementById('modals'));
     e.preventDefault();
+    return false;
   }
 
   createModal(src) {
     return (
-      <Modal><img src={src} className='gallery-image' /></Modal>
+      <Modal>
+        <Pager />
+        <img src={src} className='gallery-image' />
+      </Modal>
     );
   }
 
@@ -169,10 +189,32 @@ class Gallery extends React.Component {
   }
 
   render() {
+    if (!this.state.config) {
+      return null;
+    }
+
     this.loadState = Gallery.INIT;
     return (
       <div className='gallery item full-height' ref='gallery'>
-        {this.props.children}
+        {
+          this.props.items.map((src, index) => {
+            let images = {
+              // small: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.small}/${this.props.src}`,
+              medium: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.medium}/${src}`,
+              large: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.large}/${src}`
+            };
+
+            if (this.props.links === false) {
+              return (
+                <img src={images.medium} key={index} />
+              );
+            }
+
+            return (
+              <a href={images.large} key={index}><img src={images.medium} /></a>
+            );
+          })
+        }
       </div>
     );
   }

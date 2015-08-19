@@ -3,7 +3,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import ApplicationStore from '../../../common/stores/ApplicationStore';
 import { createProperty } from '../../../common/Helpers';
 
 import PropertyCards from '../Property/Cards';
@@ -11,11 +10,6 @@ import BigImage from '../../../common/components/Widgets/BigImage';
 import LargeText from '../../../common/components/Widgets/LargeText';
 
 class Homepage extends React.Component {
-  constructor() {
-    super();
-    this.config = ApplicationStore.getState().config;
-  }
-
   componentDidMount() {
     // Trigger the resize events defined in layout
     window.dispatchEvent(new Event('resize'));

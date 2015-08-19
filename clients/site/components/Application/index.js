@@ -3,8 +3,6 @@
 import React from 'react';
 let {RouteHandler} = require('react-router');
 
-//import ApplicationStore from '../../../common/stores/ApplicationStore';
-
 import Header from '../Header';
 import Navigation from '../Navigation';
 import Footer from '../Footer';
