@@ -349,6 +349,8 @@ exports.run = function(projectName, afterRun) {
 
         app.use(function errorHandler(err, req, res, next) {
           debug('errorHandler', err);
+          app.log.error(`Error handler received: ${err.message}`, err);
+
           var code = err.statusCode || 422;
           var msg = err.message || 'Unexpected error has occurred!';
           var payload = msg;
@@ -417,8 +419,8 @@ exports.run = function(projectName, afterRun) {
             return next();
           }
 
-          if (err.stack && app.config.env === 'development') {
-            debug('Error stacktrace: ', err.stack);
+          if (err.stack && app.config.env !== 'production') {
+            app.log.error('Error stacktrace: ', err.stack);
           }
 
           if (!app.config.errors.includeData) {
