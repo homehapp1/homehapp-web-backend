@@ -3,7 +3,7 @@
 import request from '../request';
 import AuthActions from '../actions/AuthActions';
 
-let debug = require('..//debugger')('AuthSource');
+let debug = require('../debugger')('AuthSource');
 
 let AuthSource = {
   fetchUser: () => {

@@ -2,6 +2,8 @@
 
 import alt from '../alt';
 
+let debug = require('../debugger')('ApplicationStore');
+
 class ApplicationStore {
   constructor() {
     this.on('bootstrap', () => {
