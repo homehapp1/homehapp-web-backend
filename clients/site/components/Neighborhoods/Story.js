@@ -37,7 +37,7 @@ class NeighborhoodsStory extends React.Component {
       <div className='neighborhood-story'>
         <BigImage src={imageSrc} gradient='black' fixed={true}>
           <div className='large-text' data-vertical='center' data-align='center'>
-            <h1>St. John's wood</h1>
+            <h1>St. John's Wood</h1>
           </div>
         </BigImage>
 
@@ -62,8 +62,9 @@ class NeighborhoodsStory extends React.Component {
             galleryImages.map((item, index) => {
               //${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.large}/${imageSrc}
               let src = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.medium}/${item}`;
+              let fullSized = `${this.config.cloudinary.baseUrl}${this.config.cloudinary.transformations.large}/${item}`;
               return (
-                <img src={src} alt='' key={index} />
+                <img src={src} alt='' data-src={fullSized} key={index} />
               );
             })
           }

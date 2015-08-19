@@ -3,6 +3,7 @@
 import React from 'react';
 import linearPartition from 'linear-partition';
 import DOMManipulator from '../../DOMManipulator';
+import Modal from './Modal';
 
 class Gallery extends React.Component {
   static propTypes = {
@@ -19,6 +20,7 @@ class Gallery extends React.Component {
     this.imageWidth = null;
 
     this.onResize = this.onResize.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount() {
@@ -34,12 +36,14 @@ class Gallery extends React.Component {
     this.updateGallery();
 
     window.addEventListener('resize', this.onResize);
+    this.gallery.addEvent('click', this.onClick);
+    this.gallery.addEvent('touch', this.onClick);
   }
 
   componentWillUnmount() {
+    console.log('Gallery.componentWillUnmount');
     window.removeEventListener('resize', this.onResize);
   }
-
 
   static INIT = 0;
   static LOADING = 1;
@@ -47,6 +51,33 @@ class Gallery extends React.Component {
 
   onResize() {
     this.updateGallery();
+  }
+
+  onClick(e) {
+    let target = e.srcElement;
+    let src = null;
+
+    if (target.tagName.toLowerCase() !== 'img') {
+      console.log('not an image');
+      return true;
+    }
+
+    if (target.hasAttribute('data-src')) {
+      src = target.getAttribute('data-src');
+    } else {
+      src = target.src;
+    }
+
+    let modal = this.createModal(src);
+    console.log('create modal', modal);
+    React.render(modal, document.getElementById('modals'));
+    e.preventDefault();
+  }
+
+  createModal(src) {
+    return (
+      <Modal><img src={src} className='gallery-image' /></Modal>
+    );
   }
 
   preloadImage(src, index) {

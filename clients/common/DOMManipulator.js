@@ -86,6 +86,10 @@ class DOMManipulator {
     return tmp;
   }
 
+  getNode() {
+    return this.node;
+  }
+
   parent() {
     if (this.node.parent) {
       return new DOMManipulator(this.node.parent);
