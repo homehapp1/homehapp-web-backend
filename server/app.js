@@ -213,18 +213,20 @@ exports.run = function(projectName, afterRun) {
             revStaticPath = `${staticPath}/v${app.PROJECT_REVISION}/${app.PROJECT_NAME}`;
           }
         }
+
         app.staticPath = staticPath;
         app.revisionedStaticPath = revStaticPath;
 
-        if (app.config.env !== 'production' && app.config.env !== 'staging') {
-          let staticDir = path.join(STATICS_ROOT, app.PROJECT_NAME);
-          app.use(staticPath, express.static(staticDir));
+        let staticDir = path.join(STATICS_ROOT, app.PROJECT_NAME);
 
-          let faviconImage = path.join(staticDir, 'images', 'favicon.ico');
-          if (fs.existsSync(faviconImage)) {
-            let favicon = require('serve-favicon');
-            app.use(favicon(faviconImage));
-          }
+        if (app.config.env === 'development') {
+          app.use(staticPath, express.static(staticDir));
+        }
+
+        let faviconImage = path.join(staticDir, 'images', 'favicon.ico');
+        if (fs.existsSync(faviconImage)) {
+          let favicon = require('serve-favicon');
+          app.use(favicon(faviconImage));
         }
 
         resolve();
@@ -340,7 +342,7 @@ exports.run = function(projectName, afterRun) {
                 metadatas: res.locals.metadatas
               })
               .then((locals) => {
-                //console.log('locals.html', locals.html);
+                //console.log('locals', locals);
                 res.render('index', locals);
               });
             });
