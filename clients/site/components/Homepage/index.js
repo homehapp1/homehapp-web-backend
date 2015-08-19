@@ -39,10 +39,10 @@ class Homepage extends React.Component {
           <LargeText align='center' vertical='center'>
             <div className='splash'>
               <h1>
-                <img className='symbol' src='/public/images/homehapp-symbol.svg' alt='' />
-                <img className='logotype' src='/public/images/homehapp-logotype.svg' alt='Homehapp' />
+                <img className='symbol' src={this.config.revisionedStaticPath + '/images/homehapp-symbol.svg'} alt='' />
+                <img className='logotype' src={this.config.revisionedStaticPath + '/images/homehapp-logotype.svg'} alt='Homehapp' />
               </h1>
-              <p><img className='slogan' src='/public/images/slogan-discovery.svg' alt='Discover y' /></p>
+              <p><img className='slogan' src={this.config.revisionedStaticPath + '/images/slogan-discovery.svg'} alt='Discover y' /></p>
             </div>
           </LargeText>
         </BigImage>

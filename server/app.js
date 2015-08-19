@@ -128,25 +128,6 @@ exports.run = function(projectName, afterRun) {
       });
     }
 
-    function setupStaticRoutes() {
-      return new Promise((resolve) => {
-        debug('setupStaticRoutes');
-
-        if (app.config.env !== 'production' && app.config.env !== 'staging') {
-          let staticDir = path.join(STATICS_ROOT, app.PROJECT_NAME);
-          app.use('/public', express.static(staticDir));
-
-          let faviconImage = path.join(staticDir, 'images', 'favicon.ico');
-          if (fs.existsSync(faviconImage)) {
-            let favicon = require('serve-favicon');
-            app.use(favicon(faviconImage));
-          }
-        }
-
-        resolve();
-      });
-    }
-
     function configureMiddleware() {
       return new Promise((resolve, reject) => {
         debug('configureMiddleware');
@@ -218,6 +199,36 @@ exports.run = function(projectName, afterRun) {
       }
 
       return Promise.all(tasks);
+    }
+
+    function setupStaticRoutes() {
+      return new Promise((resolve) => {
+        debug('setupStaticRoutes');
+
+        let staticPath = '/public';
+        let revStaticPath = '/public';
+        if (app.config.env !== 'development') {
+          if (app.cdn && app.cdn.getStaticPath) {
+            staticPath = app.cdn.getStaticPath();
+            revStaticPath = `${staticPath}/${app.PROJECT_REVISION}/${app.PROJECT_NAME}`;
+          }
+        }
+        app.staticPath = staticPath;
+        app.revisionedStaticPath = revStaticPath;
+
+        if (app.config.env !== 'production' && app.config.env !== 'staging') {
+          let staticDir = path.join(STATICS_ROOT, app.PROJECT_NAME);
+          app.use(staticPath, express.static(staticDir));
+
+          let faviconImage = path.join(staticDir, 'images', 'favicon.ico');
+          if (fs.existsSync(faviconImage)) {
+            let favicon = require('serve-favicon');
+            app.use(favicon(faviconImage));
+          }
+        }
+
+        resolve();
+      });
     }
 
     function setupRoutes() {
@@ -300,7 +311,9 @@ exports.run = function(projectName, afterRun) {
 
             let clientConfig = app.config.clientConfig || {};
             // Extra configs could be defined here
-            clientConfig = Helpers.merge(clientConfig, {});
+            clientConfig = Helpers.merge(clientConfig, {
+              revisionedStaticPath: app.revisionedStaticPath
+            });
 
             res.locals.data.ApplicationStore.config = clientConfig;
 
@@ -440,9 +453,9 @@ exports.run = function(projectName, afterRun) {
     resolveCurrentRevision()
     .then( () => configureLogger() )
     .then( () => connectToDatabase() )
-    .then( () => setupStaticRoutes() )
     .then( () => configureMiddleware() )
     .then( () => setupExtensions() )
+    .then( () => setupStaticRoutes() )
     .then( () => setupRoutes() )
     .then( () => additionalConfig() )
     .then( () => {

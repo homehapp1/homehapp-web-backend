@@ -12,10 +12,10 @@
 
   <!-- !Stylesheets -->
   <% if (env !== 'development') { %>
-    <link rel="stylesheet" href="<%= staticPath %>/v<%= revision %>/site/css/all.min.css">
+    <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/all.min.css">
   <% } else { %>
-    <link rel="stylesheet" href="<%= staticPath %>/css/vendor.css">
-    <link rel="stylesheet" href="<%= staticPath %>/css/site.css">
+    <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/vendor.css">
+    <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/site.css">
   <% } %>
   <% if (styleSheets.length) { %>
     <% for (var i = 0; i < styleSheets.length; i++) { %>
@@ -31,17 +31,17 @@
   <% } %>
 
   <!-- !Favicons -->
-  <link rel="shortcut icon" type="image/x-icon" href="/public/images/favicon.ico" />
-  <link rel="icon" type="image/png" href="/public/images/favicon-64.png" />
-  <link rel="shortcut icon"  type="image/png" href="/public/images/favicon-64.png" />
-  <link rel="icon" type="image/vnd.microsoft.icon" href="/public/images/favicon.ico" />
+  <link rel="shortcut icon" type="image/x-icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
+  <link rel="icon" type="image/png" href="<%= revisionedStaticPath %>/images/favicon-64.png" />
+  <link rel="shortcut icon"  type="image/png" href="<%= revisionedStaticPath %>/images/favicon-64.png" />
+  <link rel="icon" type="image/vnd.microsoft.icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
 
-  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/public/images/favicon-152.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/images/favicon-144.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/public/images/favicon-120.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/public/images/favicon-114.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/public/images/favicon-72.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/public/images/favicon-57.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="<%= revisionedStaticPath %>/images/favicon-152.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<%= revisionedStaticPath %>/images/favicon-144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="<%= revisionedStaticPath %>/images/favicon-120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<%= revisionedStaticPath %>/images/favicon-114.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%= revisionedStaticPath %>/images/favicon-72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="<%= revisionedStaticPath %>/images/favicon-57.png" />
 
 
   <!--[if lt IE 9]>
@@ -53,11 +53,11 @@
   <%- body %>
 
   <% if (env !== 'development') { %>
-    <script src="<%= staticPath %>/v<%= revision %>/site/js/vendor.bundle.min.js"></script>
-    <script src="<%= staticPath %>/v<%= revision %>/site/js/client.min.js"></script>
+    <script src="<%= revisionedStaticPath %>/js/vendor.bundle.min.js"></script>
+    <script src="<%= revisionedStaticPath %>/js/client.min.js"></script>
   <% } else { %>
-    <script src="<%= staticPath %>/js/vendor.bundle.js"></script>
-    <script src="<%= staticPath %>/js/client.js"></script>
+    <script src="<%= revisionedStaticPath %>/js/vendor.bundle.js"></script>
+    <script src="<%= revisionedStaticPath %>/js/client.js"></script>
   <% } %>
 </body>
 </html>

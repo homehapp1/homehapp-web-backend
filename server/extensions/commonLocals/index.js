@@ -24,16 +24,10 @@ export function register(app) {
     let appLocals = JSON.parse(JSON.stringify(app.locals)) || {};
     let resLocals = JSON.parse(JSON.stringify(res.locals)) || {};
 
-    let staticPath = '/public';
-    if (app.config.env !== 'development') {
-      if (app.cdn && app.cdn.getStaticPath) {
-        staticPath = app.cdn.getStaticPath();
-      }
-    }
-
     let opts = merge({
       layout: 'layout',
-      staticPath: staticPath,
+      staticPath: app.staticPath,
+      revisionedStaticPath: app.revisionedStaticPath,
       revision: app.PROJECT_REVISION,
       site: {
         title: '',
