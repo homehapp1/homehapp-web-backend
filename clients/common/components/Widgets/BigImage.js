@@ -8,7 +8,7 @@ import classNames from 'classnames';
 class BigImage extends React.Component {
   constructor() {
     super();
-    this.storeListener = this.onChange.bind(this);
+    this.storeListener = this.onStateChange.bind(this);
   }
 
   static propTypes = {
@@ -31,15 +31,13 @@ class BigImage extends React.Component {
     config: ApplicationStore.getState().config
   }
 
-  onChange(state) {
-    console.log('onChange', state);
+  onStateChange(state) {
     this.setState({
       config: ApplicationStore.getState().config
     });
   }
 
   render() {
-    //console.log('BigImage this.state.config', this.state.config);
     if (!this.state.config) {
       return null;
     }
