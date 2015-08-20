@@ -38,16 +38,12 @@ class Homepage extends React.Component {
         <BigImage gradient='green' fixed={true} src='v1439564093/london-view.jpg'>
           <LargeText align='center' vertical='center'>
             <div className='splash'>
-              <h1>
-                <img className='symbol' src={this.config.revisionedStaticPath + '/images/homehapp-symbol.svg'} alt='' />
-                <img className='logotype' src={this.config.revisionedStaticPath + '/images/homehapp-logotype.svg'} alt='Homehapp' />
-              </h1>
-              <p><img className='slogan' src={this.config.revisionedStaticPath + '/images/slogan-discovery.svg'} alt='Discover y' /></p>
+              <h1>Every home has a unique story</h1>
             </div>
           </LargeText>
         </BigImage>
         <div className='item property-list partial-list'>
-          <PropertyCards items={items} max={12} />
+          <PropertyCards items={items} max={20} />
           <Link to='properties' className='button read-more'>View more</Link>
         </div>
         <div className='item content-block item-separator'>
