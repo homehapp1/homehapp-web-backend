@@ -41,10 +41,22 @@ function createCluster() {
     echo "Execute: 'gcloud beta container clusters create $CLUSTER_NAME --num-nodes 1 --machine-type g1-small --project $PROJECT_ID'"
   else
     gcloud beta container clusters create $CLUSTER_NAME --num-nodes 1 --machine-type g1-small --project $PROJECT_ID
-    CLUSTER_GOOGLE_NAME=`kubectl config view | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1`
+    CLUSTER_GOOGLE_NAME=`kubectl config view | grep $PROJECT_ID | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1`
     NODE_GOOGLE_NAME=`kubectl get nodes --context=$CLUSTER_GOOGLE_NAME | awk '{print $1}' | tail -n 1`
     local len=${#NODE_GOOGLE_NAME}
     NODE_GOOGLE_NAME=${NODE_GOOGLE_NAME:0:$((len-5))}
+  fi
+}
+
+function setContext() {
+  if [ "$CLUSTER_GOOGLE_NAME" = "" ]; then
+    CLUSTER_GOOGLE_NAME=`kubectl config view | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1`
+  fi
+
+  if [ "$1" = "-d" ]; then
+    echo "Execute: 'kubectl config set-context $CLUSTER_GOOGLE_NAME'"
+  else
+    kubectl config set-context $CLUSTER_GOOGLE_NAME
   fi
 }
 
@@ -83,22 +95,22 @@ function createService() {
   fi
 }
 
-function openFirewall() {
-  if [ "$CLUSTER_GOOGLE_NAME" = "" ]; then
-    CLUSTER_GOOGLE_NAME=`kubectl config view | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1`
-  fi
-  if [ "$NODE_GOOGLE_NAME" = "" ]; then
-    NODE_GOOGLE_NAME=`kubectl get nodes --context=$CLUSTER_GOOGLE_NAME | awk '{print $1}' | tail -n 1`
-    local len=${#NODE_GOOGLE_NAME}
-    NODE_GOOGLE_NAME=${NODE_GOOGLE_NAME:0:$((len-5))}
-  fi
-
-  if [ "$1" = "-d" ]; then
-    echo "Execute: 'gcloud compute firewall-rules create $PNAME-8080 --allow tcp:8080 --target-tags $NODE_GOOGLE_NAME --project $PROJECT_ID"
-  else
-    gcloud compute firewall-rules create $PNAME-8080 --allow tcp:8080 --target-tags $NODE_GOOGLE_NAME --project $PROJECT_ID
-  fi
-}
+# function openFirewall() {
+#   if [ "$CLUSTER_GOOGLE_NAME" = "" ]; then
+#     CLUSTER_GOOGLE_NAME=`kubectl config view | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1`
+#   fi
+#   if [ "$NODE_GOOGLE_NAME" = "" ]; then
+#     NODE_GOOGLE_NAME=`kubectl get nodes --context=$CLUSTER_GOOGLE_NAME | awk '{print $1}' | tail -n 1`
+#     local len=${#NODE_GOOGLE_NAME}
+#     NODE_GOOGLE_NAME=${NODE_GOOGLE_NAME:0:$((len-5))}
+#   fi
+#
+#   if [ "$1" = "-d" ]; then
+#     echo "Execute: 'gcloud compute firewall-rules create $PNAME-8080 --allow tcp:8080 --target-tags $NODE_GOOGLE_NAME --project $PROJECT_ID"
+#   else
+#     gcloud compute firewall-rules create $PNAME-8080 --allow tcp:8080 --target-tags $NODE_GOOGLE_NAME --project $PROJECT_ID
+#   fi
+# }
 
 if [ "$3" = "-d" ]; then
   echo "In Dry-Run mode"
@@ -108,6 +120,7 @@ echo "Creating Container Cluster $CLUSTER_NAME"
 echo ""
 
 createCluster $3
+setContext $3
 
 echo ""
 echo "Creating Replication Controller $PNAME-controller"
@@ -119,10 +132,10 @@ echo "Creating Service $PNAME-service"
 
 createService $3
 
-echo ""
-echo "Echo opening firewall for service"
-
-openFirewall $3
+# echo ""
+# echo "Opening firewall for service"
+#
+# openFirewall $3
 
 echo ""
 echo "Cluster created!"

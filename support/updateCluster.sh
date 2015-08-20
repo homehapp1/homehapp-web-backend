@@ -33,11 +33,17 @@ if [ "$ENV" = "" ]; then
   printUsageAndExit
 fi
 
+function configGCloud() {
+  local CLUSTER_NAME=`gcloud beta container clusters list --project $PROJECT_ID | awk '{print $1}' | grep "$PNAME-$ENV"`
+  echo "Executing: 'gcloud config set container/cluster $CLUSTER_NAME'"
+  gcloud config set container/cluster $CLUSTER_NAME
+}
+
 function updateCluster() {
   local SOURCE_CONFIG="$CWD/infrastructure/configs/project-controller-tpl.json"
   local TARGET_CONFIG="$CWD/tmp/$PNAME-controller.json"
   local TMP_FILE="/tmp/$PNAME-controller.json"
-  local CURRENT_CONTROLLER=`kubectl get rc | awk '{print $1}' | grep "controller"`
+  local CURRENT_CONTROLLER=`kubectl get rc | grep $PROJECT_ID | awk '{print $1}' | grep "$PNAME-controller"`
 
   sed "s/:PROJECT_NAME/$PNAME/g" $SOURCE_CONFIG > $TARGET_CONFIG
   sed "s/:PROJECT_ID/$PROJECT_ID/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
@@ -47,8 +53,10 @@ function updateCluster() {
 
   echo "Executing: 'kubectl rolling-update $CURRENT_CONTROLLER -f $CWD/tmp/$PNAME-controller.json'"
   kubectl rolling-update $CURRENT_CONTROLLER -f "$CWD/tmp/$PNAME-controller.json"
-  #rm $TARGET_CONFIG
+  rm $TARGET_CONFIG
 }
+
+configGCloud
 
 echo ""
 echo "Updating Cluster Pods for project '$PNAME' to revision $REV for environment $ENV"
