@@ -106,7 +106,7 @@ exports.scrollTop = function(offset = null, speed = 500) {
 
 exports.setFullHeight = function() {
   let items = document.getElementsByClassName('full-height');
-  let height = window.innerHeight;
+  let height = window.innerHeight * 0.8;
 
   for (let i = 0; i < items.length; i++) {
     items[i].style.minHeight = `${height}px`;
@@ -179,10 +179,18 @@ exports.createProperty = function(index = 1) {
 };
 
 exports.itemViews = function() {
-  let items = document.getElementsByClassName('item');
+  let tmp = document.getElementsByClassName('item');
+  let items = [];
 
-  if (!items.length) {
+  if (tmp.length < 2) {
     return null;
+  }
+
+  for (let i = 0; i < tmp.length; i++) {
+    if (!tmp[i].className.match(/\bfixed\b/)) {
+      continue;
+    }
+    items.push(tmp[i]);
   }
 
   for (let i = 0; i < items.length; i++) {
@@ -190,7 +198,7 @@ exports.itemViews = function() {
 
     // Check if the element is in the viewport with a small tolerance AFTER
     // the element should be displayed
-    if (!item.visible(-100)) {
+    if (!item.visible() && items.length > 1) {
       item.addClass('outside-viewport');
     } else {
       item.removeClass('outside-viewport');
