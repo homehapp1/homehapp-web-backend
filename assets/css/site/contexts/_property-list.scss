@@ -1,5 +1,6 @@
 .property-list {
-  padding: $contentPadding * 10 $contentPadding / 2;
+  $paddingTop: 2 * $contentPadding;
+  padding: $paddingTop $contentPadding / 2;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -8,10 +9,9 @@
   background-repeat: repeat;
 
   &.partial-list {
-    $maxHeight: 800px;
-    $paddingTop: 100px;
+    $maxHeight: 1200px;
     $paddingBottom: 100px;
-    $maskHeight: 300px;
+    $maskHeight: 200px;
     $q: 0.7;
     $d: top;
     $g1: rgba(241, 241, 241, 0);
@@ -295,7 +295,7 @@
   .card-list {
     position: relative;
     width: 100%;
-    max-width: $cardColumns * $cardWidth;
+    //max-width: $cardColumns * $cardWidth;
     margin-left: auto;
     margin-right: auto;
 
