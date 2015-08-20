@@ -11,6 +11,7 @@ class BigImage extends React.Component {
     alt: React.PropTypes.string,
     fixed: React.PropTypes.bool,
     gradient: React.PropTypes.string,
+    proportion: React.PropTypes.number,
     children: React.PropTypes.object
   };
 
@@ -61,14 +62,16 @@ class BigImage extends React.Component {
       large: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.large}/${this.props.src}`
     };
 
+    let proportion = this.props.proportion || 1;
+
     return (
-      <div className={classNames(classes)} data-gradient={this.props.gradient}>
+      <div className={classNames(classes)} data-gradient={this.props.gradient} data-proportion={proportion}>
         <div className='image-content'>
           <img alt={alt} className='show-for-large' src={images.large} />
           <img alt={alt} className='show-for-medium' src={images.medium} />
           <img alt={alt} className='show-for-small' src={images.small} />
         </div>
-        <div className='width-wrapper full-height'>
+        <div className='width-wrapper full-height' data-proportion={proportion}>
           {this.props.children}
         </div>
       </div>

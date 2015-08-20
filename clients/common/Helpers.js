@@ -106,16 +106,32 @@ exports.scrollTop = function(offset = null, speed = 500) {
 
 exports.setFullHeight = function() {
   let items = document.getElementsByClassName('full-height');
-  let height = window.innerHeight * 0.8;
+  let height = window.innerHeight;
+
+  let setHeight = function(item, strict = false) {
+    let h = height;
+
+    if (item.hasAttribute('data-proportion')) {
+      let prop = Number(item.getAttribute('data-proportion'));
+      console.log('prop', prop);
+      h *= prop;
+    }
+
+    if (strict) {
+      item.style.height = `${h}px`;
+    } else {
+      item.style.minHeight = `${h}px`;
+    }
+  }
 
   for (let i = 0; i < items.length; i++) {
-    items[i].style.minHeight = `${height}px`;
+    setHeight(items[i], false);
   }
 
   items = document.getElementsByClassName('full-height-strict');
 
   for (let i = 0; i < items.length; i++) {
-    items[i].style.height = `${height}px`;
+    setHeight(items[i], true);
   }
 };
 

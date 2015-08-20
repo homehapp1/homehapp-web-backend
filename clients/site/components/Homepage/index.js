@@ -35,7 +35,7 @@ class Homepage extends React.Component {
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed={true} src='v1439564093/london-view.jpg'>
+        <BigImage gradient='green' fixed={true} src='v1439564093/london-view.jpg' proportion='0.7'>
           <LargeText align='center' vertical='center'>
             <div className='splash'>
               <h1>Every home has a unique story</h1>
