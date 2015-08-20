@@ -1,14 +1,35 @@
 #footer {
-  padding: 5 * $contentPadding 0;
+  padding: $contentPadding 0;
   background-color: white;
   text-align: center;
   font-weight: 400;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: $headerHeight;
+  z-index: $zFooter;
+  @include vendors(transition-property, all);
+  @include vendors(transition-duration, $transitionDuration);
+  @include vendors(transform, translateY(100%));
+  margin-top: -100px;
 
   h3 {
+    $w: 50px;
+    margin-bottom: 0.4 * $w;
+
     img {
-      vertical-align: middle;
-      height: 40px;
+      width: $w;
+      position: absolute;
+      top: -0.56 * $w;
+      left: 50%;
+      margin-left: -0.5 * $w;
     }
+  }
+
+  &.visible {
+    margin-top: 0;
+    @include vendors(transform, translateY(0));
   }
 
   ul {
