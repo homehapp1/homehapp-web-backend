@@ -1,5 +1,7 @@
 #footer {
-  padding: $contentPadding 0;
+  $offset: 80px;
+
+  padding: $contentPadding + $offset 0 $contentPadding * 2;
   background-color: white;
   text-align: center;
   font-weight: 400;
@@ -7,12 +9,27 @@
   bottom: 0;
   left: 0;
   right: 0;
-  top: $headerHeight;
+  top: $headerHeight + $offset;
   z-index: $zFooter;
   @include vendors(transition-property, all);
   @include vendors(transition-duration, $transitionDuration);
   @include vendors(transform, translateY(100%));
-  margin-top: -100px;
+  margin-top: -1 * $offset;
+
+  &:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    height: $offset + $contentPadding;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin-top: -1 * $offset;
+    background-color: white;
+    box-shadow: 0 -10px 10px rgba(0, 0, 0, 0.05);
+    z-index: -10;
+  }
 
   h3 {
     $w: 50px;
@@ -21,9 +38,18 @@
     img {
       width: $w;
       position: absolute;
-      top: -0.56 * $w;
+      top: -0.56 * $w - $offset;
       left: 50%;
       margin-left: -0.5 * $w;
+    }
+  }
+
+  .footer-links {
+    &.main {
+      position: absolute;
+      top: -1 * $offset + 15px;
+      left: 0;
+      right: 0;
     }
   }
 
