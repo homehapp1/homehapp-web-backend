@@ -5,7 +5,9 @@
   z-index: 200;
   bottom: $contentPadding;
   left: 50%;
+  margin-left: -0.5  $s;
   cursor: pointer;
+  display: none;
   @include vendors(transition-property, all);
   @include vendors(transition-duration, 200ms);
 }
