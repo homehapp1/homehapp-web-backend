@@ -69,13 +69,13 @@ function removeCluster() {
   fi
 }
 
-function closeFirewall() {
-  if [ "$1" = "-d" ]; then
-    echo "Execute: 'gcloud compute firewall-rules delete $PNAME-80 --project $PROJECT_ID'"
-  else
-    gcloud compute firewall-rules delete $PNAME-80 --project $PROJECT_ID
-  fi
-}
+# function closeFirewall() {
+#   if [ "$1" = "-d" ]; then
+#     echo "Execute: 'gcloud compute firewall-rules delete $PNAME-80 --project $PROJECT_ID'"
+#   else
+#     gcloud compute firewall-rules delete $PNAME-80 --project $PROJECT_ID
+#   fi
+# }
 
 echo ""
 echo "Removing Service $PNAME-service"
@@ -92,10 +92,10 @@ echo ""
 
 removeCluster $3
 
-echo ""
-echo "Removing firewall rule for service"
-
-closeFirewall $3
+# echo ""
+# echo "Removing firewall rule for service"
+#
+# closeFirewall $3
 
 echo ""
 echo "Cluster removed!"
