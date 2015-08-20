@@ -1,5 +1,6 @@
 $pagerButtonSize: 40px;
 .pager {
+  outline: none;
 
   & > .prev, & > .previous, & > .next {
     position: absolute;
@@ -7,6 +8,9 @@ $pagerButtonSize: 40px;
     z-index: 1000;
     @include ball();
 
+    &:hover {
+      text-decoration: none;
+    }
   }
 
   & > .prev, & > .previous {
