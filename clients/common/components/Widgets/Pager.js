@@ -50,12 +50,15 @@ class Pager extends React.Component {
         if (typeof this.props.onclose === 'function') {
           this.props.onclose();
         }
+        break;
 
       case 37:
-        return this.props.onchange(-1);
+        this.props.onchange(-1);
+        break;
 
       case 39:
-        return this.props.onchange(1);
+        this.props.onchange(1);
+        break;
     }
     console.log('onkeyb', e.keyCode);
   }
