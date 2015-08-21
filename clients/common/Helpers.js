@@ -113,8 +113,10 @@ exports.setFullHeight = function() {
 
     if (item.hasAttribute('data-proportion')) {
       let prop = Number(item.getAttribute('data-proportion'));
-      console.log('prop', prop);
-      h *= prop;
+
+      if (prop > 0) {
+        h *= prop;
+      }
     }
 
     if (strict) {
@@ -122,7 +124,7 @@ exports.setFullHeight = function() {
     } else {
       item.style.minHeight = `${h}px`;
     }
-  }
+  };
 
   for (let i = 0; i < items.length; i++) {
     setHeight(items[i], false);
