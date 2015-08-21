@@ -7,7 +7,7 @@ exports.registerRoutes = (app) => {
 
   let returnHomeBySlug = (slug, res, next) => {
     QB
-    .query('Home')
+    .forModel('Home')
     .findBySlug(slug)
     .fetch()
     .then((result) => {
