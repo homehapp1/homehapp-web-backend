@@ -10,7 +10,7 @@ exports.registerRoutes = (app) => {
     console.log('req.query', req.query);
 
     QB
-    .query('Home')
+    .forModel('Home')
     .parseRequestArguments(req)
     .findAll()
     .fetch()
@@ -28,7 +28,7 @@ exports.registerRoutes = (app) => {
     console.log('req.query', req.query);
 
     QB
-    .query('Home')
+    .forModel('Home')
     .findByUUID(req.params.uuid)
     .fetch()
     .then((result) => {
