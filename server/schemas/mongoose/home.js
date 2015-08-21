@@ -27,6 +27,23 @@ exports.loadSchemas = function (mongoose, next) {
     }
   });
 
+  schemas.HomeImage = new Schema({
+    url: {
+      type: String
+    },
+    aspectRatio: {
+      type: Number,
+      default: 0
+    },
+    alt: {
+      type: String,
+      default: ''
+    },
+    tag: {
+      type: String
+    }
+  });
+
   schemas.Home = new Schema({
     uuid: {
       type: String,
@@ -116,6 +133,7 @@ exports.loadSchemas = function (mongoose, next) {
       },
       blocks: [schemas.HomeStoryBlock]
     },
+    images: [schemas.HomeImage],
     // Flags
     visible: {
       type: Boolean,
