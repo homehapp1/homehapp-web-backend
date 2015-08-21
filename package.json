@@ -158,6 +158,7 @@
         1,
         8
       ],
+      "no-labels": 0,
       "react/display-name": [
         1,
         {
