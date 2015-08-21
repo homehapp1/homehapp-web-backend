@@ -61,6 +61,36 @@ class DOMManipulator {
     return this;
   }
 
+  /**
+   * Get or set an attribute of the current node
+   *
+   * @params key    string   Attribute key
+   * @params value  mixed    When undefined, act as a getter, otherwise set the attribute
+   * @return self
+   */
+  attr(key, value = undefined) {
+    if (value === undefined) {
+      if (this.node.hasAttribute(key)) {
+        return this.node.getAttribute(key);
+      }
+      return undefined;
+    }
+
+    if (value === null) {
+      this.node.removeAttribute(key);
+    } else {
+      this.node.setAttribute(key, value);
+    }
+
+    return this;
+  }
+
+  /**
+   * Get or set the node width
+   *
+   * @params number width   Either the width to be set or null to return the current width
+   * @return mixed          Current width when getting, self when setting
+   */
   width(width = null) {
     if (width === null) {
       return this.node.offsetWidth;
@@ -69,7 +99,13 @@ class DOMManipulator {
     return this.css('width', width);
   }
 
-  height(height = null) {
+  /**
+   * Get or set the node height
+   *
+   * @params number height   Either the height to be set or null to return the current height
+   * @return mixed           Current height when getting, self when setting
+   */
+   height(height = null) {
     if (height === null) {
       return this.node.offsetHeight;
     }
