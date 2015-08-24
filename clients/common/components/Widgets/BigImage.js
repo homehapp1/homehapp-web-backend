@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import ApplicationStore from '../../stores/ApplicationStore';
 import { setFullHeight } from '../../Helpers';
 import classNames from 'classnames';
+import Image from '../../../common/components/Widgets/Image';
 
 class BigImage extends React.Component {
   static propTypes = {
@@ -15,35 +15,11 @@ class BigImage extends React.Component {
     children: React.PropTypes.object
   };
 
-  constructor() {
-    super();
-    this.storeListener = this.onStateChange.bind(this);
-  }
-
   componentDidMount() {
     setFullHeight();
-    ApplicationStore.listen(this.storeListener);
-  }
-
-  componentWillUnmount() {
-    ApplicationStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    config: ApplicationStore.getState().config
-  }
-
-  onStateChange() {
-    this.setState({
-      config: ApplicationStore.getState().config
-    });
   }
 
   render() {
-    if (!this.state.config) {
-      return null;
-    }
-
     let classes = [
       'item',
       'big-image',
@@ -55,21 +31,14 @@ class BigImage extends React.Component {
     }
 
     let alt = this.props.alt || '';
-
-    let images = {
-      small: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.small}/${this.props.src}`,
-      medium: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.medium}/${this.props.src}`,
-      large: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.large}/${this.props.src}`
-    };
-
     let proportion = this.props.proportion || 1;
 
     return (
       <div className={classNames(classes)} data-gradient={this.props.gradient} data-proportion={proportion}>
         <div className='image-content'>
-          <img alt={alt} className='show-for-large' src={images.large} />
-          <img alt={alt} className='show-for-medium' src={images.medium} />
-          <img alt={alt} className='show-for-small' src={images.small} />
+          <Image src={this.props.src} className='show-for-large' alt={alt} variant='large' />
+          <Image src={this.props.src} className='show-for-medium' alt={alt} variant='medium' />
+          <Image src={this.props.src} className='show-for-small' alt={alt} variant='small' />
         </div>
         <div className='width-wrapper full-height' data-proportion={proportion}>
           {this.props.children}

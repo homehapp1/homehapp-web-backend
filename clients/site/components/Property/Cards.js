@@ -5,7 +5,9 @@ import React from 'react';
 import { Link } from 'react-router';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 import DOMManipulator from '../../../common/DOMManipulator';
+import { imagePath } from '../../../common/Helpers';
 import classNames from 'classnames';
+import Image from '../../../common/components/Widgets/Image';
 
 class PropertyCards extends React.Component {
   static propTypes = {
@@ -39,14 +41,14 @@ class PropertyCards extends React.Component {
   }
 
   onChange(state) {
-    console.log('onChange', state);
     this.setState({
       config: ApplicationStore.getState().config
     });
+    this.resize(forced);
   }
 
   // Generic stuff that should happen when the window is resized
-  resize() {
+  resize(forced = false) {
     if (typeof this.refs.cards === 'undefined') {
       return;
     }
@@ -63,7 +65,7 @@ class PropertyCards extends React.Component {
     let cols = Math.min(6, Math.floor(container.width() / width), cards.length);
     let heights = [];
 
-    if (cols === this.cols) {
+    if (cols === this.cols && !forced) {
       return;
     }
 
@@ -107,11 +109,15 @@ class PropertyCards extends React.Component {
     container.css('min-height', `${max}px`).addClass('animate');
   }
 
+  componentDidUpdate() {
+    this.resize(true);
+  }
+
   render() {
-    //console.log('Cards this.state.config', this.state.config);
     if (!this.state.config) {
       return null;
     }
+
     return (
       <div ref='cards' className='card-list'>
       {
@@ -120,11 +126,6 @@ class PropertyCards extends React.Component {
             return null;
           }
 
-          let heights = [200, 220, 230, 250, 280, 300, 320, 340, 380, 420, 450, 460];
-          let seed = Math.floor(Math.random() * heights.length);
-          let h = heights[seed];
-
-          let src = `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.card},h_${h}/${item.images[0]}`;
           let classes = ['card'];
 
           if (item.storified) {
@@ -135,13 +136,24 @@ class PropertyCards extends React.Component {
             <div className={classNames(classes)} key={index}>
               <div className='card-content'>
                 <Link to='home' params={{slug: item.slug}} className='thumbnail'>
-                  <img src={src} height={h} />
+                  {
+                    item.images.map((img, ind) => {
+                      if (ind) {
+                        return null;
+                      }
+
+                      return (
+                        <Image src={img.url} alt={img.alt} aspectRatio={img.aspectRatio} variant='card' key={ind} />
+                      );
+                    })
+                  }
                 </Link>
                 <div className='details'>
                   <p className='address'>
-                    <span className='street'>{item.address.street}</span>
-                    <span className='city'>{item.address.city}</span>
-                    <span className='country'>{item.address.country}</span>
+                    <span className='apartment'>{item.location.address.apartment}</span>
+                    <span className='street'>{item.location.address.street}</span>
+                    <span className='city'>{item.location.address.city}</span>
+                    <span className='country'>{item.location.address.country}</span>
                   </p>
                 </div>
               </div>

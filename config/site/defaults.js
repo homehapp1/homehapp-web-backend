@@ -14,21 +14,47 @@ module.exports = (projectRoot) => {
         baseUrl: 'https://res.cloudinary.com/homehapp/image/upload/',
         transformations: {
           // Pinterest styled card
-          card: 'c_fill,q_60,w_300',
+          card: {
+            mode: 'fill',
+            width: 300
+          },
 
           // Property list
-          propList: 'c_fill,q_60,w_300,h_300',
-
-          thumbNail: 'c_thumb,q_60,w_100,h_100',
-          pinkyNail: 'c_thumb,q_60,w_50,h_50',
+          propList: {
+            mode: 'fill',
+            width: 300,
+            height: 300
+          },
+          thumbnail: {
+            mode: 'thumb',
+            width: 100,
+            height: 100
+          },
+          pinkynail: {
+            mode: 'thumb',
+            width: 50,
+            height: 50
+          },
 
           // Full-sized preview
-          preview: 'c_fill,f_auto,h_960',
+          preview: {
+            mode: 'fill',
+            height: 960
+          },
 
-          // Big image view
-          large: 'c_scale,q_60,w_1920',
-          medium: 'c_scale,q_60,w_1000',
-          small: 'c_fill,q_60,h_600'
+          // Big image variants
+          large: {
+            mode: 'scale',
+            width: 1920
+          },
+          medium: {
+            mode: 'scale',
+            width: 1000
+          },
+          small: {
+            mode: 'fill',
+            height: 600
+          }
         }
       }
     }
