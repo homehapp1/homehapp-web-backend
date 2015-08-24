@@ -37,7 +37,7 @@ class Modal extends React.Component {
       }
     }
 
-    let node = this.refs.modal.getDOMNode().parentNode;
+    let node = this.refs.modal.getDOMNode();
     React.unmountComponentAtNode(node);
     this.componentWillUnmount();
     node.parentNode.removeChild(node);
