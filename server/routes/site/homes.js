@@ -7,7 +7,7 @@ exports.registerRoutes = (app) => {
 
   let returnHomeBySlug = (slug, res, next) => {
     QB
-    .forModel('Home')
+    .query('Home')
     .findBySlug(slug)
     .fetch()
     .then((result) => {
@@ -23,6 +23,7 @@ exports.registerRoutes = (app) => {
   };
 
   app.get('/home/:slug', function(req, res, next) {
+    console.log('req.params', req.params);
     returnHomeBySlug(req.params.slug, res, next);
   });
 
