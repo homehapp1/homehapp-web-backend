@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ApplicationStore from '../../stores/ApplicationStore';
-import { setFullHeight, imagePath } from '../../Helpers';
+import { imagePath } from '../../Helpers';
 import classNames from 'classnames';
 
 class Image extends React.Component {
