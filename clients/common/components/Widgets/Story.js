@@ -5,7 +5,7 @@ import BigImage from './BigImage';
 import ContentBlock from './ContentBlock';
 import Gallery from './Gallery';
 
-class Image extends React.Component {
+class Story extends React.Component {
   static propTypes = {
     blocks: React.PropTypes.string.isRequired
   };
@@ -19,17 +19,23 @@ class Image extends React.Component {
             switch (item.template) {
               case 'BigImage':
                 rval = (
-                  <BigImage {...item} />
+                  <BigImage {...item.properties}>
+                    <div className='text-content' data-align={item.properties.align} data-valign={item.properties.valign}>
+                      <h1>{item.properties.title}</h1>
+                    </div>
+                  </BigImage>
                 );
                 break;
               case 'Gallery':
                 rval = (
-                  <Gallery {...item} />
+                  <Gallery {...item.properties} />
                 );
                 break;
               case 'ContentBlock':
                 rval = (
-                  <ContentBlock {...item} />
+                  <ContentBlock {...item.properties}>
+                    {item.properties.content}
+                  </ContentBlock>
                 );
                 break;
             }
@@ -42,4 +48,4 @@ class Image extends React.Component {
   }
 }
 
-export default Image;
+export default Story;
