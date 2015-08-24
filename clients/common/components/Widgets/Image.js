@@ -77,10 +77,10 @@ class Image extends React.Component {
     if (this.props.aspectRatio && !(params.width && params.height)) {
       if (typeof opts.width !== 'undefined') {
         params.width = opts.width;
-        params.height = Math.round(opts.width * this.props.aspectRatio);
+        params.height = Math.round(opts.width / this.props.aspectRatio);
       } else if (typeof opts.height !== 'undefined') {
         params.height = opts.height;
-        params.width = Math.round(opts.height / this.props.aspectRatio);
+        params.width = Math.round(opts.height * this.props.aspectRatio);
       }
     }
 
