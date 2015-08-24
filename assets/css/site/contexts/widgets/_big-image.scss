@@ -12,6 +12,7 @@
     right: 0;
     bottom: 0;
     z-index: -1;
+    overflow: hidden;
 
     & > img, & > video {
       position: absolute;
@@ -19,17 +20,24 @@
       min-height: 100%;
       left: 50%;
       top:0;
-      @include vendors(transform, translateX(-50%));
+      @include vendors(transform, translateX(-50%) translateY(-50%));
     }
 
-    &[data-vertical="middle"] {
+    &[data-valign="top"] {
+      & > img, & > video {
+        top: 0;
+        @include vendors(transform, translateX(-50%));
+      }
+    }
+
+    &[data-valign="middle"] {
       & > img, & > video {
         top: 50%;
         @include vendors(transform, translateX(-50%) translateY(-50%));
       }
     }
 
-    &[data-vertical="bottom"] {
+    &[data-valign="bottom"] {
       & > img, & > video {
         top: auto;
         bottom: 0;
@@ -112,11 +120,11 @@
       font-size: 200%;
     }
 
-    [data-vertical="center"] {
+    [data-valign="center"] {
       vertical-align: middle;
     }
 
-    [data-vertical="bottom"] {
+    [data-valign="bottom"] {
       vertical-align: bottom;
     }
   }
