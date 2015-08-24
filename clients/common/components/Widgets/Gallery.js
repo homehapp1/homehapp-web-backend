@@ -1,11 +1,11 @@
 'use strict';
 
 import React from 'react';
-import ApplicationStore from '../../stores/ApplicationStore';
 import linearPartition from 'linear-partition';
 import DOMManipulator from '../../DOMManipulator';
 import Modal from './Modal';
 import Pager from './Pager';
+import Image from './Image';
 
 class Gallery extends React.Component {
   static propTypes = {
@@ -27,15 +27,12 @@ class Gallery extends React.Component {
     // Bind to this
     this.onResize = this.onResize.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.storeListener = this.onStateChange.bind(this);
     this.changeImage = this.changeImage.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.currentImage = null;
   }
 
   componentDidMount() {
-    ApplicationStore.listen(this.storeListener);
-
     if (!this.refs.gallery) {
       return null;
     }
@@ -49,6 +46,12 @@ class Gallery extends React.Component {
       this.columns = this.props.columns || 10;
     }
 
+    let images = this.gallery.node.getElementsByTagName('img');
+
+    for (let i = 0; i < images.length; i++) {
+      this.galleryImages.push(images[i].src);
+    }
+
     this.updateGallery();
 
     window.addEventListener('resize', this.onResize);
@@ -57,18 +60,7 @@ class Gallery extends React.Component {
   }
 
   componentWillUnmount() {
-    ApplicationStore.unlisten(this.storeListener);
     window.removeEventListener('resize', this.onResize);
-  }
-
-  state = {
-    config: ApplicationStore.getState().config
-  }
-
-  onStateChange(state) {
-    this.setState({
-      config: ApplicationStore.getState().config
-    });
   }
 
   static INIT = 0;
@@ -303,31 +295,19 @@ class Gallery extends React.Component {
   }
 
   render() {
-    if (!this.state.config) {
-      return null;
-    }
-
     this.loadState = Gallery.INIT;
     return (
       <div className='gallery item full-height' ref='gallery'>
         {
           this.props.items.map((src, index) => {
-            let images = {
-              // small: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.small}/${this.props.src}`,
-              medium: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.medium}/${src}`,
-              large: `${this.state.config.cloudinary.baseUrl}${this.state.config.cloudinary.transformations.large}/${src}`
-            };
-
             if (this.props.links === false) {
               return (
-                <img src={images.medium} key={index} />
+                <Image src={src} alt='' variant='medium' key={index} />
               );
             }
 
-            this.galleryImages.push(images.large);
-
             return (
-              <a href={images.large} key={index}><img src={images.medium} /></a>
+              <Image src={src} alt='' variant='medium' linked='large' key={index} />
             );
           })
         }
