@@ -4,12 +4,8 @@
   padding: $contentPadding / 2;
 
   img {
-    display: none;
-
-    &.visible {
-      display: block;
-      float: left;
-      padding: $contentPadding / 2;
-    }
+    display: block;
+    float: left;
+    padding: $contentPadding / 2;
   }
 }
