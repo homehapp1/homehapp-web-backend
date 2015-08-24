@@ -18,10 +18,17 @@ class Footer extends React.Component {
     this.footer = this.refs.footer.getDOMNode();
     this.icon = this.refs.footerIcon.getDOMNode();
 
-    this.footer.addEventListener('mouseover', this.displayFooter);
-    this.footer.addEventListener('mouseout', this.hideFooter);
+    // this.footer.addEventListener('mouseover', this.displayFooter);
+    // this.footer.addEventListener('mouseout', this.hideFooter);
     this.icon.addEventListener('click', this.toggleFooter);
     this.icon.addEventListener('touch', this.toggleFooter);
+  }
+
+  componentWillUnmount() {
+    // this.footer.removeEventListener('mouseover', this.displayFooter);
+    // this.footer.removeEventListener('mouseout', this.hideFooter);
+    this.icon.removeEventListener('click', this.toggleFooter);
+    this.icon.removeEventListener('touch', this.toggleFooter);
   }
 
   toggleFooter() {
