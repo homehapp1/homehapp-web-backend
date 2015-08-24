@@ -223,3 +223,29 @@ exports.itemViews = function() {
     }
   }
 };
+
+exports.imagePath = function(config, src, variant = null, params = []) {
+  if (variant) {
+    for (let i in config.cloudinary.transformations[variant]) {
+      let v = config.cloudinary.transformations[variant][i];
+      switch (i) {
+        case 'mode':
+          params.push(`c_${v}`);
+          break;
+
+        case 'width':
+          params.push(`w_${v}`);
+          break;
+
+        case 'height':
+          params.push(`h_${v}`);
+          break;
+
+        default:
+          params.push(`${i}_${v}`);
+      }
+    }
+  }
+
+  return `${config.cloudinary.baseUrl}${params.join(',')}/${src}`;
+};
