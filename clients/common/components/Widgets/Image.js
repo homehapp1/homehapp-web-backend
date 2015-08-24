@@ -3,7 +3,7 @@
 import React from 'react';
 import ApplicationStore from '../../stores/ApplicationStore';
 import { imagePath } from '../../Helpers';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 
 class Image extends React.Component {
   static propTypes = {
