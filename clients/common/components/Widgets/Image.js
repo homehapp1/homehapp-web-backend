@@ -74,9 +74,10 @@ class Image extends React.Component {
       params.height = this.props.height;
     }
 
-    // Use aspect ratio to define the width/height but only if
-    // they weren't explicitly defined
-    if (this.props.aspectRatio && !(params.width && params.height)) {
+    // Use aspect ratio to define the width/height if set
+    if (this.props.aspectRatio) {
+      params['data-aspect-ratio'] = this.props.aspectRatio;
+
       if (typeof opts.width !== 'undefined') {
         params.width = opts.width;
         params.height = Math.round(opts.width / this.props.aspectRatio);
