@@ -92,7 +92,42 @@ let createHome = function(index)
   let streets = ['Shaftesbury Avenue', 'King’s Road', 'Abbey Road', 'Carnaby Street', 'Baker Street', 'Portobello Road', 'Oxford Street', 'Piccadilly'];
   let chars = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-  return {
+  let createStoryBlock = function(template = null) {
+    if (!template) {
+      let templates = ['BigImage', 'ContentBlock', 'Map', 'Gallery'];
+      template = getRandom(templates);
+    }
+
+    let storyBlock = {
+      template: template,
+      properties: {}
+    };
+
+    switch (template) {
+      case 'BigImage':
+        storyBlock.properties = {
+          title: 'Nice home for lorem ipsum',
+          image: getRandom(images),
+          fixed: (getRandom(0, 4)) ? true : false
+        }
+        break;
+      case 'Gallery':
+        storyBlock.properties = {
+          title: randomSeed(0, 1) ? 'Gallery title' : '',
+          images: getRandom(images, randomSeed(2, images.length))
+        }
+        break;
+      case 'ContentBlock':
+        storyBlock.properties = {
+          title: getRandom(['Story block', 'My story block', 'Great home']),
+          content: '<p>Lorem ipsum here</p>'
+        }
+    }
+
+    return storyBlock;
+  };
+
+  let property = {
     slug: slug,
     description: '2 rooms, kitchen, balcony and dressing room. 1 toilet + shower',
     location: {
@@ -125,18 +160,17 @@ let createHome = function(index)
     ],
     story: {
       enabled: true,
-      blocks: [
-        {
-          template: 'introImage',
-          properties: {
-            title: 'Nice home for small family',
-            image: 'v1439796815/v10/contentMockup/DSCF9347.jpg'
-          }
-        }
-      ]
+      blocks: []
     },
     images: getRandom(images, randomSeed(2, 10))
   };
+
+  property.story.blocks.push(createStoryBlock('BigImage'));
+  for (let i = 0; i < randomSeed(1, 10); i++) {
+    property.story.blocks.push(createStoryBlock());
+  }
+
+  return property;
 };
 
 let demoHomes = [];
