@@ -7,7 +7,8 @@ class ContentBlock extends React.Component {
     src: React.PropTypes.string,
     alt: React.PropTypes.string,
     fixed: React.PropTypes.bool,
-    gradient: React.PropTypes.string
+    gradient: React.PropTypes.string,
+    children: React.PropTypes.object.isRequired
   };
 
   render() {
@@ -15,6 +16,10 @@ class ContentBlock extends React.Component {
       'item',
       'content-block'
     ];
+
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
 
     if (this.props.fullheight) {
       classes.push('full-height');
