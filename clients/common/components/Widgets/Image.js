@@ -8,12 +8,14 @@ import classNames from 'classnames';
 class Image extends React.Component {
   static propTypes = {
     src: React.PropTypes.string.isRequired,
-    alt: React.PropTypes.string,
+    alt: React.PropTypes.string.isRequired,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
     aspectRatio: React.PropTypes.number,
     title: React.PropTypes.string,
-    variant: React.PropTypes.string
+    variant: React.PropTypes.string,
+    linked: React.PropTypes.string,
+    className: React.PropTypes.string
   };
 
   constructor() {
@@ -57,7 +59,7 @@ class Image extends React.Component {
     }
 
     let params = {
-      alt: this.props.alt || '',
+      alt: this.props.alt,
       title: this.props.title || this.props.alt,
       src: imagePath(this.state.config, this.props.src, this.props.variant),
       width: this.props.width || null,
@@ -84,8 +86,21 @@ class Image extends React.Component {
       }
     }
 
+    if (classes.length) {
+      params.className = classes;
+    }
+
+    if (this.props.linked) {
+      let href = imagePath(this.state.config, this.props.src, this.props.linked);
+      return (
+        <a href={href}>
+          <img {...params} />
+        </a>
+      );
+    }
+
     return (
-      <img {...params} className={classes.join(' ')} />
+      <img {...params} />
     );
   }
 }
