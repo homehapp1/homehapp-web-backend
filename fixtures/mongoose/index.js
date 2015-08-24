@@ -92,23 +92,29 @@ let createHome = function(index)
   let streets = ['Shaftesbury Avenue', 'King’s Road', 'Abbey Road', 'Carnaby Street', 'Baker Street', 'Portobello Road', 'Oxford Street', 'Piccadilly'];
   let chars = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-  let createStoryBlock = function(template = null) {
-    if (!template) {
-      let templates = ['BigImage', 'ContentBlock', 'Map', 'Gallery'];
-      template = getRandom(templates);
+  let createStoryBlock = function(template = null, properties = null, disallow = null) {
+    let templates = ['BigImage', 'ContentBlock', 'Map', 'Gallery'];
+    while (template === disallow) {
+      if (!template) {
+        template = getRandom(templates);
+      }
     }
 
     let storyBlock = {
       template: template,
       properties: {}
     };
+    let lipsum = String('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem. Quisque ligula eros ullamcorper quis, lacinia quis facilisis sed sapien. Mauris varius diam vitae arcu. Sed arcu lectus auctor vitae, consectetuer et venenatis eget velit. Sed augue orci, lacinia eu tincidunt et eleifend nec lacus. Donec ultricies nisl ut felis, suspendisse potenti. Lorem ipsum ligula ut hendrerit mollis, ipsum erat vehicula risus, eu suscipit sem libero nec erat. Aliquam erat volutpat. Sed congue augue vitae neque. Nulla consectetuer porttitor pede. Fusce purus morbi tortor magna condimentum vel, placerat id blandit sit amet tortor.').split(' ');
 
     switch (template) {
       case 'BigImage':
         storyBlock.properties = {
           title: 'Nice home for lorem ipsum',
           image: getRandom(images),
-          fixed: (getRandom(0, 4)) ? true : false
+          fixed: (getRandom(0, 4)) ? false : true,
+          align: getRandom(['left', 'center', 'right']),
+          valign: getRandom(['top', 'middle', 'bottom']),
+          gradient: getRandom([null, null, null, 'black', 'turquoise']),
         }
         break;
       case 'Gallery':
@@ -120,8 +126,22 @@ let createHome = function(index)
       case 'ContentBlock':
         storyBlock.properties = {
           title: getRandom(['Story block', 'My story block', 'Great home']),
-          content: '<p>Lorem ipsum here</p>'
+          content: getRandom(lipsum, randomSeed(30, lipsum.length))
+          .join(' ').toLowerCase()
+          .replace(/\.?$/, '.')
+          .replace(
+            /(^|\. )([a-z])/g,
+            function(match) {
+              return match.toUpperCase()
+            }
+          )
         }
+    }
+
+    if (properties) {
+      for (let i in properties) {
+        storyBlock.properties[i] = properties[i];
+      }
     }
 
     return storyBlock;
@@ -165,9 +185,13 @@ let createHome = function(index)
     images: getRandom(images, randomSeed(2, 10))
   };
 
-  property.story.blocks.push(createStoryBlock('BigImage'));
+  property.story.blocks.push(createStoryBlock('BigImage', {align: 'center', valign: 'middle'}));
+  let disallow = 'BigImage';
+
   for (let i = 0; i < randomSeed(1, 10); i++) {
-    property.story.blocks.push(createStoryBlock());
+    let block = createStoryBlock(null, null, disallow);
+    disallow = block.template;
+    property.story.blocks.push(block);
   }
 
   return property;
@@ -176,7 +200,8 @@ let createHome = function(index)
 let demoHomes = [];
 
 for (let i = 0; i < 30; i++) {
-  demoHomes.push(createHome(i));
+  let h = createHome(i);
+  demoHomes.push(h);
 }
 
 exports.execute = function execute(migrator) {
