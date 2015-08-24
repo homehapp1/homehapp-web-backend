@@ -4,7 +4,8 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import { createProperty } from '../../../common/Helpers';
+
+import HomeListStore from '../../stores/HomeListStore';
 
 import PropertyCards from '../Property/Cards';
 import BigImage from '../../../common/components/Widgets/BigImage';
@@ -13,29 +14,63 @@ import LargeText from '../../../common/components/Widgets/LargeText';
 class Homepage extends React.Component {
   constructor() {
     super();
-    this.config = ApplicationStore.getState().config;
+    this.storeListener = this.onChange.bind(this);
   }
 
   componentDidMount() {
     // Trigger the resize events defined in layout
     window.dispatchEvent(new Event('resize'));
     document.getElementsByTagName('body')[0].setAttribute('data-handler', 'homepage');
+
+    HomeListStore.listen(this.storeListener);
+    HomeListStore.fetchHomes({limit: 20});
   }
 
   componentWillUnmount() {
     document.getElementsByTagName('body')[0].removeAttribute('data-handler');
+    HomeListStore.unlisten(this.storeListener);
+  }
+
+  state = {
+    error: null,
+    homes: HomeListStore.getState().homes
+  }
+
+  onChange(state) {
+    this.setState(state);
+  }
+
+  handlePendingState() {
+    return (
+      <div className='homes-loader'>
+        <div className='width-wrapper'>
+          <h3>Loading homes...</h3>
+        </div>
+      </div>
+    );
+  }
+
+  handleErrorState() {
+    return (
+      <div className='homes-error'>
+        <h3>Error loading homes!</h3>
+        <p>{this.state.error.message}</p>
+      </div>
+    );
   }
 
   render() {
-    // Populate fake properties
-    let items = [];
-    for (let i = 0; i < 20; i++) {
-      items.push(createProperty(i));
+    if (this.state.error) {
+      return this.handleErrorState();
     }
+
+    // if (HomeListStore.isLoading() || !this.state.homes.length) {
+    //   return this.handlePendingState();
+    // }
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed={true} src='v1439564093/london-view.jpg' proportion='0.7'>
+        <BigImage gradient='green' fixed={true} src='v1439564093/london-view.jpg' proportion={0.7}>
           <LargeText align='center' vertical='center'>
             <div className='splash'>
               <h1>Every home has a unique story</h1>
@@ -43,7 +78,7 @@ class Homepage extends React.Component {
           </LargeText>
         </BigImage>
         <div className='item property-list partial-list'>
-          <PropertyCards items={items} max={20} />
+          <PropertyCards items={this.state.homes} max={20} />
           <Link to='properties' className='button read-more'>View more</Link>
         </div>
         <div className='item content-block item-separator'>
