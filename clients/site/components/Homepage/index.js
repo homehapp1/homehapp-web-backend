@@ -69,9 +69,14 @@ class Homepage extends React.Component {
     //   return this.handlePendingState();
     // }
 
+    let mainImage = {
+      url: 'v1439564093/london-view.jpg',
+      alt: ''
+    };
+
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed={true} src='v1439564093/london-view.jpg' proportion={0.7}>
+        <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.7}>
           <LargeText align='center' vertical='center'>
             <div className='splash'>
               <h1>Every home has a unique story</h1>
