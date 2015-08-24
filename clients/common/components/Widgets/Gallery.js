@@ -9,7 +9,8 @@ import Image from './Image';
 
 class Gallery extends React.Component {
   static propTypes = {
-    items: React.PropTypes.array,
+    images: React.PropTypes.array.isRequired,
+    title: React.PropTypes.string,
     columns: React.PropTypes.number,
     imagewidth: React.PropTypes.number,
     links: React.PropTypes.bool
@@ -17,12 +18,11 @@ class Gallery extends React.Component {
 
   constructor() {
     super();
-    this.preloadStack = {};
     this.aspectRatios = [];
     this.columns = null;
     this.imageWidth = null;
     this.galleryImages = [];
-    this.preloaded = [];
+    this.preloaded = {};
 
     // Bind to this
     this.onResize = this.onResize.bind(this);
@@ -46,10 +46,10 @@ class Gallery extends React.Component {
       this.columns = this.props.columns || 10;
     }
 
-    let images = this.gallery.node.getElementsByTagName('img');
+    this.images = this.gallery.node.getElementsByTagName('img');
 
-    for (let i = 0; i < images.length; i++) {
-      this.galleryImages.push(images[i].src);
+    for (let i = 0; i < this.images.length; i++) {
+      this.galleryImages.push(this.images[i].parentNode.href);
     }
 
     this.updateGallery();
@@ -93,8 +93,11 @@ class Gallery extends React.Component {
 
     React.render(this.modal, document.getElementById('modals'), function() {
       try {
+        let src = target.getAttribute('href');
+        app.currentImage = src;
         app.modalContainer = this.refs.modal.getDOMNode();
-        app.createImage(target.getAttribute('href'));
+        app.createImage(src);
+        app.preloadSurroundingImages(src);
       } catch (err) {
         console.error(err.message);
       }
@@ -117,123 +120,101 @@ class Gallery extends React.Component {
 
   closeModal() {
     this.modalContainer.click();
+    this.preloaded = {};
   }
 
-  createImage(src, d = null) {
-    // Preload the surrounding images
-    this.preloadSurrounding(src);
-    this.currentImage = src;
-
-    // These do not require any server-side rendering and thus the liberty
-    // of direct DOM manipulation has been used in favor of loading only
-    // the images that are needed
-    let img = document.createElement('img');
-    img.src = src;
-    img.className = 'gallery-image';
-
-    if (d) {
-      img.setAttribute('data-away', d);
-    }
-
-    document.getElementById('galleryImages').appendChild(img);
-    this.currentImage = src;
-    return img;
-  }
-
-  preloadSurrounding(src) {
-    let index = this.galleryImages.indexOf(src);
-    let prev = index - 1;
-    let next = index + 1;
-
-    if (typeof this.galleryImages[prev] !== 'undefined') {
-      let imgPrev = new Image();
-      imgPrev.src = this.galleryImages[prev];
-      this.preloaded.push(this.galleryImages[prev]);
-    }
-
-    if (typeof this.galleryImages[next] !== 'undefined') {
-      let imgNext = new Image();
-      imgNext.src = this.galleryImages[next];
-      this.preloaded.push(this.galleryImages[next]);
-    }
-  }
-
-  // Change the image, direction as integer
-  changeImage(dir) {
-    let images = this.modalContainer.getElementsByTagName('img');
+  // Calculate the distance to the source element
+  getDistance(src) {
     let current = this.galleryImages.indexOf(this.currentImage);
-    let next = current + dir;
-    let d = (dir === 1) ? 'next' : 'prev';
+    let target = this.galleryImages.indexOf(src);
+    let d = current - target;
+    let max = this.galleryImages.length - 1;
+
+    // Left overflow, start from the last one on right
+    if (d === max) {
+      d = -1;
+    }
+
+    // Right overflow, start from the first one on left
+    if (d === -1 * max) {
+      d = 1;
+    }
+
+    return d;
+  }
+
+  changeImage(dir) {
+    let next = this.galleryImages.indexOf(this.currentImage) + dir;
 
     if (next < 0) {
       next = this.galleryImages.length - 1;
-      d = 'next';
     }
     if (next >= this.galleryImages.length) {
       next = 0;
-      d = 'prev';
-    }
-    let found = false;
-
-    for (let i = 0; i < images.length; i++) {
-      let src = images[i].src;
-      let io = this.galleryImages.indexOf(src);
-
-      if (io < next) {
-        images[i].setAttribute('data-away', 'prev');
-      }
-
-      if (io === next) {
-        images[i].removeAttribute('data-away');
-        found = true;
-      }
-
-      if (io > next) {
-        images[i].setAttribute('data-away', 'next');
-      }
     }
 
     this.currentImage = this.galleryImages[next];
+    this.preloadSurroundingImages(this.currentImage);
+    this.updateDistances();
+  }
 
-    // Create the big images one by one if needed
-    if (!found) {
-      let img = this.createImage(this.currentImage, d);
+  updateDistances() {
+    let images = document.getElementById('galleryImages').getElementsByTagName('img');
 
-      window.setTimeout(function() {
-        img.removeAttribute('data-away');
-      }, 50);
+    for (let i = 0; i < images.length; i++) {
+      images[i].setAttribute('data-distance', this.getDistance(images[i].src));
     }
   }
 
-  // Preload an image and store its aspect ratio for the gallery
-  preloadImage(src, index) {
-    if (typeof this.preloadStack[src] !== 'undefined') {
-      return null;
+  preloadSurroundingImages(src) {
+    let current = this.galleryImages.indexOf(this.currentImage);
+    let next = current + 1;
+    let prev = current - 1;
+
+    if (prev < 0) {
+      prev = this.galleryImages.length - 1;
     }
 
-    this.loadState = Gallery.LOADING;
-    this.preloadStack[src] = null;
+    if (next >= this.galleryImages.length) {
+      next = 0;
+    }
+
+    this.createImage(this.galleryImages[prev]);
+    this.createImage(this.galleryImages[next]);
+  }
+
+  // Create the displayed Image
+  createImage(src) {
+    let distance = this.getDistance(src);
+    let image = document.createElement('img');
     let app = this;
 
-    let image = new Image();
-    image.index = index;
-    image.onload = function() {
-      app.preloadStack[this.src] = this.width / this.height;
-      app.aspectRatios[this.index] = this.width / this.height;
-      app.updateGallery();
-    };
-    image.src = src;
+    if (typeof this.preloaded[src] === 'undefined') {
+      image.setAttribute('data-distance', distance);
+      image.onload = function() {
+        app.preloaded[this.src] = this;
+      };
+      image.src = src;
+      image.className = 'gallery-image';
+
+      document.getElementById('galleryImages').appendChild(image);
+    }
   }
 
-  // Partition the gallery based on the divisions provided by
-  // linear partition algorithm
-  partition(images) {
+  // Update the gallery view by setting the width and height as linear
+  // partition suggests
+  updateGallery() {
     let columns = Math.min(Math.round(this.gallery.width() / this.imageWidth), this.columns);
 
-    let rows = Math.ceil(images.length / columns);
+    let rows = Math.ceil(this.images.length / columns);
     let width = this.gallery.width();
+    let aspectRatios = [];
 
-    let partitioned = linearPartition(this.aspectRatios, rows);
+    for (let i = 0; i < this.images.length; i++) {
+      aspectRatios.push(Number(this.images[i].getAttribute('data-aspect-ratio')));
+    }
+
+    let partitioned = linearPartition(aspectRatios, rows);
     let index = 0;
 
     for (let i = 0; i < partitioned.length; i++) {
@@ -249,13 +230,13 @@ class Gallery extends React.Component {
         let col = row[j];
         let w = col / total * 100;
 
-        let image = new DOMManipulator(images[index]);
+        let image = new DOMManipulator(this.images[index]);
         image.addClass('visible');
 
         if (!j) {
           image.addClass('first');
           // One height per row to prevent rounding corner cases
-          h = Math.round(col / total * width / this.aspectRatios[index]);
+          h = Math.round(col / total * width / aspectRatios[index]);
         }
 
         // Relative width to fill the space fully, absolute height
@@ -269,45 +250,20 @@ class Gallery extends React.Component {
     }
   }
 
-  updateGallery() {
-    let images = this.refs.gallery.getDOMNode().getElementsByTagName('img');
-    switch (this.loadState) {
-      case Gallery.READY:
-        this.partition(images);
-        break;
-
-      case Gallery.INIT:
-        for (let i = 0; i < images.length; i++) {
-          this.preloadImage(images[i].src, i);
-        }
-        return null;
-
-      case Gallery.LOADING:
-        for (let k in this.preloadStack) {
-          if (!this.preloadStack[k]) {
-            return null;
-          }
-        }
-        this.loadState = Gallery.READY;
-        this.updateGallery();
-        break;
-    }
-  }
-
   render() {
     this.loadState = Gallery.INIT;
     return (
       <div className='gallery item full-height' ref='gallery'>
         {
-          this.props.items.map((src, index) => {
+          this.props.images.map((image, index) => {
             if (this.props.links === false) {
               return (
-                <Image src={src} alt='' variant='medium' key={index} />
+                <Image src={image.url} alt={image.alt} variant='medium' key={index} aspectRatio={image.aspectRatio} />
               );
             }
 
             return (
-              <Image src={src} alt='' variant='medium' linked='large' key={index} />
+              <Image src={image.url} alt={image.alt} variant='medium' linked='large' key={index} aspectRatio={image.aspectRatio} />
             );
           })
         }
