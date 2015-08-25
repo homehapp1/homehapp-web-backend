@@ -43,23 +43,28 @@
           left: 50%;
           max-width: 100%;
           max-height: 100%;
-          @include vendors(transition-property, margin-left);
-          @include vendors(transition-duration, $transitionDuration);
-          @include vendors(transform, translateX(-50%) translateY(-50%));
           opacity: 0;
+          z-index: -1;
+          visibility: hidden;
 
-          &[data-distance="1"] {
-            margin-left: -100%;
+          &[data-distance="-1"], &[data-distance="0"], &[data-distance="1"] {
+            @include vendors(transition-property, margin-left);
+            @include vendors(transition-duration, $transitionDuration);
+            @include vendors(transform, translateX(-50%) translateY(-50%));
             opacity: 1;
+            visibility: visible;
+            z-index: 1;
           }
 
-          &[data-distance="-1"] {
-            margin-left: 100%;
-            opacity: 1;
+          @for $i from -2 through 2 {
+            &[data-distance="#{$i}"] {
+              margin-left: -1 * $i * 100%;
+            }
           }
 
           &[data-distance="0"] {
-            opacity: 1;
+            z-index: 2;
+            margin-left: 0;
           }
         }
       }
