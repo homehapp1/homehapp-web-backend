@@ -128,16 +128,17 @@ class Gallery extends React.Component {
     let current = this.galleryImages.indexOf(this.currentImage);
     let target = this.galleryImages.indexOf(src);
     let d = current - target;
-    let max = this.galleryImages.length - 1;
+    let tolerance = Math.min(this.galleryImages.length - 2, 2);
+    let max = this.galleryImages.length - tolerance;
 
     // Left overflow, start from the last one on right
     if (d === max) {
-      d = -1;
+      d = -1 * tolerance;
     }
 
     // Right overflow, start from the first one on left
     if (d === -1 * max) {
-      d = 1;
+      d = tolerance;
     }
 
     return d;
@@ -253,7 +254,7 @@ class Gallery extends React.Component {
   render() {
     this.loadState = Gallery.INIT;
     return (
-      <div className='gallery item full-height' ref='gallery'>
+      <div className='gallery item full-height clearfix' ref='gallery'>
         {
           this.props.images.map((image, index) => {
             if (this.props.links === false) {
