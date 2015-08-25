@@ -7,7 +7,7 @@ import Image from '../../../common/components/Widgets/Image';
 
 class BigImage extends React.Component {
   static propTypes = {
-    image: React.PropTypes.string.isRequired,
+    image: React.PropTypes.object.isRequired,
     fixed: React.PropTypes.bool,
     gradient: React.PropTypes.string,
     proportion: React.PropTypes.number,

@@ -7,7 +7,7 @@ import Gallery from './Gallery';
 
 class Story extends React.Component {
   static propTypes = {
-    blocks: React.PropTypes.string.isRequired
+    blocks: React.PropTypes.array.isRequired
   };
 
   render() {
@@ -32,9 +32,13 @@ class Story extends React.Component {
                 );
                 break;
               case 'ContentBlock':
+                let content = (
+                  <div className='content-wrapper'>{item.properties.content}</div>
+                );
+                
                 rval = (
                   <ContentBlock {...item.properties} key={index}>
-                    {item.properties.content}
+                    {content}
                   </ContentBlock>
                 );
                 break;

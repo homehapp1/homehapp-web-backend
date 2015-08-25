@@ -10,7 +10,6 @@ class HomeDetails extends React.Component {
   }
 
   render() {
-    console.log('home', this.props.home);
     return (
       <Story blocks={this.props.home.story.blocks} />
     );
