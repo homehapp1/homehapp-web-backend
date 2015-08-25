@@ -1,7 +1,7 @@
 #footer {
-  $offset: 80px;
+  $offset: $footerHeight;
 
-  padding: $contentPadding + $offset 0 $contentPadding * 2;
+  padding: 0 0 $contentPadding * 2;
   background-color: white;
   text-align: center;
   font-weight: 400;
@@ -47,8 +47,10 @@
 
   .footer-links {
     &.main {
+      $lh: 20px;
+      line-height: $lh;
       position: absolute;
-      top: -1 * $offset + 15px;
+      top: -0.5 * ($offset + $lh);
       left: 0;
       right: 0;
     }
@@ -60,14 +62,10 @@
   }
 
   ul {
-    margin: 1em 0;
+    margin: 0 0 1em;
     padding: 0;
     list-style: none;
     text-transform: uppercase;
-
-    & + ul {
-      margin-top: 2em;
-    }
 
     &.social img {
       height: 30px;

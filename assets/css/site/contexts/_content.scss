@@ -1,4 +1,6 @@
 #container {
+  padding-bottom: $footerHeight;
+  @include clearfix();
   @import "widgets";
 }
 
