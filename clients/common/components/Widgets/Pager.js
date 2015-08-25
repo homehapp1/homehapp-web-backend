@@ -12,7 +12,6 @@ class Pager extends React.Component {
     super();
     this.onclick = this.onclick.bind(this);
     this.onkeyb = this.onkeyb.bind(this);
-    this.ontouch = this.ontouch.bind(this);
   }
 
   componentDidMount() {
@@ -35,10 +34,6 @@ class Pager extends React.Component {
     this.next.removeEventListener('click', this.onclick, true);
     this.next.removeEventListener('touch', this.onclick, true);
     this.pager.removeEventListener('keydown', this.onkeyb, true);
-  }
-
-  ontouch(e) {
-
   }
 
   onclick(e) {

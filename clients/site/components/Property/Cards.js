@@ -3,9 +3,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import ApplicationStore from '../../../common/stores/ApplicationStore';
 import DOMManipulator from '../../../common/DOMManipulator';
-import { imagePath } from '../../../common/Helpers';
 import classNames from 'classnames';
 import Image from '../../../common/components/Widgets/Image';
 
@@ -18,12 +16,9 @@ class PropertyCards extends React.Component {
   constructor() {
     super();
     this.columns = 0;
-    this.storeListener = this.onChange.bind(this);
   }
 
   componentDidMount() {
-    ApplicationStore.listen(this.storeListener);
-
     this.resize = this.resize.bind(this);
     window.addEventListener('resize', this.resize);
 
@@ -31,20 +26,12 @@ class PropertyCards extends React.Component {
     this.resize();
   }
 
+  componentDidUpdate() {
+    this.resize(true);
+  }
+
   componentWillUnmount() {
-    ApplicationStore.unlisten(this.storeListener);
     window.removeEventListener('resize', this.resize);
-  }
-
-  state = {
-    config: ApplicationStore.getState().config
-  }
-
-  onChange(state) {
-    this.setState({
-      config: ApplicationStore.getState().config
-    });
-    this.resize(forced);
   }
 
   // Generic stuff that should happen when the window is resized
@@ -109,15 +96,7 @@ class PropertyCards extends React.Component {
     container.css('min-height', `${max}px`).addClass('animate');
   }
 
-  componentDidUpdate() {
-    this.resize(true);
-  }
-
   render() {
-    if (!this.state.config) {
-      return null;
-    }
-
     return (
       <div ref='cards' className='card-list'>
       {
@@ -150,10 +129,12 @@ class PropertyCards extends React.Component {
                 </Link>
                 <div className='details'>
                   <p className='address'>
-                    <span className='apartment'>{item.location.address.apartment}</span>
-                    <span className='street'>{item.location.address.street}</span>
-                    <span className='city'>{item.location.address.city}</span>
-                    <span className='country'>{item.location.address.country}</span>
+                    <Link to='home' params={{slug: item.slug}}>
+                      <span className='apartment'>{item.location.address.apartment}</span>
+                      <span className='street'>{item.location.address.street}</span>
+                      <span className='city'>{item.location.address.city}</span>
+                      <span className='country'>{item.location.address.country}</span>
+                    </Link>
                   </p>
                 </div>
               </div>

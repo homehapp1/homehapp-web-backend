@@ -19,7 +19,7 @@ class Story extends React.Component {
             switch (item.template) {
               case 'BigImage':
                 rval = (
-                  <BigImage {...item.properties}>
+                  <BigImage {...item.properties} key={index}>
                     <div className='text-content' data-align={item.properties.align} data-valign={item.properties.valign}>
                       <h1>{item.properties.title}</h1>
                     </div>
@@ -28,12 +28,12 @@ class Story extends React.Component {
                 break;
               case 'Gallery':
                 rval = (
-                  <Gallery {...item.properties} />
+                  <Gallery {...item.properties} key={index} />
                 );
                 break;
               case 'ContentBlock':
                 rval = (
-                  <ContentBlock {...item.properties}>
+                  <ContentBlock {...item.properties} key={index}>
                     {item.properties.content}
                   </ContentBlock>
                 );
