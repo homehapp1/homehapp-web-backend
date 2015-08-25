@@ -154,12 +154,13 @@ class Gallery extends React.Component {
     event.preventDefault();
 
     this.startX = this.getX(event);
+    this.currentX = this.startX;
 
     if (this.startX === null) {
       return false;
     }
 
-    this.startT = new Date().getTime();
+    this.startT = (new Date()).getTime();
     this.moveImages = [];
 
     let images = this.imageContainer.getElementsByTagName('img');
@@ -204,23 +205,30 @@ class Gallery extends React.Component {
     }
 
     let currentT = (new Date()).getTime();
-    let absX = Math.abs(this.startX - this.currentX);
-    let speed = Math.abs(this.currentX - this.startX) / (currentT - this.startT);
+    let dx = this.startX - this.currentX;
+    let absX = Math.abs(dx);
+    let dt = currentT - this.startT;
+    let speed = absX / dt;
 
+    // Reset for the next round
+    this.startX = null;
     for (let i = 0; i < this.moveImages.length; i++) {
       this.moveImages[i].removeAttribute('data-move');
       this.moveImages[i].style.marginLeft = null;
     }
 
+    if (absX < 10 && dt < 500) {
+      return true;
+    }
+
+
     if ((absX > window.innerWidth * 0.1 && speed > 1) || absX > window.innerWidth * 0.25) {
-      if (this.startX - this.currentX < 0) {
+      if (dx < 0) {
         this.changeImage(-1);
       } else {
         this.changeImage(1);
       }
     }
-
-    this.startX = null;
 
     return false;
   }
@@ -272,9 +280,8 @@ class Gallery extends React.Component {
   createModal() {
     return (
       <Modal>
-        <div id='galleryImages'>
-          <Pager onchange={this.changeImage} onclose={this.closeModal} />
-        </div>
+        <Pager onchange={this.changeImage} onclose={this.closeModal} />
+        <div id='galleryImages'></div>
       </Modal>
     );
   }
