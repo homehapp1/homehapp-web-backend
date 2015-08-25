@@ -179,7 +179,7 @@ let createHome = function(index)
       { name: 'elevator', value: (randomSeed(0, 1)) ? 'yes' : 'no' }
     ],
     story: {
-      enabled: true,
+      enabled: !(randomSeed(0, 3)),
       blocks: []
     },
     images: getRandom(images, randomSeed(2, 10))

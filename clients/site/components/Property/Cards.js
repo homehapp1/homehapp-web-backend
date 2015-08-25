@@ -107,7 +107,7 @@ class PropertyCards extends React.Component {
 
           let classes = ['card'];
 
-          if (item.storified) {
+          if (item.story.enabled) {
             classes.push('storified');
           }
 

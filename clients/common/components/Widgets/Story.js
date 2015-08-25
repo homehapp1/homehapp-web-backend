@@ -35,7 +35,7 @@ class Story extends React.Component {
                 let content = (
                   <div className='content-wrapper'>{item.properties.content}</div>
                 );
-                
+
                 rval = (
                   <ContentBlock {...item.properties} key={index}>
                     {content}

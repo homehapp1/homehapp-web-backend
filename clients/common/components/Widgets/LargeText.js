@@ -20,7 +20,7 @@ class LargeText extends React.Component {
     let valign = this.props.vertical || 'top';
 
     return (
-      <div className={classes.join(' ')} data-align={align} data-vertical={valign}>
+      <div className={classes.join(' ')} data-align={align} data-valign={valign}>
         <div className='width-wrapper'>
           {this.props.children}
         </div>

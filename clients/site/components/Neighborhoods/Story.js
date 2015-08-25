@@ -7,13 +7,30 @@ import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
 class NeighborhoodsStory extends React.Component {
   render() {
-    let galleryImages = ['v1439796815/contentMockup/DSCF9347.jpg', 'v1439796815/contentMockup/DSCF9253.jpg', 'v1439796812/contentMockup/DSCF9310.jpg', 'v1439796810/contentMockup/DSCF9299.jpg', 'v1439796803/contentMockup/DSCF9261.jpg', 'v1439796800/contentMockup/DSCF9339.jpg', 'v1439796799/contentMockup/DSCF9328.jpg', 'v1439796797/contentMockup/DSCF9272.jpg', 'v1439796794/contentMockup/DSCF9301.jpg', 'v1439796791/contentMockup/DSCF9188.jpg', 'v1439796791/contentMockup/DSCF9306.jpg', 'v1439796791/contentMockup/DSCF9280.jpg', 'v1439796780/contentMockup/DSCF9257.jpg', 'v1439796776/contentMockup/DSCF9245.jpg', 'v1439796775/contentMockup/DSCF9201.jpg', 'v1439796764/contentMockup/DSCF9227.jpg', 'v1439796763/contentMockup/DSCF9111.jpg', 'v1439796759/contentMockup/DSCF9158.jpg', 'v1439796753/contentMockup/DSCF9225.jpg', 'v1439796748/contentMockup/DSCF9144.jpg', 'v1439796743/contentMockup/DSCF9178.jpg', 'v1439796741/contentMockup/DSCF9156.jpg', 'v1439796733/contentMockup/DSCF9177.jpg', 'v1439796732/contentMockup/DSCF9160.jpg', 'v1439796719/contentMockup/DSCF9102.jpg', 'v1439796718/contentMockup/DSCF9155.jpg', 'v1439796708/contentMockup/DSCF9141.jpg', 'v1439796701/contentMockup/DSCF9097.jpg', 'v1439796699/contentMockup/DSCF9095.jpg', 'v1439796693/contentMockup/DSCF9108.jpg', 'v1439796687/contentMockup/DSCF9105.jpg', 'v1439796684/contentMockup/DSCF9103.jpg'].splice(0, 10);
-    let imageSrc = galleryImages[0];
+    let images = [
+      { url: 'v10/contentMockup/DSCF9306.jpg', alt: '', aspectRatio: 1.5179 },
+      { url: 'v10/contentMockup/DSCF9257.jpg', alt: '', aspectRatio: 1.1567 },
+      { url: 'v10/contentMockup/DSCF9261.jpg', alt: '', aspectRatio: 0.8682 },
+      { url: 'v10/contentMockup/DSCF9280.jpg', alt: '', aspectRatio: 1.5 },
+      { url: 'v10/contentMockup/DSCF9283.jpg', alt: '', aspectRatio: 1.4998 },
+      { url: 'v10/contentMockup/DSCF9287.jpg', alt: '', aspectRatio: 1.1859 },
+      { url: 'v10/contentMockup/DSCF9293.jpg', alt: '', aspectRatio: 1.5401 },
+      { url: 'v10/contentMockup/DSCF9301.jpg', alt: '', aspectRatio: 0.9691 },
+      { url: 'v10/contentMockup/DSCF9307.jpg', alt: '', aspectRatio: 1.3606 },
+      { url: 'v10/contentMockup/DSCF9310.jpg', alt: '', aspectRatio: 1.4556 },
+      { url: 'v10/contentMockup/DSCF9328.jpg', alt: '', aspectRatio: 1.6685 },
+      { url: 'v10/contentMockup/DSCF9330.jpg', alt: '', aspectRatio: 1.5797 },
+      { url: 'v10/contentMockup/DSCF9332.jpg', alt: '', aspectRatio: 1.8638 },
+      { url: 'v10/contentMockup/DSCF9339.jpg', alt: '', aspectRatio: 1.2735 },
+      { url: 'v10/contentMockup/DSCF9347.jpg', alt: '', aspectRatio: 0.9795 }
+    ];
+
+    let image = images[0];
 
     return (
       <div className='neighborhood-story'>
-        <BigImage src={imageSrc} gradient='black' fixed={true}>
-          <div className='large-text' data-vertical='center' data-align='center'>
+        <BigImage image={image} gradient='black' fixed={true}>
+          <div className='large-text' data-valign='middle' data-align='center'>
             <h1>St. John's Wood</h1>
           </div>
         </BigImage>
@@ -32,7 +49,7 @@ class NeighborhoodsStory extends React.Component {
           </blockquote>
         </ContentBlock>
 
-        <Gallery items={galleryImages} columns={4} />
+        <Gallery images={images} columns={4} />
       </div>
     );
   }
