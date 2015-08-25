@@ -29,7 +29,37 @@ class Gallery extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.changeImage = this.changeImage.bind(this);
     this.closeModal = this.closeModal.bind(this);
+
+    this.moveStart = this.moveStart.bind(this);
+    this.moveEvent = this.moveEvent.bind(this);
+    this.moveEnd = this.moveEnd.bind(this);
+
+    this.imageContainer = null;
+
+    this.startT = null;
+    this.startX = null;
+    this.currentX = null;
+    this.currentX = null;
     this.currentImage = null;
+    this.moveImages = [];
+
+    this.events = [
+      {
+        events: ['mousedown', 'touchstart'],
+        handler: this.moveStart,
+        target: 'image'
+      },
+      {
+        events: ['mousemove', 'touchmove'],
+        handler: this.moveEvent,
+        target: 'document'
+      },
+      {
+        events: ['mouseleave', 'mouseout', 'mouseup', 'touchend', 'touchcancel'],
+        handler: this.moveEnd,
+        target: 'document'
+      }
+    ];
   }
 
   componentDidMount() {
@@ -56,16 +86,144 @@ class Gallery extends React.Component {
 
     window.addEventListener('resize', this.onResize);
     this.gallery.addEvent('click', this.onClick);
-    this.gallery.addEvent('touch', this.onClick);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
+    this.endCapture();
   }
 
   static INIT = 0;
   static LOADING = 1;
   static READY = 2;
+
+  // Start moving, capture the event
+  startCapture() {
+    // Unbind all the old events in case of an unsuccessful unbinding
+    this.endCapture();
+
+    // Bind a whole lot of events here
+    for (let i = 0; i < this.events.length; i++) {
+      for (let n = 0; n < this.events[i].events.length; n++) {
+        let target = document;
+        if (this.events[i].target === 'image') {
+          target = this.imageContainer;
+        }
+
+        if (!target) {
+          continue;
+        }
+
+        target.addEventListener(this.events[i].events[n], this.events[i].handler, true);
+      }
+    }
+  }
+
+  endCapture() {
+    // Unbind a whole lot of events here
+    for (let i = 0; i < this.events.length; i++) {
+      for (let n = 0; n < this.events[i].events.length; n++) {
+        let target = document;
+        if (this.events[i].target === 'image') {
+          target = this.imageContainer;
+        }
+
+        if (!target) {
+          continue;
+        }
+
+        target.removeEventListener(this.events[i].events[n], this.events[i].handler, true);
+      }
+    }
+  }
+
+  getX(event) {
+    if (typeof event.clientX !== 'undefined') {
+      return event.clientX;
+    }
+
+    if (typeof event.touches !== 'undefined' && event.touches.length === 1) {
+      return event.touches[0].clientX;
+    }
+
+    return null;
+  }
+
+  moveStart(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.startX = this.getX(event);
+
+    if (this.startX === null) {
+      return false;
+    }
+
+    this.startT = new Date().getTime();
+    this.moveImages = [];
+
+    let images = this.imageContainer.getElementsByTagName('img');
+
+    for (let i = 0; i < images.length; i++) {
+      if (Math.abs(Number(images[i].getAttribute('data-distance'))) <= 1) {
+        this.moveImages.push(images[i]);
+        images[i].setAttribute('data-move', '');
+      }
+    }
+
+    return false;
+  }
+
+  moveEvent(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (this.startX === null) {
+      return true;
+    }
+
+    let dx = this.getX(event) - this.startX;
+
+    for (let i = 0; i < this.moveImages.length; i++) {
+      let d = Number(this.moveImages[i].getAttribute('data-distance'));
+      let margin = dx - d * window.innerWidth;
+      this.moveImages[i].style.marginLeft = `${margin}px`;
+    }
+
+    this.currentX = this.getX(event);
+
+    return false;
+  }
+
+  moveEnd(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (this.startX === null) {
+      return true;
+    }
+
+    let currentT = (new Date()).getTime();
+    let absX = Math.abs(this.startX - this.currentX);
+    let speed = Math.abs(this.currentX - this.startX) / (currentT - this.startT);
+
+    for (let i = 0; i < this.moveImages.length; i++) {
+      this.moveImages[i].removeAttribute('data-move');
+      this.moveImages[i].style.marginLeft = null;
+    }
+
+    if ((absX > window.innerWidth * 0.1 && speed > 1) || absX > window.innerWidth * 0.25) {
+      if (this.startX - this.currentX < 0) {
+        this.changeImage(-1);
+      } else {
+        this.changeImage(1);
+      }
+    }
+
+    this.startX = null;
+
+    return false;
+  }
 
   // Update the sizes and positions in the gallery
   onResize() {
@@ -87,6 +245,7 @@ class Gallery extends React.Component {
 
     this.modal = this.createModal();
     this.modalContainer = null;
+    this.preloaded = {};
 
     // Reference to self
     let app = this;
@@ -96,8 +255,10 @@ class Gallery extends React.Component {
         let src = target.getAttribute('href');
         app.currentImage = src;
         app.modalContainer = this.refs.modal.getDOMNode();
+        app.imageContainer = document.getElementById('galleryImages');
         app.createImage(src);
         app.preloadSurroundingImages(src);
+        app.startCapture();
       } catch (err) {
         console.error(err.message);
       }
@@ -121,6 +282,7 @@ class Gallery extends React.Component {
   closeModal() {
     this.modalContainer.click();
     this.preloaded = {};
+    this.endCapture();
   }
 
   // Calculate the distance to the source element
@@ -160,14 +322,14 @@ class Gallery extends React.Component {
   }
 
   updateDistances() {
-    let images = document.getElementById('galleryImages').getElementsByTagName('img');
+    let images = this.imageContainer.getElementsByTagName('img');
 
     for (let i = 0; i < images.length; i++) {
       images[i].setAttribute('data-distance', this.getDistance(images[i].src));
     }
   }
 
-  preloadSurroundingImages(src) {
+  preloadSurroundingImages() {
     let current = this.galleryImages.indexOf(this.currentImage);
     let next = current + 1;
     let prev = current - 1;
@@ -198,7 +360,7 @@ class Gallery extends React.Component {
       image.src = src;
       image.className = 'gallery-image';
 
-      document.getElementById('galleryImages').appendChild(image);
+      this.imageContainer.appendChild(image);
     }
   }
 
