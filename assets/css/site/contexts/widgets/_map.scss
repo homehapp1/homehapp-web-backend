@@ -1,15 +1,59 @@
-.map-wrapper {
-  $s: $pageWidth / 2;
-  position: relative;;
+&.map {
+  $s: $pageWidth / 2 - $contentPadding * 2;
+  padding-top: $contentPadding * 5;
+  padding-bottom: $contentPadding * 5;
 
-  &, & > * {
-    width: $s;
-    height: $s;
-    border-radius: $s;
-    overflow: hidden;
+  & > .width-wrapper {
+    display: table;
+    min-height: $s;
+
+    @include medium() {
+      display: block;
+    }
+
+    & > * {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 0 $contentPadding * 2;
+
+      @include medium() {
+        padding: 0;
+        display: block;
+
+        & + * {
+          padding-top: $contentPadding * 2;
+        }
+      }
+    }
   }
 
-  & > * {
-    position: absolute;
+  .map-wrapper {
+    position: relative;
+
+    &, & > * {
+      width: $s;
+      border-radius: $s;
+      overflow: hidden;
+
+      @include medium() {
+        width: 100%;
+      }
+    }
+
+    & > * {
+      position: absolute;
+      left: 50%;
+      margin-top: -0.5 * $s;
+      margin-left: -0.5 * $s;
+      height: $s;
+
+      @include medium() {
+        position: static !important;
+        margin-top: 0;
+        margin-left: 0;
+        left: 0;
+        height: auto;
+      }
+    }
   }
 }
