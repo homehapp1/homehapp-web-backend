@@ -90,6 +90,25 @@ class PropertyCards extends React.Component {
         marginTop: `${heights[c]}px`
       });
       heights[c] += cards[i].height();
+
+      let images = cards[i].getByTagName('img');
+
+      if (!images.length) {
+        console.log('no images found');
+        continue;
+      }
+
+      // Set the thumbnail wrapper size to be the same as the one of the card
+      images[0].parent()
+        .addClass('positioning-enabled')
+        .width(images[0].attr('width'))
+        .height(images[0].attr('height'));
+
+      images[0].parent().parent()
+        .addClass('positioning-enabled')
+        .width(images[0].attr('width'))
+        .height(images[0].attr('height'));
+
     }
 
     let max = Math.max.apply(Math, heights);
@@ -111,6 +130,14 @@ class PropertyCards extends React.Component {
             classes.push('storified');
           }
 
+          let formatPrice = function(price) {
+            if (!price) {
+              return '';
+            }
+
+            return `£${String(Math.round(price)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
+          };
+
           return (
             <div className={classNames(classes)} key={index}>
               <div className='card-content'>
@@ -122,21 +149,21 @@ class PropertyCards extends React.Component {
                       }
 
                       return (
-                        <Image src={img.url} alt={img.alt} aspectRatio={img.aspectRatio} variant='card' key={ind} />
+                        <span className='image-wrapper' key={ind}>
+                          <Image src={img.url} alt={img.alt} aspectRatio={img.aspectRatio} variant='card' />
+                        </span>
                       );
                     })
                   }
+                  <span className='details'>
+                    <span className='price'>{formatPrice(item.costs.sellingPrice)}</span>
+                    <span className='street'>{item.location.address.street}, </span>
+                    <span className='city'>{item.location.address.city}</span>
+                  </span>
                 </Link>
-                <div className='details'>
-                  <p className='address'>
-                    <Link to='home' params={{slug: item.slug}}>
-                      <span className='apartment'>{item.location.address.apartment}</span>
-                      <span className='street'>{item.location.address.street}</span>
-                      <span className='city'>{item.location.address.city}</span>
-                      <span className='country'>{item.location.address.country}</span>
-                    </Link>
-                  </p>
-                </div>
+                <p className='description'>
+                  <Link to='home' params={{slug: item.slug}}>{item.description}</Link>
+                </p>
               </div>
             </div>
           );
