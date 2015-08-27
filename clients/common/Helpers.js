@@ -248,5 +248,7 @@ exports.imagePath = function(config, src, variant = null, params = []) {
     }
   }
 
+  params.push('fl_progressive');
+
   return `${config.cloudinary.baseUrl}${params.join(',')}/${src}`;
 };
