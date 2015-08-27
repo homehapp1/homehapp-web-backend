@@ -15,7 +15,8 @@ class Image extends React.Component {
     title: React.PropTypes.string,
     variant: React.PropTypes.string,
     linked: React.PropTypes.string,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    applySize: React.PropTypes.bool
   };
 
   constructor() {
@@ -56,6 +57,16 @@ class Image extends React.Component {
 
     if (variant) {
       opts = this.state.config.cloudinary.transformations[variant];
+
+      if (this.props.applySize) {
+        if (opts.width) {
+          this.props.width = this.props.width || opts.width;
+        }
+
+        if (opts.height) {
+          this.props.height = this.props.height || opts.height;
+        }
+      }
     }
 
     let params = {
@@ -66,7 +77,7 @@ class Image extends React.Component {
       height: this.props.height || null
     };
 
-    if (typeof this.props.width !== 'undefined') {
+    if (this.props.width) {
       params.width = this.props.width;
     }
 
