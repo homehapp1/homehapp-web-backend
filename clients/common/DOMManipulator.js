@@ -96,7 +96,7 @@ class DOMManipulator {
       return this.node.offsetWidth;
     }
 
-    return this.css('width', width);
+    return this.css('width', `${width}px`);
   }
 
   /**
@@ -110,7 +110,7 @@ class DOMManipulator {
       return this.node.offsetHeight;
     }
 
-    return this.css('height', height);
+    return this.css('height', `${height}px`);
   }
 
   getByClass(className) {
@@ -122,13 +122,22 @@ class DOMManipulator {
     return tmp;
   }
 
+  getByTagName(tag) {
+    let tmp = [];
+    let objects = this.node.getElementsByTagName(tag);
+    for (let i = 0; i < objects.length; i++) {
+      tmp.push(new DOMManipulator(objects[i]));
+    }
+    return tmp;
+  }
+
   getNode() {
     return this.node;
   }
 
   parent() {
-    if (this.node.parent) {
-      return new DOMManipulator(this.node.parent);
+    if (this.node.parentNode) {
+      return new DOMManipulator(this.node.parentNode);
     }
 
     throw new Exception('This node has no parents', this.node);
