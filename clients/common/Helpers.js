@@ -226,6 +226,8 @@ exports.itemViews = function() {
 };
 
 exports.imagePath = function(config, src, variant = null, params = []) {
+  let mask = '';
+
   if (variant) {
     for (let i in config.cloudinary.transformations[variant]) {
       let v = config.cloudinary.transformations[variant][i];
@@ -242,6 +244,14 @@ exports.imagePath = function(config, src, variant = null, params = []) {
           params.push(`h_${v}`);
           break;
 
+        case 'mask':
+          mask = `/l_${v},fl_cutter`;
+
+          if (src.match(/\.jpe?g$/i)) {
+            src = src.replace(/\.jpe?g$/i, '.png');
+          }
+          break;
+
         default:
           params.push(`${i}_${v}`);
       }
@@ -250,5 +260,5 @@ exports.imagePath = function(config, src, variant = null, params = []) {
 
   params.push('fl_progressive');
 
-  return `${config.cloudinary.baseUrl}${params.join(',')}/${src}`;
+  return `${config.cloudinary.baseUrl}${params.join(',')}${mask}/${src}`;
 };
