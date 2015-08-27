@@ -62,6 +62,13 @@
     }
   }
 
+  &.pattern{
+    background-image: url('../images/pattern.gif');
+    background-repeat: repeat;
+    background-position: left top;
+  }
+
+  @import "contexts/widgets/agent";
   @import "contexts/widgets/big-image";
   @import "contexts/widgets/content-block";
   @import "contexts/widgets/gallery";

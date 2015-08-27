@@ -1,0 +1,51 @@
+&.agent {
+  padding-top: 5 * $contentPadding;
+  padding-bottom: 5 * $contentPadding;
+  text-align: center;
+
+  h2 {
+    font-size: 56px;
+  }
+
+  h3 {
+    font-size: 46px;
+  }
+
+  p.title {
+    font-size: 24px;
+    text-transform: uppercase;
+    color: $fontMediumGray;
+    font-weight: 400;
+    margin: 0;
+
+    & + h3 {
+      margin-top: 0;
+    }
+  }
+
+  .agent-details {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+
+    & > * {
+      display: table-cell;
+      vertical-align: middle;
+      width: 33.3%;
+      font-weight: 400;
+
+      a {
+        color: black;
+      }
+
+      &.photo {
+        img {
+          padding: $contentPadding;
+          background-image: url('../images/hexagon-white-with-border.svg');
+          background-size: contain;
+          background-position: center center;
+        }
+      }
+    }
+  }
+}

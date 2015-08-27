@@ -1,6 +1,9 @@
 'use strict';
 
 import React from 'react';
+
+// Widgets
+import Agent from './Agent';
 import BigImage from './BigImage';
 import ContentBlock from './ContentBlock';
 import Gallery from './Gallery';
@@ -19,6 +22,12 @@ class Story extends React.Component {
           blocks.map((item, index) => {
             let block = null;
             switch (item.template) {
+              case 'Agent':
+                block = (
+                  <Agent {...item.properties} key={index} />
+                );
+                break;
+
               case 'BigImage':
                 block = (
                   <BigImage {...item.properties} key={index}>
