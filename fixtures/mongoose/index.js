@@ -94,10 +94,11 @@ let createHome = function(index)
 
   let createStoryBlock = function(template = null, properties = null, disallow = null) {
     let templates = ['BigImage', 'ContentBlock', 'Map', 'Gallery'];
-    while (template === disallow) {
-      if (!template) {
+
+    if (!template) {
+      do {
         template = getRandom(templates);
-      }
+      } while (template === disallow);
     }
 
     let storyBlock = {
@@ -115,14 +116,16 @@ let createHome = function(index)
           align: getRandom(['left', 'center', 'right']),
           valign: getRandom(['top', 'middle', 'bottom']),
           gradient: getRandom([null, null, null, 'black', 'turquoise']),
-        }
+        };
         break;
+
       case 'Gallery':
         storyBlock.properties = {
           title: randomSeed(0, 1) ? 'Gallery title' : '',
-          images: getRandom(images, randomSeed(2, images.length))
-        }
+          images: getRandom(images, randomSeed(2, 15))
+        };
         break;
+
       case 'ContentBlock':
         storyBlock.properties = {
           title: getRandom(['Story block', 'My story block', 'Great home']),
@@ -135,7 +138,18 @@ let createHome = function(index)
               return match.toUpperCase()
             }
           )
-        }
+        };
+        break;
+
+      case 'Map':
+        storyBlock.properties = {
+          description: 'Map lorem ipsum dolor sit amet',
+          coordinates: [
+            51.5072 + (Math.random() - 0.5),
+            0.1275 + (Math.random() - 0.5)
+          ]
+        };
+        break;
     }
 
     if (properties) {
@@ -158,6 +172,7 @@ let createHome = function(index)
         city: 'London',
         country: 'GB'
       },
+      neighborhood: getRandom([null, 'St. John`s Wood', 'The West End', 'Chinatown', 'The City', 'The South Bank', 'East End', 'Westminster', 'Notting Hill', 'South Kensington', 'Hyde Park', 'Camden Lock']),
       coordinates: [
         51.5072 + (Math.random() - 0.5),
         0.1275 + (Math.random() - 0.5)
@@ -188,7 +203,7 @@ let createHome = function(index)
   property.story.blocks.push(createStoryBlock('BigImage', {align: 'center', valign: 'middle'}));
   let disallow = 'BigImage';
 
-  for (let i = 0; i < randomSeed(1, 10); i++) {
+  for (let i = 0; i < randomSeed(4, 10); i++) {
     let block = createStoryBlock(null, null, disallow);
     disallow = block.template;
     property.story.blocks.push(block);
