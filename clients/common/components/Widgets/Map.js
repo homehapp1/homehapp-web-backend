@@ -3,6 +3,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { merge } from '../../Helpers';
+import DOMManipulator from '../../DOMManipulator';
 
 import { GoogleMap, Marker } from 'react-google-maps';
 
@@ -18,8 +19,24 @@ class Map extends React.Component {
     zoom: 10
   };
 
+  constructor() {
+    super();
+    this.resize = this.resize.bind(this);
+  }
+
   componentDidMount() {
-    console.log('this.refs.map', this.refs.map);
+    this.resize();
+    window.addEventListener('resize', this.resize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resize);
+  }
+
+  resize() {
+    let container = new DOMManipulator(this.refs.map);
+    let width = container.width();
+    container.height(width);
   }
 
   render() {
@@ -76,7 +93,8 @@ class Map extends React.Component {
             </GoogleMap>
           </div>
           <div className='aux-content'>
-            <h2>{this.label}</h2>
+            <p>Aux content</p>
+            <h2>{this.props.label}</h2>
             {this.props.children}
           </div>
         </div>
