@@ -4,6 +4,7 @@ import React from 'react';
 import BigImage from './BigImage';
 import ContentBlock from './ContentBlock';
 import Gallery from './Gallery';
+import Map from './Map';
 
 class Story extends React.Component {
   static propTypes = {
@@ -11,14 +12,15 @@ class Story extends React.Component {
   };
 
   render() {
+    let blocks = this.props.blocks;
     return (
       <div className='story'>
         {
-          this.props.blocks.map((item, index) => {
-            let rval = null;
+          blocks.map((item, index) => {
+            let block = null;
             switch (item.template) {
               case 'BigImage':
-                rval = (
+                block = (
                   <BigImage {...item.properties} key={index}>
                     <div className='text-content' data-align={item.properties.align} data-valign={item.properties.valign}>
                       <h1>{item.properties.title}</h1>
@@ -26,25 +28,35 @@ class Story extends React.Component {
                   </BigImage>
                 );
                 break;
+
               case 'Gallery':
-                rval = (
+                block = (
                   <Gallery {...item.properties} key={index} />
                 );
                 break;
+              case 'Map':
+                block = (
+                  <Map {...item.properties} key={index} />
+                );
+                break;
+
               case 'ContentBlock':
                 let content = (
                   <div className='content-wrapper'>{item.properties.content}</div>
                 );
 
-                rval = (
+                block = (
                   <ContentBlock {...item.properties} key={index}>
                     {content}
                   </ContentBlock>
                 );
                 break;
+
+              default:
+                console.log('Undefined story block type', item);
             }
 
-            return rval;
+            return block;
           })
         }
       </div>
