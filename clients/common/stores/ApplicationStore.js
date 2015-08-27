@@ -56,6 +56,14 @@ class ApplicationStore {
           small: {
             mode: 'fill',
             height: 600
+          },
+
+          // Hexagon mask
+          masked: {
+            mode: 'fill',
+            width: 271,
+            height: 320,
+            mask: 'hexagon-white'
           }
         }
       }
