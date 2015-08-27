@@ -1,0 +1,15 @@
+.map-wrapper {
+  $s: $pageWidth / 2;
+  position: relative;;
+
+  &, & > * {
+    width: $s;
+    height: $s;
+    border-radius: $s;
+    overflow: hidden;
+  }
+
+  & > * {
+    position: absolute;
+  }
+}

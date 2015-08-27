@@ -21,7 +21,8 @@ exports.merge = function merge(...argv) {
   let target = Object.assign({}, argv.shift());
 
   argv.forEach((a) => {
-    for (let [key, value] of enumerate(a)) {
+    for (let key in a) {
+      let value = a[key];
       if (a.hasOwnProperty(key)) {
         if (typeof target[key] === 'object'
           && typeof target[key] !== 'undefined'
