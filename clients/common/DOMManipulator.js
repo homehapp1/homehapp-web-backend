@@ -1,11 +1,19 @@
 'use strict';
 
+import React from 'react';
+
 class DOMManipulator {
   constructor(node) {
-    this.node = node;
+    try {
+      let dom = React.findDOMNode(node);
 
-    if (typeof this.node.getDOMNode === 'function') {
-      this.node = this.node.getDOMNode();
+      if (!dom) {
+        throw new Error('Not a React node');
+      }
+
+      this.node = dom;
+    } catch (error) {
+      this.node = node;
     }
   }
 
@@ -135,12 +143,19 @@ class DOMManipulator {
     return this.node;
   }
 
-  parent() {
-    if (this.node.parentNode) {
-      return new DOMManipulator(this.node.parentNode);
-    }
+  parent(skipLevels = 0) {
+    let node = this.node;
 
-    throw new Exception('This node has no parents', this.node);
+    do {
+      if (!node.parentNode) {
+        throw new Exception('This node has no parents', this.node);
+      }
+      node = node.parentNode;
+      skipLevels--;
+      console.log('parent', node, skipLevels);
+    } while (skipLevels >= 0);
+
+    return new DOMManipulator(node);
   }
 
   visible(tolerance = 0) {
