@@ -21,6 +21,8 @@ class Story extends React.Component {
         {
           blocks.map((item, index) => {
             let block = null;
+            let content = null;
+
             switch (item.template) {
               case 'Agent':
                 block = (
@@ -31,7 +33,7 @@ class Story extends React.Component {
               case 'BigImage':
                 block = (
                   <BigImage {...item.properties} key={index}>
-                    <div className='text-content' data-align={item.properties.align} data-valign={item.properties.valign}>
+                    <div className='text-content large-text' data-align={item.properties.align} data-valign={item.properties.valign}>
                       <h1>{item.properties.title}</h1>
                     </div>
                   </BigImage>
@@ -43,14 +45,23 @@ class Story extends React.Component {
                   <Gallery {...item.properties} key={index} />
                 );
                 break;
+
               case 'Map':
+                content = (
+                  <div className='content-wrapper'>
+                    <h2>{item.properties.label}</h2>
+                    {item.properties.content}
+                  </div>
+                );
                 block = (
-                  <Map {...item.properties} key={index} />
+                  <Map {...item.properties} key={index}>
+                    {content}
+                  </Map>
                 );
                 break;
 
               case 'ContentBlock':
-                let content = (
+                content = (
                   <div className='content-wrapper'>{item.properties.content}</div>
                 );
 

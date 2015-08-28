@@ -93,8 +93,6 @@ class Map extends React.Component {
             </GoogleMap>
           </div>
           <div className='aux-content'>
-            <p>Aux content</p>
-            <h2>{this.props.label}</h2>
             {this.props.children}
           </div>
         </div>
