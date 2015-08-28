@@ -38,12 +38,34 @@
         color: black;
       }
 
+      &.phone a, &.email a {
+        padding-top: 60px;
+        min-width: 120px;
+        background-position: center top;
+        background-size: auto 40px;
+        display: block;
+      }
+
+      &.phone a {
+        background-image: url('../images/icons/phone.svg');
+      }
+
+      &.email a {
+        background-image: url('../images/icons/mail.svg');
+      }
+
       &.photo {
+        padding: $contentPadding;
+        background-image: url('../images/hexagon-white-with-border.svg');
+        background-size: contain;
+        background-position: center center;
+        min-width: 120px;
+
         img {
-          padding: $contentPadding;
-          background-image: url('../images/hexagon-white-with-border.svg');
-          background-size: contain;
-          background-position: center center;
+          @include small() {
+            width: 100%;
+            height: auto;
+          }
         }
       }
     }
