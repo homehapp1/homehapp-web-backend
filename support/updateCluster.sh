@@ -37,6 +37,10 @@ function configGCloud() {
   local CLUSTER_NAME=`gcloud beta container clusters list --project $PROJECT_ID | awk '{print $1}' | grep "$PNAME-$ENV"`
   echo "Executing: 'gcloud config set container/cluster $CLUSTER_NAME'"
   gcloud config set container/cluster $CLUSTER_NAME
+
+  local CLUSTER_GOOGLE_NAME=`kubectl config view | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1`
+  echo "Execute: 'kubectl config use-context $CLUSTER_GOOGLE_NAME'"
+  kubectl config use-context $CLUSTER_GOOGLE_NAME
 }
 
 function updateCluster() {

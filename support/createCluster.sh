@@ -54,9 +54,9 @@ function setContext() {
   fi
 
   if [ "$1" = "-d" ]; then
-    echo "Execute: 'kubectl config set-context $CLUSTER_GOOGLE_NAME'"
+    echo "Execute: 'kubectl config use-context $CLUSTER_GOOGLE_NAME'"
   else
-    kubectl config set-context $CLUSTER_GOOGLE_NAME
+    kubectl config use-context $CLUSTER_GOOGLE_NAME
   fi
 }
 
