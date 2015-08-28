@@ -248,8 +248,6 @@ let createHome = function(index)
     images: getRandom(images, randomSeed(2, 10))
   };
 
-  console.log('create property', property.location);
-
   let disallow = 'BigImage';
   let blockOrder = [
     {
