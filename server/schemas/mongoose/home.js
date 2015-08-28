@@ -94,7 +94,8 @@ exports.loadSchemas = function (mongoose, next) {
         },
         slug: {
           type: String,
-          default: null
+          index: true,
+          required: true
         },
         images: [schemas.HomeImage],
         coordinates: {
