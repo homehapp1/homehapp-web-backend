@@ -14,7 +14,9 @@ class HomeDetails extends React.Component {
     blocks.push({
       template: 'Map',
       properties: {
-        coordinates: this.props.home.location.coordinates
+        coordinates: this.props.home.location.coordinates,
+        label: 'Lorem ipsum',
+        content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem. Quisque ligula eros ullamcorper quis, lacinia quis facilisis sed sapien. Mauris varius diam vitae arcu. Sed arcu lectus auctor vitae, consectetuer et venenatis eget velit. Sed augue orci, lacinia eu tincidunt et eleifend nec lacus.'
       }
     });
 
@@ -31,7 +33,7 @@ class HomeDetails extends React.Component {
       template: 'Agent',
       properties: {
         name: 'Arttu Manninen',
-        title: 'L`ombra dell`estate passata',
+        title: 'Developer',
         phone: '+358505958435',
         email: 'arttu@kaktus.cc'
       }
