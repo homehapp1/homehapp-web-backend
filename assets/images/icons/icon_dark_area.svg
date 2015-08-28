@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="139px" height="161px" viewBox="0 0 139 161" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_dark_area</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Neighborhood" sketch:type="MSArtboardGroup" transform="translate(-672.000000, -290.000000)">
+            <g id="icon_dark_area" sketch:type="MSLayerGroup" transform="translate(672.790000, 290.000000)">
+                <g id="Polygon-1-Copy-+-Imported-Layers-Copy-Copy-+-Imported-Layers-Copy-Copy-Copy-Copy" fill="#2B3B3D" sketch:type="MSShapeGroup">
+                    <g id="Polygon-1-Copy-+-Imported-Layers-Copy-Copy">
+                        <polygon id="Polygon-1-Copy" points="69.0449733 -2.03160968 137.94739 39.1624202 137.94739 121.55048 69.0449733 162.74451 0.142556724 121.55048 0.142556724 39.1624202 "></polygon>
+                    </g>
+                </g>
+                <path d="M69.88,52 C57.244,52 47,62.244 47,74.88 C47,93.47 69.88,114.92 69.88,114.92 C69.88,114.92 92.76,93.47 92.76,74.88 C92.76,62.244 82.516,52 69.88,52 L69.88,52 Z M69.88,110.63 C69.88,110.63 49.86,92.039 49.86,74.88 C49.86,63.822 58.823,54.859 69.88,54.859 C80.937,54.859 89.9,63.822 89.9,74.88 C89.9,92.039 69.88,110.63 69.88,110.63 L69.88,110.63 Z M69.88,63.44 C63.562,63.44 58.44,68.562 58.44,74.88 C58.44,81.197 63.562,86.32 69.88,86.32 C76.199,86.32 81.32,81.197 81.32,74.88 C81.32,68.562 76.199,63.44 69.88,63.44 L69.88,63.44 Z M69.88,83.459 C65.142,83.459 61.3,79.618 61.3,74.88 C61.3,70.141 65.142,66.3 69.88,66.3 C74.619,66.3 78.46,70.141 78.46,74.88 C78.46,79.618 74.619,83.459 69.88,83.459 L69.88,83.459 Z" id="Imported-Layers" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>

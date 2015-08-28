@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="257px" height="112px" viewBox="0 0 257 112" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>discover y</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.468608469 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Homehapp-front-minimal" sketch:type="MSArtboardGroup" transform="translate(-612.080000, -622.000000)" filter="url(#filter-1)" font-weight="normal" font-family="Sacramento" fill="white" font-size="82" sketch:alignment="middle">
+            <g id="homehapp-+-discover-your-city-+-Polygon-1-Copy-+-Imported-Layers-Copy-Copy-+-Imported-Layers-Copy-Copy-Copy" sketch:type="MSLayerGroup" transform="translate(362.000000, 310.000000)">
+                <g id="homehapp-+-discover-your-city" transform="translate(0.000000, 174.000000)" sketch:type="MSTextLayer">
+                    <text id="discover-y">
+                        <tspan x="260.5923" y="200" fill="#A7F5F3">discover y</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

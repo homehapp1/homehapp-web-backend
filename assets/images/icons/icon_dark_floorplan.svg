@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="138px" height="161px" viewBox="0 0 138 161" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_dark_floorplan</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Unstorified_property" sketch:type="MSArtboardGroup" transform="translate(-272.000000, -2562.000000)">
+            <g id="Polygon-1-Copy-+-Imported-Layers-Copy-Copy-+-Imported-Layers-Copy-Copy-Copy-Copy-+-Imported-Layers-Copy-+-Polygon-1-Copy-+-Imported-Layers-Copy-Copy-+-Imported-Layers-Copy-Copy-Copy-Copy-+-Imported-Layers-Copy-Copy-+-Polygon-1-Copy-+-Imported-Layers-Copy-Copy-+-Imported-Layers-Copy-Copy-Copy-Copy-+-Imported-Layers-Copy-Copy-Copy" sketch:type="MSLayerGroup" transform="translate(272.000000, 2562.000000)">
+                <g id="icon_dark_floorplan" sketch:type="MSShapeGroup">
+                    <g id="Polygon-1-Copy-+-Imported-Layers-Copy-Copy-+-Imported-Layers-Copy-Copy-Copy-Copy" fill="#2B3B3D">
+                        <g id="Polygon-1-Copy-+-Imported-Layers-Copy-Copy">
+                            <polygon id="Polygon-1-Copy" points="69.0449733 -2.03160968 137.94739 39.1624202 137.94739 121.55048 69.0449733 162.74451 0.142556724 121.55048 0.142556724 39.1624202 "></polygon>
+                        </g>
+                    </g>
+                    <path d="M95.2,46 L43.72,46 C40.561,46 38,48.561 38,51.72 L38,110.199 C38,113.359 40.561,115.92 43.72,115.92 L95.2,115.92 C98.359,115.92 100.92,113.359 100.92,110.199 L100.92,51.72 C100.92,48.561 98.359,46 95.2,46 L95.2,46 Z M98.06,51.72 L98.06,73.076 L87.222,73.076 C86.768,67.896 84.062,63.818 79.314,61.228 C75.463,59.128 71.655,58.762 71.495,58.747 C71.143,58.713 70.798,58.832 70.539,59.069 C70.279,59.306 70.131,59.641 70.131,59.992 L70.131,73.076 L61.298,73.076 L61.298,48.86 L95.2,48.86 C96.779,48.86 98.06,50.14 98.06,51.72 L98.06,51.72 Z M90.631,95.908 L98.06,95.908 L98.06,103.075 L90.631,103.075 L90.631,95.908 Z M90.631,86.242 L98.06,86.242 L98.06,93.408 L90.631,93.408 L90.631,86.242 Z M90.631,75.575 L98.06,75.575 L98.06,83.742 L90.631,83.742 L90.631,75.575 Z M84.707,73.076 L72.631,73.076 L72.631,61.456 C73.944,61.723 76.033,62.286 78.116,63.423 C82.071,65.58 84.274,68.827 84.707,73.076 L84.707,73.076 Z M40.86,95.326 L52.626,95.326 C52.359,96.638 51.796,98.727 50.659,100.81 C48.478,104.809 45.179,107.012 40.86,107.409 L40.86,95.326 L40.86,95.326 Z M40.86,110.199 L40.86,109.929 C46.11,109.514 50.239,106.801 52.854,102.007 C54.954,98.157 55.32,94.349 55.335,94.189 C55.367,93.839 55.25,93.492 55.013,93.233 C54.776,92.973 54.441,92.825 54.09,92.825 L40.86,92.825 L40.86,51.72 C40.86,50.14 42.141,48.86 43.72,48.86 L58.798,48.86 L58.798,74.326 C58.798,75.016 59.358,75.575 60.048,75.575 L88.131,75.575 L88.131,113.06 L71.715,113.06 L71.715,90.283 L73.215,90.283 C73.905,90.283 74.465,89.724 74.465,89.033 C74.465,88.343 73.905,87.784 73.215,87.784 L67.715,87.784 C67.025,87.784 66.465,88.343 66.465,89.033 C66.465,89.724 67.025,90.283 67.715,90.283 L69.215,90.283 L69.215,113.06 L43.72,113.06 C42.141,113.06 40.86,111.781 40.86,110.199 L40.86,110.199 Z M95.2,113.06 L90.631,113.06 L90.631,105.575 L98.06,105.575 L98.06,110.199 C98.06,111.781 96.779,113.06 95.2,113.06 L95.2,113.06 Z" id="Imported-Layers" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
