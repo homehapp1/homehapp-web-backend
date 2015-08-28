@@ -91,6 +91,12 @@ let createHome = function(index)
 
   let streets = ['Shaftesbury Avenue', 'King’s Road', 'Abbey Road', 'Carnaby Street', 'Baker Street', 'Portobello Road', 'Oxford Street', 'Piccadilly'];
   let chars = ['A', 'B', 'C', 'D', 'E', 'F'];
+  let getCoords = function() {
+    return [
+      51.5072 + (Math.random() - 0.5),
+      0.1275 + (Math.random() - 0.5)
+    ]
+  };
 
   let createStoryBlock = function(template = null, properties = null, disallow = null) {
     let templates = ['BigImage', 'ContentBlock', 'Map', 'Gallery'];
@@ -161,6 +167,51 @@ let createHome = function(index)
     return storyBlock;
   };
 
+  let neighborhoods = [
+    {
+      name: 'St. John`s Wood',
+      slug: 'st_johns_wood',
+      images: getRandom(images, randomSeed(2, images.length)),
+      coordinates: getCoords(),
+    },
+    {
+      name: 'West End',
+      slug: 'west_end',
+      images: getRandom(images, randomSeed(2, images.length)),
+      coordinates: getCoords(),
+    },
+    {
+      name: 'China Town',
+      slug: 'china_town',
+      images: getRandom(images, randomSeed(2, images.length)),
+      coordinates: getCoords(),
+    },
+    {
+      name: 'The City',
+      slug: 'the_city',
+      images: getRandom(images, randomSeed(2, images.length)),
+      coordinates: getCoords(),
+    },
+    {
+      name: 'South Bank',
+      slug: 'south_bank',
+      images: getRandom(images, randomSeed(2, images.length)),
+      coordinates: getCoords(),
+    },
+    {
+      name: 'East End',
+      slug: 'east_end',
+      images: getRandom(images, randomSeed(2, images.length)),
+      coordinates: getCoords(),
+    },
+    {
+      name: 'Westminster',
+      slug: 'westminster',
+      images: getRandom(images, randomSeed(2, images.length)),
+      coordinates: getCoords(),
+    }
+  ];
+
   let property = {
     slug: slug,
     description: '2 rooms, kitchen, balcony and dressing room. 1 toilet + shower',
@@ -172,11 +223,8 @@ let createHome = function(index)
         city: 'London',
         country: 'GB'
       },
-      neighborhood: getRandom([null, 'St. John`s Wood', 'The West End', 'Chinatown', 'The City', 'The South Bank', 'East End', 'Westminster', 'Notting Hill', 'South Kensington', 'Hyde Park', 'Camden Lock']),
-      coordinates: [
-        51.5072 + (Math.random() - 0.5),
-        0.1275 + (Math.random() - 0.5)
-      ]
+      neighborhood: getRandom(neighborhoods),
+      coordinates: getCoords(),
     },
     costs: {
       currency: 'EUR',

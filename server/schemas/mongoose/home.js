@@ -86,6 +86,23 @@ exports.loadSchemas = function (mongoose, next) {
           default: ''
         }
       },
+      // @TODO: This should point to the neighborhood object
+      neighborhood: {
+        name: {
+          type: String,
+          default: null
+        },
+        slug: {
+          type: String,
+          default: null
+        },
+        images: [schemas.HomeImage],
+        coordinates: {
+          type: [Number],
+          default: [],
+          index: '2dsphere'
+        }
+      },
       coordinates: {
         type: [Number],
         default: [],
