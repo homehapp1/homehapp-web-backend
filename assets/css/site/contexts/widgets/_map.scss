@@ -41,9 +41,8 @@
     }
 
     & > * {
-      position: absolute;
+      position: relative;
       left: 50%;
-      margin-top: -0.5 * $s;
       margin-left: -0.5 * $s;
       height: $s;
 
