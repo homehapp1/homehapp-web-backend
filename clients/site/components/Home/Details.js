@@ -10,22 +10,12 @@ class HomeDetails extends React.Component {
   }
 
   render() {
-    let blocks = this.props.home.story.blocks;
-    blocks.push({
-      template: 'Map',
-      properties: {
-        coordinates: this.props.home.location.coordinates,
-        label: 'Lorem ipsum',
-        content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem. Quisque ligula eros ullamcorper quis, lacinia quis facilisis sed sapien. Mauris varius diam vitae arcu. Sed arcu lectus auctor vitae, consectetuer et venenatis eget velit. Sed augue orci, lacinia eu tincidunt et eleifend nec lacus.'
-      }
-    });
+    let blocks = [];
 
     if (this.props.home.location.neighborhood) {
       blocks.push({
         template: 'Neighborhood',
-        properties: {
-          title: this.props.home.location.neighborhood
-        }
+        properties: this.props.home.location.neighborhood
       });
     }
 

@@ -7,7 +7,9 @@ import Agent from './Agent';
 import BigImage from './BigImage';
 import ContentBlock from './ContentBlock';
 import Gallery from './Gallery';
+import LargeText from './LargeText';
 import Map from './Map';
+import Neighborhood from './Neighborhood';
 
 class Story extends React.Component {
   static propTypes = {
@@ -33,9 +35,9 @@ class Story extends React.Component {
               case 'BigImage':
                 block = (
                   <BigImage {...item.properties} key={index}>
-                    <div className='text-content large-text' data-align={item.properties.align} data-valign={item.properties.valign}>
+                    <LargeText align={item.properties.align} valign={item.properties.valign}>
                       <h1>{item.properties.title}</h1>
-                    </div>
+                    </LargeText>
                   </BigImage>
                 );
                 break;
@@ -57,6 +59,12 @@ class Story extends React.Component {
                   <Map {...item.properties} key={index}>
                     {content}
                   </Map>
+                );
+                break;
+
+              case 'Neighborhood':
+                block = (
+                  <Neighborhood {...item.properties} key={index} />
                 );
                 break;
 
