@@ -114,11 +114,11 @@ let getWebpackPlugins = (project_name) => {
     new webpack.optimize.CommonsChunkPlugin('vendor', DEBUG ? 'vendor.bundle.js' : 'vendor.bundle.min.js')
   ];
 
-  if (!DEBUG) {
-    plugins = plugins.concat([
-      new webpack.optimize.UglifyJsPlugin({minimize: true})
-    ]);
-  }
+  // if (!DEBUG) {
+  //   plugins = plugins.concat([
+  //     new webpack.optimize.UglifyJsPlugin({minimize: true})
+  //   ]);
+  // }
 
   return plugins;
 };
