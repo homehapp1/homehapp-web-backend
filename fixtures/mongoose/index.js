@@ -200,14 +200,44 @@ let createHome = function(index)
     images: getRandom(images, randomSeed(2, 10))
   };
 
-  property.story.blocks.push(createStoryBlock('BigImage', {align: 'center', valign: 'middle'}));
   let disallow = 'BigImage';
+  let blockOrder = [
+    {
+      template: 'BigImage',
+      properties: {
+        align: 'center',
+        valign: 'middle'
+      }
+    },
+    {
+      template: 'ContentBlock',
+      properties: null
+    },
+    {
+      template: 'Gallery',
+      properties: null
+    },
+    {
+      template: 'ContentBlock',
+      properties: null
+    },
+    {
+      template: 'BigImage',
+      properties: null
+    }
+  ];
 
-  for (let i = 0; i < randomSeed(4, 10); i++) {
-    let block = createStoryBlock(null, null, disallow);
-    disallow = block.template;
-    property.story.blocks.push(block);
+  for (let i = 0; i < blockOrder.length; i++) {
+    property.story.blocks.push(createStoryBlock(blockOrder[i].template, blockOrder[i].properties));
   }
+
+  // property.story.blocks.push(createStoryBlock('BigImage', {align: 'center', valign: 'middle'}));
+  //
+  // for (let i = 0; i < randomSeed(2, 5); i++) {
+  //   let block = createStoryBlock(null, null, disallow);
+  //   disallow = block.template;
+  //   property.story.blocks.push(block);
+  // }
 
   return property;
 };
