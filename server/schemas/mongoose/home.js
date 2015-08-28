@@ -33,7 +33,7 @@ exports.loadSchemas = function (mongoose, next) {
     },
     aspectRatio: {
       type: Number,
-      default: 0
+      required: true
     },
     alt: {
       type: String,
@@ -88,13 +88,12 @@ exports.loadSchemas = function (mongoose, next) {
       },
       // @TODO: This should point to the neighborhood object
       neighborhood: {
-        name: {
+        title: {
           type: String,
           default: null
         },
         slug: {
           type: String,
-          index: true,
           required: true
         },
         images: [schemas.HomeImage],

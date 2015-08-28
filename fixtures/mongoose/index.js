@@ -169,43 +169,43 @@ let createHome = function(index)
 
   let neighborhoods = [
     {
-      name: 'St. John`s Wood',
+      title: 'St. John`s Wood',
       slug: 'st_johns_wood',
       images: getRandom(images, randomSeed(2, images.length)),
       coordinates: getCoords(),
     },
     {
-      name: 'West End',
+      title: 'West End',
       slug: 'west_end',
       images: getRandom(images, randomSeed(2, images.length)),
       coordinates: getCoords(),
     },
     {
-      name: 'China Town',
+      title: 'China Town',
       slug: 'china_town',
       images: getRandom(images, randomSeed(2, images.length)),
       coordinates: getCoords(),
     },
     {
-      name: 'The City',
+      title: 'The City',
       slug: 'the_city',
       images: getRandom(images, randomSeed(2, images.length)),
       coordinates: getCoords(),
     },
     {
-      name: 'South Bank',
+      title: 'South Bank',
       slug: 'south_bank',
       images: getRandom(images, randomSeed(2, images.length)),
       coordinates: getCoords(),
     },
     {
-      name: 'East End',
+      title: 'East End',
       slug: 'east_end',
       images: getRandom(images, randomSeed(2, images.length)),
       coordinates: getCoords(),
     },
     {
-      name: 'Westminster',
+      title: 'Westminster',
       slug: 'westminster',
       images: getRandom(images, randomSeed(2, images.length)),
       coordinates: getCoords(),
@@ -247,6 +247,8 @@ let createHome = function(index)
     },
     images: getRandom(images, randomSeed(2, 10))
   };
+
+  console.log('create property', property.location);
 
   let disallow = 'BigImage';
   let blockOrder = [
