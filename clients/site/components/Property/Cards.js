@@ -95,7 +95,6 @@ class PropertyCards extends React.Component {
       let images = cards[i].getByTagName('img');
 
       if (!images.length) {
-        console.log('no images found');
         continue;
       }
 

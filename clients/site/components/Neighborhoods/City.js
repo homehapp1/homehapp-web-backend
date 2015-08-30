@@ -5,7 +5,6 @@ import React from 'react';
 
 class NeighborhoodsCity extends React.Component {
   render() {
-    console.log('NeighborhoodsCity');
     return (
       <div className='full-height item'>
         <div className='width-wrapper'>

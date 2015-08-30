@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ApplicationStore from '../../stores/ApplicationStore';
+import { merge } from '../../Helpers';
 // import classNames from 'classnames';
 
 class Image extends React.Component {
@@ -57,7 +58,7 @@ class Image extends React.Component {
 
   resolveParams() {
     let params = {};
-    params.src = this.resolveSrc();
+    params.src = this.resolveSrc(this.props.variant);
     return params;
   }
 
@@ -81,6 +82,10 @@ class Image extends React.Component {
 
     if (this.props.className) {
       this.attributes.className = this.props.className;
+    }
+
+    if (this.props.aspectRatio) {
+      this.attributes['data-aspect-ratio'] = this.props.aspectRatio;
     }
   }
 
@@ -117,7 +122,7 @@ class Image extends React.Component {
     }
   }
 
-  resolveSrc() {
+  resolveSrc(variant) {
     let src = this.props.src || this.props.url;
     let rval = null;
 
@@ -127,7 +132,7 @@ class Image extends React.Component {
         break;
 
       case 'content':
-        rval = this.resolveContentSrc(src);
+        rval = this.resolveContentSrc(src, variant);
         break;
 
       default:
@@ -138,11 +143,11 @@ class Image extends React.Component {
     return rval;
   }
 
-  resolveContentSrc(src) {
+  resolveContentSrc(src, variant) {
     let mask = '';
     let options = [];
-    let params = this.props;
-    this.getVariant(params);
+    let params = merge({}, this.props);
+    this.getVariant(params, variant);
 
     for (let i in params) {
       if (!params[i]) {
@@ -183,14 +188,14 @@ class Image extends React.Component {
     return `${this.state.config.cloudinary.baseUrl}${options.join(',')}${mask}/${src}`;
   }
 
-  getVariant(params) {
-    if (this.props.variant) {
-      let variant = this.state.config.cloudinary.transformations[this.props.variant];
+  getVariant(params, variant) {
+    if (variant) {
+      let d = this.state.config.cloudinary.transformations[variant];
 
-      for (let i in variant) {
+      for (let i in d) {
         // Override only null and undefined
         if (typeof params[i] === 'undefined' || params[i] === null) {
-          params[i] = variant[i];
+          params[i] = d[i];
         }
       }
     }
@@ -209,9 +214,9 @@ class Image extends React.Component {
   }
 
   renderImage() {
+    // Linked, i.e. refer usually to a larger version of the same image
     if (this.props.linked) {
-      console.log('@TODO: linked request');
-      let href = this.attributes.src;
+      let href = this.resolveSrc(this.props.linked);
       return (
         <a href={href}>
           <img {...this.attributes} />

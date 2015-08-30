@@ -60,8 +60,6 @@ class Columns extends React.Component {
       return null;
     });
 
-    console.log('rows', rows);
-
     return (
       <div className='columns-container'>
         {

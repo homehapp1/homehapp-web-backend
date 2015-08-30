@@ -100,7 +100,6 @@ class Homepage extends React.Component {
                       slug: home.slug
                     }
                   };
-                  console.log('home', home);
                   let rooms = 0;
 
                   for (let i = 0; i < home.attributes.length; i++) {
