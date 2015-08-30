@@ -13,6 +13,7 @@ class Image extends React.Component {
     height: React.PropTypes.number,
     aspectRatio: React.PropTypes.number,
     title: React.PropTypes.string,
+    type: React.PropTypes.string,
     variant: React.PropTypes.string,
     mode: React.PropTypes.string,
     linked: React.PropTypes.string,
@@ -25,6 +26,7 @@ class Image extends React.Component {
     height: null,
     alt: '',
     title: '',
+    type: 'content',
     mode: null,
     applySize: false
   };
@@ -116,21 +118,31 @@ class Image extends React.Component {
   }
 
   resolveSrc() {
-    let mask = '';
     let src = this.props.src || this.props.url;
+    let rval = null;
+
+    switch (this.props.type) {
+      case 'asset':
+        rval = `${this.state.config.revisionedStaticPath}/${src}`;
+        break;
+
+      case 'content':
+        rval = this.resolveContentSrc(src);
+        break;
+
+      default:
+        console.error('Tried to use an undefined image type', this.props.type, this.props);
+        throw new Error(`Undefined image type '${this.props.type.toString()}'`);
+    }
+
+    return rval;
+  }
+
+  resolveContentSrc(src) {
+    let mask = '';
     let options = [];
     let params = this.props;
-
-    if (this.props.variant) {
-      let variant = this.state.config.cloudinary.transformations[this.props.variant];
-
-      for (let i in variant) {
-        // Override only null and undefined
-        if (typeof params[i] === 'undefined' || params[i] === null) {
-          params[i] = variant[i];
-        }
-      }
-    }
+    this.getVariant(params);
 
     for (let i in params) {
       if (!params[i]) {
@@ -169,6 +181,19 @@ class Image extends React.Component {
     options.push('fl_progressive');
 
     return `${this.state.config.cloudinary.baseUrl}${options.join(',')}${mask}/${src}`;
+  }
+
+  getVariant(params) {
+    if (this.props.variant) {
+      let variant = this.state.config.cloudinary.transformations[this.props.variant];
+
+      for (let i in variant) {
+        // Override only null and undefined
+        if (typeof params[i] === 'undefined' || params[i] === null) {
+          params[i] = variant[i];
+        }
+      }
+    }
   }
 
   render() {
