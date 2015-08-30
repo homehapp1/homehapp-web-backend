@@ -75,6 +75,14 @@ h1, h2, h3 {
   margin: 1em 0 0.5em;
 }
 
+.teaser {
+  margin-bottom: 0;
+  
+  & + h1, & + h2, & + h3 {
+    margin-top: 0;
+  }
+}
+
 p {
   margin: 1em 0;
 }
