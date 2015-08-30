@@ -3,12 +3,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import ApplicationStore from '../../../common/stores/ApplicationStore';
-
 import HomeListStore from '../../stores/HomeListStore';
 
-import PropertyCards from '../Property/Cards';
 import BigImage from '../../../common/components/Widgets/BigImage';
+import Columns from '../../../common/components/Widgets/Columns';
+import Hoverable from '../../../common/components/Widgets/Hoverable';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
@@ -74,6 +73,9 @@ class Homepage extends React.Component {
       alt: ''
     };
 
+    let homes = this.state.homes.splice(0, 2);
+    console.log('homes', homes);
+
     return (
       <div id='mainpage' className='mainpage'>
         <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.7}>
@@ -83,10 +85,21 @@ class Homepage extends React.Component {
             </div>
           </LargeText>
         </BigImage>
-        <div className='item property-list partial-list'>
-          <PropertyCards items={this.state.homes} max={20} />
-          <Link to='properties' className='button read-more'>View more</Link>
-        </div>
+        <Columns columns={2}>
+          {
+            homes.map((home, index) => {
+              console.log('columns', index);
+              return (
+                <div className='home-preview' key={index}>
+                  <Link to='home' params={{slug: home.slug}}>
+                    <Hoverable {...home.images[0]} width={570} height={380} mode='fill' />
+                  </Link>
+                  <h3><Link to='home' params={{slug: home.slug}}>{home.slug}</Link></h3>
+                </div>
+              );
+            })
+          }
+        </Columns>
         <ContentBlock className='item-separator'>
           <h2>Find your home and continue the story</h2>
           <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>

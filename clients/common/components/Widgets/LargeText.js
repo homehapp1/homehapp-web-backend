@@ -11,7 +11,7 @@ class LargeText extends React.Component {
 
   render() {
     let classes = [
-      'item',
+      'widget',
       'large-text',
       'full-height'
     ];

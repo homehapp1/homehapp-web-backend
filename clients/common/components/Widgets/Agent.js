@@ -30,7 +30,7 @@ class Agent extends React.Component {
     let mailTo = `mailto:${this.props.email}`;
 
     return (
-      <div className='item agent pattern'>
+      <div className='widget agent pattern'>
         <div className='width-wrapper'>
           <h2>For more information and viewings</h2>
           <p className='title'>

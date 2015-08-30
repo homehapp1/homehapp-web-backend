@@ -1,64 +1,24 @@
 #footer {
-  $offset: $footerHeight;
-
-  padding: 0 0 $contentPadding * 2;
+  $w: 80px;
+  $paddingTop: 3 * $contentPadding;
+  margin-top: -1 * $footerHeight;
+  height: $footerHeight;
+  padding: $paddingTop ;
   background-color: white;
   text-align: center;
   font-weight: 400;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: $headerHeight + $offset;
-  z-index: $zFooter;
-  @include vendors(transition-property, all);
-  @include vendors(transition-duration, $transitionDuration);
-  @include vendors(transform, translateY(100%));
-  margin-top: -1 * $offset;
-
-  &:before {
-    content: ' ';
-    display: block;
-    position: absolute;
-    height: $offset + $contentPadding;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    margin-top: -1 * $offset;
-    background-color: white;
-    box-shadow: 0 -10px 10px rgba(0, 0, 0, 0.05);
-    z-index: -10;
-  }
 
   h3 {
-    $w: 50px;
     margin-bottom: 0.4 * $w;
 
     img {
       width: $w;
       position: absolute;
-      top: -0.56 * $w - $offset;
+      margin-top: -1 * ($w + $paddingTop);
       left: 50%;
       margin-left: -0.5 * $w;
       cursor: pointer;
     }
-  }
-
-  .footer-links {
-    &.main {
-      $lh: 20px;
-      line-height: $lh;
-      position: absolute;
-      top: -0.5 * ($offset + $lh);
-      left: 0;
-      right: 0;
-    }
-  }
-
-  &.visible {
-    margin-top: 0;
-    @include vendors(transform, translateY(0));
   }
 
   ul {

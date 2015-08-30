@@ -1,4 +1,4 @@
-.item {
+.widget {
   position: relative;
   background-color: white;
 
@@ -70,8 +70,10 @@
 
   @import "contexts/widgets/agent";
   @import "contexts/widgets/big-image";
+  @import "contexts/widgets/columns";
   @import "contexts/widgets/content-block";
   @import "contexts/widgets/gallery";
+  @import "contexts/widgets/hoverable";
   @import "contexts/widgets/large-text";
   @import "contexts/widgets/map";
 }

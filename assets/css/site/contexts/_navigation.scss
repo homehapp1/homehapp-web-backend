@@ -226,6 +226,10 @@
           &:hover, &.active {
             color: $turquoise;
           }
+
+          &.secondary {
+            display: none;
+          }
         }
 
         ul {

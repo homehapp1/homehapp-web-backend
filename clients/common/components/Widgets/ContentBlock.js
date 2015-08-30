@@ -15,7 +15,7 @@ class ContentBlock extends React.Component {
 
   render() {
     let classes = [
-      'item',
+      'widget',
       'content-block'
     ];
 

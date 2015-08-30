@@ -96,16 +96,16 @@ class Navigation extends React.Component {
           <ul>
             <li className='homepage'><Link to='app'>Homepage</Link></li>
             <li><Link to='properties'>Buy</Link></li>
-            <li><Link to='propertiesMode' params={{mode: 'cards'}}>Sell</Link></li>
+            <li><Link to='propertiesMode' params={{mode: 'cards'}}>Rent</Link></li>
             <li>
               <Link to='neighborhoods'>Neighbourhoods</Link>
               <ul>
                 <li><Link to='neighborhoodsView' params={{city: 'london', neighborhood: 'stjohnswood'}}>St. John´s Wood</Link></li>
               </ul>
             </li>
-            <li><Link to='content' params={{slug: 'about-us'}}>About us</Link></li>
-            <li><Link to='content' params={{slug: 'terms'}}>Terms & conditions</Link></li>
-            <li><Link to='content' params={{slug: 'privacy'}}>Privacy</Link></li>
+            <li className='secondary'><Link to='content' params={{slug: 'about-us'}}>About us</Link></li>
+            <li className='secondary'><Link to='content' params={{slug: 'terms'}}>Terms & conditions</Link></li>
+            <li className='secondary'><Link to='content' params={{slug: 'privacy'}}>Privacy</Link></li>
           </ul>
         </div>
       </div>

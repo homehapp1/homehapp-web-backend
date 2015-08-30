@@ -423,7 +423,7 @@ class Gallery extends React.Component {
   render() {
     this.loadState = Gallery.INIT;
     return (
-      <div className='gallery item full-height clearfix' ref='gallery'>
+      <div className='gallery widget clearfix' ref='gallery'>
         {
           this.props.images.map((image, index) => {
             if (this.props.links === false) {

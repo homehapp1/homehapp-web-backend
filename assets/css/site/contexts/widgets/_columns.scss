@@ -1,0 +1,30 @@
+&.columns {
+  padding-top: 2 * $contentPadding;
+  padding-bottom: 2 * $contentPadding;
+
+  .columns-container {
+    margin-left: -0.5 * $contentPadding;
+    margin-right: -0.5 * $contentPadding;
+
+    @for $i from 1 through 10 {
+      .cols-#{$i} {
+        display: block;
+        float: left;
+        width: 100% / $i;
+        padding-left: 0.5 * $contentPadding;
+        padding-right: 0.5 * $contentPadding;
+
+        @include small() {
+          width: 100%;
+          display: block;
+          float: none;
+        }
+
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+}

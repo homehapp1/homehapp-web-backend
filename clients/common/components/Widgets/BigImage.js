@@ -20,7 +20,7 @@ class BigImage extends React.Component {
 
   render() {
     let classes = [
-      'item',
+      'widget',
       'big-image',
       'full-height'
     ];

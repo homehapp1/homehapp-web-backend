@@ -55,7 +55,7 @@ class Footer extends React.Component {
         <div className='width-wrapper'>
           <h3 ref='footerIcon'><img src={this.config.revisionedStaticPath + '/images/homehapp-symbol.svg'} alt='H' /></h3>
           <ul className='footer-links main'>
-            <li><Link to='content' params={{slug: 'about'}}>About</Link></li>
+            <li><Link to='content' params={{slug: 'about'}}>About us</Link></li>
             <li><Link to='content' params={{slug: 'terms'}}>Terms & conditions</Link></li>
             <li><Link to='content' params={{slug: 'privacy'}}>Privacy policy</Link></li>
             <li><Link to='content' params={{slug: 'careers'}}>Careers</Link></li>

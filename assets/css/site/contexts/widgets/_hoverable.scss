@@ -1,0 +1,36 @@
+&.hoverable {
+  display: block;
+  overflow: hidden;
+
+  & > img {
+    opacity: 0;
+    display: block;
+  }
+
+  & > .hoverable-wrapper {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+
+    & > img.hoverable-image {
+      opacity: 1;
+      position: absolute;
+      display: block;
+      z-index: -1;
+      left: 0;
+      width: 100%;
+      height: auto;
+      @include vendors(transition-property, transform);
+      @include vendors(transition-timing-function, linear);
+      @include vendors(transition-duration, $transitionDurationFast);
+    }
+
+    &:hover > img.hoverable-image {
+      @include vendors(transition-duration, 60s);
+      @include vendors(transform, scale(1.5));
+    }
+  }
+}
