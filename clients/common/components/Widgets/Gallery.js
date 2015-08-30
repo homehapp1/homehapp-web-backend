@@ -14,13 +14,19 @@ class Gallery extends React.Component {
     columns: React.PropTypes.number,
     imagewidth: React.PropTypes.number,
     links: React.PropTypes.bool
-  }
+  };
+
+  static defaultProps = {
+    images: [],
+    title: '',
+    columns: 10,
+    imageWidth: 500,
+    links: true
+  };
 
   constructor() {
     super();
     this.aspectRatios = [];
-    this.columns = null;
-    this.imageWidth = null;
     this.galleryImages = [];
     this.preloaded = {};
 
@@ -68,13 +74,6 @@ class Gallery extends React.Component {
     }
 
     this.gallery = new DOMManipulator(this.refs.gallery);
-    if (!this.imageWidth) {
-      this.imageWidth = this.props.imagewidth || 500;
-    }
-
-    if (!this.columns) {
-      this.columns = this.props.columns || 10;
-    }
 
     this.images = this.gallery.node.getElementsByTagName('img');
 
@@ -374,7 +373,7 @@ class Gallery extends React.Component {
   // Update the gallery view by setting the width and height as linear
   // partition suggests
   updateGallery() {
-    let columns = Math.min(Math.round(this.gallery.width() / this.imageWidth), this.columns);
+    let columns = Math.min(Math.round(this.gallery.width() / this.props.imageWidth), this.props.columns);
 
     let rows = Math.ceil(this.images.length / columns);
     let width = this.gallery.width();
@@ -426,14 +425,14 @@ class Gallery extends React.Component {
       <div className='gallery widget clearfix' ref='gallery'>
         {
           this.props.images.map((image, index) => {
-            if (this.props.links === false) {
-              return (
-                <Image src={image.url} alt={image.alt} variant='medium' key={index} aspectRatio={image.aspectRatio} />
-              );
+            image.variant = 'gallery';
+
+            if (this.props.link) {
+              image.linked = 'fullscreen';
             }
 
             return (
-              <Image src={image.url} alt={image.alt} variant='medium' linked='large' key={index} aspectRatio={image.aspectRatio} />
+              <Image {...image} key={index} />
             );
           })
         }
