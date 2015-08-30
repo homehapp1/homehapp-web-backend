@@ -20,6 +20,7 @@ class Neighborhood extends React.Component {
     return (
       <BigImage image={image}>
         <LargeText align='center' valign='middle' className='full-height'>
+          <p className='teaser'>...and about the neighbourhood</p>
           <h1>
             <Link to='neighborhoodsView' params={{city: 'london', neighborhood: this.props.slug}}>
               {this.props.title}
