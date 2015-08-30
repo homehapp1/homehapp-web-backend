@@ -32,11 +32,6 @@ class BigImage extends React.Component {
     let image = this.props.image;
     let proportion = this.props.proportion || 1;
 
-    let props = {
-      className: 'full-height',
-      proportion: proportion
-    };
-
     return (
       <div className={classNames(classes)} data-gradient={this.props.gradient} data-proportion={proportion}>
         <div className='image-content'>
