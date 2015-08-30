@@ -55,4 +55,12 @@
       }
     }
   }
+
+  .aux-content {
+    & > .content-wrapper {
+      & > *:first-child {
+        margin-top: 0;
+      }
+    }
+  }
 }
