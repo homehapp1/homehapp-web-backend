@@ -162,9 +162,6 @@ class Homepage extends React.Component {
                   <p>
                     Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                   </p>
-                  <p>
-                    <a href='#' className='button'>Find agents</a>
-                  </p>
                 </div>
               </Tabs.Panel>
             </Tabs>
@@ -173,8 +170,11 @@ class Homepage extends React.Component {
         <ContentBlock className='gray'>
           <div className='width-wrapper'>
             <Columns cols={2} className='table find-agents'>
-              <div className='highlight'>
+              <div className='highlight centered'>
                 <p>Find agents. Professionals will help you in telling your view of your home.</p>
+                <p>
+                  <a href='#' className='button'>Find agents</a>
+                </p>
               </div>
               <div className='right'>
                 <Image src='images/pixel.gif' alt='' type='asset' className='placeholder' />
