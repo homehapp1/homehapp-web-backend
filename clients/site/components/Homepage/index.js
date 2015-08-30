@@ -2,12 +2,14 @@
 
 import React from 'react';
 import { Link } from 'react-router';
+import Tabs from 'react-simpletabs';
 
 import HomeListStore from '../../stores/HomeListStore';
 
 import BigImage from '../../../common/components/Widgets/BigImage';
 import Columns from '../../../common/components/Widgets/Columns';
 import Hoverable from '../../../common/components/Widgets/Hoverable';
+import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
@@ -140,9 +142,23 @@ class Homepage extends React.Component {
           <h2>Find your home and continue the story</h2>
           <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
           <iframe src='https://player.vimeo.com/video/74145280' width='100%' height='550' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>
-          <h2>Find your home and continue the story</h2>
-          <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-          <iframe src='https://player.vimeo.com/video/74145280' width='100%' height='550' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>
+        </ContentBlock>
+        <ContentBlock>
+          <Tabs>
+            <Tabs.Panel title='Homehapp for buyers'>
+              <Columns columns={2} className='table' align='center' valign='middle'>
+                <Image src='images/icons/icon_mobile_large.svg' alt='' type='asset' />
+                <div>
+                  <h2>Homehapp for buyers</h2>
+                  <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                </div>
+              </Columns>
+            </Tabs.Panel>
+            <Tabs.Panel title='For sellers and agents'>
+              <h2>Homehapp for sellers and agents</h2>
+              <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+            </Tabs.Panel>
+          </Tabs>
         </ContentBlock>
       </div>
     );
