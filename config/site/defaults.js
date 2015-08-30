@@ -57,13 +57,14 @@ module.exports = (projectRoot) => {
           },
 
           gallery: {
-            mode: 'scale',
-            width: 600
+            mode: 'fit',
+            width: 600,
+            height: 600
           },
           fullscreen: {
             width: 1920,
             height: 1080,
-            mode: 'scale'
+            mode: 'fit'
           },
 
           // Hexagon mask
