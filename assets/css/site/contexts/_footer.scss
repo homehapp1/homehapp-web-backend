@@ -2,7 +2,7 @@
   $w: 80px;
   $paddingTop: 3 * $contentPadding;
   margin-top: -1 * $footerHeight;
-  height: $footerHeight;
+  min-height: $footerHeight;
   padding: $paddingTop ;
   background-color: white;
   text-align: center;
@@ -21,11 +21,20 @@
     }
   }
 
+  .logotype {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4 * $contentPadding;
+    width: 200px;
+  }
+
   ul {
-    margin: 0 0 1em;
+    margin: 0 0 4 * $contentPadding;
     padding: 0;
     list-style: none;
     text-transform: uppercase;
+    font-size: 120%;
 
     &.social img {
       height: 30px;
