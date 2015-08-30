@@ -1,18 +1,19 @@
 &.columns {
-  padding-top: 2 * $contentPadding;
-  padding-bottom: 2 * $contentPadding;
+  $padding: 2 * $contentPadding;
+  padding-top: $padding;
+  padding-bottom: $padding;
 
   .columns-container {
-    margin-left: -0.5 * $contentPadding;
-    margin-right: -0.5 * $contentPadding;
+    margin-left: -0.5 * $padding;
+    margin-right: -0.5 * $padding;
 
     @for $i from 1 through 10 {
       .cols-#{$i} {
         display: block;
         float: left;
         width: 100% / $i;
-        padding-left: 0.5 * $contentPadding;
-        padding-right: 0.5 * $contentPadding;
+        padding-left: 0.5 * $padding;
+        padding-right: 0.5 * $padding;
 
         @include small() {
           width: 100%;

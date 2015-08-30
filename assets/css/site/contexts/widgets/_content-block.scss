@@ -1,11 +1,11 @@
 &.content-block {
-  padding-top: $contentPadding * 10;
-  padding-bottom: $contentPadding * 10;
+  $q: 10;
+  padding-top: $contentPadding * $q;
+  padding-bottom: $contentPadding * $q;
+  background-color: white;
 
   h2 {
-    font-size: 52px;
     text-align: center;
-    font-weight: 400;
   }
 
   & > *:first-child, & > .width-wrapper > *:first-child {

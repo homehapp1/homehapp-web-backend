@@ -1,6 +1,7 @@
 &.hoverable {
   display: block;
   overflow: hidden;
+  background-color: none;
 
   & > img {
     opacity: 0;
