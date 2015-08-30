@@ -9,11 +9,17 @@ class Columns extends React.Component {
     children: React.PropTypes.oneOfType([
       React.PropTypes.object,
       React.PropTypes.array
-    ])
+    ]),
+    align: React.PropTypes.string,
+    valign: React.PropTypes.string,
+    className: React.PropTypes.string
   }
 
   static defaultProps = {
-    max: 1000
+    max: 1000,
+    align: 'left',
+    valign: 'top',
+    className: null
   }
 
   renderChildren() {
@@ -47,8 +53,14 @@ class Columns extends React.Component {
   }
 
   render() {
+    let classes = ['columns', 'widget'];
+
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
+
     return (
-      <div className='columns widget'>
+      <div className={classes.join(' ')} data-align={this.props.align} data-valign={this.props.valign}>
         <div className='width-wrapper clearfix'>
           <div className='columns-container'>
             {this.renderChildren()}
