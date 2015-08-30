@@ -91,7 +91,7 @@ class Homepage extends React.Component {
         <ContentBlock className='pattern mainpage-list'>
           <div className='width-wrapper'>
             <h2>Our exclusive homes</h2>
-            <Columns columns={2}>
+            <Columns cols={2}>
               {
                 homes.map((home, index) => {
                   let link = {
@@ -148,19 +148,38 @@ class Homepage extends React.Component {
           <div className='width-wrapper'>
             <Tabs>
               <Tabs.Panel title='Homehapp for buyers'>
-                <Columns columns={2} className='table' align='center' valign='middle'>
+                <Columns cols={2} className='table' align='center' valign='middle'>
                   <Image src='images/icons/icon_mobile_large.svg' alt='' type='asset' />
-                  <div>
-                    <h2>Homehapp for buyers</h2>
-                    <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                  <div className='highlight'>
+                    <p>
+                      Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
                   </div>
                 </Columns>
               </Tabs.Panel>
               <Tabs.Panel title='For sellers and agents'>
-                <h2>Homehapp for sellers and agents</h2>
-                <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                <div className='highlight'>
+                  <p>
+                    Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </p>
+                  <p>
+                    <a href='#' className='button'>Find agents</a>
+                  </p>
+                </div>
               </Tabs.Panel>
             </Tabs>
+          </div>
+        </ContentBlock>
+        <ContentBlock className='gray'>
+          <div className='width-wrapper'>
+            <Columns cols={2} className='table find-agents'>
+              <div className='highlight'>
+                <p>Find agents. Professionals will help you in telling your view of your home.</p>
+              </div>
+              <div className='right'>
+                <Image src='images/pixel.gif' alt='' type='asset' className='placeholder' />
+              </div>
+            </Columns>
           </div>
         </ContentBlock>
       </div>
