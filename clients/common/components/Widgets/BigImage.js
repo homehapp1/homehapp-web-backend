@@ -3,7 +3,7 @@
 import React from 'react';
 import { setFullHeight } from '../../Helpers';
 import classNames from 'classnames';
-import Image from '../../../common/components/Widgets/Image';
+import Image from './Image';
 
 class BigImage extends React.Component {
   static propTypes = {
@@ -32,6 +32,11 @@ class BigImage extends React.Component {
     let image = this.props.image;
     let proportion = this.props.proportion || 1;
 
+    let props = {
+      className: 'full-height',
+      proportion: proportion
+    };
+
     return (
       <div className={classNames(classes)} data-gradient={this.props.gradient} data-proportion={proportion}>
         <div className='image-content'>
@@ -39,7 +44,7 @@ class BigImage extends React.Component {
           <Image {...image} className='show-for-medium' width={1000} mode='scale' />
           <Image {...image} className='show-for-small' height={600} mode='fill' />
         </div>
-        <div className='width-wrapper full-height' data-proportion={proportion}>
+        <div className='image-text full-height' data-proportion={proportion}>
           {this.props.children}
         </div>
       </div>

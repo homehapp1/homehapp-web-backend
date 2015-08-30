@@ -38,7 +38,12 @@
   }
 
   .mainpage-list {
-    padding-top: 5 * $contentPadding;
+    padding-top: 5 * $contentPadding !important;
+
+    h2:first-child {
+      margin-top: 0;
+      margin-bottom: 3 * $contentPadding;
+    }
   }
 
   .home-preview {

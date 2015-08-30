@@ -82,7 +82,7 @@ class Homepage extends React.Component {
     return (
       <div id='mainpage' className='mainpage'>
         <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.9}>
-          <LargeText align='center' valign='center'>
+          <LargeText align='center' valign='middle' proportion={0.9}>
             <div className='splash'>
               <h1>Every home has<br /> a unique story</h1>
             </div>
