@@ -5,7 +5,7 @@ import React from 'react';
 class Columns extends React.Component {
   static propTypes = {
     max: React.PropTypes.number,
-    columns: React.PropTypes.number.isRequired,
+    cols: React.PropTypes.number.isRequired,
     children: React.PropTypes.oneOfType([
       React.PropTypes.object,
       React.PropTypes.array
@@ -23,7 +23,7 @@ class Columns extends React.Component {
   }
 
   renderChildren() {
-    let cols = Math.max(1, Math.round(this.props.columns));
+    let cols = Math.max(1, Math.round(this.props.cols));
     let last = Math.max(1, Math.min(this.props.children.length, this.props.max));
     let rows = [];
     let row = [];
