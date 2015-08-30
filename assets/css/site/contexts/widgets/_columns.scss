@@ -36,12 +36,24 @@
       display: table;
       width: 100%;
 
+      @include small() {
+        display: block;
+      }
+
       & > .row {
         display: table-row;
+
+        @include small() {
+          display: block;
+        }
 
         & > * {
           display: table-cell;
           float: none;
+
+          @include small() {
+            display: block;
+          }
         }
       }
     }
