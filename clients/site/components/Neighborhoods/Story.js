@@ -4,6 +4,7 @@ import React from 'react';
 import Gallery from '../../../common/components/Widgets/Gallery';
 import BigImage from '../../../common/components/Widgets/BigImage';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
+import LargeText from '../../../common/components/Widgets/LargeText';
 
 class NeighborhoodsStory extends React.Component {
   render() {
@@ -30,9 +31,9 @@ class NeighborhoodsStory extends React.Component {
     return (
       <div className='neighborhood-story'>
         <BigImage image={image} gradient='black' fixed={true}>
-          <div className='large-text' data-valign='middle' data-align='center'>
+          <LargeText align='center' valign='middle'>
             <h1>St. John's Wood</h1>
-          </div>
+          </LargeText>
         </BigImage>
 
         <ContentBlock>
@@ -49,7 +50,7 @@ class NeighborhoodsStory extends React.Component {
           </blockquote>
         </ContentBlock>
 
-        <Gallery images={images} columns={4} />
+        <Gallery images={images} columns={4} fullscreen={true} />
       </div>
     );
   }
