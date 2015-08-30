@@ -12,7 +12,7 @@ class Gallery extends React.Component {
     images: React.PropTypes.array.isRequired,
     title: React.PropTypes.string,
     columns: React.PropTypes.number,
-    imagewidth: React.PropTypes.number,
+    imageWidth: React.PropTypes.number,
     fullscreen: React.PropTypes.bool
   };
 
