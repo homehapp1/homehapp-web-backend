@@ -35,9 +35,9 @@ class BigImage extends React.Component {
     return (
       <div className={classNames(classes)} data-gradient={this.props.gradient} data-proportion={proportion}>
         <div className='image-content'>
-          <Image src={image.url} className='show-for-large' alt={image.alt} variant='large' />
-          <Image src={image.url} className='show-for-medium' alt={image.alt} variant='medium' />
-          <Image src={image.url} className='show-for-small' alt={image.alt} variant='small' />
+          <Image {...image} className='show-for-large' width={1920} mode='scale' />
+          <Image {...image} className='show-for-medium' width={1000} mode='scale' />
+          <Image {...image} className='show-for-small' height={600} mode='fill' />
         </div>
         <div className='width-wrapper full-height' data-proportion={proportion}>
           {this.props.children}
