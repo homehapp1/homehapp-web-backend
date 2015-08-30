@@ -11,6 +11,8 @@ import Hoverable from '../../../common/components/Widgets/Hoverable';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
+import { formatPrice } from '../../../common/Helpers';
+
 class Homepage extends React.Component {
   constructor() {
     super();
@@ -73,33 +75,67 @@ class Homepage extends React.Component {
       alt: ''
     };
 
-    let homes = this.state.homes.splice(0, 2);
-    console.log('homes', homes);
+    let homes = this.state.homes.splice(0, 4);
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.7}>
+        <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.9}>
           <LargeText align='center' valign='center'>
             <div className='splash'>
-              <h1>Every home has a unique story</h1>
+              <h1>Every home has<br /> a unique story</h1>
             </div>
           </LargeText>
         </BigImage>
-        <Columns columns={2}>
-          {
-            homes.map((home, index) => {
-              console.log('columns', index);
-              return (
-                <div className='home-preview' key={index}>
-                  <Link to='home' params={{slug: home.slug}}>
-                    <Hoverable {...home.images[0]} width={570} height={380} mode='fill' />
-                  </Link>
-                  <h3><Link to='home' params={{slug: home.slug}}>{home.slug}</Link></h3>
-                </div>
-              );
-            })
-          }
-        </Columns>
+        <ContentBlock className='pattern mainpage-list'>
+          <h2>Our exclusive homes</h2>
+          <Columns columns={2}>
+            {
+              homes.map((home, index) => {
+                let link = {
+                  to: 'home',
+                  params: {
+                    slug: home.slug
+                  }
+                };
+                console.log('home', home);
+                let rooms = 0;
+
+                for (let i = 0; i < home.attributes.length; i++) {
+                  if (home.attributes[i].name !== 'rooms') {
+                    continue;
+                  }
+
+                  rooms = home.attributes[i].value;
+                  break;
+                }
+
+                if (rooms === 1) {
+                  rooms = `${rooms} bedroom`;
+                } else {
+                  rooms = `${rooms} bedrooms`;
+                }
+
+                let price = home.costs.sellingPrice;
+
+                return (
+                  <div className='home-preview' key={index}>
+                    <Link {...link}>
+                      <Hoverable {...home.images[0]} width={570} height={380} mode='fill' />
+                    </Link>
+                    <div className='description'>
+                      <h3><Link {...link}>{home.location.address.street}</Link></h3>
+                      <p><Link {...link}>{home.location.neighborhood.title}</Link></p>
+                      <p className='details'>
+                        <span className='rooms'>{rooms}</span>
+                        <span className='price'>{formatPrice(price)}</span>
+                      </p>
+                    </div>
+                  </div>
+                );
+              })
+            }
+          </Columns>
+        </ContentBlock>
         <ContentBlock className='item-separator'>
           <h2>Find your home and continue the story</h2>
           <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
