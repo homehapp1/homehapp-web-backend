@@ -67,6 +67,10 @@
     background-position: left top;
   }
 
+  &.gray {
+    background-color: $extraLightGray;
+  }
+
   @import "contexts/widgets/agent";
   @import "contexts/widgets/big-image";
   @import "contexts/widgets/columns";
