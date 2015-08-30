@@ -150,18 +150,3 @@ body {
     display: none !important;
   }
 }
-
-.row {
-  @include clearfix();
-  display: table;
-
-  & > * {
-    display: table-cell;
-  }
-}
-
-@for $i from 1 through $cols {
-  .span#{$i} {
-    width: 100% * $i / $cols;
-  }
-}
