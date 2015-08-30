@@ -3,28 +3,58 @@
   padding-top: $padding;
   padding-bottom: $padding;
 
-  .columns-container {
+  & > .columns-container {
     margin-left: -0.5 * $padding;
     margin-right: -0.5 * $padding;
 
-    @for $i from 1 through 10 {
-      .cols-#{$i} {
-        display: block;
-        float: left;
-        width: 100% / $i;
-        padding-left: 0.5 * $padding;
-        padding-right: 0.5 * $padding;
-
-        @include small() {
-          width: 100%;
+    & > .row {
+      @for $i from 1 through 10 {
+        .cols-#{$i} {
           display: block;
+          float: left;
+          width: 100% / $i;
+          padding-left: 0.5 * $padding;
+          padding-right: 0.5 * $padding;
+
+          @include small() {
+            width: 100%;
+            display: block;
+            float: none;
+          }
+
+          img {
+            max-width: 100%;
+            height: auto;
+          }
+        }
+      }
+    }
+  }
+
+  &.table {
+    & > .columns-container {
+      display: table;
+      width: 100%;
+
+      & > .row {
+        display: table-row;
+
+        & > * {
+          display: table-cell;
           float: none;
         }
+      }
+    }
 
-        img {
-          max-width: 100%;
-          height: auto;
-        }
+    &[data-valign='middle'] {
+      & > .columns-container > .row > * {
+        vertical-align: middle;
+      }
+    }
+
+    &[data-valign='bottom'] {
+      & > .columns-container > .row > * {
+        vertical-align: bottom;
       }
     }
   }
