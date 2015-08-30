@@ -76,9 +76,9 @@ class Image extends React.Component {
     if (this.props.applySize) {
       this.applyDimensions();
     }
-    
+
     if (this.props.className) {
-      this.attributes.className = this.props.className
+      this.attributes.className = this.props.className;
     }
   }
 
