@@ -4,6 +4,10 @@
   padding-bottom: $contentPadding * $q;
   background-color: white;
 
+  &.gray {
+    background-color: $extraLightGray;
+  }
+
   h2 {
     text-align: center;
   }
