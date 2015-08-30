@@ -25,7 +25,6 @@ class Hoverable extends React.Component {
   };
 
   render() {
-    console.log('create hoverable');
     return (
       <span className='hoverable widget'>
         <span className='hoverable-wrapper'>
