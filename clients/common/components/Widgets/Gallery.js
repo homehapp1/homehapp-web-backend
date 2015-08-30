@@ -13,7 +13,7 @@ class Gallery extends React.Component {
     title: React.PropTypes.string,
     columns: React.PropTypes.number,
     imagewidth: React.PropTypes.number,
-    links: React.PropTypes.bool
+    fullscreen: React.PropTypes.bool
   };
 
   static defaultProps = {
@@ -21,7 +21,7 @@ class Gallery extends React.Component {
     title: '',
     columns: 10,
     imageWidth: 500,
-    links: true
+    fullscreen: true
   };
 
   constructor() {
@@ -427,7 +427,7 @@ class Gallery extends React.Component {
           this.props.images.map((image, index) => {
             image.variant = 'gallery';
 
-            if (this.props.link) {
+            if (this.props.fullscreen) {
               image.linked = 'fullscreen';
             }
 
