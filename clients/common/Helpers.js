@@ -224,3 +224,11 @@ exports.itemViews = function() {
     }
   }
 };
+
+exports.formatPrice = function(price) {
+  if (!price) {
+    return '';
+  }
+
+  return `£${String(Math.round(price)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
+};
