@@ -1,4 +1,4 @@
-.mainpage {
+#mainpage {
   .splash {
     $q: 14px;
 
@@ -70,6 +70,22 @@
 
     .description {
       padding: 0 $contentPadding * 2 $contentPadding;
+    }
+  }
+
+  .find-agents {
+    .row > * {
+      padding: 4 * $contentPadding;
+    }
+
+    .right {
+      img {
+        display: block;
+        width: 400px;
+        height: 515px;
+        background-color: $lightGray;
+        border: solid 1px $mediumGray;
+      }
     }
   }
 }
