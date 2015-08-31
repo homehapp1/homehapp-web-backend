@@ -169,7 +169,7 @@ class Homepage extends React.Component {
         </ContentBlock>
         <ContentBlock className='gray'>
           <div className='width-wrapper'>
-            <Columns cols={2} className='table find-agents'>
+            <Columns cols={2} className='table find-agents' align='center' valign='middle'>
               <div className='highlight centered'>
                 <p>Find agents. Professionals will help you in telling your view of your home.</p>
                 <p>
