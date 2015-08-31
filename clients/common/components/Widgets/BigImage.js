@@ -14,6 +14,11 @@ class BigImage extends React.Component {
     children: React.PropTypes.object
   };
 
+  static defaultProps = {
+    fixed: false,
+    proportion: 1
+  };
+
   componentDidMount() {
     setFullHeight();
   }
@@ -30,16 +35,15 @@ class BigImage extends React.Component {
     }
 
     let image = this.props.image;
-    let proportion = this.props.proportion || 1;
 
     return (
-      <div className={classNames(classes)} data-gradient={this.props.gradient} data-proportion={proportion}>
+      <div className={classNames(classes)} data-gradient={this.props.gradient} data-proportion={this.props.proportion}>
         <div className='image-content'>
           <Image {...image} className='show-for-large' width={1920} mode='scale' />
           <Image {...image} className='show-for-medium' width={1000} mode='scale' />
           <Image {...image} className='show-for-small' height={600} mode='fill' />
         </div>
-        <div className='image-text full-height' data-proportion={proportion}>
+        <div className='image-text full-height' data-proportion={this.props.proportion}>
           {this.props.children}
         </div>
       </div>
