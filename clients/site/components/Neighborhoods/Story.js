@@ -30,7 +30,7 @@ class NeighborhoodsStory extends React.Component {
 
     return (
       <div className='neighborhood-story'>
-        <BigImage image={image} gradient='black' fixed={true}>
+        <BigImage image={image} gradient='black' fixed={false}>
           <LargeText align='center' valign='middle'>
             <h1>St. John's Wood</h1>
           </LargeText>
@@ -50,7 +50,7 @@ class NeighborhoodsStory extends React.Component {
           </blockquote>
         </ContentBlock>
 
-        <Gallery images={images} columns={4} fullscreen={true} />
+        <Gallery images={images} columns={5} fullscreen={true} />
       </div>
     );
   }
