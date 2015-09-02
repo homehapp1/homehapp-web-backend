@@ -1,0 +1,34 @@
+.tabs-navigation {
+  ul {
+    margin: $contentPadding * 2 auto;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    display: table;
+    border-spacing: 0;
+    border-collapse: collapse;
+    font-size: 110%;
+
+    & > li {
+      display: table-cell;
+      border: solid 1px $darkGray;
+      padding: 0.5em 1em;
+
+      &, a {
+        color: $darkGray;
+        @include vendors(transition-property, all);
+        @include vendors(transition-duration, $transitionDuration);
+      }
+
+      &.is-active, &:hover {
+        background-color: $darkGray;
+        @include vendors(transition-delay, $transitionDuration);
+
+        &, a {
+          color: white;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

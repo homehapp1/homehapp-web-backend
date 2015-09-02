@@ -98,34 +98,34 @@
     height: 100%;
   }
 
-  & > .width-wrapper {
+  & > .large-text {
     position: absolute;
     display: table;
     left: 50%;
     margin-left: -0.5 * $pageWidth;
-
     @include noOverflow() {
       left: 0;
       right: 0;
       margin-left: 0;
     }
 
-    & > * {
-      display: table-cell;
-      width: 100%;
-      height: 100%;
-    }
+    & > .width-wrapper {
+      width: auto;
+      display: table-row;
+      
+      & > * {
+        display: table-cell;
+        width: 100%;
+        height: 100%;
+      }
 
-    & > .large-text {
-      font-size: 200%;
-    }
+      [data-valign="center"] {
+        vertical-align: middle;
+      }
 
-    [data-valign="center"] {
-      vertical-align: middle;
-    }
-
-    [data-valign="bottom"] {
-      vertical-align: bottom;
+      [data-valign="bottom"] {
+        vertical-align: bottom;
+      }
     }
   }
 }

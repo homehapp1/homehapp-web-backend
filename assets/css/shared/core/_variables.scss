@@ -4,6 +4,7 @@ $orange: #ff7d5a;
 $red: #aa0000;
 $lightGray: #d5d9d9;
 $extraLightGray: #f1f1f1;
+$mediumGray: #888888;
 $borderGray: #dddddd;
 $linkGray: #666666;
 $darkGray: #2b3b3d;
@@ -16,14 +17,14 @@ $fontDarkGray: $fontGray;
 
 // Measurements
 $headerHeight: 60px;
-$footerHeight: 80px;
+$footerHeight: 310px;
 $contentPadding: 10px;
 
 // Page size breakpoints
-$largeWidth: 960px;
-$mediumWidth: 960px;
+$pageWidth: 1200px;
+$largeWidth: $pageWidth;
+$mediumWidth: $pageWidth;
 $smallWidth: 600px;
-$pageWidth: 960px;
 
 $cols: 12;
 $fontSize: 16px;
@@ -48,6 +49,6 @@ $cardWidth: 320px; // How wide should one card be
 $cardColumns: 4;   // Maximum quantity of columns
 
 // Element sizes
-$buttonHeight: 32px;
+$buttonHeight: 1.8em;
 $navigationIconSize: 20px;
 $fontSizeButton: $fontSize;

@@ -20,9 +20,9 @@ class Pager extends React.Component {
     this.pager = this.refs.pager.getDOMNode();
 
     this.prev.addEventListener('click', this.onclick, true);
-    this.prev.addEventListener('touch', this.onclick, true);
+    this.prev.addEventListener('touchstart', this.onclick, true);
     this.next.addEventListener('click', this.onclick, true);
-    this.next.addEventListener('touch', this.onclick, true);
+    this.next.addEventListener('touchstart', this.onclick, true);
 
     this.pager.addEventListener('keydown', this.onkeyb, true);
     this.pager.focus();
@@ -30,9 +30,9 @@ class Pager extends React.Component {
 
   componentWillUnmount() {
     this.prev.removeEventListener('click', this.onclick, true);
-    this.prev.removeEventListener('touch', this.onclick, true);
+    this.prev.removeEventListener('touchstart', this.onclick, true);
     this.next.removeEventListener('click', this.onclick, true);
-    this.next.removeEventListener('touch', this.onclick, true);
+    this.next.removeEventListener('touchstart', this.onclick, true);
     this.pager.removeEventListener('keydown', this.onkeyb, true);
   }
 

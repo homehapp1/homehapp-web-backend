@@ -6,23 +6,40 @@ class LargeText extends React.Component {
   static propTypes = {
     align: React.PropTypes.string,
     valign: React.PropTypes.string,
-    children: React.PropTypes.object.isRequired
+    children: React.PropTypes.object.isRequired,
+    proportion: React.PropTypes.number,
+    className: React.PropTypes.string
+  };
+
+  static defaultProps = {
+    align: 'left',
+    valign: 'top',
+    proportion: 1,
+    className: null
   };
 
   render() {
     let classes = [
-      'item',
+      'widget',
       'large-text',
       'full-height'
     ];
 
-    let align = this.props.align || 'left';
-    let valign = this.props.valign || 'top';
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
+
+    let props = {
+      'data-align': this.props.align,
+      'data-valign': this.props.valign
+    };
 
     return (
-      <div className={classes.join(' ')} data-align={align} data-valign={valign}>
-        <div className='width-wrapper'>
-          {this.props.children}
+      <div className='widget large-text'>
+        <div className='width-wrapper full-height' data-proportion={this.props.proportion}>
+          <div className='content' {...props}>
+            {this.props.children}
+          </div>
         </div>
       </div>
     );

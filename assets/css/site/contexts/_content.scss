@@ -1,7 +1,6 @@
 #container {
   padding-bottom: $footerHeight;
   @include clearfix();
-  @import "widgets";
 }
 
 .spacer {
@@ -12,4 +11,10 @@
 
 iframe {
   border: none;
+}
+
+.highlight {
+  font-size: 150%;
+  font-style: italic;
+  color: $fontMediumGray;
 }

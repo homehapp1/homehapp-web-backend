@@ -8,14 +8,17 @@ class ContentBlock extends React.Component {
     alt: React.PropTypes.string,
     fixed: React.PropTypes.bool,
     gradient: React.PropTypes.string,
-    children: React.PropTypes.object.isRequired,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.array
+    ]),
     className: React.PropTypes.string,
     fullheight: React.PropTypes.bool
   };
 
   render() {
     let classes = [
-      'item',
+      'widget',
       'content-block'
     ];
 

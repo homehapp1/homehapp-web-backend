@@ -195,66 +195,72 @@
   }
 }
 
-[data-handler="homepage"] #navigation {
-  .icon {
-    display: none;
-  }
+@include notSmall() {
+  [data-handler="homepage"] #navigation {
+    .icon {
+      display: none;
+    }
 
-  & > .container {
-    display: block;
-    width: auto;
-    box-shadow: none;
-    position: absolute;
-    overflow: visible;
-
-    & > ul {
-      padding: 0 $contentPadding 0 0;
-      background-color: transparent;
-      text-transform: uppercase;
+    & > .container {
+      display: block;
+      width: auto;
       box-shadow: none;
+      position: absolute;
+      overflow: visible;
 
-      li {
-        position: relative;
+      & > ul {
+        padding: 0 $contentPadding 0 0;
+        background-color: transparent;
+        text-transform: uppercase;
+        box-shadow: none;
 
-        &, & > a {
-          display: block;
-          float: left;
-          color: white;
-          font-style: normal;
-          font-weight: 400;
+        li {
+          position: relative;
 
-          &:hover, &.active {
-            color: $turquoise;
-          }
-        }
+          &, & > a {
+            display: block;
+            float: left;
+            color: white;
+            font-style: normal;
+            font-weight: 400;
 
-        ul {
-          display: none;
-          position: absolute;
-          top: 100%;
-          margin-top: -1px;
-          left: 0;
-          background-color: white;
-          padding: $contentPadding / 2 $contentPadding;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-
-          a {
-            color: $fontDarkGray;
-
-            &.active {
+            &:hover, &.active {
               color: $turquoise;
             }
-          }
-        }
 
-        &:hover {
-          & > ul {
-            display: block;
+            &.secondary {
+              display: none;
+            }
           }
-        }
 
-        & + li {
-          margin-left: 1em;
+          ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            margin-top: -1px;
+            left: 0;
+            background-color: white;
+            padding: $contentPadding / 2 $contentPadding;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+            a {
+              color: $fontDarkGray;
+
+              &.active {
+                color: $turquoise;
+              }
+            }
+          }
+
+          &:hover {
+            & > ul {
+              display: block;
+            }
+          }
+
+          & + li {
+            margin-left: 1em;
+          }
         }
       }
     }

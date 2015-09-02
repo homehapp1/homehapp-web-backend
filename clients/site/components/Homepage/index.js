@@ -2,15 +2,18 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-
-import ApplicationStore from '../../../common/stores/ApplicationStore';
+import Tabs from 'react-simpletabs';
 
 import HomeListStore from '../../stores/HomeListStore';
 
-import PropertyCards from '../Property/Cards';
 import BigImage from '../../../common/components/Widgets/BigImage';
+import Columns from '../../../common/components/Widgets/Columns';
+import Hoverable from '../../../common/components/Widgets/Hoverable';
+import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
+
+import { formatPrice } from '../../../common/Helpers';
 
 class Homepage extends React.Component {
   constructor() {
@@ -74,26 +77,110 @@ class Homepage extends React.Component {
       alt: ''
     };
 
+    let homes = this.state.homes.splice(0, 4);
+
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.7}>
-          <LargeText align='center' valign='center'>
+        <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.9}>
+          <LargeText align='center' valign='middle' proportion={0.9}>
             <div className='splash'>
-              <h1>Every home has a unique story</h1>
+              <h1>Every home has<br /> a unique story</h1>
             </div>
           </LargeText>
         </BigImage>
-        <div className='item property-list partial-list'>
-          <PropertyCards items={this.state.homes} max={20} />
-          <Link to='properties' className='button read-more'>View more</Link>
-        </div>
+        <ContentBlock className='pattern mainpage-list'>
+          <div className='width-wrapper'>
+            <h2>Our exclusive homes</h2>
+            <Columns cols={2}>
+              {
+                homes.map((home, index) => {
+                  let link = {
+                    to: 'home',
+                    params: {
+                      slug: home.slug
+                    }
+                  };
+                  let rooms = 0;
+
+                  for (let i = 0; i < home.attributes.length; i++) {
+                    if (home.attributes[i].name !== 'rooms') {
+                      continue;
+                    }
+
+                    rooms = home.attributes[i].value;
+                    break;
+                  }
+
+                  if (rooms === 1) {
+                    rooms = `${rooms} bedroom`;
+                  } else {
+                    rooms = `${rooms} bedrooms`;
+                  }
+
+                  let price = home.costs.sellingPrice;
+
+                  return (
+                    <div className='home-preview' key={index}>
+                      <Link {...link}>
+                        <Hoverable {...home.images[0]} width={570} height={380} mode='fill' />
+                      </Link>
+                      <div className='description'>
+                        <h3><Link {...link}>{home.location.address.street}</Link></h3>
+                        <p><Link {...link}>{home.location.neighborhood.title}</Link></p>
+                        <p className='details'>
+                          <span className='rooms'>{rooms}</span>
+                          <span className='price'>{formatPrice(price)}</span>
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              }
+            </Columns>
+          </div>
+        </ContentBlock>
         <ContentBlock className='item-separator'>
           <h2>Find your home and continue the story</h2>
           <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
           <iframe src='https://player.vimeo.com/video/74145280' width='100%' height='550' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>
-          <h2>Find your home and continue the story</h2>
-          <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-          <iframe src='https://player.vimeo.com/video/74145280' width='100%' height='550' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>
+        </ContentBlock>
+        <ContentBlock>
+          <div className='width-wrapper'>
+            <Tabs>
+              <Tabs.Panel title='Homehapp for buyers'>
+                <Columns cols={2} className='table' align='center' valign='middle'>
+                  <Image src='images/icons/icon_mobile_large.svg' alt='' type='asset' />
+                  <div className='highlight'>
+                    <p>
+                      Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                  </div>
+                </Columns>
+              </Tabs.Panel>
+              <Tabs.Panel title='For sellers and agents'>
+                <div className='highlight'>
+                  <p>
+                    Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </p>
+                </div>
+              </Tabs.Panel>
+            </Tabs>
+          </div>
+        </ContentBlock>
+        <ContentBlock className='gray'>
+          <div className='width-wrapper'>
+            <Columns cols={2} className='table find-agents' align='center' valign='middle'>
+              <div className='highlight centered'>
+                <p>Find agents. Professionals will help you in telling your view of your home.</p>
+                <p>
+                  <a href='#' className='button'>Find agents</a>
+                </p>
+              </div>
+              <div className='right'>
+                <Image src='images/pixel.gif' alt='' type='asset' className='placeholder' />
+              </div>
+            </Columns>
+          </div>
         </ContentBlock>
       </div>
     );

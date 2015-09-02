@@ -1,0 +1,73 @@
+&.columns {
+  $padding: 2 * $contentPadding;
+  padding-top: $padding;
+  padding-bottom: $padding;
+
+  & > .columns-container {
+    margin-left: -0.5 * $padding;
+    margin-right: -0.5 * $padding;
+
+    & > .row {
+      @for $i from 1 through 10 {
+        .cols-#{$i} {
+          display: block;
+          float: left;
+          width: 100% / $i;
+          padding-left: 0.5 * $padding;
+          padding-right: 0.5 * $padding;
+
+          @include small() {
+            width: 100%;
+            display: block;
+            float: none;
+          }
+
+          img {
+            max-width: 100%;
+            height: auto;
+          }
+        }
+      }
+    }
+  }
+
+  &.table {
+    & > .columns-container {
+      display: table;
+      width: 100%;
+
+      @include small() {
+        display: block;
+      }
+
+      & > .row {
+        display: table-row;
+
+        @include small() {
+          display: block;
+        }
+
+        & > * {
+          display: table-cell;
+          float: none;
+
+          @include small() {
+            display: block;
+          }
+        }
+      }
+    }
+
+    &[data-valign='middle'] {
+      & > .columns-container > .row > * {
+        vertical-align: middle;
+      }
+    }
+
+    &[data-valign='bottom'] {
+      & > .columns-container > .row > * {
+        vertical-align: bottom;
+      }
+    }
+  }
+}

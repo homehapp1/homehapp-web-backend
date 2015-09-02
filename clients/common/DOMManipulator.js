@@ -53,7 +53,7 @@ class DOMManipulator {
     this.node.addEventListener(eventName, fn, capture);
   }
 
-  removeEvent(eventName, fn) {
+  removeEvent(eventName, fn, capture = false) {
     this.node.removeEventListener(eventName, fn, capture);
   }
 

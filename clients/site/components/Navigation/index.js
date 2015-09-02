@@ -19,6 +19,7 @@ class Navigation extends React.Component {
     this.icon.addEvent('mouseover', this.mouseover);
     this.icon.addEvent('mouseout', this.mouseout);
     this.icon.addEvent('click', this.click, true);
+    this.icon.addEvent('touch', this.click, true);
 
     this.navigation = new DOMManipulator(this.refs.navigation);
   }
@@ -27,6 +28,7 @@ class Navigation extends React.Component {
     this.icon.removeEvent('mouseover', this.mouseover);
     this.icon.removeEvent('mouseout', this.mouseout);
     this.icon.removeEvent('click', this.click, true);
+    this.icon.removeEvent('touch', this.click, true);
   }
 
   hideNavigation() {
@@ -42,11 +44,13 @@ class Navigation extends React.Component {
 
   toggle(e) {
     this.hideNavigation();
-    for (let i = 0; i < e.path.length; i++) {
-      // Allow default action for anything inside navigation
-      if (e.path[i].id === 'navigation') {
+    let target = e.target;
+
+    while (target && target.parentNode.tagName.toLowerCase() !== 'body') {
+      if (target.id === 'navigation') {
         return true;
       }
+      target = target.parentNode;
     }
 
     // Otherwise prevent default actions on the first click
@@ -96,16 +100,16 @@ class Navigation extends React.Component {
           <ul>
             <li className='homepage'><Link to='app'>Homepage</Link></li>
             <li><Link to='properties'>Buy</Link></li>
-            <li><Link to='propertiesMode' params={{mode: 'cards'}}>Sell</Link></li>
+            <li><Link to='propertiesMode' params={{mode: 'cards'}}>Rent</Link></li>
             <li>
               <Link to='neighborhoods'>Neighbourhoods</Link>
               <ul>
                 <li><Link to='neighborhoodsView' params={{city: 'london', neighborhood: 'stjohnswood'}}>St. John´s Wood</Link></li>
               </ul>
             </li>
-            <li><Link to='content' params={{slug: 'about-us'}}>About us</Link></li>
-            <li><Link to='content' params={{slug: 'terms'}}>Terms & conditions</Link></li>
-            <li><Link to='content' params={{slug: 'privacy'}}>Privacy</Link></li>
+            <li className='secondary'><Link to='content' params={{slug: 'about-us'}}>About us</Link></li>
+            <li className='secondary'><Link to='content' params={{slug: 'terms'}}>Terms & conditions</Link></li>
+            <li className='secondary'><Link to='content' params={{slug: 'privacy'}}>Privacy</Link></li>
           </ul>
         </div>
       </div>

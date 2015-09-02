@@ -21,7 +21,6 @@ class HomeStory extends React.Component {
       }
     });
 
-    console.log('this.props.home.location.neighborhood', this.props.home.location.neighborhood);
     if (this.props.home.location.neighborhood) {
       blocks.push({
         template: 'Neighborhood',

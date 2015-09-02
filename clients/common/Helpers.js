@@ -225,40 +225,10 @@ exports.itemViews = function() {
   }
 };
 
-exports.imagePath = function(config, src, variant = null, params = []) {
-  let mask = '';
-
-  if (variant) {
-    for (let i in config.cloudinary.transformations[variant]) {
-      let v = config.cloudinary.transformations[variant][i];
-      switch (i) {
-        case 'mode':
-          params.push(`c_${v}`);
-          break;
-
-        case 'width':
-          params.push(`w_${v}`);
-          break;
-
-        case 'height':
-          params.push(`h_${v}`);
-          break;
-
-        case 'mask':
-          mask = `/l_${v},fl_cutter`;
-
-          if (src.match(/\.jpe?g$/i)) {
-            src = src.replace(/\.jpe?g$/i, '.png');
-          }
-          break;
-
-        default:
-          params.push(`${i}_${v}`);
-      }
-    }
+exports.formatPrice = function(price) {
+  if (!price) {
+    return '';
   }
 
-  params.push('fl_progressive');
-
-  return `${config.cloudinary.baseUrl}${params.join(',')}${mask}/${src}`;
+  return `£${String(Math.round(price)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
 };

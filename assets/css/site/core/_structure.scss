@@ -50,6 +50,12 @@ body {
   }
 }
 
+.centered {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .width-wrapper {
   width: 100%;
   max-width: $pageWidth;
@@ -148,20 +154,5 @@ body {
 
   @include medium() {
     display: none !important;
-  }
-}
-
-.row {
-  @include clearfix();
-  display: table;
-
-  & > * {
-    display: table-cell;
-  }
-}
-
-@for $i from 1 through $cols {
-  .span#{$i} {
-    width: 100% * $i / $cols;
   }
 }

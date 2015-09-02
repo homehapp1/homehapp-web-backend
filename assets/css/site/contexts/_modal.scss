@@ -11,6 +11,18 @@
     bottom: 0;
     z-index: $zModal;
 
+    &:after {
+      display: block;
+      content: ' ';
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      height: 20%;
+      z-index: $zModal - 1;
+      background-color: black;
+    }
+
     & > .modal-close {
       position: absolute;
       z-index: 1;

@@ -41,7 +41,7 @@ class Map extends React.Component {
 
   render() {
     let classes = [
-      'item',
+      'widget',
       'map'
     ];
 

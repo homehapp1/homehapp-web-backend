@@ -1,6 +1,5 @@
-.item {
+.widget {
   position: relative;
-  background-color: white;
 
   [data-valign="middle"] {
     vertical-align: middle;
@@ -68,10 +67,19 @@
     background-position: left top;
   }
 
+  &.gray {
+    background-color: $extraLightGray;
+  }
+
   @import "contexts/widgets/agent";
   @import "contexts/widgets/big-image";
+  @import "contexts/widgets/columns";
   @import "contexts/widgets/content-block";
   @import "contexts/widgets/gallery";
+  @import "contexts/widgets/hoverable";
   @import "contexts/widgets/large-text";
   @import "contexts/widgets/map";
 }
+
+// External component overrides
+@import "contexts/widgets/tabs";

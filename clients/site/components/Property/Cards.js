@@ -4,6 +4,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import DOMManipulator from '../../../common/DOMManipulator';
+import { formatPrice } from '../../../common/Helpers';
 import classNames from 'classnames';
 import Image from '../../../common/components/Widgets/Image';
 
@@ -94,7 +95,6 @@ class PropertyCards extends React.Component {
       let images = cards[i].getByTagName('img');
 
       if (!images.length) {
-        console.log('no images found');
         continue;
       }
 
@@ -129,14 +129,6 @@ class PropertyCards extends React.Component {
           if (item.story.enabled) {
             classes.push('storified');
           }
-
-          let formatPrice = function(price) {
-            if (!price) {
-              return '';
-            }
-
-            return `£${String(Math.round(price)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
-          };
 
           return (
             <div className={classNames(classes)} key={index}>

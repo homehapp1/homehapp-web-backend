@@ -56,6 +56,17 @@ module.exports = (projectRoot) => {
             height: 600
           },
 
+          gallery: {
+            mode: 'fit',
+            width: 600,
+            height: 600
+          },
+          fullscreen: {
+            width: 1920,
+            height: 1080,
+            mode: 'fit'
+          },
+
           // Hexagon mask
           masked: {
             mode: 'fill',
