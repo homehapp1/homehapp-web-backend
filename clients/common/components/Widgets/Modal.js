@@ -5,7 +5,14 @@ import DOMManipulator from '../../DOMManipulator';
 
 class Modal extends React.Component {
   static propTypes = {
-    children: React.PropTypes.object
+    children: React.PropTypes.object.isRequired,
+    onclose: React.PropTypes.function
+  }
+
+  static defaultProps = {
+    onclose: function() {
+      console.log('default modal onclose');
+    }
   }
 
   constructor() {
@@ -16,6 +23,11 @@ class Modal extends React.Component {
 
   componentDidMount() {
     this.refs.modal.getDOMNode().addEventListener('click', this.removeModal, false);
+    this.refs.modal.getDOMNode().addEventListener('touch', this.removeModal, false);
+
+    this.refs.close.getDOMNode().addEventListener('click', this.removeModal, true);
+    this.refs.close.getDOMNode().addEventListener('touchstart', this.removeModal, true);
+
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
     this.body.addClass('no-scroll');
   }
@@ -23,6 +35,12 @@ class Modal extends React.Component {
   componentWillUnmount() {
     if (this.refs.modal) {
       this.refs.modal.getDOMNode().removeEventListener('click', this.removeModal, false);
+      this.refs.modal.getDOMNode().removeEventListener('touch', this.removeModal, false);
+    }
+
+    if (this.refs.close) {
+      this.refs.close.getDOMNode().removeEventListener('click', this.removeModal, true);
+      this.refs.close.getDOMNode().removeEventListener('touchstart', this.removeModal, true);
     }
 
     if (this.body.getByClass('modal-wrapper').length <= 1) {
@@ -31,11 +49,16 @@ class Modal extends React.Component {
   }
 
   removeModal(e) {
-    for (let i = 0; i < e.path.length; i++) {
-      if (e.path[i].className === 'modal-content') {
+    let target = e.target;
+
+    while (target.parentNode.tagName.toLowerCase() !== 'body') {
+      if (target.className.match(/modal\-content/)) {
         return true;
       }
+      target = target.parentNode;
     }
+
+    this.props.onclose();
 
     let node = this.refs.modal.getDOMNode();
     React.unmountComponentAtNode(node);
@@ -49,7 +72,7 @@ class Modal extends React.Component {
   render() {
     return (
       <div className='modal-wrapper' ref='modal'>
-        <div className='modal-close'><i className='fa fa-close'></i></div>
+        <div className='modal-close'><i className='fa fa-close' ref='close'></i></div>
         <div className='modal-container'>
           <div className='modal-content' ref='content'>
             {this.props.children}
