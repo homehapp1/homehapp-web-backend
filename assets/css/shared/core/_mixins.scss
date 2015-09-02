@@ -33,7 +33,7 @@
     }
   }
   @else {
-    @media only screen and (min-width: $mediumWidth) and (max-width: $mediumWidth + $bannerWidth * 2) {
+    @media only screen and (min-width: $mediumWidth) and (max-width: $pageWidth) {
       @content;
     }
   }
@@ -60,6 +60,12 @@
 
 @mixin small() {
   @media only screen and (max-width: $smallWidth) {
+    @content;
+  }
+}
+
+@mixin notSmall() {
+  @media only screen and (min-width: $smallWidth) {
     @content;
   }
 }
@@ -155,7 +161,15 @@
   @include vendors(transition-property, all);
   @include vendors(transition-duration, $transitionDurationFast);
 
+  @include small() {
+    @include vendors(transition-property, none);
+  }
+
   &:hover {
     opacity: 0.8;
+
+    @include small() {
+      opacity: 0.2;
+    }
   }
 }

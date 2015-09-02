@@ -16,13 +16,17 @@
 
       &, a {
         color: $darkGray;
+        @include vendors(transition-property, all);
+        @include vendors(transition-duration, $transitionDuration);
       }
 
-      &.is-active {
+      &.is-active, &:hover {
         background-color: $darkGray;
+        @include vendors(transition-delay, $transitionDuration);
 
         &, a {
           color: white;
+          text-decoration: none;
         }
       }
     }
