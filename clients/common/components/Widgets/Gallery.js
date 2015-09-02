@@ -84,12 +84,24 @@ class Gallery extends React.Component {
     this.updateGallery();
 
     window.addEventListener('resize', this.onResize);
-    this.gallery.addEvent('click', this.onClick);
+
+    this.gallery.addEvent('click', this.onClick, true);
+    this.gallery.addEvent('touch', this.onClick, true);
+
+    // let tmpClick = function() {
+    //   console.log('click');
+    //   this.images[0].click();
+    // };
+    // tmpClick = tmpClick.bind(this);
+    // setTimeout(tmpClick, 500);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
     this.endCapture();
+
+    this.gallery.removeEvent('click', this.onClick, true);
+    this.gallery.removeEvent('touch', this.onClick, true);
   }
 
   static INIT = 0;
@@ -100,20 +112,21 @@ class Gallery extends React.Component {
   startCapture() {
     // Unbind all the old events in case of an unsuccessful unbinding
     this.endCapture();
-
     // Bind a whole lot of events here
     for (let i = 0; i < this.events.length; i++) {
       for (let n = 0; n < this.events[i].events.length; n++) {
         let target = document;
+        let capturing = false;
         if (this.events[i].target === 'image') {
           target = this.imageContainer;
+          capturing = true;
         }
 
         if (!target) {
           continue;
         }
 
-        target.addEventListener(this.events[i].events[n], this.events[i].handler, true);
+        target.addEventListener(this.events[i].events[n], this.events[i].handler, capturing);
       }
     }
   }
@@ -123,15 +136,17 @@ class Gallery extends React.Component {
     for (let i = 0; i < this.events.length; i++) {
       for (let n = 0; n < this.events[i].events.length; n++) {
         let target = document;
+        let capturing = false;
         if (this.events[i].target === 'image') {
           target = this.imageContainer;
+          capturing = true;
         }
 
         if (!target) {
           continue;
         }
 
-        target.removeEventListener(this.events[i].events[n], this.events[i].handler, true);
+        target.removeEventListener(this.events[i].events[n], this.events[i].handler, capturing);
       }
     }
   }
@@ -241,7 +256,7 @@ class Gallery extends React.Component {
     let target = e.srcElement;
 
     // Get the link if clicked on a child
-    while (target.tagName.toLowerCase() !== 'a') {
+    while (target && target.tagName.toLowerCase() !== 'a') {
       target = target.parentNode;
 
       // No parent, no link, end gracefully
@@ -278,7 +293,7 @@ class Gallery extends React.Component {
   // Create the modal view
   createModal() {
     return (
-      <Modal>
+      <Modal onclose={this.closeModal}>
         <Pager onchange={this.changeImage} onclose={this.closeModal} />
         <div id='galleryImages'></div>
       </Modal>
@@ -286,9 +301,8 @@ class Gallery extends React.Component {
   }
 
   closeModal() {
-    this.modalContainer.click();
-    this.preloaded = {};
     this.endCapture();
+    this.preloaded = {};
   }
 
   // Calculate the distance to the source element
