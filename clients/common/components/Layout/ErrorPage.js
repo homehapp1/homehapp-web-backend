@@ -19,6 +19,7 @@ class ErrorPage extends React.Component {
     image: {
       url: 'images/content/not-found.jpg',
       alt: 'Page not found',
+      author: 'Ben Brooksbank',
       type: 'asset'
     }
   };
