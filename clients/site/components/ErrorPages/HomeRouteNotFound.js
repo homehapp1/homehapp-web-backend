@@ -1,14 +1,11 @@
 'use strict';
 
-import React from 'react';
+import RouteNotFound from './RouteNotFound';
 
-class HomeRouteNotFound extends React.Component {
-  render() {
-    return (
-      <div className='errorPage'>
-        <h1>Oh No`s! Home was not found here.</h1>
-      </div>
-    );
+class HomeRouteNotFound extends RouteNotFound {
+  componentWillMount() {
+    console.log('componentWillMount', this);
+    this.error.message = 'Home not found';
   }
 }
 

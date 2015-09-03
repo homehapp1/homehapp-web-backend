@@ -22,17 +22,17 @@ class Footer extends React.Component {
           <ul className='footer-links social'>
             <li>
               <a href='https://www.facebook.com/homehapp' target='_blank'>
-                <Image src='images/icons/facebook.svg' alt='Facebook' type='asset' />
+                <i className='fa fa-facebook-square'></i>
               </a>
             </li>
             <li>
               <a href='https://www.twitter.com/homehapp' target='_blank'>
-                <Image src='images/icons/twitter.svg' alt='Twitter' type='asset' />
+                <i className='fa fa-twitter'></i>
               </a>
             </li>
             <li>
               <a href='https://www.instagram.com/homehapp' target='_blank'>
-                <Image src='images/icons/instagram.svg' alt='Instagram' type='asset' />
+                <i className='fa fa-instagram'></i>
               </a>
             </li>
           </ul>

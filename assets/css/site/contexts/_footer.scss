@@ -21,6 +21,10 @@
     }
   }
 
+  a {
+    color: $darkGray;
+  }
+
   .logotype {
     display: block;
     margin-left: auto;
@@ -35,9 +39,17 @@
     list-style: none;
     text-transform: uppercase;
     font-size: 120%;
+    letter-spacing: 0.1em;
 
-    &.social img {
-      height: 30px;
+    &.social a {
+      font-size: 300%;
+      @include vendors(transition-property, color);
+      @include vendors(transition-duration, $transitionDuration);
+      margin: 0 0.1em;
+
+      &:hover {
+        color: black;
+      }
     }
 
     li {
@@ -48,16 +60,12 @@
       }
 
       & + li {
-        margin-left: 2em;
+        margin-left: 1.5em;
 
         @include small() {
           margin-left: 0;
         }
       }
     }
-  }
-
-  a {
-    color: $linkGray;
   }
 }
