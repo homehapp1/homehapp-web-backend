@@ -73,3 +73,16 @@ cd ../../../
 
 ./support/updateCluster.sh site stg
 ./support/updateCluster.sh admin stg
+
+
+# Updating site assets
+
+Build the site static files
+
+    npm run build-site
+    npm run build-admin
+
+Run the distribution script to propagate files to CDN
+
+    npm run distribute-site
+    npm run distribute-admin
