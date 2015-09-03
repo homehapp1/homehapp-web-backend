@@ -11,14 +11,14 @@ import Homepage from './Homepage';
 // Home handlers
 import HomeContainer from './Home/HomeContainer';
 import HomeDetailsContainer from './Home/HomeDetailsContainer';
-import HomeRouteNotFound from './ErrorPages/HomeRouteNotFound';
+import RouteNotFound from './ErrorPages/RouteNotFound';
 
 // Property handlers
 import PropertyFilter from './Property/Filter';
 
 // Neighborhoods handlers
 import NeighborhoodsCities from './Neighborhoods/Cities';
-import NeighborhoodsCity from './Neighborhoods/City';
+import NeighborhoodsList from './Neighborhoods/List';
 import NeighborhoodsStory from './Neighborhoods/Story';
 
 // MIscellaneous other handlers
@@ -30,21 +30,21 @@ let routes = (
     <Route name='home' path='/home/:slug'>
       <Route name='homeDetails' path='details' handler={HomeDetailsContainer} />
       <DefaultRoute handler={HomeContainer}/>
-      <NotFoundRoute handler={HomeRouteNotFound} />
+      <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='properties' path='/properties'>
       <Route name='propertiesMode' path=':mode' handler={PropertyFilter} />
       <DefaultRoute handler={PropertyFilter} />
-      <NotFoundRoute handler={HomeRouteNotFound} />
+      <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='neighborhoods' path='/neighborhoods'>
-      <Route name='neighborhoodsCity' path=':city' handler={NeighborhoodsCity} />
+      <Route name='neighborhoodsList' path=':city' handler={NeighborhoodsList} />
       <Route name='neighborhoodsView' path=':city/:neighborhood' handler={NeighborhoodsStory} />
-      <NotFoundRoute handler={HomeRouteNotFound} />
+      <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='content' path='/:slug' handler={Content}>
       <DefaultRoute handler={Content} />
-      <NotFoundRoute handler={HomeRouteNotFound} />
+      <NotFoundRoute handler={RouteNotFound} />
     </Route>
   </Route>
 );

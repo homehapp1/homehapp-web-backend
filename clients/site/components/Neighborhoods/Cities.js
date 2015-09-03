@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import NeighborhoodsCity from './City';
+import NeighborhoodsList from './List';
 
 class NeighborhoodsCities extends React.Component {
   componentDidMount() {
@@ -9,7 +9,7 @@ class NeighborhoodsCities extends React.Component {
   }
   render() {
     return (
-      <NeighborhoodsCity city='london' />
+      <NeighborhoodsList city='london' />
     );
   }
 }

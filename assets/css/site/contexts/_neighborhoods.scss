@@ -1,0 +1,82 @@
+.neighborhoods-list {
+  .neighborhood {
+    $opacity: 0.2em;
+    position: relative;
+    padding: $contentPadding;
+    font-size: 150%;
+    text-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+
+    &, a {
+      color: white;
+    }
+
+    h2 {
+      margin: 0;
+
+      a {
+        display: block;
+        padding: 4em 0;
+      }
+    }
+
+    .image-wrapper {
+      @include imageFill();
+      position: absolute;
+    }
+
+    .content-block {
+      padding: 0;
+    }
+
+    .buttons {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2em;
+      margin: 0;
+      text-align: center;
+
+      & > li {
+        display: inline-block;
+        border: solid 1px;
+        padding: 0.2em 1em;
+        text-align: center;
+        width: 15em;
+        font-weight: 400;
+        background-color: rgba(0, 0, 0, $opacity / 2);
+        box-shadow: 0 0 2em rgba(0, 0, 0, $opacity);
+        white-space: nowrap;
+
+        @include medium() {
+          width: 40%;
+        }
+
+        @include small() {
+          width: 100%;
+          display: block;
+        }
+
+        & + li {
+          margin-left: 1em;
+
+          @include small() {
+            margin-left: 0;
+            margin-top: 1em;
+          }
+        }
+
+        &, a {
+          color: white;
+        }
+      }
+    }
+
+    .content-block {
+      background-color: transparent;
+    }
+
+    & + .neighborhood {
+      margin-top: $contentPadding * 2;
+    }
+  }
+}
