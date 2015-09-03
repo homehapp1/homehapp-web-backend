@@ -1,13 +1,12 @@
 'use strict';
 
 import React from 'react';
-import Error from '../../../common/components/Layout/Error';
+import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
 class RouteNotFound extends React.Component {
-  constructor() {
-    super();
-
+  componentWillMount() {
     this.error = {
+      title: 'Not found!',
       message: 'Page not found',
       image: {
         url: 'images/content/not-found.jpg',
@@ -21,7 +20,7 @@ class RouteNotFound extends React.Component {
     let error = this.error;
 
     return (
-      <Error {...error} />
+      <ErrorPage {...error} />
     );
   }
 }
