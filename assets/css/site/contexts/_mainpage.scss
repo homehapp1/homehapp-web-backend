@@ -75,7 +75,15 @@
 
   .find-agents {
     .row > * {
-      padding: 4 * $contentPadding;
+      padding: 2 * $contentPadding 4 * $contentPadding;
+
+      @include medium() {
+        padding: 2 * $contentPadding;
+      }
+
+      @include small() {
+        padding: $contentPadding;
+      }
     }
 
     .right {

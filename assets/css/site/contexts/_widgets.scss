@@ -82,6 +82,11 @@
     background-color: $extraLightGray;
   }
 
+  .width-wrapper .width-wrapper {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   @import "contexts/widgets/agent";
   @import "contexts/widgets/big-image";
   @import "contexts/widgets/columns";

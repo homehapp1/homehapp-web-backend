@@ -8,4 +8,15 @@
     float: left;
     padding: $contentPadding / 2;
   }
+
+  &.tight {
+    img {
+      padding: 1px;
+    }
+  }
+}
+
+// No background colors when already wrapped within a widget
+& .gallery {
+  background-color: transparent;
 }

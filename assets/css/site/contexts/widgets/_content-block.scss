@@ -1,8 +1,12 @@
 &.content-block {
-  $q: 6;
-  padding-top: $contentPadding * $q;
-  padding-bottom: $contentPadding * $q;
+  padding-top: $contentPadding * 4;
+  padding-bottom: $contentPadding * 4;
   background-color: white;
+
+  @include small() {
+    padding-top: $contentPadding * 2;
+    padding-bottom: $contentPadding * 2;
+  }
 
   &.gray {
     background-color: $extraLightGray;
@@ -19,4 +23,10 @@
   p {
     margin-bottom: 1em;
   }
+}
+
+.content-block {
+  background-color: transparent;
+  padding-top: 0;
+  padding-bottom: 0;
 }
