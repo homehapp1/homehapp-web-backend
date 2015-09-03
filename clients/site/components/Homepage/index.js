@@ -89,55 +89,53 @@ class Homepage extends React.Component {
           </LargeText>
         </BigImage>
         <ContentBlock className='pattern mainpage-list'>
-          <div className='width-wrapper'>
-            <h2>Our exclusive homes</h2>
-            <Columns cols={2}>
-              {
-                homes.map((home, index) => {
-                  let link = {
-                    to: 'home',
-                    params: {
-                      slug: home.slug
-                    }
-                  };
-                  let rooms = 0;
+          <h2>Our exclusive homes</h2>
+          <Columns cols={2}>
+            {
+              homes.map((home, index) => {
+                let link = {
+                  to: 'home',
+                  params: {
+                    slug: home.slug
+                  }
+                };
+                let rooms = 0;
 
-                  for (let i = 0; i < home.attributes.length; i++) {
-                    if (home.attributes[i].name !== 'rooms') {
-                      continue;
-                    }
-
-                    rooms = home.attributes[i].value;
-                    break;
+                for (let i = 0; i < home.attributes.length; i++) {
+                  if (home.attributes[i].name !== 'rooms') {
+                    continue;
                   }
 
-                  if (rooms === 1) {
-                    rooms = `${rooms} bedroom`;
-                  } else {
-                    rooms = `${rooms} bedrooms`;
-                  }
+                  rooms = home.attributes[i].value;
+                  break;
+                }
 
-                  let price = home.costs.sellingPrice;
+                if (rooms === 1) {
+                  rooms = `${rooms} bedroom`;
+                } else {
+                  rooms = `${rooms} bedrooms`;
+                }
 
-                  return (
-                    <div className='home-preview' key={index}>
-                      <Link {...link}>
-                        <Hoverable {...home.images[0]} width={570} height={380} mode='fill' />
-                      </Link>
-                      <div className='description'>
-                        <h3><Link {...link}>{home.location.address.street}</Link></h3>
-                        <p><Link {...link}>{home.location.neighborhood.title}</Link></p>
-                        <p className='details'>
-                          <span className='rooms'>{rooms}</span>
-                          <span className='price'>{formatPrice(price)}</span>
-                        </p>
-                      </div>
+                let price = home.costs.sellingPrice;
+
+                return (
+                  <div className='home-preview' key={index}>
+                    <Link {...link}>
+                      <Hoverable {...home.images[0]} width={570} height={380} mode='fill' />
+                    </Link>
+                    <div className='description'>
+                      <h3><Link {...link}>{home.location.address.street}</Link></h3>
+                      <p><Link {...link}>{home.location.neighborhood.title}</Link></p>
+                      <p className='details'>
+                        <span className='rooms'>{rooms}</span>
+                        <span className='price'>{formatPrice(price)}</span>
+                      </p>
                     </div>
-                  );
-                })
-              }
-            </Columns>
-          </div>
+                  </div>
+                );
+              })
+            }
+          </Columns>
         </ContentBlock>
         <ContentBlock className='item-separator with-gradient'>
           <h2>Find your home and continue the story</h2>
@@ -145,42 +143,38 @@ class Homepage extends React.Component {
           <iframe src='https://player.vimeo.com/video/74145280' width='100%' height='550' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>
         </ContentBlock>
         <ContentBlock className='with-gradient'>
-          <div className='width-wrapper'>
-            <Tabs>
-              <Tabs.Panel title='Homehapp for buyers'>
-                <Columns cols={2} className='table' align='center' valign='middle'>
-                  <Image src='images/icons/icon_mobile_large.svg' alt='' type='asset' />
-                  <div className='highlight'>
-                    <p>
-                      Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
-                  </div>
-                </Columns>
-              </Tabs.Panel>
-              <Tabs.Panel title='For sellers and agents'>
+          <Tabs>
+            <Tabs.Panel title='Homehapp for buyers'>
+              <Columns cols={2} className='table' align='center' valign='middle'>
+                <Image src='images/icons/icon_mobile_large.svg' alt='' type='asset' />
                 <div className='highlight'>
                   <p>
                     Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                   </p>
                 </div>
-              </Tabs.Panel>
-            </Tabs>
-          </div>
-        </ContentBlock>
-        <ContentBlock className='with-gradient'>
-          <div className='width-wrapper'>
-            <Columns cols={2} className='table find-agents' align='center' valign='middle'>
-              <div className='highlight centered'>
-                <p>Find agents. Professionals will help you in telling your view of your home.</p>
+              </Columns>
+            </Tabs.Panel>
+            <Tabs.Panel title='For sellers and agents'>
+              <div className='highlight'>
                 <p>
-                  <a href='#' className='button'>Find agents</a>
+                  Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </p>
               </div>
-              <div className='right'>
-                <Image src='images/pixel.gif' alt='' type='asset' className='placeholder' />
-              </div>
-            </Columns>
-          </div>
+            </Tabs.Panel>
+          </Tabs>
+        </ContentBlock>
+        <ContentBlock className='with-gradient'>
+          <Columns cols={2} className='table find-agents' align='center' valign='middle'>
+            <div className='highlight centered'>
+              <p>Find agents. Professionals will help you in telling your view of your home.</p>
+              <p>
+                <a href='#' className='button'>Find agents</a>
+              </p>
+            </div>
+            <div className='right'>
+              <Image src='images/pixel.gif' alt='' type='asset' className='placeholder' />
+            </div>
+          </Columns>
         </ContentBlock>
       </div>
     );
