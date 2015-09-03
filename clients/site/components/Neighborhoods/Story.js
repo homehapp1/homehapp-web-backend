@@ -15,14 +15,14 @@ class NeighborhoodsStory extends React.Component {
       { url: 'v10/contentMockup/DSCF9280.jpg', alt: '', aspectRatio: 1.5 },
       { url: 'v10/contentMockup/DSCF9283.jpg', alt: '', aspectRatio: 1.4998 },
       { url: 'v10/contentMockup/DSCF9287.jpg', alt: '', aspectRatio: 1.1859 },
-      { url: 'v10/contentMockup/DSCF9293.jpg', alt: '', aspectRatio: 1.5401 },
-      { url: 'v10/contentMockup/DSCF9301.jpg', alt: '', aspectRatio: 0.9691 },
-      { url: 'v10/contentMockup/DSCF9307.jpg', alt: '', aspectRatio: 1.3606 },
-      { url: 'v10/contentMockup/DSCF9310.jpg', alt: '', aspectRatio: 1.4556 },
-      { url: 'v10/contentMockup/DSCF9328.jpg', alt: '', aspectRatio: 1.6685 },
-      { url: 'v10/contentMockup/DSCF9330.jpg', alt: '', aspectRatio: 1.5797 },
-      { url: 'v10/contentMockup/DSCF9332.jpg', alt: '', aspectRatio: 1.8638 },
-      { url: 'v10/contentMockup/DSCF9339.jpg', alt: '', aspectRatio: 1.2735 },
+      // { url: 'v10/contentMockup/DSCF9293.jpg', alt: '', aspectRatio: 1.5401 },
+      // { url: 'v10/contentMockup/DSCF9301.jpg', alt: '', aspectRatio: 0.9691 },
+      // { url: 'v10/contentMockup/DSCF9307.jpg', alt: '', aspectRatio: 1.3606 },
+      // { url: 'v10/contentMockup/DSCF9310.jpg', alt: '', aspectRatio: 1.4556 },
+      // { url: 'v10/contentMockup/DSCF9328.jpg', alt: '', aspectRatio: 1.6685 },
+      // { url: 'v10/contentMockup/DSCF9330.jpg', alt: '', aspectRatio: 1.5797 },
+      // { url: 'v10/contentMockup/DSCF9332.jpg', alt: '', aspectRatio: 1.8638 },
+      // { url: 'v10/contentMockup/DSCF9339.jpg', alt: '', aspectRatio: 1.2735 },
       { url: 'v10/contentMockup/DSCF9347.jpg', alt: '', aspectRatio: 0.9795 }
     ];
 
@@ -36,7 +36,7 @@ class NeighborhoodsStory extends React.Component {
           </LargeText>
         </BigImage>
 
-        <ContentBlock>
+        <ContentBlock className='with-gradient padded'>
           <blockquote>
             <p>
               St John's Wood is a district of north-west London, in the City of Westminster, and on the north-west side of Regent's Park. It is about 2.5 miles (4 km) north-west of Charing Cross. Once part of the Great Middlesex Forest, it was later owned by the Knights of St John of Jerusalem.
@@ -49,8 +49,9 @@ class NeighborhoodsStory extends React.Component {
             </p>
           </blockquote>
         </ContentBlock>
-
-        <Gallery images={images} columns={5} fullscreen={true} />
+        <ContentBlock className='with-gradient'>
+          <Gallery images={images} columns={5} imageWidth={300} fullscreen={true} className='tight' />
+        </ContentBlock>
       </div>
     );
   }
