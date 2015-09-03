@@ -11,12 +11,16 @@ class BigImage extends React.Component {
     fixed: React.PropTypes.bool,
     gradient: React.PropTypes.string,
     proportion: React.PropTypes.number,
-    children: React.PropTypes.object
+    children: React.PropTypes.object,
+    align: React.PropTypes.string,
+    valign: React.PropTypes.string
   };
 
   static defaultProps = {
     fixed: false,
-    proportion: 1
+    proportion: 0,
+    align: 'center',
+    valign: 'middle'
   };
 
   componentDidMount() {
@@ -35,9 +39,19 @@ class BigImage extends React.Component {
     }
 
     let image = this.props.image;
+    let props = {
+      className: classNames(classes),
+      'data-gradient': this.props.gradient,
+      'data-align': this.props.align,
+      'data-valign': this.props.valign
+    };
+
+    if (this.props.proportion) {
+      props['data-proportion'] = this.props.proportion;
+    }
 
     return (
-      <div className={classNames(classes)} data-gradient={this.props.gradient} data-proportion={this.props.proportion}>
+      <div {...props}>
         <div className='image-content'>
           <Image {...image} className='show-for-large' width={1920} mode='scale' />
           <Image {...image} className='show-for-medium' width={1000} mode='scale' />
