@@ -34,6 +34,8 @@ class BigImage extends React.Component {
       'full-height'
     ];
 
+    let textProps = {};
+
     if (this.props.fixed) {
       classes.push('fixed');
     }
@@ -48,6 +50,7 @@ class BigImage extends React.Component {
 
     if (this.props.proportion) {
       props['data-proportion'] = this.props.proportion;
+      textProps['data-proportion'] = this.props.proportion;
     }
 
     return (
@@ -57,7 +60,7 @@ class BigImage extends React.Component {
           <Image {...image} className='show-for-medium' width={1000} mode='scale' />
           <Image {...image} className='show-for-small' height={600} mode='fill' />
         </div>
-        <div className='image-text full-height' data-proportion={this.props.proportion}>
+        <div className='image-text full-height' {...textProps}>
           {this.props.children}
         </div>
       </div>
