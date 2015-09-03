@@ -39,10 +39,12 @@ class ErrorPage extends React.Component {
       'data-valign': this.props.valign
     };
 
+    let proportion = (this.props.children) ? 0.8 : 1;
+
     return (
       <div className='widget'>
-        <BigImage image={this.props.image} proportion={0.9}>
-          <LargeText align='center' valign='middle'>
+        <BigImage image={this.props.image} proportion={proportion} fixed={true}>
+          <LargeText align='center' valign='middle' proportion={proportion}>
             <h1>{this.props.title}</h1>
             <p>{this.props.message}</p>
           </LargeText>
