@@ -6,43 +6,8 @@
   opacity: 1;
 
   & > .image-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    @include imageFill();
     z-index: -1;
-    overflow: hidden;
-
-    & > img, & > video {
-      position: absolute;
-      min-width: 100%;
-      min-height: 100%;
-      left: 50%;
-      top: 50%;
-      @include vendors(transform, translateX(-50%) translateY(-50%));
-    }
-
-    &[data-valign="top"] {
-      & > img, & > video {
-        top: 0;
-        @include vendors(transform, translateX(-50%));
-      }
-    }
-
-    &[data-valign="middle"] {
-      & > img, & > video {
-        top: 50%;
-        @include vendors(transform, translateX(-50%) translateY(-50%));
-      }
-    }
-
-    &[data-valign="bottom"] {
-      & > img, & > video {
-        top: auto;
-        bottom: 0;
-      }
-    }
 
     & > video + img {
       display: none;
