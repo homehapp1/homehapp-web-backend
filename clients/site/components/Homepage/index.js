@@ -139,12 +139,12 @@ class Homepage extends React.Component {
             </Columns>
           </div>
         </ContentBlock>
-        <ContentBlock className='item-separator'>
+        <ContentBlock className='item-separator with-gradient'>
           <h2>Find your home and continue the story</h2>
           <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
           <iframe src='https://player.vimeo.com/video/74145280' width='100%' height='550' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>
         </ContentBlock>
-        <ContentBlock>
+        <ContentBlock className='with-gradient'>
           <div className='width-wrapper'>
             <Tabs>
               <Tabs.Panel title='Homehapp for buyers'>
@@ -167,7 +167,7 @@ class Homepage extends React.Component {
             </Tabs>
           </div>
         </ContentBlock>
-        <ContentBlock className='gray'>
+        <ContentBlock className='with-gradient'>
           <div className='width-wrapper'>
             <Columns cols={2} className='table find-agents' align='center' valign='middle'>
               <div className='highlight centered'>

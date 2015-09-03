@@ -49,6 +49,16 @@
     }
   }
 
+  & > .image-author {
+    display: block;
+    position: absolute;
+    bottom: $contentPadding;
+    right: $contentPadding;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    color: white;
+    z-index: 1;
+  }
+
   &.fixed {
     &:before, &:after {
       display: block;
@@ -69,12 +79,13 @@
     }
 
     & > img, &.fixed > video, &.fixed > .image-content {
-      position: fixed;
+      @include notSmall() {
+        position: fixed;
+      }
       z-index: -10;
+      opacity: 1;
       @include vendors(transition-property, opacity);
       @include vendors(transition-duration, $transitionDuration);
-      opacity: 1;
-
       @include small() {
         @include vendors(transition-property, none);
       }
@@ -112,7 +123,7 @@
     & > .width-wrapper {
       width: auto;
       display: table-row;
-      
+
       & > * {
         display: table-cell;
         width: 100%;

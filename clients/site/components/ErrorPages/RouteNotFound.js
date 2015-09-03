@@ -7,20 +7,19 @@ class RouteNotFound extends React.Component {
   componentWillMount() {
     this.error = {
       title: 'Not found!',
-      message: 'Page not found',
-      image: {
-        url: 'images/content/not-found.jpg',
-        alt: 'Page not found',
-        type: 'asset'
-      }
+      // image: {
+      //   url: 'images/content/not-found.jpg',
+      //   alt: 'Page not found',
+      //   author: '',
+      //   type: 'asset'
+      // },
+      message: 'Page not found'
     };
   }
 
   render() {
-    let error = this.error;
-
     return (
-      <ErrorPage {...error} />
+      <ErrorPage {...this.error} />
     );
   }
 }

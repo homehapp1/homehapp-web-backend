@@ -2,6 +2,10 @@
   background-color: transparent;
   font-size: 200%;
 
+  @include small() {
+    font-size: 140%;
+  }
+
   &, a {
     color: white;
     text-decoration: none;

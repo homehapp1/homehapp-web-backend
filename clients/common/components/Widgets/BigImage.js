@@ -34,6 +34,8 @@ class BigImage extends React.Component {
       'full-height'
     ];
 
+    console.log('BigImage', this.props);
+
     let textProps = {};
 
     if (this.props.fixed) {
@@ -53,6 +55,11 @@ class BigImage extends React.Component {
       textProps['data-proportion'] = this.props.proportion;
     }
 
+    let author = null;
+    if (this.props.image.author) {
+      author = (<div className='image-author'>&copy; {this.props.image.author}</div>);
+    }
+
     return (
       <div {...props}>
         <div className='image-content'>
@@ -60,6 +67,7 @@ class BigImage extends React.Component {
           <Image {...image} className='show-for-medium' width={1000} mode='scale' />
           <Image {...image} className='show-for-small' height={600} mode='fill' />
         </div>
+        {author}
         <div className='image-text full-height' {...textProps}>
           {this.props.children}
         </div>

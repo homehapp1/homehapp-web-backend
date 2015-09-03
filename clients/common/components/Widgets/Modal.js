@@ -1,12 +1,14 @@
 'use strict';
 
 import React from 'react';
+import { setFullHeight } from '../../Helpers';
 import DOMManipulator from '../../DOMManipulator';
 
 class Modal extends React.Component {
   static propTypes = {
     children: React.PropTypes.object.isRequired,
-    onclose: React.PropTypes.function
+    onclose: React.PropTypes.function,
+    className: React.PropTypes.string
   }
 
   static defaultProps = {
@@ -30,6 +32,7 @@ class Modal extends React.Component {
 
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
     this.body.addClass('no-scroll');
+    setFullHeight();
   }
 
   componentWillUnmount() {
@@ -70,8 +73,13 @@ class Modal extends React.Component {
   }
 
   render() {
+    let classes = ['modal-wrapper'];
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
+
     return (
-      <div className='modal-wrapper' ref='modal'>
+      <div className={classes.join(' ')} ref='modal'>
         <div className='modal-close'><i className='fa fa-close' ref='close'></i></div>
         <div className='modal-container'>
           <div className='modal-content' ref='content'>

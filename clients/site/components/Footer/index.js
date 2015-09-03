@@ -9,9 +9,6 @@ class Footer extends React.Component {
     return (
       <div id='footer' className='clearfix' ref='footer'>
         <div className='width-wrapper'>
-          <h3 ref='footerIcon'>
-            <Image src='images/homehapp-symbol.svg' alt='H' type='asset' />
-          </h3>
           <Image src='images/homehapp-logotype-gray.svg' alt='Homehapp' type='asset' className='logotype' />
           <ul className='footer-links main'>
             <li><Link to='content' params={{slug: 'about'}}>About us</Link></li>
