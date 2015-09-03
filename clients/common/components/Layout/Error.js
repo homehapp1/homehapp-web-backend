@@ -8,6 +8,7 @@ import LargeText from '../Widgets/LargeText';
 class Error extends React.Component {
   static propTypes = {
     children: React.PropTypes.object,
+    title: React.PropTypes.string.isRequired,
     message: React.PropTypes.string.isRequired,
     image: React.PropTypes.object,
     className: React.PropTypes.string
@@ -41,7 +42,10 @@ class Error extends React.Component {
     return (
       <div className='widget'>
         <BigImage image={this.props.image} proportion={0.9}>
-          <LargeText align='center' valign='middle'><h1>{this.props.message}</h1></LargeText>
+          <LargeText align='center' valign='middle'>
+            <h1>{this.props.title}</h1>
+            <p>{this.props.message}</p>
+          </LargeText>
         </BigImage>
         {this.props.children}
       </div>
