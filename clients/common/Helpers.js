@@ -211,7 +211,7 @@ exports.itemViews = function() {
   let tmp = document.getElementsByClassName('item');
   let items = [];
 
-  if (tmp.length < 2) {
+  if (!tmp.length) {
     return null;
   }
 
