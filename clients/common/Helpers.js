@@ -116,7 +116,7 @@ exports.setFullHeight = function() {
       let prop = Number(item.getAttribute('data-proportion'));
 
       if (prop > 0) {
-        h *= prop;
+        h = Math.round(h * prop);
       }
     }
 
