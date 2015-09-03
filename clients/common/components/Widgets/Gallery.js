@@ -13,7 +13,8 @@ class Gallery extends React.Component {
     title: React.PropTypes.string,
     columns: React.PropTypes.number,
     imageWidth: React.PropTypes.number,
-    fullscreen: React.PropTypes.bool
+    fullscreen: React.PropTypes.bool,
+    className: React.PropTypes.string
   };
 
   static defaultProps = {
@@ -21,7 +22,8 @@ class Gallery extends React.Component {
     title: '',
     columns: 10,
     imageWidth: 500,
-    fullscreen: true
+    fullscreen: true,
+    className: null
   };
 
   constructor() {
@@ -434,9 +436,12 @@ class Gallery extends React.Component {
   }
 
   render() {
-    this.loadState = Gallery.INIT;
+    let classes = ['gallery', 'widget', 'clearfix'];
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
     return (
-      <div className='gallery widget clearfix' ref='gallery'>
+      <div className={classes.join(' ')} ref='gallery'>
         {
           this.props.images.map((image, index) => {
             image.variant = 'gallery';
