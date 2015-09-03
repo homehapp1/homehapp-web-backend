@@ -120,6 +120,16 @@ exports.setFullHeight = function() {
       }
     }
 
+    h = Math.max(650, h);
+    let dh = h / item.offsetHeight;
+
+    // Don't change anything, if the changed height differs less
+    // than 10% of the previous. Especially on iPad and iPhone
+    // the flickering caused by the lack of this looks very bad
+    if (Math.abs(dh - 1) < 0.1) {
+      return;
+    }
+
     if (strict) {
       item.style.height = `${h}px`;
     } else {
