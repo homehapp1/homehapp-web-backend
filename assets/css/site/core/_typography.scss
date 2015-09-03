@@ -54,11 +54,9 @@ h1, h2, h3, h4, h5, h6, li, p {
   line-height: 1.4em;
 }
 
-h1 {
-  font-size: 250%;
+h3 {
+  font-size: 150%;
   font-weight: $titleWeight;
-  font-family: "Roboto Slab";
-  font-weight: 400;
 }
 
 h2 {
@@ -66,13 +64,19 @@ h2 {
   font-weight: $titleWeight;
 }
 
-h3 {
-  font-size: 150%;
+h1, .block-title {
+  font-size: 250%;
   font-weight: $titleWeight;
+  font-family: "Roboto Slab";
+  font-weight: 400;
 }
 
 h1, h2, h3 {
   margin: 1em 0 0.5em;
+
+  a:hover, a:visited:hover {
+    text-decoration: none;
+  }
 }
 
 .teaser {
@@ -104,6 +108,12 @@ button, .button, .btn {
 
   &:hover, &:active {
     background-color: lighten($darkGray, 5%);
+  }
+}
+
+.buttons a {
+  &:hover, &:visited:hover {
+    text-decoration: none;
   }
 }
 
