@@ -16,7 +16,15 @@ class HomeRouteNotFound extends RouteNotFound {
     let error = this.error;
 
     return (
-      <ErrorPage {...error} />
+      <ErrorPage {...error}>
+        <ContentBlock>
+          <h2>Now what?</h2>
+          <p>You can always:</p>
+          <ul>
+            <li>Lorem ipsum</li>
+          </ul>
+        </ContentBlock>
+      </ErrorPage>
     );
   }
 }
