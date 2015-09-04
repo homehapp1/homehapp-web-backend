@@ -2,7 +2,6 @@
 
 import React from 'react';
 import BigImage from '../Widgets/BigImage';
-import ContentBlock from '../Widgets/ContentBlock';
 import LargeText from '../Widgets/LargeText';
 
 class ErrorPage extends React.Component {
@@ -11,7 +10,9 @@ class ErrorPage extends React.Component {
     title: React.PropTypes.string.isRequired,
     message: React.PropTypes.string.isRequired,
     image: React.PropTypes.object,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    align: React.PropTypes.string,
+    valign: React.PropTypes.string
   };
 
   static defaultProps = {
@@ -21,7 +22,9 @@ class ErrorPage extends React.Component {
       alt: 'Page not found',
       author: 'Ben Brooksbank',
       type: 'asset'
-    }
+    },
+    align: 'center',
+    valign: 'middle'
   };
 
   render() {
@@ -35,16 +38,11 @@ class ErrorPage extends React.Component {
       classes.push(this.props.className);
     }
 
-    let props = {
-      'data-align': this.props.align,
-      'data-valign': this.props.valign
-    };
-
     let proportion = (this.props.children) ? 0.8 : 1;
 
     return (
       <div className='widget'>
-        <BigImage image={this.props.image} proportion={proportion} fixed={true}>
+        <BigImage image={this.props.image} proportion={proportion} fixed={true} align={this.props.align} valign={this.props.valign}>
           <LargeText align='center' valign='middle' proportion={proportion}>
             <h1>{this.props.title}</h1>
             <p>{this.props.message}</p>
