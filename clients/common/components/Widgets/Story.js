@@ -16,75 +16,86 @@ class Story extends React.Component {
     blocks: React.PropTypes.array.isRequired
   };
 
+  getAgent(item, index) {
+    return (<Agent {...item.properties} key={index} />);
+  }
+
+  getBigImage(item, index) {
+    let primary = null;
+    let secondary = null;
+
+    // Is this the primary title?
+    if (item.properties.isPageTitle || !index) {
+      primary = (<h1>{item.properties.title}</h1>);
+    } else {
+      primary = (<h2>{item.properties.title}</h2>);
+    }
+
+    if (item.properties.secondary) {
+      secondary = (
+        <div className='secondary'>{item.properties.secondary}</div>
+      );
+    }
+
+    return (
+      <BigImage {...item.properties} key={index}>
+        <LargeText align={item.properties.align} valign={item.properties.valign}>
+          {primary}
+        </LargeText>
+        {secondary}
+      </BigImage>
+    );
+  }
+
+  getGallery(item, index) {
+    return (<Gallery {...item.properties} key={index} />);
+  }
+
+  getMap(item, index) {
+    let content = (
+      <div className='content-wrapper'>
+        <h2>{item.properties.label}</h2>
+        {item.properties.content}
+      </div>
+    );
+    return (
+      <Map {...item.properties} key={index}>
+        {content}
+      </Map>
+    );
+  }
+
+  getNeighborhood(item, index) {
+    return (
+      <Neighborhood {...item.properties} key={index} />
+    );
+  }
+
+  getContentBlock(item, index) {
+    let content = (
+      <div className='content-wrapper'>{item.properties.content}</div>
+    );
+
+    return (
+      <ContentBlock {...item.properties} key={index}>
+        {content}
+      </ContentBlock>
+    );
+  }
+
   render() {
     let blocks = this.props.blocks;
     return (
       <div className='story'>
         {
           blocks.map((item, index) => {
-            let block = null;
-            let content = null;
+            let method = `get${item.template}`;
 
-            switch (item.template) {
-              case 'Agent':
-                block = (
-                  <Agent {...item.properties} key={index} />
-                );
-                break;
-
-              case 'BigImage':
-                block = (
-                  <BigImage {...item.properties} key={index}>
-                    <LargeText align={item.properties.align} valign={item.properties.valign}>
-                      <h1>{item.properties.title}</h1>
-                    </LargeText>
-                  </BigImage>
-                );
-                break;
-
-              case 'Gallery':
-                block = (
-                  <Gallery {...item.properties} key={index} />
-                );
-                break;
-
-              case 'Map':
-                content = (
-                  <div className='content-wrapper'>
-                    <h2>{item.properties.label}</h2>
-                    {item.properties.content}
-                  </div>
-                );
-                block = (
-                  <Map {...item.properties} key={index}>
-                    {content}
-                  </Map>
-                );
-                break;
-
-              case 'Neighborhood':
-                block = (
-                  <Neighborhood {...item.properties} key={index} />
-                );
-                break;
-
-              case 'ContentBlock':
-                content = (
-                  <div className='content-wrapper'>{item.properties.content}</div>
-                );
-
-                block = (
-                  <ContentBlock {...item.properties} key={index}>
-                    {content}
-                  </ContentBlock>
-                );
-                break;
-
-              default:
-                console.log('Undefined story block type', item);
+            if (typeof this[method] === 'function') {
+              return this[method](item, index);
             }
 
-            return block;
+            console.warn(`No method ${method} defined, cannot get story block with type ${item.template}`);
           })
         }
       </div>
