@@ -201,18 +201,6 @@ class Image extends React.Component {
     }
   }
 
-  render() {
-    if (!this.state.config) {
-      return null;
-    }
-
-    let params = this.resolveParams();
-    this.resolveAttributes();
-    this.attributes.src = params.src;
-
-    return this.renderImage();
-  }
-
   renderImage() {
     // Linked, i.e. refer usually to a larger version of the same image
     if (this.props.linked) {
@@ -227,6 +215,18 @@ class Image extends React.Component {
     return (
       <img {...this.attributes} />
     );
+  }
+
+  render() {
+    if (!this.state.config) {
+      return null;
+    }
+
+    let params = this.resolveParams();
+    this.resolveAttributes();
+    this.attributes.src = params.src;
+
+    return this.renderImage();
   }
 }
 
