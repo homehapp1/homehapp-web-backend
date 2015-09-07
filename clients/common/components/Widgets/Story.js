@@ -7,7 +7,6 @@ import Agent from './Agent';
 import BigImage from './BigImage';
 import ContentBlock from './ContentBlock';
 import Gallery from './Gallery';
-import Icon from './Icon';
 import LargeText from './LargeText';
 import Map from './Map';
 import Neighborhood from './Neighborhood';
