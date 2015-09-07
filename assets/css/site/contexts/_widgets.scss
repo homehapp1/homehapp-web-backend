@@ -72,9 +72,21 @@
     }
   }
 
-  &.pattern{
+  &.pattern {
     background-image: url('../images/pattern.gif');
     background-repeat: repeat;
+    background-position: left bottom;
+
+    & + .pattern {
+      background-position: left top;
+    }
+  }
+
+  &.pattern-bottom {
+    background-position: left bottom;
+  }
+
+  &.pattern-top {
     background-position: left top;
   }
 
@@ -98,6 +110,7 @@
   @import "contexts/widgets/large-text";
   @import "contexts/widgets/loading";
   @import "contexts/widgets/map";
+  @import "contexts/widgets/separator";
 }
 
 // External component overrides

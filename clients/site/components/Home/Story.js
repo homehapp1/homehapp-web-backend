@@ -38,6 +38,8 @@ class HomeStory extends React.Component {
       }
     });
 
+    console.log('story blocks', blocks);
+
     return (
       <Story blocks={blocks} />
     );
