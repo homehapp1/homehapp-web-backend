@@ -40,6 +40,7 @@ let routes = (
     <Route name='neighborhoods' path='/neighborhoods'>
       <Route name='neighborhoodsList' path=':city' handler={NeighborhoodsList} />
       <Route name='neighborhoodsView' path=':city/:neighborhood' handler={NeighborhoodsStory} />
+      <Route name='neighborhoodsViewHomes' path=':city/:neighborhood/homes' handler={PropertyFilter} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='content' path='/:slug' handler={Content}>
