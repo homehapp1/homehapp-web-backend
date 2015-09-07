@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 import Story from '../../../common/components/Widgets/Story';
 import { formatPrice, primaryHomeTitle } from '../../../common/Helpers';
 
@@ -16,7 +15,7 @@ class HomeDetails extends React.Component {
   }
 
   getSecondaryTitle() {
-    let content = this.props.home.attributes.map(function(c, i) {
+    let content = this.props.home.attributes.map(function(c) {
       // Add the items that should be included in the secondary title
       let rval = null;
       switch (c.name) {
