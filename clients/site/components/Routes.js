@@ -20,6 +20,7 @@ import PropertyFilter from './Property/Filter';
 import NeighborhoodsCities from './Neighborhoods/Cities';
 import NeighborhoodsList from './Neighborhoods/List';
 import NeighborhoodsStory from './Neighborhoods/Story';
+import NeighborhoodsHomeFilter from './Neighborhoods/HomeFilter';
 
 // MIscellaneous other handlers
 import Content from './Content';
@@ -40,7 +41,7 @@ let routes = (
     <Route name='neighborhoods' path='/neighborhoods'>
       <Route name='neighborhoodsList' path=':city' handler={NeighborhoodsList} />
       <Route name='neighborhoodsView' path=':city/:neighborhood' handler={NeighborhoodsStory} />
-      <Route name='neighborhoodsViewHomes' path=':city/:neighborhood/homes' handler={PropertyFilter} />
+      <Route name='neighborhoodsViewHomes' path=':city/:neighborhood/homes' handler={NeighborhoodsHomeFilter} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='content' path='/:slug' handler={Content}>
