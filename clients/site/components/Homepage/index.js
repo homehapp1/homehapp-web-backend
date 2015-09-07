@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import Tabs from 'react-simpletabs';
 
 import HomeListStore from '../../stores/HomeListStore';
+import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
 import BigImage from '../../../common/components/Widgets/BigImage';
 import Columns from '../../../common/components/Widgets/Columns';
@@ -12,6 +13,7 @@ import Hoverable from '../../../common/components/Widgets/Hoverable';
 import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
+import Loading from '../../../common/components/Widgets/Loading';
 
 import { formatPrice } from '../../../common/Helpers';
 
@@ -46,20 +48,20 @@ class Homepage extends React.Component {
 
   handlePendingState() {
     return (
-      <div className='homes-loader'>
-        <div className='width-wrapper'>
-          <h3>Loading homes...</h3>
-        </div>
-      </div>
+      <Loading>
+        <p>Loading content...</p>
+      </Loading>
     );
   }
 
   handleErrorState() {
+    let error = {
+      title: 'Error loading homes!',
+      message: this.state.error.message
+    };
+
     return (
-      <div className='homes-error'>
-        <h3>Error loading homes!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
+      <ErrorPage {...error} />
     );
   }
 
