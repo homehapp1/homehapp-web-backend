@@ -72,9 +72,17 @@ class Story extends React.Component {
   }
 
   getContentBlock(item, index) {
-    let content = (
-      <div className='content-wrapper'>{item.properties.content}</div>
-    );
+    let content = null;
+
+    if (item.properties.quote) {
+      content = (
+        <blockquote className='content-wrapper'>{item.properties.content}</blockquote>
+      );
+    } else {
+      content = (
+        <div className='content-wrapper'>{item.properties.content}</div>
+      );
+    }
 
     return (
       <ContentBlock {...item.properties} key={index}>
