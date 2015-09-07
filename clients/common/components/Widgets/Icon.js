@@ -23,7 +23,7 @@ class Icon extends React.Component {
       type: 'asset'
     };
 
-    let classes = ['widget', 'icon', this.props.color, this.props.size];
+    let classes = ['widget', 'icon', this.props.color, this.props.size, this.props.type];
 
     if (this.props.className) {
       classes.push(this.props.className);
