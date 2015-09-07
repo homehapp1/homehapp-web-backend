@@ -7,6 +7,7 @@ import Agent from './Agent';
 import BigImage from './BigImage';
 import ContentBlock from './ContentBlock';
 import Gallery from './Gallery';
+import Icon from './Icon';
 import LargeText from './LargeText';
 import Map from './Map';
 import Neighborhood from './Neighborhood';
@@ -92,11 +93,10 @@ class Story extends React.Component {
   }
 
   render() {
-    let blocks = this.props.blocks;
     return (
       <div className='story'>
         {
-          blocks.map((item, index) => {
+          this.props.blocks.map((item, index) => {
             let method = `get${item.template}`;
 
             if (typeof this[method] === 'function') {
