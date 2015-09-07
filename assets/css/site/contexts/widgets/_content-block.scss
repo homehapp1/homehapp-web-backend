@@ -22,6 +22,10 @@
 
   p {
     margin-bottom: 1em;
+
+    &.call-to-action {
+      margin: 3 * $contentPadding 0 0;
+    }
   }
 }
 

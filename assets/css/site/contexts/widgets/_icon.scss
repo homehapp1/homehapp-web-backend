@@ -7,11 +7,20 @@
     height: 2em;
   }
 
+  &.large {
+    width: 4em;
+    height: 4em;
+  }
+
   & > img {
     display: block;
     vertical-align: middle;
     width: 100%;
     padding: 24%;
+  }
+
+  &.marker > img {
+    margin-top: 1%;
   }
 
   &, &.black, &.grey {

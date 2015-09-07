@@ -39,6 +39,10 @@
         }
       }
     }
+
+    .icon + h1, .icon + h2 {
+      margin-top: 0;
+    }
   }
 
   &.fixed {
