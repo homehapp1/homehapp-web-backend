@@ -3,7 +3,9 @@
 import React from 'react';
 import HomeStore from '../../stores/HomeStore';
 import HomeStory from './Story';
-import { setFullHeight } from '../../../common/Helpers';
+
+import Loading from '../../../common/components/Widgets/Loading';
+import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
 class HomeContainer extends React.Component {
   static propTypes = {
@@ -18,7 +20,6 @@ class HomeContainer extends React.Component {
   componentDidMount() {
     HomeStore.listen(this.homeStoreListener);
     HomeStore.fetchHomeBySlug(this.props.params.slug);
-    setFullHeight();
   }
 
   componentWillUnmount() {
@@ -36,18 +37,20 @@ class HomeContainer extends React.Component {
 
   handlePendingState() {
     return (
-      <div className='story-loader'>
-        <h3>Loading story data...</h3>
-      </div>
+      <Loading>
+        <p>Loading story data</p>
+      </Loading>
     );
   }
 
   handleErrorState() {
+    let error = {
+      title: 'Error loading story!',
+      message: this.state.error.message
+    };
+
     return (
-      <div className='story-error'>
-        <h3>Error loading story!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
+      <ErrorPage {...error} />
     );
   }
 
