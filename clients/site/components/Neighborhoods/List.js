@@ -10,6 +10,10 @@ import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
 
 class NeighborhoodsList extends React.Component {
+  static propTypes = {
+    params: React.PropTypes.object.isRequired
+  };
+
   render() {
     let image = {
       src: 'images/content/london-view.jpg',
