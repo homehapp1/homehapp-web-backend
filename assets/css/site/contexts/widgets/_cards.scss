@@ -1,0 +1,105 @@
+&.cards {
+  .card-list {
+    position: relative;
+    width: 100%;
+    //max-width: $cardColumns * $cardWidth;
+    margin-left: auto;
+    margin-right: auto;
+
+    .card {
+      width: $cardWidth;
+      display: block;
+      text-align: left;
+      padding: 0 $contentPadding $contentPadding * 2;
+      position: absolute;
+      left: 50%;
+      top: 0;
+
+      &.storified {
+        &:before {
+          $w: 60px;
+          position: absolute;
+          content: 'Story';
+          display: block;
+          top: $contentPadding;
+          right: $contentPadding;
+          background-image: url('../images/hexagon-white.svg');
+          background-size: contain;
+          background-position: center center;
+          width: $w;
+          height: (99 / 115) * $w;
+          line-height: (99 / 115) * $w;
+          text-align: center;
+          z-index: 1;
+          font-family: "Roboto Slab", monospace, serif;
+          font-weight: 500;
+          font-size: 90%;
+        }
+      }
+
+      @include small() {
+        position: static;
+      }
+
+      .card-content {
+        background-color: white;
+        box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.8);
+
+        & > .thumbnail {
+          display: block;
+          position: relative;
+          z-index: 1;
+
+          & > .positioning-enabled {
+            position: absolute;
+            z-index: -1;
+            overflow: hidden;
+
+            & > img {
+              position: absolute;
+              @include vendors(transition-property, transform);
+              @include vendors(transition-timing-function, ease-out);
+              @include vendors(transition-duration, $transitionDurationFast);
+            }
+          }
+
+          &:hover > .positioning-enabled > img {
+            @include vendors(transform, scale(1.3));
+            @include vendors(transition-timing-function, linear);
+            @include vendors(transition-duration, 20000ms);
+          }
+
+          & > .details {
+            position: absolute;
+            color: white;
+            bottom: $contentPadding;
+            left: $contentPadding;
+            right: $contentPadding;
+            font-style: italic;
+
+            .price {
+              display: block;
+            }
+          }
+        }
+
+        .description {
+          padding: $contentPadding;
+          margin: 0;
+        }
+      }
+    }
+
+    &.animate .card {
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, $transitionDuration);
+    }
+
+    &.single .card {
+      position: static;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+}

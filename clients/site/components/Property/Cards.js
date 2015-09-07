@@ -2,17 +2,18 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 import DOMManipulator from '../../../common/DOMManipulator';
-import { formatPrice } from '../../../common/Helpers';
-import classNames from 'classnames';
-import Image from '../../../common/components/Widgets/Image';
+import Card from '../../../common/components/Widgets/Card';
 
 class PropertyCards extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired,
     max: React.PropTypes.number
   }
+
+  static defaultProps = {
+    max: Infinity
+  };
 
   constructor() {
     super();
@@ -35,10 +36,24 @@ class PropertyCards extends React.Component {
     window.removeEventListener('resize', this.resize);
   }
 
+  resetMargins(cards) {
+    for (let i = 0; i < cards.length; i++) {
+      cards[i].css({
+        marginLeft: null,
+        marginTop: null
+      });
+    }
+  }
+
+  getMinHeight(arr) {
+    let min = Math.min.apply(Math, arr);
+    return arr.indexOf(min);
+  }
+
   // Generic stuff that should happen when the window is resized
   resize(forced = false) {
     if (typeof this.refs.cards === 'undefined') {
-      return;
+      return null;
     }
 
     let container = new DOMManipulator(this.refs.cards);
@@ -46,7 +61,7 @@ class PropertyCards extends React.Component {
 
     // No cards available
     if (cards.length < 1) {
-      return;
+      return null;
     }
 
     let width = cards[0].width();
@@ -54,19 +69,13 @@ class PropertyCards extends React.Component {
     let heights = [];
 
     if (cols === this.cols && !forced) {
-      return;
+      return null;
     }
 
     if (cols === 1) {
-      for (let i = 0; i < cards.length; i++) {
-        cards[i].css({
-          marginLeft: null,
-          marginTop: null
-        });
-      }
-
+      this.resetMargins(cards);
       container.addClass('single').removeClass('animate');
-      return;
+      return null;
     }
 
     container.removeClass('single');
@@ -76,14 +85,9 @@ class PropertyCards extends React.Component {
       heights.push(0);
     }
 
-    var getMinHeight = function(arr) {
-      let min = Math.min.apply(Math, arr);
-      return arr.indexOf(min);
-    };
-
     // Set the positions
     for (let i = 0; i < cards.length; i++) {
-      let c = getMinHeight(heights);
+      let c = this.getMinHeight(heights);
       let offset = (c / cols - 0.5) * (cols * width);
 
       cards[i].css({
@@ -108,7 +112,6 @@ class PropertyCards extends React.Component {
         .addClass('positioning-enabled')
         .width(images[0].attr('width'))
         .height(images[0].attr('height'));
-
     }
 
     let max = Math.max.apply(Math, heights);
@@ -120,44 +123,12 @@ class PropertyCards extends React.Component {
       <div ref='cards' className='card-list'>
       {
         this.props.items.map((item, index) => {
-          if (this.props.max && this.props.max <= index) {
+          if (this.props.max <= index) {
             return null;
           }
 
-          let classes = ['card'];
-
-          if (item.story.enabled) {
-            classes.push('storified');
-          }
-
           return (
-            <div className={classNames(classes)} key={index}>
-              <div className='card-content'>
-                <Link to='home' params={{slug: item.slug}} className='thumbnail'>
-                  {
-                    item.images.map((img, ind) => {
-                      if (ind) {
-                        return null;
-                      }
-
-                      return (
-                        <span className='image-wrapper' key={ind}>
-                          <Image src={img.url} alt={img.alt} aspectRatio={img.aspectRatio} variant='card' />
-                        </span>
-                      );
-                    })
-                  }
-                  <span className='details'>
-                    <span className='price'>{formatPrice(item.costs.sellingPrice)}</span>
-                    <span className='street'>{item.location.address.street}, </span>
-                    <span className='city'>{item.location.address.city}</span>
-                  </span>
-                </Link>
-                <p className='description'>
-                  <Link to='home' params={{slug: item.slug}}>{item.description}</Link>
-                </p>
-              </div>
-            </div>
+            <Card item={item} key={index} />
           );
         })
       }
