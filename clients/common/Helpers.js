@@ -242,3 +242,77 @@ exports.formatPrice = function(price) {
 
   return `£${String(Math.round(price)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
 };
+
+exports.literals = function(q, type = 'base') {
+  let rval = (type === 'ordinal') ? `${q}th` : String(q);
+
+  switch (q % 10) {
+    case 1:
+      if (q < 10) {
+        rval = (type === 'ordinal') ? 'first' : 'one';
+      } else if (q > 20 && type === 'ordinal') {
+        rval = `${q}st`;
+      }
+      break;
+
+    case 2:
+      if (q < 10) {
+        rval = (type === 'ordinal') ? 'second' : 'two';
+      } else if (q > 20 && type === 'ordinal') {
+        rval = `${q}nd`;
+      }
+      break;
+
+    case 3:
+      if (q < 10) {
+        rval = (type === 'ordinal') ? 'third' : 'three';
+      } else if (q > 20 && type === 'ordinal') {
+        rval = `${q}rd`;
+      }
+      break;
+  }
+
+  return rval;
+};
+
+exports.capitalize = function(str) {
+  return str && str[0].toUpperCase() + str.slice(1);
+};
+
+// The contents of this function are open for discussion. Currently
+// this method extrapolates some values, trying to make sane results
+exports.primaryHomeTitle = function(home) {
+  if (home.title) {
+    return home.title;
+  }
+
+  let parts = [];
+  for (let i = 0; i < home.attributes.length; i++) {
+    let c = home.attributes[i];
+    switch (c.name) {
+      case 'rooms':
+        parts.push(`${exports.literals(c.value)} room apartment`);
+        break;
+
+      // case 'floor':
+      //   parts.push(`${exports.literals(c.value, 'ordinal')} floor`);
+      //   break;
+    }
+  }
+
+  let location = [];
+
+  if (home.location.address.street) {
+    location.push(` on ${home.location.address.street}`);
+  }
+
+  if (home.location.neighborhood) {
+    location.push(` in ${home.location.neighborhood.title}`);
+  }
+
+  if (home.location.address.city) {
+    location.push(`, ${home.location.address.city}`);
+  }
+
+  return exports.capitalize(`${parts.join(', ')}${location.join('')}`);
+};
