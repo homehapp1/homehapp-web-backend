@@ -57,7 +57,8 @@ exports.loadSchemas = function (mongoose, next) {
     },
     // Details
     title: {
-      type: String
+      type: String,
+      default: ''
     },
     description: {
       type: String,
