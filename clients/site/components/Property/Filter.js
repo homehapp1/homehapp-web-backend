@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 // List modes
 import PropertyList from './List';
-import PropertyCards from './Cards';
+import Cards from '../../../common/components/Widgets/Cards';
 import PropertyPreview from './Preview';
 
 import BigImage from '../../../common/components/Widgets/BigImage';
@@ -75,7 +75,7 @@ class PropertyFilter extends React.Component {
                 case 'cards':
                 default:
                   return (
-                    <PropertyCards items={items} />
+                    <Cards items={items} />
                   );
               }
             })()

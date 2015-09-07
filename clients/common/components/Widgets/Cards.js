@@ -3,25 +3,27 @@
 
 import React from 'react';
 import DOMManipulator from '../../../common/DOMManipulator';
-import Card from '../../../common/components/Widgets/Card';
+import Card from './Card';
 
 class PropertyCards extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired,
+    cols: React.PropTypes.number,
     max: React.PropTypes.number
   }
 
   static defaultProps = {
+    cols: 4,
     max: Infinity
   };
 
   constructor() {
     super();
-    this.columns = 0;
+    this.resize = this.resize.bind(this);
+    this.cols = 0;
   }
 
   componentDidMount() {
-    this.resize = this.resize.bind(this);
     window.addEventListener('resize', this.resize);
 
     // Trigger the events on load
@@ -65,12 +67,15 @@ class PropertyCards extends React.Component {
     }
 
     let width = cards[0].width();
-    let cols = Math.min(6, Math.floor(container.width() / width), cards.length);
+    let cols = Math.min(this.props.cols, Math.floor(container.width() / width), cards.length);
     let heights = [];
 
     if (cols === this.cols && !forced) {
       return null;
     }
+
+    // Store the changed column count
+    this.cols = cols;
 
     if (cols === 1) {
       this.resetMargins(cards);
@@ -88,30 +93,14 @@ class PropertyCards extends React.Component {
     // Set the positions
     for (let i = 0; i < cards.length; i++) {
       let c = this.getMinHeight(heights);
-      let offset = (c / cols - 0.5) * (cols * width);
+      let offset = Math.round((c / cols - 0.5) * (cols * width));
 
       cards[i].css({
         marginLeft: `${offset}px`,
         marginTop: `${heights[c]}px`
       });
+
       heights[c] += cards[i].height();
-
-      let images = cards[i].getByTagName('img');
-
-      if (!images.length) {
-        continue;
-      }
-
-      // Set the thumbnail wrapper size to be the same as the one of the card
-      images[0].parent()
-        .addClass('positioning-enabled')
-        .width(images[0].attr('width'))
-        .height(images[0].attr('height'));
-
-      images[0].parent().parent()
-        .addClass('positioning-enabled')
-        .width(images[0].attr('width'))
-        .height(images[0].attr('height'));
     }
 
     let max = Math.max.apply(Math, heights);
@@ -120,7 +109,7 @@ class PropertyCards extends React.Component {
 
   render() {
     return (
-      <div ref='cards' className='card-list'>
+      <div ref='cards' className='widget cards'>
       {
         this.props.items.map((item, index) => {
           if (this.props.max <= index) {

@@ -152,7 +152,6 @@ class DOMManipulator {
       }
       node = node.parentNode;
       skipLevels--;
-      console.log('parent', node, skipLevels);
     } while (skipLevels >= 0);
 
     return new DOMManipulator(node);

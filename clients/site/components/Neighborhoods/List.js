@@ -41,8 +41,6 @@ class NeighborhoodsList extends React.Component {
       }
     ];
 
-    console.log(this);
-
     return (
       <div className='neighborhood-list-container'>
         <BigImage image={image}>

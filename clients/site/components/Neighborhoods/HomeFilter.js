@@ -4,11 +4,11 @@
 import React from 'react';
 
 // Internal components
-import Cards from '../Property/Cards';
 import HomeListStore from '../../stores/HomeListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
 // Story widgets
+import Cards from '../../../common/components/Widgets/Cards';
 import Gallery from '../../../common/components/Widgets/Gallery';
 import BigImage from '../../../common/components/Widgets/BigImage';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';

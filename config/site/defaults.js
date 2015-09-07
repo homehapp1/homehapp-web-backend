@@ -16,7 +16,7 @@ module.exports = (projectRoot) => {
           // Pinterest styled card
           card: {
             mode: 'fill',
-            width: 300
+            width: 280
           },
 
           // Property list
