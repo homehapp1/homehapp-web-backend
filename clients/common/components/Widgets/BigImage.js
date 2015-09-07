@@ -34,8 +34,6 @@ class BigImage extends React.Component {
       'full-height'
     ];
 
-    console.log('BigImage', this.props);
-
     let textProps = {};
 
     if (this.props.fixed) {
