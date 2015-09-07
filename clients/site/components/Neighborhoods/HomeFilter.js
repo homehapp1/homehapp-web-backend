@@ -6,6 +6,7 @@ import React from 'react';
 // Internal components
 import Cards from '../Property/Cards';
 import HomeListStore from '../../stores/HomeListStore';
+import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
 // Story widgets
 import Gallery from '../../../common/components/Widgets/Gallery';
@@ -35,6 +36,11 @@ class NeighborhoodHomeFilter extends React.Component {
       description: 'St John\'s Wood is a district of north-west London, in the City of Westminster, and on the north-west side of Regent\'s Park. It is about 2.5 miles (4 km) north-west of Charing Cross. Once part of the Great Middlesex Forest, it was later owned by the Knights of St John of Jerusalem.\n\nIt is a very affluent neighbourhood, with the area postcode (NW8) ranked by Forbes magazine as the 5th most expensive postcode in London based on the average home price in 2007. According to a 2014 property agent survey, St. John\'s Wood residents pay the highest average rent in all of London.\n\nIn 2013, the price of housing in St John\'s Wood reached exceptional levels. Avenue Road had more than 10 large mansions/villas for sale. The most expensive had an asking price of £65 million, with the cheapest at £15 million. The remainder were around £25 mill.'
     }
   };
+
+  state = {
+    error: null,
+    homes: HomeListStore.getState().homes
+  }
 
   constructor() {
     super();
@@ -77,7 +83,8 @@ class NeighborhoodHomeFilter extends React.Component {
     if (this.state.error) {
       return this.handleErrorState();
     }
-    if (HomeStore.isLoading() || !this.state.home) {
+
+    if (HomeListStore.isLoading()) {
       return this.handlePendingState();
     }
 
@@ -99,7 +106,7 @@ class NeighborhoodHomeFilter extends React.Component {
           </LargeText>
         </BigImage>
         <ContentBlock className='padded'>
-          Loaded
+          <Cards items={this.state.homes} />
         </ContentBlock>
       </div>
     );
