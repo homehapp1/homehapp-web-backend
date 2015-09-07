@@ -28,6 +28,7 @@ class Columns extends React.Component {
     let rows = [];
     let row = [];
 
+    // Create individual cells of each child found in the column wrapper
     React.Children.map(this.props.children, function(child, index) {
       if (index >= last) {
         return null;
@@ -46,12 +47,14 @@ class Columns extends React.Component {
         classes.push('first');
       }
 
+      // Store the child element, i.e. cell in the current row for later use
       row.push((
         <div className={classes.join(' ')} key={index}>
           {child}
         </div>
       ));
 
+      // When the row is full, store it for later use and initialize a new one
       if (index % cols === cols - 1 || index === last - 1) {
         rows.push(row);
         row = [];
@@ -63,11 +66,12 @@ class Columns extends React.Component {
     return (
       <div className='columns-container'>
         {
+          // Wrap cells into rows
           rows.map((r, i) => {
             return (
               <div className='row' key={i}>
                 {
-                  r.map((item, index) => {
+                  r.map((item) => {
                     return item;
                   })
                 }
