@@ -8,7 +8,6 @@ import PropertyList from './List';
 import PropertyCards from './Cards';
 import PropertyPreview from './Preview';
 
-import { createProperty } from '../../../common/Helpers';
 import BigImage from '../../../common/components/Widgets/BigImage';
 
 class PropertyFilter extends React.Component {
