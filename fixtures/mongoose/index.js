@@ -98,6 +98,29 @@ let createHome = function(index)
     ]
   };
 
+  let getLoremIpsum = function(min = 30, max = null, paragraphs = 1) {
+    let lipsum = String('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem. Quisque ligula eros ullamcorper quis, lacinia quis facilisis sed sapien. Mauris varius diam vitae arcu. Sed arcu lectus auctor vitae, consectetuer et venenatis eget velit. Sed augue orci, lacinia eu tincidunt et eleifend nec lacus. Donec ultricies nisl ut felis, suspendisse potenti. Lorem ipsum ligula ut hendrerit mollis, ipsum erat vehicula risus, eu suscipit sem libero nec erat. Aliquam erat volutpat. Sed congue augue vitae neque. Nulla consectetuer porttitor pede. Fusce purus morbi tortor magna condimentum vel, placerat id blandit sit amet tortor.').split(' ');
+
+    if (!max) {
+      max = lipsum.length;
+    }
+
+    let p = [];
+    for (let i = 0; i < paragraphs; i++) {
+      let content = getRandom(lipsum, randomSeed(min, max))
+      .join(' ').toLowerCase()
+      .replace(/\.?$/, '.')
+      .replace(
+        /(^|\. )([a-z])/g,
+        function(match) {
+          return match.toUpperCase()
+        }
+      );
+      p.push(content);
+    }
+    return p.join('\n\n');
+  };
+
   let createStoryBlock = function(template = null, properties = null, disallow = null) {
     let templates = ['BigImage', 'ContentBlock', 'Map', 'Gallery'];
 
@@ -111,12 +134,12 @@ let createHome = function(index)
       template: template,
       properties: {}
     };
-    let lipsum = String('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem. Quisque ligula eros ullamcorper quis, lacinia quis facilisis sed sapien. Mauris varius diam vitae arcu. Sed arcu lectus auctor vitae, consectetuer et venenatis eget velit. Sed augue orci, lacinia eu tincidunt et eleifend nec lacus. Donec ultricies nisl ut felis, suspendisse potenti. Lorem ipsum ligula ut hendrerit mollis, ipsum erat vehicula risus, eu suscipit sem libero nec erat. Aliquam erat volutpat. Sed congue augue vitae neque. Nulla consectetuer porttitor pede. Fusce purus morbi tortor magna condimentum vel, placerat id blandit sit amet tortor.').split(' ');
 
     switch (template) {
       case 'BigImage':
         storyBlock.properties = {
           title: 'Nice home for lorem ipsum',
+          description: getLoremIpsum(20, null, randomSeed(1, 4)),
           image: getRandom(images),
           fixed: (getRandom(0, 4)) ? false : true,
           align: getRandom(['left', 'center', 'right']),
@@ -135,15 +158,7 @@ let createHome = function(index)
       case 'ContentBlock':
         storyBlock.properties = {
           title: getRandom(['Story block', 'My story block', 'Great home']),
-          content: getRandom(lipsum, randomSeed(30, lipsum.length))
-          .join(' ').toLowerCase()
-          .replace(/\.?$/, '.')
-          .replace(
-            /(^|\. )([a-z])/g,
-            function(match) {
-              return match.toUpperCase()
-            }
-          )
+          content: getLoremIpsum()
         };
         break;
 
@@ -212,9 +227,26 @@ let createHome = function(index)
     }
   ];
 
+  let getTitle = function() {
+    let titles = [
+      '',
+      '',
+      '',
+      '2 rooms, kitchen, balcony and dressing room. 1 toilet + shower',
+      'A very beautiful apartment',
+      'Lorem ipsum',
+      'A renovator\'s dream!',
+      'All the services at hand',
+      'Haunted house with a genuine, wailing Victorian era ghost'
+    ];
+
+    return getRandom(titles);
+  };
+
   let property = {
     slug: slug,
-    description: '2 rooms, kitchen, balcony and dressing room. 1 toilet + shower',
+    title: getTitle(),
+    description: getLoremIpsum(30, null, randomSeed(1, 4)),
     location: {
       address: {
         street: getRandom(streets),
