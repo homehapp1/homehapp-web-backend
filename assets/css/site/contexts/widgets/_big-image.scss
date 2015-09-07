@@ -24,6 +24,23 @@
     z-index: 1;
   }
 
+  & > .image-text {
+    & > .secondary {
+      @include notSmall() {
+        position: absolute;
+        bottom: $contentPadding;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 150%;
+
+        & > span + span:before {
+          content: ' // ';
+        }
+      }
+    }
+  }
+
   &.fixed {
     &:before, &:after {
       display: block;
@@ -44,13 +61,15 @@
     }
 
     & > img, &.fixed > video, &.fixed > .image-content {
-      @include notSmall() {
-        position: fixed;
-      }
       z-index: -10;
       opacity: 1;
       @include vendors(transition-property, opacity);
       @include vendors(transition-duration, $transitionDuration);
+
+      @include notSmall() {
+        position: fixed;
+      }
+
       @include small() {
         @include vendors(transition-property, none);
       }
