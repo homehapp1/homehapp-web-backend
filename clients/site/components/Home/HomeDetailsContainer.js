@@ -6,7 +6,6 @@ import HomeStore from '../../stores/HomeStore';
 import HomeDetails from './Details';
 
 class HomeDetailsContainer extends HomeContainer {
-
   render() {
     if (this.state.error) {
       return this.handleErrorState();
