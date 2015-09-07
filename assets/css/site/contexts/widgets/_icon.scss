@@ -1,0 +1,24 @@
+&.icon {
+  text-align: center;
+  display: inline-block;
+
+  &.medium {
+    width: 2em;
+    height: 2em;
+  }
+
+  & > img {
+    display: block;
+    vertical-align: middle;
+    width: 100%;
+    padding: 24%;
+  }
+
+  &, &.black, &.grey {
+    @include hexagon($darkGray);
+  }
+
+  &.turquoise {
+    @include hexagon($turquoise);
+  }
+}
