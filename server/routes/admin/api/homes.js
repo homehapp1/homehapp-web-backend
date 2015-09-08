@@ -1,11 +1,12 @@
 'use strict';
 
 import QueryBuilder from '../../../lib/QueryBuilder';
+import {NotImplemented, BadRequest} from '../../../lib/Errors';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  app.get('/api/home', function(req, res, next) {
+  app.get('/api/homes', function(req, res, next) {
     console.log('API fetch homes');
     console.log('req.query', req.query);
 
@@ -23,8 +24,8 @@ exports.registerRoutes = (app) => {
 
   });
 
-  app.get('/api/home/:uuid', function(req, res, next) {
-    console.log('API fetch home with slug', req.params.slug);
+  app.get('/api/homes/:uuid', function(req, res, next) {
+    console.log('API fetch home with uuid', req.params.uuid);
     console.log('req.query', req.query);
 
     QB
@@ -38,6 +39,28 @@ exports.registerRoutes = (app) => {
     })
     .catch(next);
 
+  });
+
+  app.put('/api/homes/:uuid', function(req, res, next) {
+    console.log('API update home with uuid', req.params.uuid);
+    //console.log('req.body', req.body);
+
+    let data = req.body.home;
+
+    if (!data.description) {
+      return next(new BadRequest('invalid request body'));
+    }
+
+    QB
+    .forModel('Home')
+    .findByUuid(req.params.uuid)
+    .update(data)
+    .then((model) => {
+      res.json({
+        status: 'ok', home: model
+      });
+    })
+    .catch(next);
   });
 
 };
