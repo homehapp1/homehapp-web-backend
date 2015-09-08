@@ -8,6 +8,7 @@ import Agent from './Agent';
 import BigImage from './BigImage';
 import Columns from './Columns';
 import ContentBlock from './ContentBlock';
+import ContentImage from './ContentImage';
 import Gallery from './Gallery';
 import Icon from './Icon';
 import LargeText from './LargeText';
@@ -102,40 +103,16 @@ class Story extends React.Component {
     );
   }
 
-  getSeparator(item, index) {
-    return (<Separator {...item.properties} key={index} />);
-  }
+  getContentImage(item, index) {
+    console.log('getContentImage', item);
+    let title = (item.properties.title) ? (<h2>{item.properties.title}</h2>) : null;
+    let content = (item.properties.content) ? (<div className='content'>{item.properties.content}</div>) : null;
 
-  getIconList(item, index) {
     return (
-      <ContentBlock key={index} className='icon-list pattern'>
-        <Columns cols={item.properties.icons.length}>
-          {
-            item.properties.icons.map((col, ind) => {
-              let label = (
-                <span>
-                  <Icon type={col.icon} className='large' />
-                  <span className='label'>{col.label}</span>
-                </span>
-              );
-
-              if (col.to) {
-                link = (
-                  <Link to={col.to} params={col.params}>
-                    {label}}
-                  </Link>
-                );
-              }
-
-              return (
-                <div className='icon-wrapper'>
-                  {label}
-                </div>
-              );
-            })
-          }
-        </Columns>
-      </ContentBlock>
+      <ContentImage image={item.properties.image} imageAlign={item.properties.imageAlign}>
+        {title}
+        {content}
+      </ContentImage>
     );
   }
 
@@ -177,6 +154,43 @@ class Story extends React.Component {
         </Columns>
       </ContentBlock>
     );
+  }
+
+  getIconList(item, index) {
+    return (
+      <ContentBlock key={index} className='icon-list pattern'>
+        <Columns cols={item.properties.icons.length}>
+          {
+            item.properties.icons.map((col, ind) => {
+              let label = (
+                <span>
+                  <Icon type={col.icon} className='large' />
+                  <span className='label'>{col.label}</span>
+                </span>
+              );
+
+              if (col.to) {
+                link = (
+                  <Link to={col.to} params={col.params}>
+                    {label}}
+                  </Link>
+                );
+              }
+
+              return (
+                <div className='icon-wrapper'>
+                  {label}
+                </div>
+              );
+            })
+          }
+        </Columns>
+      </ContentBlock>
+    );
+  }
+
+  getSeparator(item, index) {
+    return (<Separator {...item.properties} key={index} />);
   }
 
   render() {
