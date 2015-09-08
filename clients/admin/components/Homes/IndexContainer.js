@@ -2,7 +2,7 @@
 
 import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
-import HomesIndex from './index';
+import HomesIndex from './Index';
 
 class HomesIndexContainer extends React.Component {
   static propTypes = {
