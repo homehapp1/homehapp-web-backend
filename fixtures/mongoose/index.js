@@ -163,7 +163,11 @@ let createHome = function(index)
         break;
 
       case 'ContentImage':
-        let imageTitle = getLoremIpsum(randomSeed(2, 10));
+        // Title length
+        let s = randomSeed(2, 10);
+        let l = s + randomSeed(2, 10);
+
+        let imageTitle = getLoremIpsum(s, l);
         let imageContent = getLoremIpsum(20, null, randomSeed(1, 4));
 
         storyBlock.properties = {
