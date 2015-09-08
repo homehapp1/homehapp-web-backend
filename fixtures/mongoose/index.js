@@ -162,9 +162,27 @@ let createHome = function(index)
         };
         break;
 
-      case 'Map':
+      case 'Image':
+        let imageTitle = getLoremIpsum(randomSeed(2, 10));
+        let imageContent = getLoremIpsum(20, null, randomSeed(1, 4));
+
         storyBlock.properties = {
-          description: 'Map lorem ipsum dolor sit amet',
+          title: getRandom(['', imageTitle, imageTitle]),
+          description: getRandom(['', imageContent, imageContent]),
+          image: getRandom(images),
+          imageAlign: getRandom(['left', 'right'])
+        };
+        break;
+
+
+      case 'Map':
+        let mapTitle = getLoremIpsum(5, randomSeed(10, 20));
+        let mapContent = getLoremIpsum(10, randomSeed(11, 50), randomSeed(1, 3));
+
+        storyBlock.properties = {
+          // Title is optional, 33% chance that it wasn't filled
+          title: getRandom('', mapTitle, mapTitle),
+          description: getRandom('', mapContent, mapContent),
           coordinates: [
             51.5072 + (Math.random() - 0.5),
             0.1275 + (Math.random() - 0.5)
@@ -173,6 +191,7 @@ let createHome = function(index)
         break;
     }
 
+    // Random content overrides
     if (properties) {
       for (let i in properties) {
         storyBlock.properties[i] = properties[i];
@@ -309,6 +328,19 @@ let createHome = function(index)
 
   for (let i = 0; i < blockOrder.length; i++) {
     property.story.blocks.push(createStoryBlock(blockOrder[i].template, blockOrder[i].properties));
+
+    // Allow some randomness and create a left/right content block
+    if (Math.random() < 0.3) {
+      // For random testing of left/right alignment
+      let r = randomSeed(0, 1);
+      for (let n = 0; n < randomSeed(1, 2); n++) {
+        let properties = {
+          // Some randomness, but prevent two consecutive alignments on the same side
+          imageAlign: (n % 2 + r) ? 'left' : 'right'
+        };
+        property.story.blocks.push(createStoryBlock('Image', properties))
+      }
+    }
   }
 
   // property.story.blocks.push(createStoryBlock('BigImage', {align: 'center', valign: 'middle'}));
