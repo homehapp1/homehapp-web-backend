@@ -119,6 +119,74 @@ module.exports = (projectRoot) => {
     clientConfig: {
       google: {
         apiKey: "AIzaSyAKffMTuwbg4NSSil9qahcTyTd8FL9Q8zQ"
+      },
+      cloudinary: {
+        projectId: 'homehapp',
+        baseUrl: 'https://res.cloudinary.com/homehapp/image/upload/',
+        apiUrl: '//api.cloudinary.com/v1_1/homehapp',
+        transformations: {
+          // Pinterest styled card
+          card: {
+            mode: 'fill',
+            width: 280
+          },
+
+          // Property list
+          propList: {
+            mode: 'fill',
+            width: 300,
+            height: 300
+          },
+          thumbnail: {
+            mode: 'thumb',
+            width: 100,
+            height: 100
+          },
+          pinkynail: {
+            mode: 'thumb',
+            width: 50,
+            height: 50
+          },
+
+          // Full-sized preview
+          preview: {
+            mode: 'fill',
+            height: 960
+          },
+
+          // Big image variants
+          large: {
+            mode: 'scale',
+            width: 1920
+          },
+          medium: {
+            mode: 'scale',
+            width: 1000
+          },
+          small: {
+            mode: 'fill',
+            height: 600
+          },
+
+          gallery: {
+            mode: 'fit',
+            width: 600,
+            height: 600
+          },
+          fullscreen: {
+            width: 1920,
+            height: 1080,
+            mode: 'fit'
+          },
+
+          // Hexagon mask
+          masked: {
+            mode: 'fill',
+            width: 271,
+            height: 320,
+            mask: 'hexagon-white'
+          }
+        }
       }
     }
   };
