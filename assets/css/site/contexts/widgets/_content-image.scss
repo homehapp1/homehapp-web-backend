@@ -1,4 +1,19 @@
 &.content-image {
+  text-align: center;
+
+  .description {
+    *:not(h2) {
+      font-size: 150%;
+      font-style: italic;
+      color: $fontMediumGray;
+      white-space: pre-line;
+    }
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
   img {
     width: auto;
     height: auto;
@@ -14,9 +29,5 @@
 
   &.image-right .row-end {
     text-align: right;
-  }
-
-  &.no-content {
-    text-align: center;
   }
 }
