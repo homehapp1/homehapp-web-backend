@@ -6,7 +6,8 @@ import ContentBlock from './ContentBlock';
 
 class Loading extends React.Component {
   static propTypes = {
-    children: React.PropTypes.oneOf([
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.null,
       React.PropTypes.object,
       React.PropTypes.array
     ])

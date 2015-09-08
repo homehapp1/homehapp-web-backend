@@ -441,7 +441,8 @@ class Gallery extends React.Component {
       classes.push(this.props.className);
     }
     return (
-      <div className={classes.join(' ')} ref='gallery'>
+      <div className={classes.join(' ')}>
+        <div className='gallery-images' ref='gallery'>
         {
           this.props.images.map((image, index) => {
             image.variant = 'gallery';
@@ -455,6 +456,7 @@ class Gallery extends React.Component {
             );
           })
         }
+        </div>
       </div>
     );
   }

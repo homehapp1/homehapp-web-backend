@@ -64,6 +64,23 @@ class HomeDetails extends React.Component {
     };
   }
 
+  getIconList() {
+    return [
+      {
+        icon: 'floorplan',
+        label: 'Floor plan'
+      },
+      {
+        icon: 'epc',
+        label: 'EPC'
+      },
+      {
+        icon: 'brochures',
+        label: 'Brochure'
+      }
+    ];
+  }
+
   render() {
     let blocks = [];
     blocks.push(this.getTitleBlock());
@@ -75,9 +92,54 @@ class HomeDetails extends React.Component {
       }
     });
 
+    if (this.props.home.images.length > 1) {
+      blocks.push({
+        template: 'Gallery',
+        properties: {
+          images: this.props.home.images,
+          className: 'pattern details-view'
+        }
+      });
+    }
+
+    let iconlist = this.getIconList();
+
+    if (iconlist.length) {
+      blocks.push({
+        template: 'IconList',
+        properties: {
+          icons: iconlist
+        }
+      });
+    }
+
+    blocks.push({
+      template: 'Details',
+      properties: {
+        home: this.props.home
+      }
+    });
+
     if (this.props.home.location.neighborhood) {
+      blocks.push({
+        template: 'Separator',
+        properties: {}
+      });
+
       blocks.push(this.getNeighborhoodBlock());
     }
+
+    blocks.push({
+      template: 'Separator',
+      properties: {
+        icon: 'marker'
+      }
+    });
+
+    blocks.push({
+      template: 'Map',
+      properties: this.props.home.location
+    });
 
     blocks.push({
       template: 'Agent',

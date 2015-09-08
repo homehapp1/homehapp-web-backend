@@ -31,3 +31,17 @@
     @include hexagon($turquoise);
   }
 }
+
+&.icon-list {
+  text-align: center;
+  font-size: 120%;
+
+  .icon + .label {
+    display: block;
+    margin-top: 0.5em;
+  }
+}
+
+&.details-view + .icon-list {
+  padding-top: 0;
+}

@@ -14,6 +14,17 @@
       padding: 1px;
     }
   }
+
+  &.details-view {
+    padding: 4 * $contentPadding 0;
+    
+    & > .gallery-images {
+      width: 100%;
+      max-width: $pageWidth;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
 }
 
 // No background colors when already wrapped within a widget

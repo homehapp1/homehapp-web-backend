@@ -1,0 +1,15 @@
+&.separator {
+  $s: 5em;
+  height: 1em;
+  position: relative;
+
+  & > .icon {
+    position: absolute;
+    width: $s;
+    height: $s;
+    left: 50%;
+    top: 50%;
+    margin-left: -0.5 * $s;
+    margin-top: -0.5 * $s;
+  }
+}

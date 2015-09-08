@@ -58,6 +58,7 @@ class HomeContainer extends React.Component {
     if (this.state.error) {
       return this.handleErrorState();
     }
+
     if (HomeStore.isLoading() || !this.state.home) {
       return this.handlePendingState();
     }

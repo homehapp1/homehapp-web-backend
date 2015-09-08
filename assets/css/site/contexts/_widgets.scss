@@ -72,9 +72,21 @@
     }
   }
 
-  &.pattern{
+  &.pattern {
     background-image: url('../images/pattern.gif');
     background-repeat: repeat;
+    background-position: left bottom;
+
+    & + .pattern {
+      background-position: left top;
+    }
+  }
+
+  &.pattern-bottom {
+    background-position: left bottom;
+  }
+
+  &.pattern-top {
     background-position: left top;
   }
 
@@ -92,12 +104,14 @@
   @import "contexts/widgets/cards";
   @import "contexts/widgets/columns";
   @import "contexts/widgets/content-block";
+  @import "contexts/widgets/content-image";
   @import "contexts/widgets/gallery";
   @import "contexts/widgets/hoverable";
   @import "contexts/widgets/icon";
   @import "contexts/widgets/large-text";
   @import "contexts/widgets/loading";
   @import "contexts/widgets/map";
+  @import "contexts/widgets/separator";
 }
 
 // External component overrides

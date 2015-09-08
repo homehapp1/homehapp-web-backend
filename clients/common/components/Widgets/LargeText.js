@@ -6,7 +6,8 @@ class LargeText extends React.Component {
   static propTypes = {
     align: React.PropTypes.string,
     valign: React.PropTypes.string,
-    children: React.PropTypes.oneOf([
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.null,
       React.PropTypes.object,
       React.PropTypes.array
     ]),
