@@ -14,7 +14,6 @@ class Neighborhood extends React.Component {
   };
 
   render() {
-    console.log('neighborhood', this.props);
     let image = this.props.images[0];
 
     return (

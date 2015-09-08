@@ -104,9 +104,8 @@ class Story extends React.Component {
   }
 
   getContentImage(item, index) {
-    console.log('getContentImage', item);
     let title = (item.properties.title) ? (<h2>{item.properties.title}</h2>) : null;
-    let content = (item.properties.content) ? (<div className='content'>{item.properties.content}</div>) : null;
+    let content = (item.properties.description) ? (<div className='content'>{item.properties.description}</div>) : null;
 
     return (
       <ContentImage image={item.properties.image} imageAlign={item.properties.imageAlign}>

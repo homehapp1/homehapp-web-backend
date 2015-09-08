@@ -39,11 +39,13 @@ module.exports = (projectRoot) => {
           // Full content
           full: {
             mode: 'fill',
-            width: 1200
+            width: 1200,
+            height: 800
           },
           half: {
             mode: 'fill',
-            width: 600
+            width: 600,
+            height: 800
           },
 
           // Full-sized preview

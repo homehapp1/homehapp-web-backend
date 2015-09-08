@@ -27,13 +27,13 @@ class ContentImage extends React.Component {
     ];
 
     let variant = 'half';
-    let content = this.props.children;
+    let content = (<div className='content'>{this.props.children}</div>);
 
     // Verify that there is any content
-    if (Array.isArray(content)) {
+    if (Array.isArray(this.props.children)) {
       let hasContent = false;
-      for (let i = 0; i < content.length; i++) {
-        if (content[i]) {
+      for (let i = 0; i < this.props.children.length; i++) {
+        if (this.props.children[i]) {
           hasContent = true;
           break;
         }
@@ -52,7 +52,6 @@ class ContentImage extends React.Component {
       classes.push('no-content');
       return (
         <ContentBlock className={classes.join(' ')}>
-          Centered
           {image}
         </ContentBlock>
       );
@@ -61,18 +60,17 @@ class ContentImage extends React.Component {
     // Determine the content locations
     if (this.props.imageAlign === 'left') {
       left = image;
-      right = this.props.children;
+      right = content;
       classes.push('image-left content-right');
     } else {
-      left = this.props.children;
+      left = content;
       right = image;
       classes.push('image-right content-left');
     }
 
     return (
       <ContentBlock className={classes.join(' ')}>
-        Classes: {classes.join(' ')}
-        <Columns cols={2}>
+        <Columns cols={2} className='table' valign='middle'>
           {left}
           {right}
         </Columns>

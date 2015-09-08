@@ -1,0 +1,22 @@
+&.content-image {
+  img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 600px;
+  }
+
+  &.image-left {
+    .row-start {
+      text-align: left;
+    }
+  }
+
+  &.image-right .row-end {
+    text-align: right;
+  }
+
+  &.no-content {
+    text-align: center;
+  }
+}
