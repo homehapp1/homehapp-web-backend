@@ -43,7 +43,10 @@ class CloudinaryAdapter {
       if (transformation) {
         signData.transformation = transformation;
       }
-      res.send(this.cloudinary.utils.sign_request(signData));
+      res.send({
+        status: 'ok',
+        signed: this.cloudinary.utils.sign_request(signData)
+      });
     });
   }
 }
