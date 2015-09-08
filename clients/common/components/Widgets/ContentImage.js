@@ -9,7 +9,8 @@ class ContentImage extends React.Component {
   static propTypes = {
     image: React.PropTypes.object.isRequired,
     imageAlign: React.PropTypes.string,
-    children: React.PropTypes.oneOf([
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.null,
       React.PropTypes.object,
       React.PropTypes.array
     ])
@@ -23,11 +24,12 @@ class ContentImage extends React.Component {
     let left = null;
     let right = null;
     let classes = [
-      'content-image'
+      'content-image',
+      'with-gradient'
     ];
 
     let variant = 'half';
-    let content = (<div className='content'>{this.props.children}</div>);
+    let content = (<div className='description'>{this.props.children}</div>);
 
     // Verify that there is any content
     if (Array.isArray(this.props.children)) {
