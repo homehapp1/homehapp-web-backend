@@ -80,6 +80,14 @@ let createHome = function(index)
     { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9347.jpg', alt: '', aspectRatio: 0.9795 }
   ];
 
+  // After the consensus of storing only width and height instead of aspect ratio
+  // and using aspect ratio as a dynamic variable, convert the example images
+  // to the intended measures
+  for (let i = 0; i < images.length; i++) {
+    images[i].width = 3000;
+    images[i].height = Math.round(images[i].width / images[i].aspectRatio);
+  }
+
   let slugs = ['S02HhBOV'];
   let slug = null;
 
