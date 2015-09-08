@@ -47,3 +47,11 @@ exports.InternalServerError = class InternalServerError extends BaseError {
     this.statusCode = 500;
   }
 };
+
+exports.NotImplemented = class NotImplemented extends BaseError {
+  constructor(message, data) {
+    message = message || 'Not Implemented';
+    super(message, data);
+    this.statusCode = 501;
+  }
+};
