@@ -413,6 +413,7 @@ exports.run = function(projectName, afterRun) {
                 });
               }
             }
+            return payload;
           };
 
           if (isJSONRequest) {

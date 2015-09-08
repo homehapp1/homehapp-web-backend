@@ -17,12 +17,24 @@ exports.floor = function floor(v) {
   return v;
 };
 
+exports.setCDNUrlProperties = function(url, props) {
+  let propStr = '';
+  for (let [key, val] of enumerate(props)) {
+    propStr += `${key}_${val},`;
+  }
+  propStr = propStr.substr(0, propStr.length - 1);
+
+  let re = /^(https?:\/\/res.cloudinary.com\/\w+\/\w+\/upload\/)(\w+)/;
+  url = url.replace(re, `$1${propStr}/$2`);
+
+  return url;
+};
+
 exports.merge = function merge(...argv) {
   let target = Object.assign({}, argv.shift());
 
   argv.forEach((a) => {
-    for (let key in a) {
-      let value = a[key];
+    for (let [key, value] of enumerate(a)) {
       if (a.hasOwnProperty(key)) {
         if (typeof target[key] === 'object'
           && typeof target[key] !== 'undefined'
@@ -256,4 +268,14 @@ exports.primaryHomeTitle = function(home) {
   }
 
   return exports.capitalize(`${parts.join(', ')}${location.join('')}`);
+};
+
+let enumerate = exports.enumerate = function* enumerate(obj) {
+  for (let key of Object.keys(obj)) {
+    yield [key, obj[key]];
+  }
+};
+
+exports.randomNumericId = function randomNumericId() {
+  return Math.round((new Date()).getTime() + (Math.random(0, 1000) * 100));
 };

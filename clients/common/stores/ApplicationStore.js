@@ -14,6 +14,7 @@ class ApplicationStore {
       revisionedStaticPath: 'https://res.cloudinary.com/homehapp/raw/upload/site/',
       cloudinary: {
         baseUrl: 'https://res.cloudinary.com/homehapp/image/upload/',
+        apiUrl: 'https://api.cloudinary.com/v1_1/homehapp',
         transformations: {
           // Pinterest styled card
           card: {

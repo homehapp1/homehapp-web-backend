@@ -84,7 +84,7 @@ const paths = {
 let webpackCommonConfig = {
   module: {
     loaders: [
-      { test: /\.(js)$/, exclude: /node_modules|bower_components/, loader: 'babel', query: babelOptions }
+      { test: /\.(js)$/, exclude: /node_modules|bower_components|assets/, loader: 'babel', query: babelOptions }
       // ,{ test: /\.(otf|eot|svg|ttf|woff)/, loader: 'url-loader?limit=8192' }
       // ,{ test: /\.(js)$/, exclude: /node_modules/, loaders: ['eslint-loader'] }
     ]

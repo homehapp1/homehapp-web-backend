@@ -5,12 +5,26 @@ import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
+import Table from 'react-bootstrap/lib/Table';
 import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
+import HomeStore from '../../stores/HomeStore';
+import HomeActions from '../../actions/HomeActions';
+import ApplicationStore from '../../../common/stores/ApplicationStore';
+import UploadArea from '../../../common/components/UploadArea';
+import UploadAreaUtils from '../../../common/components/UploadArea/utils';
+import {randomNumericId, enumerate, setCDNUrlProperties} from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
+
+function getFullImageUrl(url) {
+  if (!url.match(/^http/)) {
+    url = `${ApplicationStore.getState().config.cloudinary.baseUrl}${url}`;
+  }
+  return url;
+}
 
 class HomesEditDetails extends React.Component {
   static propTypes = {
@@ -19,10 +33,37 @@ class HomesEditDetails extends React.Component {
 
   constructor(props) {
     super(props);
+    this.storeListener = this.onHomeStoreChange.bind(this);
+    this.uploadListener = this.onUploadChange.bind(this);
+    this.imageUploaderInstanceId = randomNumericId();
+    this.state.homeImages = props.home.images;
+  }
+
+  componentDidMount() {
+    HomeStore.listen(this.storeListener);
+  }
+
+  componentWillUnmount() {
+    HomeStore.unlisten(this.storeListener);
   }
 
   state = {
-    currentAttributes: this.props.home.attributes
+    error: null,
+    uploads: UploadAreaUtils.UploadStore.getState().uploads,
+    currentAttributes: this.props.home.attributes,
+    homeImages: []
+  }
+
+  onHomeStoreChange(state) {
+    debug('onHomeStoreChange', state);
+    this.setState(state);
+  }
+
+  onUploadChange(state) {
+    debug('onUploadChange', state);
+    this.setState({
+      uploads: UploadAreaUtils.UploadStore.getState().uploads
+    });
   }
 
   onFormChange(event) {
@@ -34,6 +75,94 @@ class HomesEditDetails extends React.Component {
 
   onSave() {
     debug('save');
+
+    let images = [];
+    // Clean broken images
+    this.state.homeImages.forEach((image) => {
+      if (image.url) {
+        images.push(image);
+      }
+    });
+
+    let homeProps = {
+      uuid: this.props.home.id,
+      title: this.refs.title.getValue(),
+      description: this.refs.description.getValue(),
+      location: {
+        address: {
+          street: this.refs.addressStreet.getValue(),
+          apartment: this.refs.addressApartment.getValue(),
+          city: this.refs.addressCity.getValue(),
+          zipcode: this.refs.addressZipcode.getValue(),
+          country: this.refs.addressCountry.getValue()
+        },
+        coordinates: [
+          this.refs.locationLatitude.getValue(),
+          this.refs.locationLongitude.getValue()
+        ]
+      },
+      costs: {
+        currency: this.refs.costsCurrency.getValue(),
+        deptFreePrice: this.refs.costsDeptFreePrice.getValue(),
+        sellingPrice: this.refs.costsSellingPrice.getValue(),
+        squarePrice: this.refs.costsSquarePrice.getValue(),
+        realEstateTaxPerYear: this.refs.costsReTaxPerYear.getValue(),
+        electricChargePerMonth: this.refs.costsEcPerMonth.getValue(),
+        waterChargePerMonth: this.refs.costsWcPerMonth.getValue(),
+        waterChargePerType: this.refs.costsWcPerType.getValue()
+      },
+      amenities: this.refs.amenities.getValue().split('\n'),
+      facilities: this.refs.facilities.getValue().split('\n'),
+      attributes: this.state.currentAttributes,
+      images: images
+    };
+
+    console.log('homeProps', homeProps);
+    HomeActions.updateItem(homeProps);
+  }
+
+  onCancel() {
+    React.findDOMNode(this.refs.homeDetailsForm).reset();
+  }
+
+  onImageUpload(data) {
+    debug('onImageUpload', data);
+
+    let imageExists = (url) => {
+      let found = false;
+      this.state.homeImages.forEach((img) => {
+        if (img.url === url) {
+          found = true;
+        }
+      });
+      return found;
+    };
+
+    if (this.state.uploads) {
+      if (this.state.uploads[this.imageUploaderInstanceId]) {
+        let uploads = this.state.uploads[this.imageUploaderInstanceId];
+        for (let [key, imageData] of enumerate(uploads)) {
+          console.log(key, 'data:', imageData);
+          let isMaster = false;
+          let homeImage = {
+            url: imageData.url,
+            width: imageData.width,
+            height: imageData.height,
+            // TODO: Remove me when backend supports it
+            aspectRatio: (imageData.width / imageData.height),
+            isMaster: isMaster
+          };
+
+          if (!imageExists(homeImage.url)) {
+            this.state.homeImages.push(homeImage);
+          }
+        }
+      }
+    }
+
+    this.setState({
+      homeImages: this.state.homeImages
+    });
   }
 
   onRemoveAttributeClicked(index) {
@@ -47,8 +176,23 @@ class HomesEditDetails extends React.Component {
   }
 
   onAddAttributeClicked(event) {
-    this.state.currentAttributes.push({name: '', value: ''});
+    this.state.currentAttributes.push({
+      name: '', value: '', valueType: 'string'
+    });
     this.setState({currentAttributes: this.state.currentAttributes});
+  }
+
+  onAttributeValueChanged(event, index, field) {
+    let newAttributes = this.state.currentAttributes;
+    if (!newAttributes[index]) {
+      newAttributes[index] = {
+        name: '', value: '', valueType: 'string'
+      };
+    }
+    newAttributes[index][field] = event.currentTarget.value;
+    this.setState({
+      currentAttributes: newAttributes
+    });
   }
 
   renderAttributeRow(index, attr, isLast) {
@@ -89,7 +233,9 @@ class HomesEditDetails extends React.Component {
             addonBefore='Name'
             placeholder='Select Attribute'
             name={'attributes[' + index + '][name]'}
-            defaultValue={attr.name}>
+            defaultValue={attr.name}
+            onChange={(event) => this.onAttributeValueChanged(event, index, 'name')}
+          >
             <option value=''>Select Attribute</option>
             <option value='floor'>Floor</option>
             <option value='rooms'>Rooms</option>
@@ -102,6 +248,7 @@ class HomesEditDetails extends React.Component {
             addonBefore='Value'
             name={'attributes[' + index + '][value]'}
             defaultValue={attr.value}
+            onChange={(event) => this.onAttributeValueChanged(event, index, 'value')}
           />
         </Col>
         {actions}
@@ -109,7 +256,33 @@ class HomesEditDetails extends React.Component {
     );
   }
 
+  handlePendingState() {
+    return (
+      <div className='home-saving'>
+        <h3>Saving home...</h3>
+      </div>
+    );
+  }
+
+  handleErrorState() {
+    return (
+      <div className='home-error'>
+        <h3>Error updating home!</h3>
+        <p>{this.state.error.message}</p>
+      </div>
+    );
+  }
+
   render() {
+    let error = null;
+    let savingLoader = null;
+    if (this.state.error) {
+      error = this.handleErrorState();
+    }
+    if (HomeStore.isLoading()) {
+      savingLoader = this.handlePendingState();
+    }
+
     let countrySelections = countries.map((country) => {
       return (
         <option
@@ -128,11 +301,14 @@ class HomesEditDetails extends React.Component {
 
     return (
       <Row>
-        <form method='POST'>
+        {error}
+        {savingLoader}
+        <form name='homeDetails' ref='homeDetailsForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>
               <Input
                 type='text'
+                ref='title'
                 label='Title'
                 placeholder='Title (optional)'
                 defaultValue={this.props.home.title}
@@ -140,6 +316,7 @@ class HomesEditDetails extends React.Component {
               />
               <Input
                 type='textarea'
+                ref='description'
                 label='Description'
                 placeholder='Write description'
                 defaultValue={this.props.home.description}
@@ -149,6 +326,7 @@ class HomesEditDetails extends React.Component {
             <Panel header='Location'>
               <Input
                 type='text'
+                ref='addressStreet'
                 label='Street Address'
                 placeholder='ie. Kauppakartanonkuja 3 B'
                 defaultValue={this.props.home.location.address.street}
@@ -156,6 +334,7 @@ class HomesEditDetails extends React.Component {
               />
               <Input
                 type='text'
+                ref='addressApartment'
                 label='Apartment'
                 placeholder='ie. 22'
                 defaultValue={this.props.home.location.address.apartment}
@@ -163,13 +342,23 @@ class HomesEditDetails extends React.Component {
               />
               <Input
                 type='text'
+                ref='addressCity'
                 label='City'
                 placeholder='ie. Helsinki'
                 defaultValue={this.props.home.location.address.city}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
+                type='text'
+                ref='addressZipcode'
+                label='Zipcode'
+                placeholder=''
+                defaultValue={this.props.home.location.address.zipcode}
+                onChange={this.onFormChange.bind(this)}
+              />
+              <Input
                 type='select'
+                ref='addressCountry'
                 label='Country'
                 placeholder='Select Country'
                 defaultValue={this.props.home.location.address.country}
@@ -185,6 +374,7 @@ class HomesEditDetails extends React.Component {
                   <Col xs={6}>
                     <Input
                       type='text'
+                      ref='locationLatitude'
                       addonBefore='Latitude:'
                       defaultValue={lat}
                     />
@@ -192,6 +382,7 @@ class HomesEditDetails extends React.Component {
                   <Col xs={6}>
                     <Input
                       type='text'
+                      ref='locationLongitude'
                       addonBefore='Longitude:'
                       defaultValue={lon}
                     />
@@ -202,6 +393,7 @@ class HomesEditDetails extends React.Component {
             <Panel header='Costs'>
               <Input
                 type='select'
+                ref='costsCurrency'
                 label='Currency'
                 placeholder='Select Applied Currency'
                 defaultValue={this.props.home.costs.currency}
@@ -212,6 +404,7 @@ class HomesEditDetails extends React.Component {
               </Input>
               <Input
                 type='text'
+                ref='costsDeptFreePrice'
                 label='Dept Free Price'
                 placeholder='(optional)'
                 defaultValue={this.props.home.costs.deptFreePrice}
@@ -219,6 +412,7 @@ class HomesEditDetails extends React.Component {
               />
               <Input
                 type='text'
+                ref='costsSellingPrice'
                 label='Selling Price'
                 placeholder='(optional)'
                 defaultValue={this.props.home.costs.sellingPrice}
@@ -226,6 +420,7 @@ class HomesEditDetails extends React.Component {
               />
               <Input
                 type='text'
+                ref='costsSquarePrice'
                 label='Square meter Price'
                 placeholder='(optional)'
                 defaultValue={this.props.home.costs.squarePrice}
@@ -233,6 +428,7 @@ class HomesEditDetails extends React.Component {
               />
               <Input
                 type='text'
+                ref='costsReTaxPerYear'
                 label='Real estate Tax (per year)'
                 placeholder='(optional)'
                 defaultValue={this.props.home.costs.realEstateTaxPerYear}
@@ -240,6 +436,7 @@ class HomesEditDetails extends React.Component {
               />
               <Input
                 type='text'
+                ref='costsEcPerMonth'
                 label='Electrict Charge (per month)'
                 placeholder='(optional)'
                 defaultValue={this.props.home.costs.electricChargePerMonth}
@@ -247,6 +444,7 @@ class HomesEditDetails extends React.Component {
               />
               <Input
                 type='text'
+                ref='costsWcPerMonth'
                 label='Water charge (per month)'
                 placeholder='(optional)'
                 defaultValue={this.props.home.costs.waterChargePerMonth}
@@ -254,7 +452,8 @@ class HomesEditDetails extends React.Component {
               />
               <Input
                 type='select'
-                label='Currency'
+                ref='costsWcPerType'
+                label='Water charge type'
                 placeholder='Water charge type'
                 defaultValue={this.props.home.costs.waterChargePerType}
                 onChange={this.onFormChange.bind(this)}>
@@ -265,6 +464,7 @@ class HomesEditDetails extends React.Component {
             <Panel header='Amenities'>
               <Input
                 type='textarea'
+                ref='amenities'
                 label='Input Amenities (one per line)'
                 placeholder='(optional)'
                 defaultValue={this.props.home.amenities.join(`\n`)}
@@ -292,10 +492,63 @@ class HomesEditDetails extends React.Component {
                 })
               }
             </Panel>
+            <Panel header='Images'>
+              <Row>
+                <Col md={6}>
+                  <h2>Current images</h2>
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Thumbnail</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                        this.state.homeImages.map((image, idx) => {
+                          if (!image.url) {
+                            return null;
+                          }
+
+                          let imageUrl = getFullImageUrl(image.url);
+                          let thumbnailUrl = setCDNUrlProperties(imageUrl, {
+                            w: 80,
+                            h: 80,
+                            c: 'fill'
+                          });
+                          return (
+                            <tr key={`homeImage-${idx}`}>
+                              <td>
+                                <a href={imageUrl}>
+                                  <img src={thumbnailUrl} alt='' />
+                                </a>
+                              </td>
+                              <td>Actions come here</td>
+                            </tr>
+                          );
+                        })
+                      }
+                    </tbody>
+                  </Table>
+                </Col>
+                <Col md={6}>
+                  <UploadArea
+                    className='uploadarea image-uploadarea'
+                    signatureFolder='homeImage'
+                    width='100%'
+                    height='80px'
+                    onUpload={this.onImageUpload.bind(this)}
+                    acceptedMimes='image/*'
+                    instanceId={this.imageUploaderInstanceId}>
+                    Drag new image here, or click to select from filesystem.
+                  </UploadArea>
+                </Col>
+              </Row>
+            </Panel>
             <Well>
               <Row>
                 <Col md={6}>
-                  <Button bsStyle='success' onClick={this.onSave.bind(this)}>Save</Button>
+                  <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
                 </Col>
                 <Col md={6} pullRight>
                   <Button bsStyle='danger' className='pull-right'>Delete</Button>

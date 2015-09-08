@@ -31,9 +31,19 @@ exports.loadSchemas = function (mongoose, next) {
     url: {
       type: String
     },
-    aspectRatio: {
+    aspectRatio: { // TODO: Remove this and use the virtual property
       type: Number,
       required: true
+    },
+    width: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    height: {
+      type: Number,
+      required: true,
+      default: 0
     },
     alt: {
       type: String,
@@ -41,8 +51,16 @@ exports.loadSchemas = function (mongoose, next) {
     },
     tag: {
       type: String
+    },
+    isMaster: {
+      type: Boolean,
+      default: false
     }
   });
+
+  // schemas.HomeImage.virtual('aspectRatio').get(function () {
+  //   return this.width / this.height;
+  // });
 
   schemas.Home = new Schema({
     uuid: {
@@ -143,7 +161,7 @@ exports.loadSchemas = function (mongoose, next) {
     attributes: [schemas.HomeAttribute],
     amenities: [String],
     facilities: [String],
-    // Strory
+    // Story
     story: {
       enabled: {
         type: Boolean,
@@ -163,6 +181,10 @@ exports.loadSchemas = function (mongoose, next) {
       type: ObjectId,
       ref: 'User'
     },
+    // neighborhood: {
+    //   type: ObjectId,
+    //   ref: 'Neighborhood'
+    // },
     // Common metadata
     createdAt: {
       type: Date
@@ -192,7 +214,8 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.Home.statics.editableFields = function () {
     return [
-      'title', 'description', 'details', 'story', 'location'
+      'title', 'description', 'location', 'costs', 'story', 'amenities',
+      'facilities', 'attributes', 'images'
     ];
   };
 
