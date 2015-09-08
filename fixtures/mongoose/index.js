@@ -162,7 +162,7 @@ let createHome = function(index)
         };
         break;
 
-      case 'Image':
+      case 'ContentImage':
         let imageTitle = getLoremIpsum(randomSeed(2, 10));
         let imageContent = getLoremIpsum(20, null, randomSeed(1, 4));
 
@@ -338,7 +338,7 @@ let createHome = function(index)
           // Some randomness, but prevent two consecutive alignments on the same side
           imageAlign: (n % 2 + r) ? 'left' : 'right'
         };
-        property.story.blocks.push(createStoryBlock('Image', properties))
+        property.story.blocks.push(createStoryBlock('ContentImage', properties))
       }
     }
   }
