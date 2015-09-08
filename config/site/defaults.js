@@ -36,6 +36,16 @@ module.exports = (projectRoot) => {
             height: 50
           },
 
+          // Full content
+          full: {
+            mode: 'fill',
+            width: 1200
+          },
+          half: {
+            mode: 'fill',
+            width: 600
+          },
+
           // Full-sized preview
           preview: {
             mode: 'fill',
