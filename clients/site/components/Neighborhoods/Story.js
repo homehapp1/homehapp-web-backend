@@ -8,6 +8,8 @@ import BigImage from '../../../common/components/Widgets/BigImage';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Icon from '../../../common/components/Widgets/Icon';
 import LargeText from '../../../common/components/Widgets/LargeText';
+import Map from '../../../common/components/Widgets/Map';
+import Separator from '../../../common/components/Widgets/Separator';
 
 class NeighborhoodsStory extends React.Component {
   static propTypes = {
@@ -22,6 +24,9 @@ class NeighborhoodsStory extends React.Component {
       city: {
         title: 'London',
         slug: 'london'
+      },
+      location: {
+        'coordinates': [51.5072, 0.1275]
       },
       images: [
         { url: 'v10/contentMockup/DSCF9306.jpg', alt: '', aspectRatio: 1.5179 },
@@ -46,14 +51,37 @@ class NeighborhoodsStory extends React.Component {
 
   render() {
     let neighborhood = this.props.neighborhood;
-    let image = neighborhood.images[0];
+
+    let primaryImage = {
+      src: 'images/content/london-view.jpg',
+      alt: '',
+      type: 'asset'
+    };
+
+    if (typeof neighborhood.images[0] !== 'undefined') {
+      primaryImage = neighborhood.images[0];
+    }
+    let secondaryImage = primaryImage;
+
+    if (typeof neighborhood.images[1] !== 'undefined') {
+      secondaryImage = neighborhood.images[1];
+    }
+
+    let markers = [
+      {
+        position: {
+          lat: neighborhood.location.coordinates[0],
+          lng: neighborhood.location.coordinates[1]
+        }
+      }
+    ];
 
     return (
       <div className='neighborhood-story'>
-        <BigImage image={image} gradient='black' fixed={false}>
+        <BigImage image={primaryImage} gradient='black' fixed={false}>
           <LargeText align='center' valign='middle'>
             <Icon type='marker' color='black' size='large' />
-            <h1>{neighborhood.title}}</h1>
+            <h1>{neighborhood.title}</h1>
           </LargeText>
         </BigImage>
 
@@ -66,6 +94,16 @@ class NeighborhoodsStory extends React.Component {
         <ContentBlock className='with-gradient'>
           <Gallery images={this.props.neighborhood.images} columns={5} imageWidth={300} fullscreen={true} className='tight' />
         </ContentBlock>
+
+        <BigImage image={secondaryImage} fixed={false}>
+          <LargeText>
+            <h2>Homes of {neighborhood.title}</h2>
+          </LargeText>
+        </BigImage>
+        <Separator icon='apartment' />
+        <Map center={neighborhood.location.coordinates} markers={markers}>
+
+        </Map>
       </div>
     );
   }
