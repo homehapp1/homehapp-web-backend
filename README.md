@@ -58,21 +58,23 @@ Change the environment variable "AUTH" to be "no" and restart the instance.
 
 # Google Cloud notes
 
-export PROJECT_ID=homehappweb
-gcloud config set project $PROJECT_ID
+Remember to run Kitematic before trying to create the containers
 
-cd support/docker/fluentd-sidecar-gcp
-make build push
-cd ../../../
+    export PROJECT_ID=homehappweb
+    gcloud config set project $PROJECT_ID
 
-./support/createContainers.sh site
-./support/createContainers.sh admin
+    cd support/docker/fluentd-sidecar-gcp
+    make build push
+    cd ../../../
 
-./support/createCluster.sh site stg
-./support/createCluster.sh admin stg
+    ./support/createContainers.sh site
+    ./support/createContainers.sh admin
 
-./support/updateCluster.sh site stg
-./support/updateCluster.sh admin stg
+    ./support/createCluster.sh site stg
+    ./support/createCluster.sh admin stg
+
+    ./support/updateCluster.sh site stg
+    ./support/updateCluster.sh admin stg
 
 
 # Updating site assets
