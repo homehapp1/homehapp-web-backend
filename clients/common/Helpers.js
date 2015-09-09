@@ -279,3 +279,14 @@ let enumerate = exports.enumerate = function* enumerate(obj) {
 exports.randomNumericId = function randomNumericId() {
   return Math.round((new Date()).getTime() + (Math.random(0, 1000) * 100));
 };
+
+exports.moveToIndex = function moveToIndex(arr, currentIndex, newIndex) {
+  if (newIndex >= arr.length) {
+    var k = newIndex - arr.length;
+    while ((k--) + 1) {
+      arr.push(undefined);
+    }
+  }
+  arr.splice(newIndex, 0, arr.splice(currentIndex, 1)[0]);
+  return arr;
+};
