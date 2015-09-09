@@ -5,7 +5,11 @@ import Icon from './Icon';
 
 class Separator extends React.Component {
   static propTypes = {
-    icon: React.PropTypes.string
+    icon: React.PropTypes.string,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.array,
+      React.PropTypes.object
+    ])
   };
 
   static defaultProps = {
@@ -22,6 +26,7 @@ class Separator extends React.Component {
     return (
       <div className='separator widget pattern'>
         {icon}
+        {this.props.children}
       </div>
     );
   }
