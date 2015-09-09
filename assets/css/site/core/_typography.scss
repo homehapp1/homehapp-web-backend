@@ -99,12 +99,12 @@ button, .button, .btn {
   display: inline-block;
   color: white;
   background-color: $darkGray;
-  height: $buttonHeight;
-  line-height: $buttonHeight;
+  min-height: $buttonHeight;
   text-align: center;
   vertical-align: middle;
-  padding: 0 $contentPadding * 3;
+  padding: 0.4em 3em;
   text-decoration: none !important;
+  font-size: 120%;
 
   &:hover, &:active {
     background-color: lighten($darkGray, 5%);

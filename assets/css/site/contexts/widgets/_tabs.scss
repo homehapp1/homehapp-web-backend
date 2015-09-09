@@ -11,22 +11,25 @@
 
     & > li {
       display: table-cell;
-      border: solid 1px $darkGray;
-      padding: 0.5em 1em;
 
-      &, a {
+      a {
+        border: solid 1px $darkGray;
+        display: block;
+        padding: 0.5em 1em;
         color: $darkGray;
         @include vendors(transition-property, all);
         @include vendors(transition-duration, $transitionDuration);
+
+        &:hover {
+          background-color: $lightGray;
+          text-decoration: none;
+        }
       }
 
-      &.is-active, &:hover {
-        background-color: $darkGray;
-        @include vendors(transition-delay, $transitionDuration);
-
-        &, a {
+      &.is-active {
+        a {
+          background-color: $darkGray;
           color: white;
-          text-decoration: none;
         }
       }
     }
