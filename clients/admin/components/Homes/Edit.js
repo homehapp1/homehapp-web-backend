@@ -32,7 +32,7 @@ class HomesEdit extends React.Component {
         </Nav>
         <Row>
           <h1>Edit {this.props.home.homeTitle}</h1>
-          <TabbedArea defaultActiveKey={1}>
+          <TabbedArea defaultActiveKey={2}>
             <TabPane eventKey={1} tab='Details'>
               <EditDetails home={this.props.home} />
             </TabPane>
