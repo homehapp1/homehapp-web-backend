@@ -16,8 +16,8 @@ class LargeText extends React.Component {
   };
 
   static defaultProps = {
-    align: 'left',
-    valign: 'top',
+    align: 'center',
+    valign: 'middle',
     proportion: 1,
     className: null
   };
