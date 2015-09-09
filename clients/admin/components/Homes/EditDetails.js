@@ -165,6 +165,16 @@ class HomesEditDetails extends React.Component {
     });
   }
 
+  onRemoveImageClicked(index) {
+    let newImages = [];
+    this.state.homeImages.forEach((item, idx) => {
+      if (idx !== index) {
+        newImages.push(item);
+      }
+    });
+    this.setState({homeImages: newImages});
+  }
+
   onRemoveAttributeClicked(index) {
     let newAttributes = [];
     this.state.currentAttributes.forEach((item, idx) => {
@@ -523,7 +533,14 @@ class HomesEditDetails extends React.Component {
                                   <img src={thumbnailUrl} alt='' />
                                 </a>
                               </td>
-                              <td>Actions come here</td>
+                              <td>
+                                <Button
+                                  bsStyle='danger'
+                                  bsSize='small'
+                                  onClick={(event) => this.onRemoveImageClicked(idx)}>
+                                  Remove
+                                </Button>
+                              </td>
                             </tr>
                           );
                         })
