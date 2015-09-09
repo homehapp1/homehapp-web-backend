@@ -74,11 +74,11 @@ class Image extends React.Component {
   }
 
   resolveAttributes() {
-    if (this.props.width) {
+    if (this.props.width && this.props.applySize !== false) {
       this.attributes.width = this.props.width;
     }
 
-    if (this.props.height) {
+    if (this.props.height && this.props.applySize !== false) {
       this.attributes.height = this.props.height;
     }
 
@@ -136,6 +136,7 @@ class Image extends React.Component {
   resolveSrc(variant) {
     let src = this.props.src || this.props.url;
     let rval = null;
+    src = src.replace(/^\//, '');
 
     switch (this.props.type) {
       case 'asset':
