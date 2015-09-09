@@ -11,20 +11,9 @@ import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
-import ApplicationStore from '../../../common/stores/ApplicationStore';
-import UploadArea from '../../../common/components/UploadArea';
-import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import StoryEditBlocks from './StoryEditBlocks';
-import {randomNumericId, enumerate, setCDNUrlProperties} from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('HomesEditStory');
-
-function getFullImageUrl(url) {
-  if (!url.match(/^http/)) {
-    url = `${ApplicationStore.getState().config.cloudinary.baseUrl}${url}`;
-  }
-  return url;
-}
 
 export default class HomesEditStory extends React.Component {
   static propTypes = {
@@ -34,7 +23,6 @@ export default class HomesEditStory extends React.Component {
   constructor(props) {
     super(props);
     this.storeListener = this.onHomeStoreChange.bind(this);
-    this.uploadListener = this.onUploadChange.bind(this);
   }
 
   componentDidMount() {
@@ -46,22 +34,12 @@ export default class HomesEditStory extends React.Component {
   }
 
   state = {
-    error: null,
-    uploads: UploadAreaUtils.UploadStore.getState().uploads,
-    currentAttributes: this.props.home.attributes,
-    homeImages: []
+    error: null
   }
 
   onHomeStoreChange(state) {
     debug('onHomeStoreChange', state);
     this.setState(state);
-  }
-
-  onUploadChange(state) {
-    debug('onUploadChange', state);
-    this.setState({
-      uploads: UploadAreaUtils.UploadStore.getState().uploads
-    });
   }
 
   onSave() {
