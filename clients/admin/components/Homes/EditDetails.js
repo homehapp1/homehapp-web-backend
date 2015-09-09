@@ -557,7 +557,9 @@ class HomesEditDetails extends React.Component {
                     onUpload={this.onImageUpload.bind(this)}
                     acceptedMimes='image/*'
                     instanceId={this.imageUploaderInstanceId}>
-                    Drag new image here, or click to select from filesystem.
+                    <Well>
+                      <p>Drag new image here, or click to select from filesystem.</p>
+                    </Well>
                   </UploadArea>
                 </Col>
               </Row>

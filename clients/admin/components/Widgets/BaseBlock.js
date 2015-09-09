@@ -5,6 +5,8 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Table from 'react-bootstrap/lib/Table';
 import Input from 'react-bootstrap/lib/Input';
+import Button from 'react-bootstrap/lib/Button';
+import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
@@ -41,6 +43,17 @@ export default class WidgetsBaseBlock extends React.Component {
 
   onImageUpload(data) {
     debug('onImageUpload', data);
+  }
+
+  onRemoveImageClicked(key, index) {
+    let newImages = [];
+    this.props[key].forEach((item, idx) => {
+      if (idx !== index) {
+        newImages.push(item);
+      }
+    });
+    this.props[key] = newImages;
+    this.forceUpdate();
   }
 
   onFormChange(event) {
@@ -96,6 +109,9 @@ export default class WidgetsBaseBlock extends React.Component {
       case 'image':
         input = this.renderImageInput(key, prop);
         break;
+      case 'images':
+        input = this.renderImagesInput(key, prop);
+        break;
     }
 
     return input;
@@ -104,12 +120,17 @@ export default class WidgetsBaseBlock extends React.Component {
   renderImageInput(key, prop) {
     this.uploaderInstanceIds[key] = randomNumericId();
 
-    let imageUrl = getFullImageUrl(this.props[key].url);
-    let thumbnailUrl = setCDNUrlProperties(imageUrl, {
-      w: 80,
-      h: 80,
-      c: 'fill'
-    });
+    let imageUrl = null;
+    let thumbnailUrl = null;
+
+    if (this.props[key]) {
+      imageUrl = getFullImageUrl(this.props[key].url);
+      thumbnailUrl = setCDNUrlProperties(imageUrl, {
+        w: 80,
+        h: 80,
+        c: 'fill'
+      });
+    }
 
     return (
       <Table>
@@ -135,12 +156,84 @@ export default class WidgetsBaseBlock extends React.Component {
                 onUpload={this.onImageUpload.bind(this)}
                 acceptedMimes='image/*'
                 instanceId={this.uploaderInstanceIds[key]}>
-                Drag new image here, or click to select from filesystem.
+                <Well>
+                  <p>Drag new image here, or click to select from filesystem.</p>
+                </Well>
               </UploadArea>
             </td>
           </tr>
         </tbody>
       </Table>
+    );
+  }
+
+  renderImagesInput(key, prop) {
+    this.uploaderInstanceIds[key] = randomNumericId();
+    let images = this.props[key] || [];
+
+    return (
+      <Row>
+        <Col md={6}>
+          <h2>Current images</h2>
+          <Table>
+            <thead>
+              <tr>
+                <th>Thumbnail</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                images.map((image, idx) => {
+                  if (!image.url) {
+                    return null;
+                  }
+
+                  let imageUrl = getFullImageUrl(image.url);
+                  let thumbnailUrl = setCDNUrlProperties(imageUrl, {
+                    w: 80,
+                    h: 80,
+                    c: 'fill'
+                  });
+                  return (
+                    <tr key={`homeImage-${idx}`}>
+                      <td>
+                        <a href={imageUrl}>
+                          <img src={thumbnailUrl} alt='' />
+                        </a>
+                      </td>
+                      <td>
+                        <Button
+                          bsStyle='danger'
+                          bsSize='small'
+                          onClick={(event) =>
+                            this.onRemoveImageClicked(key, idx)
+                          }>
+                          Remove
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })
+              }
+            </tbody>
+          </Table>
+        </Col>
+        <Col md={6}>
+          <UploadArea
+            className={`uploadarea ${key}-uploadarea`}
+            signatureFolder='homeImage'
+            width='100%'
+            height='80px'
+            onUpload={this.onImageUpload.bind(this)}
+            acceptedMimes='image/*'
+            instanceId={this.uploaderInstanceIds[key]}>
+            <Well>
+              <p>Drag new image here, or click to select from filesystem.</p>
+            </Well>
+          </UploadArea>
+        </Col>
+      </Row>
     );
   }
 

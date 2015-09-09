@@ -10,6 +10,7 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import AdminContentBlock from '../Widgets/ContentBlock';
 import AdminBigImage from '../Widgets/BigImage';
+import AdminGallery from '../Widgets/Gallery';
 import {moveToIndex} from '../../../common/Helpers';
 
 export default class StoryEditBlocks extends React.Component {
@@ -147,7 +148,8 @@ export default class StoryEditBlocks extends React.Component {
   getGallery(item, index) {
     return (
       <Panel header={this.getBlockHeader(item, index)} key={index}>
-        Gallery block
+        <AdminGallery {...item.properties}>
+        </AdminGallery>
       </Panel>
     );
   }
