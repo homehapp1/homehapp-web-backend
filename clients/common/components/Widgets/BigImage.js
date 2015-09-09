@@ -1,7 +1,8 @@
 'use strict';
 
 import React from 'react';
-import { setFullHeight } from '../../Helpers';
+import { setFullHeight, merge } from '../../Helpers';
+import DOMManipulator from '../../DOMManipulator';
 import classNames from 'classnames';
 import Image from './Image';
 
@@ -23,8 +24,34 @@ class BigImage extends React.Component {
     valign: 'middle'
   };
 
+  fixMaxSize() {
+    let container = new DOMManipulator(this.refs.images);
+    let images = container.getByTagName('img');
+    let width = container.width();
+    let height = container.width();
+    let ar = width / height;
+
+    for (let i = 0; i < images.length; i++) {
+      if (images[i].width() / images[i].height() < ar) {
+        images[i].css('max-height', `${height}px`);
+      } else {
+        images[i].css('max-width', `${width}px`);
+      }
+    }
+
+    console.log('preparing to fix max sizes', images, images.length);
+  }
+
   componentDidMount() {
+    this.fixMaxSize = this.fixMaxSize.bind(this);
+
+    window.addEventListener('resize', this.fixMaxSize);
     setFullHeight();
+    this.fixMaxSize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.fixMaxSize);
   }
 
   render() {
@@ -40,11 +67,8 @@ class BigImage extends React.Component {
       classes.push('fixed');
     }
 
-    let image = {
-      src: this.props.image.url,
-      alt: this.props.image.alt,
-      mode: 'fill'
-    };
+    let image = merge({}, this.props.image);
+    image.mode = 'fill';
 
     let props = {
       className: classNames(classes),
@@ -65,10 +89,10 @@ class BigImage extends React.Component {
 
     return (
       <div {...props}>
-        <div className='image-content'>
+        <div className='image-content' ref='images'>
           <Image {...image} className='show-for-large' width={1920} height={800} />
           <Image {...image} className='show-for-medium' width={1000} height={800} />
-        <Image {...image} className='show-for-small' width={600} height={600} />
+          <Image {...image} className='show-for-small' width={600} height={600} />
         </div>
         {author}
         <div className='image-text full-height' {...textProps}>
