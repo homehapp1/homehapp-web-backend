@@ -70,7 +70,7 @@ Remember to run Kitematic before trying to create the containers
     ./support/createContainers.sh site
     ./support/createContainers.sh admin
 
-    # These are run only when creating the clusers, not when updating them
+    # These are run only when creating the clusters, not when updating them
     ./support/createCluster.sh site stg
     ./support/createCluster.sh admin stg
 
