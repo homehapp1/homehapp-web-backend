@@ -8,7 +8,7 @@ import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import AdminLargeText from '../Widgets/LargeText';
+import AdminContentBlock from '../Widgets/ContentBlock';
 import AdminBigImage from '../Widgets/BigImage';
 import {moveToIndex} from '../../../common/Helpers';
 
@@ -138,7 +138,8 @@ export default class StoryEditBlocks extends React.Component {
   getContentBlock(item, index) {
     return (
       <Panel header={this.getBlockHeader(item, index)} key={index}>
-        Content block
+        <AdminContentBlock {...item.properties}>
+        </AdminContentBlock>
       </Panel>
     );
   }
