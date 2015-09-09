@@ -143,6 +143,24 @@ class Image extends React.Component {
     return rval;
   }
 
+  getBaseUrl(src) {
+    // Not prefixed with Cloudinary path
+    if (!src.match(/^(https?:)?\/\//i)) {
+      return this.state.config.cloudinary.basePath;
+    }
+    let regs = src.match(/^((https?:)?\/\/res.cloudinary.com\/.+upload\/)/);
+
+    if (!regs) {
+      return '';
+    }
+
+    return regs[1];
+  }
+
+  getPath(src) {
+    return src.replace(/^(https?:)?\/\/.+(v[0-9]+)/, '$2');
+  }
+
   resolveContentSrc(src, variant) {
     let mask = '';
     let options = [];
@@ -185,7 +203,7 @@ class Image extends React.Component {
     // content to the users as quickly as possible
     options.push('fl_progressive');
 
-    return `${this.state.config.cloudinary.baseUrl}${options.join(',')}${mask}/${src}`;
+    return `${this.getBaseUrl(src)}${options.join(',')}${mask}/${this.getPath(src)}`;
   }
 
   getVariant(params, variant) {
