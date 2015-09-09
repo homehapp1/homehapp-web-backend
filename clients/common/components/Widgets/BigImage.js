@@ -40,7 +40,12 @@ class BigImage extends React.Component {
       classes.push('fixed');
     }
 
-    let image = this.props.image;
+    let image = {
+      src: this.props.image.url,
+      alt: this.props.image.alt,
+      mode: 'fill'
+    };
+
     let props = {
       className: classNames(classes),
       'data-gradient': this.props.gradient,
@@ -61,9 +66,9 @@ class BigImage extends React.Component {
     return (
       <div {...props}>
         <div className='image-content'>
-          <Image {...image} className='show-for-large' width={1920} mode='scale' />
-          <Image {...image} className='show-for-medium' width={1000} mode='scale' />
-          <Image {...image} className='show-for-small' height={600} mode='fill' />
+          <Image {...image} className='show-for-large' width={1920} height={800} />
+          <Image {...image} className='show-for-medium' width={1000} height={800} />
+        <Image {...image} className='show-for-small' width={600} height={600} />
         </div>
         {author}
         <div className='image-text full-height' {...textProps}>

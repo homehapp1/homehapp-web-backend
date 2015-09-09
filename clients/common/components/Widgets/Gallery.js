@@ -89,13 +89,6 @@ class Gallery extends React.Component {
 
     this.gallery.addEvent('click', this.onClick, true);
     this.gallery.addEvent('touch', this.onClick, true);
-
-    // let tmpClick = function() {
-    //   console.log('click');
-    //   this.images[0].click();
-    // };
-    // tmpClick = tmpClick.bind(this);
-    // setTimeout(tmpClick, 500);
   }
 
   componentWillUnmount() {
@@ -444,12 +437,14 @@ class Gallery extends React.Component {
       <div className={classes.join(' ')}>
         <div className='gallery-images' ref='gallery'>
         {
-          this.props.images.map((image, index) => {
-            image.variant = 'gallery';
-
-            if (this.props.fullscreen) {
-              image.linked = 'fullscreen';
-            }
+          this.props.images.map((item, index) => {
+            let image = {
+              src: item.url,
+              alt: item.alt,
+              variant: 'gallery',
+              linked: (this.props.fullscreen) ? 'fullscreen' : null,
+              aspectRatio: item.aspectRatio
+            };
 
             return (
               <Image {...image} key={index} />
