@@ -6,6 +6,7 @@ class ContentBlock extends React.Component {
   static propTypes = {
     src: React.PropTypes.string,
     alt: React.PropTypes.string,
+    align: React.PropTypes.string,
     fixed: React.PropTypes.bool,
     gradient: React.PropTypes.string,
     children: React.PropTypes.oneOfType([
@@ -16,10 +17,15 @@ class ContentBlock extends React.Component {
     fullheight: React.PropTypes.bool
   };
 
+  static defaultProps = {
+    align: 'left'
+  };
+
   render() {
     let classes = [
       'widget',
-      'content-block'
+      'content-block',
+      this.props.align
     ];
 
     if (this.props.className) {
