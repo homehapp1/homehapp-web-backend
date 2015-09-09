@@ -10,14 +10,24 @@ class Image extends React.Component {
     src: React.PropTypes.string,
     url: React.PropTypes.string,
     alt: React.PropTypes.string.isRequired,
-    width: React.PropTypes.number,
-    height: React.PropTypes.number,
+    width: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string
+    ]),
+    height: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string
+    ]),
     aspectRatio: React.PropTypes.number,
     title: React.PropTypes.string,
     type: React.PropTypes.string,
     variant: React.PropTypes.string,
     mode: React.PropTypes.string,
-    linked: React.PropTypes.string,
+    linked: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.bool,
+      React.PropTypes.null
+    ]),
     className: React.PropTypes.string,
     applySize: React.PropTypes.bool
   };
@@ -29,7 +39,8 @@ class Image extends React.Component {
     title: '',
     type: 'content',
     mode: null,
-    applySize: false
+    applySize: false,
+    linked: ''
   };
 
   constructor() {
@@ -175,25 +186,35 @@ class Image extends React.Component {
         continue;
       }
 
+      let v = params[i];
+
       switch (i) {
         case 'width':
-          options.push(`w_${params[i]}`);
+          if (v === 'auto') {
+            break;
+          }
+
+          options.push(`w_${v}`);
           break;
 
         case 'height':
-          options.push(`h_${params[i]}`);
+          if (v === 'auto') {
+            break;
+          }
+
+          options.push(`h_${v}`);
           break;
 
         case 'mode':
-          options.push(`c_${params[i]}`);
+          options.push(`c_${v}`);
           break;
 
         case 'gravity':
-          options.push(`g_${params[i]}`);
+          options.push(`g_${v}`);
           break;
 
         case 'mask':
-          mask = `/l_${params[i]},fl_cutter`;
+          mask = `/l_${v},fl_cutter`;
 
           if (src.match(/\.jpe?g$/i)) {
             src = src.replace(/\.jpe?g$/i, '.png');
@@ -227,7 +248,7 @@ class Image extends React.Component {
     if (this.props.linked) {
       let href = this.resolveSrc(this.props.linked);
       return (
-        <a href={href}>
+        <a href={href} data-linked={this.props.linked}>
           <img {...this.attributes} />
         </a>
       );
