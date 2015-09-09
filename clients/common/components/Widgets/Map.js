@@ -4,15 +4,20 @@ import React from 'react';
 import classNames from 'classnames';
 import { merge } from '../../Helpers';
 import DOMManipulator from '../../DOMManipulator';
+import Loading from './Loading';
 
 import { GoogleMap, Marker } from 'react-google-maps';
 
 class Map extends React.Component {
   static propTypes = {
-    coordinates: React.PropTypes.array.isRequired,
+    center: React.PropTypes.array,
     label: React.PropTypes.string,
     zoom: React.PropTypes.number,
-    children: React.PropTypes.object
+    markers: React.PropTypes.array,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.array
+    ])
   };
 
   static defaultProps = {
@@ -39,7 +44,34 @@ class Map extends React.Component {
     container.height(width);
   }
 
+  // Get a plain arithmetic average for the center position for a set of
+  // markers
+  getCenter() {
+    if (this.props.center) {
+      return this.props.center;
+    }
+
+    let lat = 0;
+    let lng = 0;
+
+    // Show London if nothing else is available
+    if (!this.props.markers.length) {
+      return [51.5072, 0.1275];
+    }
+
+    for (let i = 0; i < this.props.markers.length; i++) {
+      lat += this.props.markers.position.lat;
+      lng += this.props.markers.position.lng;
+    }
+
+    return [lat / this.props.markers.length, lng / this.props.markers.length];
+  }
+
   render() {
+    if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+      return (<Loading />);
+    }
+
     let classes = [
       'widget',
       'map'
@@ -54,11 +86,13 @@ class Map extends React.Component {
       }
     };
 
+    let center = this.getCenter();
+
     let options = {
       defaultZoom: this.props.zoom,
       defaultCenter: {
-        lat: this.props.coordinates[0],
-        lng: this.props.coordinates[1]
+        lat: center[0],
+        lng: center[1]
       },
       options: opt,
       containerProps: merge(this.props, {
@@ -69,22 +103,13 @@ class Map extends React.Component {
       })
     };
 
-    let markers = [
-      {
-        position: {
-          lat: this.props.coordinates[0],
-          lng: this.props.coordinates[1]
-        }
-      }
-    ];
-
     return (
       <div className={classNames(classes)}>
         <div className='width-wrapper'>
           <div className='map-wrapper'>
             <GoogleMap {...options} ref='map'>
               {
-                markers.map((marker, index) => {
+                this.props.markers.map((marker, index) => {
                   return (
                     <Marker {...marker} key={index} />
                   );
