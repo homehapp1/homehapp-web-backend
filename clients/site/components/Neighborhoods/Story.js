@@ -106,8 +106,12 @@ class NeighborhoodsStory extends React.Component {
         <Separator icon='apartment' />
 
         <Map center={neighborhood.location.coordinates} markers={markers}>
-
+          <h2>@TODO:</h2>
+          <p>here comes a list of homes available in this neighborhood</p>
         </Map>
+        <ContentBlock align='center'>
+          <Link className='button' to='neighborhoodsViewHomes' params={{city: neighborhood.city.slug, neighborhood: neighborhood.slug}}>Show more homes</Link>
+        </ContentBlock>
       </div>
     );
   }
