@@ -128,7 +128,7 @@ class Image extends React.Component {
 
     switch (this.props.type) {
       case 'asset':
-        rval = `${this.state.config.revisionedStaticPath}/${src}`;
+        rval = `${this.state.config.revisionedStaticPath.replace(/\/$/, '')}/${src}`;
         break;
 
       case 'content':
@@ -146,15 +146,18 @@ class Image extends React.Component {
   getBaseUrl(src) {
     // Not prefixed with Cloudinary path
     if (!src.match(/^(https?:)?\/\//i)) {
-      return this.state.config.cloudinary.basePath;
+      // In case the cloudinary path isn't available, use the hard coded one
+      let p = this.state.config.cloudinary.basePath || 'https://res.cloudinary.com/homehapp/image/upload';
+      return p.replace(/\/$/, '');
     }
+
     let regs = src.match(/^((https?:)?\/\/res.cloudinary.com\/.+upload\/)/);
 
     if (!regs) {
       return '';
     }
 
-    return regs[1];
+    return regs[1].replace(/\/$/, '');
   }
 
   getPath(src) {
@@ -203,7 +206,7 @@ class Image extends React.Component {
     // content to the users as quickly as possible
     options.push('fl_progressive');
 
-    return `${this.getBaseUrl(src)}${options.join(',')}${mask}/${this.getPath(src)}`;
+    return `${this.getBaseUrl(src)}/${options.join(',')}${mask}/${this.getPath(src)}`;
   }
 
   getVariant(params, variant) {
