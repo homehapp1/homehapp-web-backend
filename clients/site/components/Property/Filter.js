@@ -35,9 +35,6 @@ export default class PropertyFilter extends React.Component {
 
     // Populate fake properties
     let items = [];
-    for (let i = 0; i < 20; i++) {
-      items.push(createProperty(i));
-    }
 
     let imageSrc = 'v1439885926/site/images/content/staircase.jpg';
 
