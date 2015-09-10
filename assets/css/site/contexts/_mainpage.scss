@@ -1,4 +1,5 @@
 #mainpage {
+  $previewWidth: 464px;
   .splash {
     $q: 14px;
 
@@ -22,16 +23,6 @@
       margin-top: $q;
     }
 
-    font-size: 150%;
-
-    @include medium() {
-      font-size: 120%;
-    }
-
-    @include small() {
-      font-size: 100%;
-    }
-
     h1, p {
       margin: 0;
     }
@@ -40,28 +31,42 @@
   .mainpage-list {
     padding-top: 5 * $contentPadding;
     padding-bottom: 5 * $contentPadding;
+    text-align: center;
+    background-color: white;
+
+    .call-to-action {
+      padding-top: 5 * $contentPadding;
+
+      .button {
+        max-width: 20em;
+        width: 100%;
+      }
+    }
 
     h2:first-child {
       margin-top: 0;
       margin-bottom: 3 * $contentPadding;
     }
   }
-  .mainpage-list {
-    text-align: center;
-    background-color: white;
-  }
 
-  .home-preview {
+  .preview {
     background-color: white;
     border: solid 1px $borderGray;
     display: inline-block;
     margin: 0 $contentPadding / 2 $contentPadding;
     text-align: left;
+    width: $previewWidth;
 
-    &:nth-child(3) + .home-preview {
-      @media only screen and (min-width: 1490px) {
+    &:nth-child(3) + .preview {
+      $minWidth: 3 * $previewWidth + 4 * $contentPadding;
+
+      @media only screen and (min-width: #{$minWidth}) {
         display: none;
       }
+    }
+
+    @include small() {
+      max-width: 100%;
     }
 
     a {
@@ -75,9 +80,61 @@
         bottom: $contentPadding;
         z-index: 1;
         font-family: $highlightFont;
-        font-size: 200%;
+        font-size: $fontSizeHeading3;
         font-weight: 500;
         color: white;
+      }
+    }
+
+    img {
+      display: block;
+    }
+
+    .neighborhood-title {
+      display: table;
+      width: 100%;
+      height: 556px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+
+      & > * {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        font-family: $highlightFont;
+        font-size: $fontSizeHeading3;
+        font-weight: 400;
+      }
+    }
+
+    .actions {
+      position: absolute;
+      bottom: $contentPadding;
+      left: $contentPadding * 2;
+      right: $contentPadding * 2;
+      z-index: 2;
+      text-align: center;
+      font-size: $fontSizeSecondary;
+
+      a {
+        display: block;
+        border: solid 1px white;
+        padding: 0.5em 1em;
+
+        & + a {
+          margin-top: $contentPadding;
+        }
+      }
+    }
+
+    .neighborhood-title, .actions {
+      &, a {
+        color: white;
+        text-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
       }
     }
 
@@ -95,7 +152,7 @@
 
     .description {
       padding: $contentPadding;
-      font-size: 150%;
+      font-size: $fontSizeSecondary;
       height: 145px;
 
       p {

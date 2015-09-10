@@ -81,6 +81,41 @@ export default class Homepage extends React.Component {
 
     let homes = this.state.homes.splice(0, 4);
 
+    let images = [
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9094.jpg', alt: '', aspectRatio: 0.8443 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9096.jpg', alt: '', aspectRatio: 2.1757 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9097.jpg', alt: '', aspectRatio: 1 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9102.jpg', alt: '', aspectRatio: 1.8448 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9103.jpg', alt: '', aspectRatio: 2.1683 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9104.jpg', alt: '', aspectRatio: 0.763 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9108.jpg', alt: '', aspectRatio: 1.6141 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9136.jpg', alt: '', aspectRatio: 1 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9139.jpg', alt: '', aspectRatio: 1.1116 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9140.jpg', alt: '', aspectRatio: 0.7938 },
+      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9141.jpg', alt: '', aspectRatio: 1.5 }
+    ];
+
+    let neighborhoods = [
+      {
+        title: 'St. John`s Wood',
+        slug: 'st_johns_wood'
+      },
+      {
+        title: 'West End',
+        slug: 'westend',
+        images: [images[1]]
+      },
+      {
+        title: 'China Town',
+        slug: 'china_town',
+        images: [images[2]]
+      },
+      {
+        title: 'The City',
+        slug: 'the_city'
+      }
+    ];
+
     return (
       <div id='mainpage' className='mainpage'>
         <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.9}>
@@ -125,7 +160,7 @@ export default class Homepage extends React.Component {
                 let price = home.costs.sellingPrice;
 
                 return (
-                  <div className='home-preview' key={index}>
+                  <div className='preview' key={index}>
                     <Link {...link}>
                       <Hoverable {...home.images[0]} width={464} height={556} mode='fill' applySize={true}>
                         <span className='title'>{home.homeTitle}</span>
@@ -144,46 +179,65 @@ export default class Homepage extends React.Component {
               })
             }
           </div>
+          <p className='call-to-action'>
+            <Link to='properties' className='button'>Find more</Link>
+          </p>
         </div>
-        <ContentBlock className='item-separator with-gradient'>
-          <h2>Find your home and continue the story</h2>
-          <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-          <iframe src='https://player.vimeo.com/video/74145280' width='100%' height='550' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>
-        </ContentBlock>
         <ContentBlock className='with-gradient'>
-          <Tabs>
-            <Tabs.Panel title='Homehapp for buyers'>
-              <Columns cols={2} className='table' align='center' valign='middle'>
-                <Image src='images/icons/icon_mobile_large.svg' alt='' type='asset' />
-                <div className='highlight'>
-                  <p>
-                    Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  </p>
-                </div>
-              </Columns>
-            </Tabs.Panel>
-            <Tabs.Panel title='For sellers and agents'>
-              <div className='highlight'>
-                <p>
-                  Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </div>
-            </Tabs.Panel>
-          </Tabs>
-        </ContentBlock>
-        <ContentBlock className='with-gradient'>
-          <Columns cols={2} className='table find-agents' align='center' valign='middle'>
-            <div className='highlight centered'>
-              <p>Find agents. Professionals will help you in telling your view of your home.</p>
+          <div className='center'>
+            <hr className='spacer' />
+            <Image {...mainImage} width={970} />
+            <hr className='spacer' />
+          </div>
+          <h2 className='block-title'>Partner with us</h2>
+          <Columns cols={2} className='table important' align='center' valign='middle'>
+            <div className='first center'>
               <p>
-                <a href='#' className='button'>Find agents</a>
+                <em>Become a service provider in Homehapp. We are looking for estate agents partners, legals, home decor...</em>
+              </p>
+              <p>
+                <Link to='formsPartners' className='button white'>Contact</Link>
               </p>
             </div>
-            <div className='right'>
-              <Image src='images/pixel.gif' alt='' type='asset' className='placeholder' />
+            <div className='second center'>
+              @TODO: image
             </div>
           </Columns>
         </ContentBlock>
+        <div className='mainpage-list clearfix'>
+          <h2>Where is your home</h2>
+          <div className='neighborhood-list' ref='neighborhoodList'>
+            {
+              neighborhoods.map((neighborhood, index) => {
+                let image = (neighborhood.images && neighborhood.images[0]) ? neighborhood.images[0] : null;
+                return (
+                  <div className='preview' key={index}>
+                    <Hoverable {...image} width={464} height={556} mode='fill' applySize={true}>
+                      <div className='neighborhood-title'>
+                        <Link to='neighborhoodsView' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                          <span className='title'>{neighborhood.title}</span>
+                        </Link>
+                      </div>
+
+                      <div className='actions'>
+                        <Link to='neighborhoodsView' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                          Read About
+                        </Link>
+                        <Link to='neighborhoodsViewHomes' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                          Show Homes
+                        </Link>
+                      </div>
+                    </Hoverable>
+                  </div>
+                );
+              })
+            }
+
+            <p className='call-to-action'>
+              <Link to='properties' className='button'>Find more</Link>
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
