@@ -4,7 +4,7 @@ import React from 'react';
 import Story from '../../../common/components/Widgets/Story';
 import { formatPrice, primaryHomeTitle } from '../../../common/Helpers';
 
-class HomeDetails extends React.Component {
+export default class HomeDetails extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired
   }
@@ -156,5 +156,3 @@ class HomeDetails extends React.Component {
     );
   }
 }
-
-export default HomeDetails;

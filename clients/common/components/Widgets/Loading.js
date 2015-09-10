@@ -4,7 +4,7 @@ import React from 'react';
 
 import ContentBlock from './ContentBlock';
 
-class Loading extends React.Component {
+export default class Loading extends React.Component {
   static propTypes = {
     children: React.PropTypes.oneOfType([
       React.PropTypes.null,
@@ -22,5 +22,3 @@ class Loading extends React.Component {
     );
   }
 }
-
-export default Loading;

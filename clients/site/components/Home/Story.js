@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 import Story from '../../../common/components/Widgets/Story';
 
-class HomeStory extends React.Component {
+export default class HomeStory extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired
   }
@@ -43,5 +43,3 @@ class HomeStory extends React.Component {
     );
   }
 }
-
-export default HomeStory;

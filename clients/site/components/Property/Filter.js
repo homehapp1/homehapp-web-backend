@@ -10,7 +10,7 @@ import PropertyPreview from './Preview';
 
 import BigImage from '../../../common/components/Widgets/BigImage';
 
-class PropertyFilter extends React.Component {
+export default class PropertyFilter extends React.Component {
   static propTypes = {
     // home: React.PropTypes.object.isRequired,
     params: React.PropTypes.object
@@ -85,5 +85,3 @@ class PropertyFilter extends React.Component {
     );
   }
 }
-
-export default PropertyFilter;

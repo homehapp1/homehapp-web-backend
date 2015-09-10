@@ -16,7 +16,7 @@ import Map from './Map';
 import Neighborhood from './Neighborhood';
 import Separator from './Separator';
 
-class Story extends React.Component {
+export default class Story extends React.Component {
   static propTypes = {
     blocks: React.PropTypes.array.isRequired
   };
@@ -210,5 +210,3 @@ class Story extends React.Component {
     );
   }
 }
-
-export default Story;

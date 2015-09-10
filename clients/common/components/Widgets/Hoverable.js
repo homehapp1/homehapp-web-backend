@@ -4,7 +4,7 @@ import React from 'react';
 import Image from './Image';
 // import classNames from 'classnames';
 
-class Hoverable extends React.Component {
+export default class Hoverable extends React.Component {
   static propTypes = {
     src: React.PropTypes.string,
     url: React.PropTypes.string,
@@ -35,5 +35,3 @@ class Hoverable extends React.Component {
     );
   }
 }
-
-export default Hoverable;

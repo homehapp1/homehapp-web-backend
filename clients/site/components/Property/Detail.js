@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-class PropertyDetail extends React.Component {
+export default class PropertyDetail extends React.Component {
   static propTypes = {
     label: React.PropTypes.string.isRequired,
     values: React.PropTypes.array.isRequired
@@ -25,5 +25,3 @@ class PropertyDetail extends React.Component {
     );
   }
 }
-
-export default PropertyDetail;

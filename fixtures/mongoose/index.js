@@ -216,47 +216,40 @@ let createHome = function(index)
   let neighborhoods = [
     {
       title: 'St. John`s Wood',
-      slug: 'st_johns_wood',
-      images: getRandom(images, randomSeed(2, images.length)),
-      coordinates: getCoords(),
+      slug: 'st_johns_wood'
     },
     {
       title: 'West End',
-      slug: 'west_end',
-      images: getRandom(images, randomSeed(2, images.length)),
-      coordinates: getCoords(),
+      slug: 'west_end'
     },
     {
       title: 'China Town',
-      slug: 'china_town',
-      images: getRandom(images, randomSeed(2, images.length)),
-      coordinates: getCoords(),
+      slug: 'china_town'
     },
     {
       title: 'The City',
-      slug: 'the_city',
-      images: getRandom(images, randomSeed(2, images.length)),
-      coordinates: getCoords(),
+      slug: 'the_city'
     },
     {
       title: 'South Bank',
-      slug: 'south_bank',
-      images: getRandom(images, randomSeed(2, images.length)),
-      coordinates: getCoords(),
+      slug: 'south_bank'
     },
     {
       title: 'East End',
-      slug: 'east_end',
-      images: getRandom(images, randomSeed(2, images.length)),
-      coordinates: getCoords(),
+      slug: 'east_end'
     },
     {
       title: 'Westminster',
-      slug: 'westminster',
-      images: getRandom(images, randomSeed(2, images.length)),
-      coordinates: getCoords(),
+      slug: 'westminster'
     }
   ];
+
+  for (let i = 0; i < neighborhoods.length; i++) {
+    neighborhoods[i].images = getRandom(images, randomSeed(2, images.length));
+    neighborhoods[i].images.location = {
+      coordinates: getCoords()
+    };
+  }
 
   let getTitle = function() {
     let titles = [

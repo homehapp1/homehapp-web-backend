@@ -9,7 +9,7 @@ import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
 
-class NeighborhoodsList extends React.Component {
+export default class NeighborhoodsList extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
   };
@@ -80,5 +80,3 @@ class NeighborhoodsList extends React.Component {
     );
   }
 }
-
-export default NeighborhoodsList;

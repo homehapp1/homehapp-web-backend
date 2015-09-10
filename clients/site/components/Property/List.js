@@ -8,7 +8,7 @@ import { Link } from 'react-router';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 import PropertyDetail from './Detail';
 
-class PropertyList extends React.Component {
+export default class PropertyList extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired
   }
@@ -77,5 +77,3 @@ class PropertyList extends React.Component {
     );
   }
 }
-
-export default PropertyList;

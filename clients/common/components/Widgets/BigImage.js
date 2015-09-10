@@ -1,11 +1,12 @@
 'use strict';
 
 import React from 'react';
-import { setFullHeight } from '../../Helpers';
+import { setFullHeight, merge } from '../../Helpers';
+import DOMManipulator from '../../DOMManipulator';
 import classNames from 'classnames';
 import Image from './Image';
 
-class BigImage extends React.Component {
+export default class BigImage extends React.Component {
   static propTypes = {
     image: React.PropTypes.object.isRequired,
     fixed: React.PropTypes.bool,
@@ -40,7 +41,10 @@ class BigImage extends React.Component {
       classes.push('fixed');
     }
 
-    let image = this.props.image;
+    let image = merge({}, this.props.image);
+    image.mode = 'fill';
+    console.log('image', image);
+
     let props = {
       className: classNames(classes),
       'data-gradient': this.props.gradient,
@@ -60,10 +64,10 @@ class BigImage extends React.Component {
 
     return (
       <div {...props}>
-        <div className='image-content'>
-          <Image {...image} className='show-for-large' width={1920} mode='scale' />
-          <Image {...image} className='show-for-medium' width={1000} mode='scale' />
-          <Image {...image} className='show-for-small' height={600} mode='fill' />
+        <div className='image-content' ref='images'>
+          <Image {...image} className='show-for-large' width={1920} height={800} />
+          <Image {...image} className='show-for-medium' width={1000} height={800} />
+          <Image {...image} className='show-for-small' width={600} height={600} />
         </div>
         {author}
         <div className='image-text full-height' {...textProps}>
@@ -73,5 +77,3 @@ class BigImage extends React.Component {
     );
   }
 }
-
-export default BigImage;

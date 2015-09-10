@@ -4,7 +4,7 @@
 import React from 'react';
 import { scrollTop, setFullHeight, itemViews } from '../../Helpers';
 
-class Layout extends React.Component {
+export default class Layout extends React.Component {
   static propTypes = {
     children: React.PropTypes.array.isRequired
   }
@@ -52,5 +52,3 @@ class Layout extends React.Component {
     );
   }
 }
-
-export default Layout;

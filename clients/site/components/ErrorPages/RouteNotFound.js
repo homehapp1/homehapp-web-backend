@@ -3,7 +3,7 @@
 import React from 'react';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
-class RouteNotFound extends React.Component {
+export default class RouteNotFound extends React.Component {
   componentWillMount() {
     this.error = {
       title: 'Not found!',
@@ -23,5 +23,3 @@ class RouteNotFound extends React.Component {
     );
   }
 }
-
-export default RouteNotFound;

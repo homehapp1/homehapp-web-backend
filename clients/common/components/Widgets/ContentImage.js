@@ -5,7 +5,7 @@ import Columns from './Columns';
 import ContentBlock from './ContentBlock';
 import Image from './Image';
 
-class ContentImage extends React.Component {
+export default class ContentImage extends React.Component {
   static propTypes = {
     image: React.PropTypes.object.isRequired,
     imageAlign: React.PropTypes.string,
@@ -80,5 +80,3 @@ class ContentImage extends React.Component {
     );
   }
 }
-
-export default ContentImage;

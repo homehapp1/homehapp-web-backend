@@ -16,7 +16,7 @@ import Icon from '../../../common/components/Widgets/Icon';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
 
-class NeighborhoodHomeFilter extends React.Component {
+export default class NeighborhoodHomeFilter extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired,
     neighborhood: React.PropTypes.object //.isRequired
@@ -112,5 +112,3 @@ class NeighborhoodHomeFilter extends React.Component {
     );
   }
 }
-
-export default NeighborhoodHomeFilter;

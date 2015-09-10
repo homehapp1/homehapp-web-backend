@@ -71,6 +71,7 @@ cd ../../../
 ./support/createContainers.sh site
 ./support/createContainers.sh admin
 
+# These are run only when creating the clusters, not when updating them
 ./support/createCluster.sh site stg
 ./support/createCluster.sh admin stg
 
@@ -89,3 +90,11 @@ Run the distribution script to propagate files to CDN
 
     npm run distribute-site
     npm run distribute-admin
+
+# Run locally
+
+1. Start Mongo with `mongod`
+  - check *Loading fixture data to database* on the first run or
+    to create local content
+2. For running the site use `npm run dev`
+3. For running the admin interface use `npm run dev-admin`

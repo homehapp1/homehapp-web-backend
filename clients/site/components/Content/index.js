@@ -3,14 +3,19 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-class Content extends React.Component {
+import ContentBlock from '../../../common/components/Widgets/ContentBlock';
+
+export default class Content extends React.Component {
+  static propTypes = {
+    params: React.PropTypes.object
+  };
+
   render() {
+    console.log('Content', this);
     return (
-      <div id='content' className='width-wrapper full-height'>
-        Content lorem ipsum
-      </div>
+      <ContentBlock className='padded'>
+        Content lorem ipsum for {this.props.params.slug}
+      </ContentBlock>
     );
   }
 }
-
-export default Content;

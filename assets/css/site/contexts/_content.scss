@@ -1,12 +1,28 @@
 #container {
   padding-bottom: $footerHeight;
   @include clearfix();
+
+  .left {
+    text-align: left;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  .right {
+    text-align: right;
+  }
+
+  @import "content/about";
 }
 
 .spacer {
   height: 3 * $contentPadding;
   display: block;
   background-color: white;
+  border: none;
+  margin: 0;
 }
 
 iframe {
@@ -21,5 +37,4 @@ iframe {
 
 .call-to-action {
   text-align: center;
-  font-size: 120%;
 }

@@ -5,19 +5,29 @@ import ApplicationStore from '../../stores/ApplicationStore';
 import { merge } from '../../Helpers';
 // import classNames from 'classnames';
 
-class Image extends React.Component {
+export default class Image extends React.Component {
   static propTypes = {
     src: React.PropTypes.string,
     url: React.PropTypes.string,
     alt: React.PropTypes.string.isRequired,
-    width: React.PropTypes.number,
-    height: React.PropTypes.number,
+    width: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string
+    ]),
+    height: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string
+    ]),
     aspectRatio: React.PropTypes.number,
     title: React.PropTypes.string,
     type: React.PropTypes.string,
     variant: React.PropTypes.string,
     mode: React.PropTypes.string,
-    linked: React.PropTypes.string,
+    linked: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.bool,
+      React.PropTypes.null
+    ]),
     className: React.PropTypes.string,
     applySize: React.PropTypes.bool
   };
@@ -29,7 +39,8 @@ class Image extends React.Component {
     title: '',
     type: 'content',
     mode: null,
-    applySize: false
+    applySize: false,
+    linked: ''
   };
 
   constructor() {
@@ -63,11 +74,11 @@ class Image extends React.Component {
   }
 
   resolveAttributes() {
-    if (this.props.width) {
+    if (this.props.width && this.props.applySize !== false) {
       this.attributes.width = this.props.width;
     }
 
-    if (this.props.height) {
+    if (this.props.height && this.props.applySize !== false) {
       this.attributes.height = this.props.height;
     }
 
@@ -82,6 +93,10 @@ class Image extends React.Component {
 
     if (this.props.className) {
       this.attributes.className = this.props.className;
+    }
+
+    if (this.props.width && this.props.height) {
+      this.props.aspectRatio = this.props.width / this.props.height;
     }
 
     if (this.props.aspectRatio) {
@@ -125,10 +140,11 @@ class Image extends React.Component {
   resolveSrc(variant) {
     let src = this.props.src || this.props.url;
     let rval = null;
+    src = src.replace(/^\//, '');
 
     switch (this.props.type) {
       case 'asset':
-        rval = `${this.state.config.revisionedStaticPath}/${src}`;
+        rval = `${this.state.config.revisionedStaticPath.replace(/\/$/, '')}/${src}`;
         break;
 
       case 'content':
@@ -146,15 +162,18 @@ class Image extends React.Component {
   getBaseUrl(src) {
     // Not prefixed with Cloudinary path
     if (!src.match(/^(https?:)?\/\//i)) {
-      return this.state.config.cloudinary.basePath;
+      // In case the cloudinary path isn't available, use the hard coded one
+      let p = this.state.config.cloudinary.basePath || 'https://res.cloudinary.com/homehapp/image/upload';
+      return p.replace(/\/$/, '');
     }
+
     let regs = src.match(/^((https?:)?\/\/res.cloudinary.com\/.+upload\/)/);
 
     if (!regs) {
       return '';
     }
 
-    return regs[1];
+    return regs[1].replace(/\/$/, '');
   }
 
   getPath(src) {
@@ -172,25 +191,35 @@ class Image extends React.Component {
         continue;
       }
 
+      let v = params[i];
+
       switch (i) {
         case 'width':
-          options.push(`w_${params[i]}`);
+          if (v === 'auto') {
+            break;
+          }
+
+          options.push(`w_${v}`);
           break;
 
         case 'height':
-          options.push(`h_${params[i]}`);
+          if (v === 'auto') {
+            break;
+          }
+
+          options.push(`h_${v}`);
           break;
 
         case 'mode':
-          options.push(`c_${params[i]}`);
+          options.push(`c_${v}`);
           break;
 
         case 'gravity':
-          options.push(`g_${params[i]}`);
+          options.push(`g_${v}`);
           break;
 
         case 'mask':
-          mask = `/l_${params[i]},fl_cutter`;
+          mask = `/l_${v},fl_cutter`;
 
           if (src.match(/\.jpe?g$/i)) {
             src = src.replace(/\.jpe?g$/i, '.png');
@@ -203,7 +232,7 @@ class Image extends React.Component {
     // content to the users as quickly as possible
     options.push('fl_progressive');
 
-    return `${this.getBaseUrl(src)}${options.join(',')}${mask}/${this.getPath(src)}`;
+    return `${this.getBaseUrl(src)}/${options.join(',')}${mask}/${this.getPath(src)}`;
   }
 
   getVariant(params, variant) {
@@ -224,7 +253,7 @@ class Image extends React.Component {
     if (this.props.linked) {
       let href = this.resolveSrc(this.props.linked);
       return (
-        <a href={href}>
+        <a href={href} data-linked={this.props.linked}>
           <img {...this.attributes} />
         </a>
       );
@@ -247,5 +276,3 @@ class Image extends React.Component {
     return this.renderImage();
   }
 }
-
-export default Image;
