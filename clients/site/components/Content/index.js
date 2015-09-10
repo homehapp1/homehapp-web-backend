@@ -6,6 +6,10 @@ import { Link } from 'react-router';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
 export default class Content extends React.Component {
+  static propTypes = {
+    params: React.PropTypes.object
+  };
+
   render() {
     console.log('Content', this);
     return (
