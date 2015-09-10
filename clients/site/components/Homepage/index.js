@@ -204,7 +204,7 @@ export default class Homepage extends React.Component {
             </div>
           </Columns>
         </ContentBlock>
-        <div className='mainpage-list clearfix'>
+        <div className='mainpage-list clearfix with-gradient widget'>
           <h2>Where is your home</h2>
           <div className='neighborhood-list' ref='neighborhoodList'>
             {
