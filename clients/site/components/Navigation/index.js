@@ -16,23 +16,23 @@ export default class Navigation extends React.Component {
 
   componentDidMount() {
     this.icon = new DOMManipulator(this.refs.icon);
-    this.icon.addEvent('mouseover', this.mouseover);
-    this.icon.addEvent('mouseout', this.mouseout);
-    this.icon.addEvent('click', this.click, true);
+    // this.icon.addEvent('mouseover', this.mouseover);
+    // this.icon.addEvent('mouseout', this.mouseout);
+    // this.icon.addEvent('click', this.click, true);
     this.icon.addEvent('touch', this.click, true);
 
     this.navigation = new DOMManipulator(this.refs.navigation);
   }
 
   componentWillUnmount() {
-    this.icon.removeEvent('mouseover', this.mouseover);
-    this.icon.removeEvent('mouseout', this.mouseout);
-    this.icon.removeEvent('click', this.click, true);
+    // this.icon.removeEvent('mouseover', this.mouseover);
+    // this.icon.removeEvent('mouseout', this.mouseout);
+    // this.icon.removeEvent('click', this.click, true);
     this.icon.removeEvent('touch', this.click, true);
   }
 
   hideNavigation() {
-    document.removeEventListener('click', this.toggle, false);
+    // document.removeEventListener('click', this.toggle, false);
     document.removeEventListener('touch', this.toggle, false);
     this.navigation.removeClass('open');
     this.icon.removeClass('open');

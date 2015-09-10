@@ -1,4 +1,5 @@
 #navigation {
+  $offset: 10px;
   $pv: $contentPadding;
   display: block;
   position: absolute;
@@ -17,8 +18,8 @@
     height: $navigationIconSize;
     position: fixed;
     z-index: $zNavigation - 1;
-    top: ($headerHeight - $navigationIconSize) / 2;
-    right: ($headerHeight - $navigationIconSize) / 2;
+    top: $offset * 2;
+    right: $offset * 2;
     border-radius: $navigationIconSize;
 
     &:before {
@@ -73,7 +74,7 @@
       }
     }
 
-    &.open {
+    &.open, &:hover {
       & > * {
         background-color: $red;
         box-shadow: none;
@@ -124,8 +125,8 @@
 
   & > .container {
     position: fixed;
-    top: $contentPadding;
-    right: $contentPadding;
+    top: $offset;
+    right: $offset;
     z-index: 9;
     width: 0;
     overflow: hidden;
@@ -177,7 +178,7 @@
     }
   }
 
-  &.open {
+  &.open, &:hover {
     & > .icon {
       float: right;
     }
