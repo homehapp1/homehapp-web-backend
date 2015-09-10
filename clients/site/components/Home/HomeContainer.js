@@ -19,7 +19,7 @@ export default class HomeContainer extends React.Component {
 
   componentDidMount() {
     HomeStore.listen(this.homeStoreListener);
-    HomeStore.fetchHomeBySlug(this.props.params.slug);
+    HomeStore.fetchHomeBySlug(this.props.params.slug, true);
   }
 
   componentWillUnmount() {
