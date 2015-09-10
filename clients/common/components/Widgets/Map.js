@@ -21,7 +21,8 @@ export default class Map extends React.Component {
   };
 
   static defaultProps = {
-    zoom: 10
+    zoom: 10,
+    markers: []
   };
 
   constructor() {
