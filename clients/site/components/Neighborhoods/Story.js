@@ -11,7 +11,7 @@ import LargeText from '../../../common/components/Widgets/LargeText';
 import Map from '../../../common/components/Widgets/Map';
 import Separator from '../../../common/components/Widgets/Separator';
 
-class NeighborhoodsStory extends React.Component {
+export default class NeighborhoodsStory extends React.Component {
   static propTypes = {
     params: React.PropTypes.object,
     neighborhood: React.PropTypes.object //.isRequired
@@ -116,5 +116,3 @@ class NeighborhoodsStory extends React.Component {
     );
   }
 }
-
-export default NeighborhoodsStory;

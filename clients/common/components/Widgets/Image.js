@@ -5,7 +5,7 @@ import ApplicationStore from '../../stores/ApplicationStore';
 import { merge } from '../../Helpers';
 // import classNames from 'classnames';
 
-class Image extends React.Component {
+export default class Image extends React.Component {
   static propTypes = {
     src: React.PropTypes.string,
     url: React.PropTypes.string,
@@ -93,6 +93,10 @@ class Image extends React.Component {
 
     if (this.props.className) {
       this.attributes.className = this.props.className;
+    }
+
+    if (this.props.width && this.props.height) {
+      this.props.aspectRatio = this.props.width / this.props.height;
     }
 
     if (this.props.aspectRatio) {
@@ -272,5 +276,3 @@ class Image extends React.Component {
     return this.renderImage();
   }
 }
-
-export default Image;

@@ -8,7 +8,7 @@ import Navigation from '../Navigation';
 import Footer from '../Footer';
 import Layout from '../../../common/components/Layout';
 
-class Application extends React.Component {
+export default class Application extends React.Component {
   static propTypes = {
     // autoPlay: React.PropTypes.bool.isRequired,
     // maxLoops: React.PropTypes.number.isRequired,
@@ -39,5 +39,3 @@ class Application extends React.Component {
     );
   }
 }
-
-export default Application;

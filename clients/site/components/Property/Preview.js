@@ -9,7 +9,7 @@ import ReactSwipe from 'react-swipe';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 import { setFullHeight } from '../../../common/Helpers';
 
-class PropertyPreview extends React.Component {
+export default class PropertyPreview extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired
   }
@@ -97,5 +97,3 @@ class PropertyPreview extends React.Component {
     );
   }
 }
-
-export default PropertyPreview;

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class LargeText extends React.Component {
+export default class LargeText extends React.Component {
   static propTypes = {
     align: React.PropTypes.string,
     valign: React.PropTypes.string,
@@ -49,5 +49,3 @@ class LargeText extends React.Component {
     );
   }
 }
-
-export default LargeText;

@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import Image from '../../../common/components/Widgets/Image';
 
-class Footer extends React.Component {
+export default class Footer extends React.Component {
   render() {
     return (
       <div id='footer' className='clearfix' ref='footer'>
@@ -38,5 +38,3 @@ class Footer extends React.Component {
     );
   }
 }
-
-export default Footer;

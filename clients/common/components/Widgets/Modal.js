@@ -4,7 +4,7 @@ import React from 'react';
 import { setFullHeight } from '../../Helpers';
 import DOMManipulator from '../../DOMManipulator';
 
-class Modal extends React.Component {
+export default class Modal extends React.Component {
   static propTypes = {
     children: React.PropTypes.object.isRequired,
     onclose: React.PropTypes.function,
@@ -90,5 +90,3 @@ class Modal extends React.Component {
     );
   }
 }
-
-export default Modal;

@@ -8,7 +8,7 @@ import Loading from './Loading';
 
 import { GoogleMap, Marker } from 'react-google-maps';
 
-class Map extends React.Component {
+export default class Map extends React.Component {
   static propTypes = {
     center: React.PropTypes.array,
     label: React.PropTypes.string,
@@ -125,5 +125,3 @@ class Map extends React.Component {
     );
   }
 }
-
-export default Map;

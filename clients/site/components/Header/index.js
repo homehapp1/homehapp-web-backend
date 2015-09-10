@@ -6,7 +6,7 @@ import DOMManipulator from '../../../common/DOMManipulator';
 import { scrollTop } from '../../../common/Helpers';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 
-class Header extends React.Component {
+export default class Header extends React.Component {
   constructor() {
     super();
     this.config = ApplicationStore.getState().config;
@@ -55,5 +55,3 @@ class Header extends React.Component {
     );
   }
 }
-
-export default Header;

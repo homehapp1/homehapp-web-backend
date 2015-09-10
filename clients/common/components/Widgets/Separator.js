@@ -3,7 +3,7 @@
 import React from 'react';
 import Icon from './Icon';
 
-class Separator extends React.Component {
+export default class Separator extends React.Component {
   static propTypes = {
     icon: React.PropTypes.string,
     children: React.PropTypes.oneOfType([
@@ -31,5 +31,3 @@ class Separator extends React.Component {
     );
   }
 }
-
-export default Separator;

@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from './Image';
 
-class Icon extends React.Component {
+export default class Icon extends React.Component {
   static propTypes = {
     type: React.PropTypes.string.isRequired,
     color: React.PropTypes.string,
@@ -34,5 +34,3 @@ class Icon extends React.Component {
     );
   }
 }
-
-export default Icon;

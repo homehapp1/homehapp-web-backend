@@ -6,7 +6,7 @@ import RouteNotFound from './RouteNotFound';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
-class HomeRouteNotFound extends RouteNotFound {
+export default class HomeRouteNotFound extends RouteNotFound {
   componentWillMount() {
     super.componentWillMount();
     this.error.message = 'Home not found';
@@ -28,5 +28,3 @@ class HomeRouteNotFound extends RouteNotFound {
     );
   }
 }
-
-export default HomeRouteNotFound;

@@ -4,7 +4,7 @@ import React from 'react';
 import BigImage from '../Widgets/BigImage';
 import LargeText from '../Widgets/LargeText';
 
-class ErrorPage extends React.Component {
+export default class ErrorPage extends React.Component {
   static propTypes = {
     children: React.PropTypes.object,
     title: React.PropTypes.string.isRequired,
@@ -53,5 +53,3 @@ class ErrorPage extends React.Component {
     );
   }
 }
-
-export default ErrorPage;

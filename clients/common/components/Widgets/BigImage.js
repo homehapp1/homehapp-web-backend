@@ -6,7 +6,7 @@ import DOMManipulator from '../../DOMManipulator';
 import classNames from 'classnames';
 import Image from './Image';
 
-class BigImage extends React.Component {
+export default class BigImage extends React.Component {
   static propTypes = {
     image: React.PropTypes.object.isRequired,
     fixed: React.PropTypes.bool,
@@ -24,34 +24,8 @@ class BigImage extends React.Component {
     valign: 'middle'
   };
 
-  fixMaxSize() {
-    let container = new DOMManipulator(this.refs.images);
-    let images = container.getByTagName('img');
-    let width = container.width();
-    let height = container.width();
-    let ar = width / height;
-
-    for (let i = 0; i < images.length; i++) {
-      if (images[i].width() / images[i].height() < ar) {
-        images[i].css('max-height', `${height}px`);
-      } else {
-        images[i].css('max-width', `${width}px`);
-      }
-    }
-
-    console.log('preparing to fix max sizes', images, images.length);
-  }
-
   componentDidMount() {
-    this.fixMaxSize = this.fixMaxSize.bind(this);
-
-    window.addEventListener('resize', this.fixMaxSize);
     setFullHeight();
-    this.fixMaxSize();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.fixMaxSize);
   }
 
   render() {
@@ -69,6 +43,7 @@ class BigImage extends React.Component {
 
     let image = merge({}, this.props.image);
     image.mode = 'fill';
+    console.log('image', image);
 
     let props = {
       className: classNames(classes),
@@ -102,5 +77,3 @@ class BigImage extends React.Component {
     );
   }
 }
-
-export default BigImage;

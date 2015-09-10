@@ -8,7 +8,7 @@ import { formatPrice, primaryHomeTitle } from '../../../common/Helpers';
 
 import Hoverable from './Hoverable';
 
-class Card extends React.Component {
+export default class Card extends React.Component {
   static propTypes = {
     item: React.PropTypes.object.isRequired
   };
@@ -55,5 +55,3 @@ class Card extends React.Component {
     );
   }
 }
-
-export default Card;

@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import DOMManipulator from '../../../common/DOMManipulator';
 
-class Navigation extends React.Component {
+export default class Navigation extends React.Component {
   constructor() {
     super();
     this.mouseover = this.mouseover.bind(this);
@@ -116,5 +116,3 @@ class Navigation extends React.Component {
     );
   }
 }
-
-export default Navigation;

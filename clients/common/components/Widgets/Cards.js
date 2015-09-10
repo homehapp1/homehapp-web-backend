@@ -5,7 +5,7 @@ import React from 'react';
 import DOMManipulator from '../../../common/DOMManipulator';
 import Card from './Card';
 
-class PropertyCards extends React.Component {
+export default class PropertyCards extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired,
     cols: React.PropTypes.number,
@@ -125,5 +125,3 @@ class PropertyCards extends React.Component {
     );
   }
 }
-
-export default PropertyCards;

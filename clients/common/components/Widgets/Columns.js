@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class Columns extends React.Component {
+export default class Columns extends React.Component {
   static propTypes = {
     max: React.PropTypes.number,
     cols: React.PropTypes.number.isRequired,
@@ -97,5 +97,3 @@ class Columns extends React.Component {
     );
   }
 }
-
-export default Columns;

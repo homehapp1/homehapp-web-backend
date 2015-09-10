@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from './Image';
 
-class Agent extends React.Component {
+export default class Agent extends React.Component {
   static propTypes = {
     title: React.PropTypes.string,
     phone: React.PropTypes.string,
@@ -53,5 +53,3 @@ class Agent extends React.Component {
     );
   }
 }
-
-export default Agent;

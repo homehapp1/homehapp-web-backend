@@ -17,7 +17,7 @@ import Loading from '../../../common/components/Widgets/Loading';
 
 import { formatPrice } from '../../../common/Helpers';
 
-class Homepage extends React.Component {
+export default class Homepage extends React.Component {
   constructor() {
     super();
     this.storeListener = this.onChange.bind(this);
@@ -182,5 +182,3 @@ class Homepage extends React.Component {
     );
   }
 }
-
-export default Homepage;

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class Pager extends React.Component {
+export default class Pager extends React.Component {
   static propTypes = {
     onchange: React.PropTypes.func.isRequired,
     onclose: React.PropTypes.func
@@ -70,5 +70,3 @@ class Pager extends React.Component {
     );
   }
 }
-
-export default Pager;

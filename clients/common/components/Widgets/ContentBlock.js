@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class ContentBlock extends React.Component {
+export default class ContentBlock extends React.Component {
   static propTypes = {
     src: React.PropTypes.string,
     alt: React.PropTypes.string,
@@ -45,5 +45,3 @@ class ContentBlock extends React.Component {
     );
   }
 }
-
-export default ContentBlock;

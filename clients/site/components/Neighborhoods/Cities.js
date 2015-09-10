@@ -3,7 +3,7 @@
 import React from 'react';
 import NeighborhoodsList from './List';
 
-class NeighborhoodsCities extends React.Component {
+export default class NeighborhoodsCities extends React.Component {
   componentDidMount() {
     window.location.href = '/neighborhoods/london';
   }
@@ -13,5 +13,3 @@ class NeighborhoodsCities extends React.Component {
     );
   }
 }
-
-export default NeighborhoodsCities;

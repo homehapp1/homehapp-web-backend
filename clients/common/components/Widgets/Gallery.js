@@ -7,7 +7,7 @@ import Modal from './Modal';
 import Pager from './Pager';
 import Image from './Image';
 
-class Gallery extends React.Component {
+export default class Gallery extends React.Component {
   static propTypes = {
     images: React.PropTypes.array.isRequired,
     title: React.PropTypes.string,
@@ -456,5 +456,3 @@ class Gallery extends React.Component {
     );
   }
 }
-
-export default Gallery;

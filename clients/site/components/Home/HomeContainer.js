@@ -7,7 +7,7 @@ import HomeStory from './Story';
 import Loading from '../../../common/components/Widgets/Loading';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
-class HomeContainer extends React.Component {
+export default class HomeContainer extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
   }
@@ -68,5 +68,3 @@ class HomeContainer extends React.Component {
     );
   }
 }
-
-export default HomeContainer;

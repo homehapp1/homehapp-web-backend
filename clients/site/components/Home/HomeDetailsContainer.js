@@ -5,7 +5,7 @@ import HomeContainer from './HomeContainer';
 import HomeStore from '../../stores/HomeStore';
 import HomeDetails from './Details';
 
-class HomeDetailsContainer extends HomeContainer {
+export default class HomeDetailsContainer extends HomeContainer {
   render() {
     if (this.state.error) {
       return this.handleErrorState();
@@ -19,5 +19,3 @@ class HomeDetailsContainer extends HomeContainer {
     );
   }
 }
-
-export default HomeDetailsContainer;

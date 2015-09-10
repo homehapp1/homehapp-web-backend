@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import BigImage from './BigImage';
 import LargeText from './LargeText';
 
-class Neighborhood extends React.Component {
+export default class Neighborhood extends React.Component {
   static propTypes = {
     title: React.PropTypes.string.isRequired,
     slug: React.PropTypes.string.isRequired,
@@ -30,5 +30,3 @@ class Neighborhood extends React.Component {
     );
   }
 }
-
-export default Neighborhood;
