@@ -11,6 +11,9 @@ export default class ContentPartners extends React.Component {
   render() {
     return (
       <ContentBlock className='padded' align='left' valign='top'>
+        <div className='center'>
+          <Icon type='clipboard' />
+        </div>
         <h1>Partners</h1>
         <p>Content comes here</p>
       </ContentBlock>

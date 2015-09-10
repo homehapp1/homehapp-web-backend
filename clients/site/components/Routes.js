@@ -29,6 +29,7 @@ import ContentCareers from './Content/Careers';
 import ContentPrivacy from './Content/Privacy';
 import ContentTerms from './Content/Terms';
 import ContentPartners from './Content/Partners';
+import FormsPartners from './Forms/Partners';
 
 module.exports = (
   <Route name='app' path='/' handler={Application}>
