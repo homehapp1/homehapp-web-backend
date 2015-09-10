@@ -134,6 +134,7 @@ export default class Image extends React.Component {
   }
 
   resolveSrc(variant) {
+    console.log('image', this.props);
     let src = this.props.src || this.props.url;
     let rval = null;
     src = src.replace(/^\//, '');
@@ -264,6 +265,12 @@ export default class Image extends React.Component {
   render() {
     if (!this.state.config) {
       return null;
+    }
+
+    if (!this.props.url && !this.props.src) {
+      console.warn('No image url or src provided, use a placeholder instead', this.props);
+      this.props.url = 'https://res.cloudinary.com/homehapp/image/upload/v1441913472/site/images/content/content-placeholder.jpg';
+      this.props.alt = 'Placeholder';
     }
 
     let params = this.resolveParams();
