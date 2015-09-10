@@ -56,7 +56,7 @@ export default class Map extends React.Component {
     let lng = 0;
 
     // Show London if nothing else is available
-    if (!this.props.markers.length) {
+    if (!this.props.markers || !this.props.markers.length) {
       return [51.5072, 0.1275];
     }
 
