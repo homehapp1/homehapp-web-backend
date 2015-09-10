@@ -90,11 +90,15 @@ export default class Homepage extends React.Component {
             </div>
           </LargeText>
         </BigImage>
-        <ContentBlock className='pattern mainpage-list'>
-          <h2>Our exclusive homes</h2>
-          <Columns cols={2}>
+        <div className='mainpage-list clearfix'>
+          <h2>Exclusively for Homehapp</h2>
+          <div className='home-list' ref='homeList'>
             {
               homes.map((home, index) => {
+                if (index > 3) {
+                  return null;
+                }
+
                 let link = {
                   to: 'home',
                   params: {
@@ -123,22 +127,24 @@ export default class Homepage extends React.Component {
                 return (
                   <div className='home-preview' key={index}>
                     <Link {...link}>
-                      <Hoverable {...home.images[0]} width={570} height={380} mode='fill' />
+                      <Hoverable {...home.images[0]} width={464} height={556} mode='fill' applySize={true}>
+                        <span className='title'>{home.homeTitle}</span>
+                      </Hoverable>
                     </Link>
                     <div className='description'>
-                      <h3><Link {...link}>{home.location.address.street}</Link></h3>
-                      <p><Link {...link}>{home.location.neighborhood.title}</Link></p>
-                      <p className='details'>
-                        <span className='rooms'>{rooms}</span>
-                        <span className='price'>{formatPrice(price)}</span>
+                      <p className='price'>{formatPrice(price)}</p>
+                      <p className='address'>
+                        <span className='street'>{home.location.address.street}</span>
+                        <span className='neighborhood'>{home.location.neighborhood.title}</span>
+                        <span className='city'>{home.location.address.city}</span>
                       </p>
                     </div>
                   </div>
                 );
               })
             }
-          </Columns>
-        </ContentBlock>
+          </div>
+        </div>
         <ContentBlock className='item-separator with-gradient'>
           <h2>Find your home and continue the story</h2>
           <p>Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
