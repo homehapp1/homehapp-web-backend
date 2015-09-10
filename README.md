@@ -14,7 +14,9 @@ Make sure you follow the Coding Standard as defined in here: https://github.com/
 
 To load fixtures to database run:
 
-    npm run migrate init applyFixtures
+```sh
+npm run migrate init applyFixtures
+```
 
 # Docker
 
@@ -22,32 +24,42 @@ If you are using Kitematic, open it first and click the "Docker CLI" -button. Th
 
 To build the Docker image
 
-    docker build -t homehapp/web:homehappweb .
+```sh
+docker build -t homehapp/web:homehappweb .
+```
 
 Run the container locally with linked mongo database container (start the mongo docker before, read below how)
 
-    docker run --name homehappweb1 -d -p 3001:3001 --link mongodb:db -e DATABASE_URI="mongodb://db/homehappweb" homehapp/web:homehappweb
+```sh
+docker run --name homehappweb1 -d -p 3001:3001 --link mongodb:db -e DATABASE_URI="mongodb://db/homehappweb" homehapp/web:homehappweb
+```
 
 To see that everything worked (it takes a while to start as it will run in the development mode for now)
 
-    docker logs homehappweb1
+```sh
+docker logs homehappweb1
+```
 
 Open your browser to your http://[DockerIP]:3001
 The IP you can find either from the Kitematic UI or with "boot2docker ip" -command.
 
 To remove the old docker image before running it again do:
 
-    docker rm homehappweb1
+```sh
+docker rm homehappweb1
+```
 
 ## Running Mongodb docker
 
 ### From project folder
 
-    cd support/dockers/mongodb
+```sh
+cd support/dockers/mongodb
 
-    (docker build -t qvik/dockermongo .)
+(docker build -t qvik/dockermongo .)
 
-    docker run --name mongodb -d qvik/dockermongo --noprealloc --smallfiles
+docker run --name mongodb -d qvik/dockermongo --noprealloc --smallfiles
+```
 
 ### From Kitematic
 
@@ -83,13 +95,17 @@ cd ../../../
 
 Build the site static files
 
-    npm run build-site
-    npm run build-admin
+```sh
+npm run build-site
+npm run build-admin
+```
 
 Run the distribution script to propagate files to CDN
 
-    npm run distribute-site
-    npm run distribute-admin
+```sh
+npm run distribute-site
+npm run distribute-admin
+```
 
 # Run locally
 
