@@ -24,8 +24,9 @@ import NeighborhoodsHomeFilter from './Neighborhoods/HomeFilter';
 
 // MIscellaneous other handlers
 import Content from './Content';
+import ContentAbout from './Content/About';
 
-let routes = (
+module.exports = (
   <Route name='app' path='/' handler={Application}>
     <DefaultRoute handler={Homepage}/>
     <Route name='home' path='/home/:slug'>
@@ -44,11 +45,11 @@ let routes = (
       <Route name='neighborhoodsViewHomes' path=':city/:neighborhood/homes' handler={NeighborhoodsHomeFilter} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
-    <Route name='content' path='/:slug' handler={Content}>
+    <Route name='contentAbout' path='/about' handler={ContentAbout} />
+    <Route name='content' handler={Content}>
+      <Route name='contentPage' path=':slug' handler={Content} />
       <DefaultRoute handler={Content} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
   </Route>
 );
-
-module.exports = routes;
