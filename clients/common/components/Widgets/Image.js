@@ -28,6 +28,7 @@ export default class Image extends React.Component {
       React.PropTypes.bool,
       React.PropTypes.null
     ]),
+    gravity: React.PropTypes.string,
     className: React.PropTypes.string,
     applySize: React.PropTypes.bool
   };
@@ -40,6 +41,7 @@ export default class Image extends React.Component {
     type: 'content',
     mode: null,
     applySize: false,
+    gravity: 'center',
     linked: ''
   };
 
@@ -84,12 +86,6 @@ export default class Image extends React.Component {
 
     this.attributes.alt = this.props.alt || '';
     this.attributes.title = this.props.title || this.attributes.alt;
-
-    // Determines if the width and height should be explicitly added to the
-    // DOM object attributes
-    if (this.props.applySize) {
-      this.applyDimensions();
-    }
 
     if (this.props.className) {
       this.attributes.className = this.props.className;
@@ -144,7 +140,7 @@ export default class Image extends React.Component {
 
     switch (this.props.type) {
       case 'asset':
-        let assetPath = this.state.config.revisionedStaticPath.replace(/raw/, 'image');
+        let assetPath = this.state.config.revisionedStaticPath.replace(/\/raw\//, '/image/');
         rval = `${assetPath.replace(/\/$/, '')}/${src}`;
         break;
 
