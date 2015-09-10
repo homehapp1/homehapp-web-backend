@@ -17,11 +17,17 @@ export default class Hoverable extends React.Component {
     mode: React.PropTypes.string,
     linked: React.PropTypes.string,
     className: React.PropTypes.string,
-    applySize: React.PropTypes.bool
+    applySize: React.PropTypes.bool,
+    gravity: React.PropTypes.string,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.array,
+      React.PropTypes.object
+    ])
   };
 
   static defaultProps = {
-    applySize: true
+    applySize: true,
+    gravity: 'center'
   };
 
   render() {
@@ -31,6 +37,7 @@ export default class Hoverable extends React.Component {
           <Image {...this.props} className='hoverable-image' />
         </span>
         <Image {...this.props} />
+        {this.props.children}
       </span>
     );
   }
