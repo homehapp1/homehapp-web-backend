@@ -12,7 +12,7 @@ export default class FormsPartners extends React.Component {
     return (
       <ContentBlock className='padded' align='left' valign='top'>
         <div className='center'>
-          <Icon type='clipboard' />
+          <Icon type='clipboard' className='large' />
         </div>
         <h1>Partners</h1>
         <p>Partners contact form will be here</p>

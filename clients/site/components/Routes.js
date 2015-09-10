@@ -54,8 +54,10 @@ module.exports = (
     <Route name='contentCareers' path='/careers' handler={ContentCareers} />
     <Route name='contentPrivacy' path='/privacy' handler={ContentPrivacy} />
     <Route name='contentTerms' path='/terms' handler={ContentTerms} />
-    <Route name='contentPartners' path='/partners' handler={ContentPartners}>
-      <Route name='formsPartners' path='/contact' handler={FormsPartners} />
+
+  <Route name='partners' path='/partners'>
+      <Route name='formsPartners' path='contact' handler={FormsPartners} />
+      <DefaultRoute handler={ContentPartners} />
     </Route>
     <NotFoundRoute handler={RouteNotFound} />
   </Route>
