@@ -25,6 +25,9 @@ import NeighborhoodsHomeFilter from './Neighborhoods/HomeFilter';
 // MIscellaneous other handlers
 import Content from './Content';
 import ContentAbout from './Content/About';
+import ContentCareers from './Content/Careers';
+import ContentPrivacy from './Content/Privacy';
+import ContentTerms from './Content/Terms';
 
 module.exports = (
   <Route name='app' path='/' handler={Application}>
@@ -46,10 +49,9 @@ module.exports = (
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='contentAbout' path='/about' handler={ContentAbout} />
-    <Route name='content' handler={Content}>
-      <Route name='contentPage' path=':slug' handler={Content} />
-      <DefaultRoute handler={Content} />
-      <NotFoundRoute handler={RouteNotFound} />
-    </Route>
+    <Route name='contentCareers' path='/careers' handler={ContentCareers} />
+    <Route name='contentPrivacy' path='/privacy' handler={ContentPrivacy} />
+    <Route name='contentTerms' path='/terms' handler={ContentTerms} />
+    <NotFoundRoute handler={RouteNotFound} />
   </Route>
 );
