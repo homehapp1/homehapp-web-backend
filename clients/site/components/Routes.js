@@ -39,7 +39,7 @@ module.exports = (
       <DefaultRoute handler={HomeContainer}/>
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
-    <Route name='properties' path='/properties'>
+    <Route name='properties' path='/search'>
       <Route name='propertiesMode' path=':mode' handler={PropertyFilter} />
       <DefaultRoute handler={PropertyFilter} />
       <NotFoundRoute handler={RouteNotFound} />
