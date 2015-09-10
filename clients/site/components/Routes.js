@@ -28,6 +28,7 @@ import ContentAbout from './Content/About';
 import ContentCareers from './Content/Careers';
 import ContentPrivacy from './Content/Privacy';
 import ContentTerms from './Content/Terms';
+import ContentPartners from './Content/Partners';
 
 module.exports = (
   <Route name='app' path='/' handler={Application}>
@@ -52,6 +53,9 @@ module.exports = (
     <Route name='contentCareers' path='/careers' handler={ContentCareers} />
     <Route name='contentPrivacy' path='/privacy' handler={ContentPrivacy} />
     <Route name='contentTerms' path='/terms' handler={ContentTerms} />
+    <Route name='contentPartners' path='/partners' handler={ContentPartners}>
+      <Route name='formsPartners' path='/contact' handler={FormsPartners} />
+    </Route>
     <NotFoundRoute handler={RouteNotFound} />
   </Route>
 );
