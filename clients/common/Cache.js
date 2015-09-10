@@ -48,6 +48,9 @@ class LocalStorage extends CacheStorage {
   hasValue(group, key) {
     let groupKey = this._generateGroupKey(group, key);
     let cachedValue = JSON.parse(this._storage.getItem(groupKey));
+    if (!cachedValue) {
+      return false;
+    }
     return this._isValidItem(cachedValue);
   }
   getValue(group, key) {
@@ -56,6 +59,9 @@ class LocalStorage extends CacheStorage {
     }
     let groupKey = this._generateGroupKey(group, key);
     let cachedValue = JSON.parse(this._storage.getItem(groupKey));
+    if (!cachedValue) {
+      return null;
+    }
     return cachedValue.data;
   }
   setValue(group, key, value) {
