@@ -33,7 +33,7 @@ export default class Story extends React.Component {
     if (item.properties.isPageTitle || !index) {
       primary = (<h1>{item.properties.title}</h1>);
     } else {
-      primary = (<h2>{item.properties.title}</h2>);
+      primary = (<h2 className='block-title'>{item.properties.title}</h2>);
     }
 
     if (item.properties.secondary) {
@@ -64,7 +64,7 @@ export default class Story extends React.Component {
     } else {
       content = (
         <div className='content-wrapper'>
-          <h2>{item.properties.label}</h2>
+          <h3>{item.properties.label}</h3>
           {item.properties.content}
         </div>
       );
@@ -104,7 +104,7 @@ export default class Story extends React.Component {
   }
 
   getContentImage(item, index) {
-    let title = (item.properties.title) ? (<h2>{item.properties.title}</h2>) : null;
+    let title = (item.properties.title) ? (<h3>{item.properties.title}</h3>) : null;
     let content = (item.properties.description) ? (<div className='content'>{item.properties.description}</div>) : null;
 
     return (
