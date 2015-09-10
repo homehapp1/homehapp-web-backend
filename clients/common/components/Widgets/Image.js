@@ -144,7 +144,8 @@ export default class Image extends React.Component {
 
     switch (this.props.type) {
       case 'asset':
-        rval = `${this.state.config.revisionedStaticPath.replace(/\/$/, '')}/${src}`;
+        let assetPath = this.state.config.revisionedStaticPath.replace(/raw/, 'image');
+        rval = `${assetPath.replace(/\/$/, '')}/${src}`;
         break;
 
       case 'content':
