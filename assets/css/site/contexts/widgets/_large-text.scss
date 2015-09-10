@@ -1,9 +1,9 @@
 &.large-text {
   background-color: transparent;
-  font-size: 200%;
+  //font-size: 200%;
 
   @include small() {
-    font-size: 140%;
+    //font-size: 140%;
   }
 
   &, a {

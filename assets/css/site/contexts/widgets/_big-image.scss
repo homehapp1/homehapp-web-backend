@@ -1,9 +1,12 @@
 &.big-image, &.video {
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
-  color: white;
-  text-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5), 0 0 1em rgba(0, 0, 0, 0.3);
   background-color: transparent;
   opacity: 1;
+
+  &, h1, h2, h3, p {
+    color: white;
+    text-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5), 0 0 1em rgba(0, 0, 0, 0.3);
+  }
 
   & > .image-content {
     @include imageFill();

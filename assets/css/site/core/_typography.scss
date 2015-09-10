@@ -3,7 +3,7 @@
 @import url("//fonts.googleapis.com/css?family=Roboto:400,300,300italic,700italic,700,400italic|Roboto+Slab:400,300,700");
 
 
-* {
+body {
   font-family: $defaultFont;
 }
 
@@ -48,24 +48,26 @@ a {
 body {
   font-size: $fontSize;
   font-weight: $defaultWeight;
+  color: $fontMediumGray;
 }
 
 h1, h2, h3, h4, h5, h6, li, p {
   line-height: 1.4em;
+  color: $fontGray;
 }
 
 h3 {
-  font-size: 150%;
+  font-size: $fontSizeHeading3;
   font-weight: $titleWeight;
 }
 
 h2 {
-  font-size: 200%;
+  font-size: $fontSizeHeading2;
   font-weight: $titleWeight;
 }
 
 h1, .block-title, .big-image h2 {
-  font-size: 250%;
+  font-size: $fontSizeHeading1;
   font-weight: $titleWeight;
   font-family: $highlightFont;
   font-weight: 400;
@@ -99,15 +101,28 @@ button, .button, .btn {
   display: inline-block;
   color: white;
   background-color: $darkGray;
+  border: solid 1px $darkGray;
   min-height: $buttonHeight;
   text-align: center;
   vertical-align: middle;
-  padding: 0.4em 3em;
+  padding: 0.6em 3em;
   text-decoration: none !important;
-  font-size: 120%;
+  font-size: $fontSizeButton;
+  font-weight: 400;
+  @include vendors(transition-property, all);
+  @include vendors(transition-duration, $transitionDuration);
 
   &:hover, &:active {
     background-color: lighten($darkGray, 5%);
+  }
+
+  &.white {
+    background-color: white;
+    color: $darkGray;
+
+    &:hover, &:active {
+      background-color: $extraLightGray;
+    }
   }
 }
 

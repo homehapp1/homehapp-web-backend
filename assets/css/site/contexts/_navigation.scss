@@ -7,6 +7,7 @@
   width: 100%;
   line-height: $headerHeight - 2 * $pv;
   text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+  font-size: $fontSizeSecondary;
   $spacing: 5px;
   $h: $navigationIconSize / 3 - $spacing;
   $oSquared: $h / 1.44;
