@@ -134,7 +134,6 @@ export default class Image extends React.Component {
   }
 
   resolveSrc(variant) {
-    console.log('image', this.props);
     let src = this.props.src || this.props.url;
     let rval = null;
     src = src.replace(/^\//, '');

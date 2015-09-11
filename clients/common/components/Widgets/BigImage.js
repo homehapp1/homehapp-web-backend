@@ -43,7 +43,6 @@ export default class BigImage extends React.Component {
 
     let image = merge({}, this.props.image);
     image.mode = 'fill';
-    console.log('image', image);
 
     let props = {
       className: classNames(classes),
