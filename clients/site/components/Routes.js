@@ -45,9 +45,11 @@ module.exports = (
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='neighborhoods' path='/neighborhoods'>
+      <Route name='neighborhoodsCities' path='' handler={NeighborhoodsCities} />
       <Route name='neighborhoodsList' path=':city' handler={NeighborhoodsList} />
       <Route name='neighborhoodsView' path=':city/:neighborhood' handler={NeighborhoodsStory} />
       <Route name='neighborhoodsViewHomes' path=':city/:neighborhood/homes' handler={NeighborhoodsHomeFilter} />
+      <DefaultRoute handler={NeighborhoodsCities} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='contentAbout' path='/about' handler={ContentAbout} />

@@ -41,6 +41,12 @@ export default class NeighborhoodsList extends React.Component {
       }
     ];
 
+    let city = 'london';
+
+    if (typeof this.props.params !== 'undefined' && typeof this.props.params.city !== 'undefined') {
+      city = this.props.params.city;
+    }
+
     return (
       <div className='neighborhood-list-container'>
         <BigImage image={image}>
@@ -53,18 +59,18 @@ export default class NeighborhoodsList extends React.Component {
             neighborhoods.map((item, index) => {
               return (
                 <div className='neighborhood'>
-                  <Link className='image-wrapper' to='neighborhoodsView' params={{city: this.props.params.city, neighborhood: item.slug}}>
+                  <Link className='image-wrapper' to='neighborhoodsView' params={{city: city, neighborhood: item.slug}}>
                     <Image {...item.image} width={1200} height={680} mode='fill' />
                   </Link>
                   <ContentBlock valign='center'>
                     <h2 className='block-title'>
-                      <Link to='neighborhoodsView' params={{city: this.props.params.city, neighborhood: item.slug}}>
+                      <Link to='neighborhoodsView' params={{city: city, neighborhood: item.slug}}>
                         {item.title}
                       </Link>
                     </h2>
                     <ul className='buttons'>
                       <li>
-                        <Link to='neighborhoodsView' params={{city: this.props.params.city, neighborhood: item.slug}}>
+                        <Link to='neighborhoodsView' params={{city: city, neighborhood: item.slug}}>
                           Read about
                         </Link>
                       </li>

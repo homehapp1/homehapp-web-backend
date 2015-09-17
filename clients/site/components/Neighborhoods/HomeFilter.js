@@ -106,7 +106,6 @@ export default class NeighborhoodHomeFilter extends React.Component {
           </LargeText>
         </BigImage>
         <ContentBlock className='padded'>
-          <Cards items={this.state.homes} />
         </ContentBlock>
       </div>
     );
