@@ -75,7 +75,7 @@
       }
     }
 
-    &.open, &:hover {
+    &.open {
       & > * {
         background-color: $red;
         box-shadow: none;
@@ -94,6 +94,31 @@
           $m: -0.5 * ($navigationIconSize - $oSquared);
           $t: translateY($m) rotate(-45deg);
           @include vendors(transform, $t);
+        }
+      }
+    }
+
+    @include notSmall() {
+      &:hover {
+        & > * {
+          background-color: $red;
+          box-shadow: none;
+
+          &.middle {
+            opacity: 0;
+          }
+
+          &.top {
+            $m: 0.5 * ($navigationIconSize - $oSquared);
+            $t: translateY($m) rotate(45deg);
+            @include vendors(transform, $t);
+          }
+
+          &.bottom {
+            $m: -0.5 * ($navigationIconSize - $oSquared);
+            $t: translateY($m) rotate(-45deg);
+            @include vendors(transform, $t);
+          }
         }
       }
     }
@@ -179,21 +204,20 @@
     }
   }
 
-  &.open, &:hover {
+  &.open {
     & > .icon {
       float: right;
     }
 
     & > .container {
       display: block;
-      width: 200px;
+      width: 250px;
 
       @include small() {
         width: 100%;
         left: 0;
       }
     }
-
   }
 }
 

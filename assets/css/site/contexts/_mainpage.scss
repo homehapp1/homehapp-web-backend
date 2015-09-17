@@ -1,5 +1,7 @@
 #mainpage {
   $previewWidth: 464px;
+  $o: 0.1;
+
   .splash {
     $q: 14px;
 
@@ -33,6 +35,7 @@
     padding-bottom: 5 * $contentPadding;
     text-align: center;
     background-color: white;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
 
     .call-to-action {
       padding-top: 5 * $contentPadding;
@@ -83,6 +86,7 @@
         font-size: $fontSizeHeading3;
         font-weight: 500;
         color: white;
+        text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
       }
     }
 
@@ -134,7 +138,18 @@
     .neighborhood-title, .actions {
       &, a {
         color: white;
-        text-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+        text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
+      }
+    }
+
+    .actions a {
+      background-color: rgba(0, 0, 0, $o);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 3 * $o);
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, $transitionDuration);
+
+      &:hover, &:active {
+        background-color: $buttonBackgroundHover;
       }
     }
 
@@ -153,7 +168,8 @@
     .description {
       padding: $contentPadding;
       font-size: $fontSizeSecondary;
-      height: 145px;
+      height: 7em;
+      overflow: hidden;
 
       p {
         margin: 0;

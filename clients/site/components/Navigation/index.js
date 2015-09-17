@@ -7,80 +7,43 @@ import DOMManipulator from '../../../common/DOMManipulator';
 export default class Navigation extends React.Component {
   constructor() {
     super();
-    this.mouseover = this.mouseover.bind(this);
-    this.mouseout = this.mouseout.bind(this);
     this.click = this.click.bind(this);
-    this.toggle = this.toggle.bind(this);
     this.body = null;
   }
 
   componentDidMount() {
     this.icon = new DOMManipulator(this.refs.icon);
-    // this.icon.addEvent('mouseover', this.mouseover);
-    // this.icon.addEvent('mouseout', this.mouseout);
-    // this.icon.addEvent('click', this.click, true);
-    this.icon.addEvent('touch', this.click, true);
+    this.icon.addEvent('touchstart', this.click, true);
+    this.icon.addEvent('mousedown', this.click, true);
 
     this.navigation = new DOMManipulator(this.refs.navigation);
   }
 
   componentWillUnmount() {
-    // this.icon.removeEvent('mouseover', this.mouseover);
-    // this.icon.removeEvent('mouseout', this.mouseout);
-    // this.icon.removeEvent('click', this.click, true);
-    this.icon.removeEvent('touch', this.click, true);
+    this.icon.removeEvent('touchstart', this.click, true);
+    this.icon.removeEvent('mousedown', this.click, true);
   }
 
   hideNavigation() {
-    // document.removeEventListener('click', this.toggle, false);
-    document.removeEventListener('touch', this.toggle, false);
-    this.navigation.removeClass('open');
     this.icon.removeClass('open');
-
-    if (this.body) {
-      this.body.removeClass('no-scroll-small').removeClass('away-for-small');
-    }
+    this.navigation.removeClass('open');
+    this.body.removeClass('no-scroll-small').removeClass('away-for-small');
   }
 
-  toggle(e) {
-    this.hideNavigation();
-    let target = e.target;
-
-    while (target && target.parentNode.tagName.toLowerCase() !== 'body') {
-      if (target.id === 'navigation') {
-        return true;
-      }
-      target = target.parentNode;
-    }
-
-    // Otherwise prevent default actions on the first click
-    e.stopPropagation();
-    e.preventDefault();
-    return false;
-  }
-
-  mouseover() {
-    if (!this.navigation.hasClass('open')) {
-      this.icon.addClass('loading');
-    }
-  }
-
-  mouseout() {
-    this.icon.removeClass('loading');
+  showNavigation() {
+    this.icon.addClass('open');
+    this.navigation.addClass('open');
+    this.body.addClass('no-scroll-small').addClass('away-for-small');
   }
 
   click(e) {
+    console.log('event', e);
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
 
     if (this.navigation.hasClass('open')) {
       this.hideNavigation();
     } else {
-      this.icon.removeClass('loading').addClass('open');
-      this.navigation.addClass('open');
-
-      document.addEventListener('click', this.toggle, false);
-      document.addEventListener('touch', this.toggle, false);
-      this.body.addClass('no-scroll-small').addClass('away-for-small');
+      this.showNavigation();
     }
 
     e.preventDefault();

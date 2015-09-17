@@ -10,6 +10,10 @@ $linkGray: #666666;
 $darkGray: #2b3b3d;
 $linkBlue: #000088;
 
+$buttonBackground: $darkGray;
+$buttonBackgroundHover: darken($buttonBackground, 10%);
+
+
 $fontGray: #444444;
 $fontMediumGray: #7C7C7C;
 $fontLightGray: #aaaaaa;
@@ -32,8 +36,8 @@ $fontSize: $baseSize;
 $fontSizeHeading1: 3.5 * $baseSize;
 $fontSizeHeading2: 2.78 * $baseSize;
 $fontSizeHeading3: 1.25 * $baseSize;
-$fontSizeSecondary: 0.67 * $baseSize;
-$fontSizeButton: 0.78 * $baseSize;
+$fontSizeSecondary: 0.8 * $baseSize;
+$fontSizeButton: 0.8 * $baseSize;
 $defaultWeight: 200;
 $titleWeight: 200;
 $navigationWeight: 200;

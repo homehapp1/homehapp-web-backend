@@ -100,8 +100,8 @@ button {
 button, .button, .btn {
   display: inline-block;
   color: white;
-  background-color: $darkGray;
-  border: solid 1px $darkGray;
+  background-color: $buttonBackground;
+  border: solid 1px $buttonBackground;
   min-height: $buttonHeight;
   text-align: center;
   vertical-align: middle;
@@ -113,7 +113,7 @@ button, .button, .btn {
   @include vendors(transition-duration, $transitionDuration);
 
   &:hover, &:active {
-    background-color: lighten($darkGray, 5%);
+    background-color: $buttonBackgroundHover;
   }
 
   &.white {
@@ -121,7 +121,8 @@ button, .button, .btn {
     color: $darkGray;
 
     &:hover, &:active {
-      background-color: $extraLightGray;
+      color: white;
+      background-color: $buttonBackgroundHover;
     }
   }
 }
