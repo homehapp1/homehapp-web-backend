@@ -219,6 +219,24 @@
       }
     }
   }
+
+  @include notSmall() {
+    &:hover {
+      & > .icon {
+        float: right;
+      }
+
+      & > .container {
+        display: block;
+        width: 250px;
+
+        @include small() {
+          width: 100%;
+          left: 0;
+        }
+      }
+    }
+  }
 }
 
 @include notSmall() {
