@@ -7,11 +7,11 @@ import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
+// Property List
+import PropertyList from '../Property/List';
+
 // Story widgets
-import Cards from '../../../common/components/Widgets/Cards';
-import Gallery from '../../../common/components/Widgets/Gallery';
 import BigImage from '../../../common/components/Widgets/BigImage';
-import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Icon from '../../../common/components/Widgets/Icon';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
@@ -88,6 +88,8 @@ export default class NeighborhoodHomeFilter extends React.Component {
       return this.handlePendingState();
     }
 
+    console.log('homes', this.state.homes);
+
     let neighborhood = this.props.neighborhood;
     let defaultImage = {
       src: 'images/content/content-placeholder.jpg',
@@ -105,8 +107,7 @@ export default class NeighborhoodHomeFilter extends React.Component {
             <p>Homes</p>
           </LargeText>
         </BigImage>
-        <ContentBlock className='padded'>
-        </ContentBlock>
+        <PropertyList items={this.state.homes} />
       </div>
     );
   }

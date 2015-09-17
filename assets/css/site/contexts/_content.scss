@@ -2,6 +2,7 @@
   padding-bottom: $footerHeight;
   @include clearfix();
   @import "content/about";
+  @import "content/preview";
 }
 
 .left {

@@ -1,0 +1,154 @@
+.preview-list {
+  $o: 0.1;
+  $previewWidth: 464px;
+  text-align: center;
+  background-color: white;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
+  padding-top: 5 * $contentPadding;
+  padding-bottom: 5 * $contentPadding;
+
+  .preview {
+    background-color: white;
+    border: solid 1px $borderGray;
+    display: inline-block;
+    margin: 0 $contentPadding / 2 $contentPadding;
+    text-align: left;
+    width: $previewWidth;
+
+    @include small() {
+      max-width: 100%;
+    }
+
+    a {
+      color: black;
+      text-decoration: none;
+
+      .hoverable .title {
+        position: absolute;
+        left: $contentPadding;
+        right: $contentPadding;
+        bottom: $contentPadding;
+        z-index: 1;
+        font-family: $highlightFont;
+        font-size: $fontSizeHeading3;
+        font-weight: 500;
+        color: white;
+        text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
+      }
+    }
+
+    img {
+      display: block;
+    }
+
+    .neighborhood-title {
+      display: table;
+      width: 100%;
+      height: 556px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+
+      & > * {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        font-family: $highlightFont;
+        font-size: $fontSizeHeading3;
+        font-weight: 400;
+      }
+    }
+
+    .actions {
+      position: absolute;
+      bottom: $contentPadding;
+      left: $contentPadding * 2;
+      right: $contentPadding * 2;
+      z-index: 2;
+      text-align: center;
+      font-size: $fontSizeSecondary;
+
+      a {
+        display: block;
+        border: solid 1px white;
+        padding: 0.5em 1em;
+
+        & + a {
+          margin-top: $contentPadding;
+        }
+      }
+    }
+
+    .neighborhood-title, .actions {
+      &, a {
+        color: white;
+        text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
+      }
+    }
+
+    .actions a {
+      background-color: rgba(0, 0, 0, $o);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 3 * $o);
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, $transitionDuration);
+
+      &:hover, &:active {
+        background-color: $buttonBackgroundHover;
+      }
+    }
+
+    h3 {
+      margin-bottom: 0;
+    }
+
+    p {
+      margin: 1em 0;
+
+      &.details > * + *:before {
+        content: ' | ';
+      }
+    }
+
+    .description {
+      padding: $contentPadding;
+      font-size: $fontSizeSecondary;
+      height: 7em;
+      overflow: hidden;
+
+      p {
+        margin: 0;
+      }
+
+      p.address {
+        span:after {
+          content: ', ';
+        }
+
+        span:last-child:after {
+          content: '';
+        }
+
+        .city:before {
+          content: ' ';
+          display: block;
+        }
+      }
+    }
+  }
+
+  h2:first-child {
+    margin-top: 0;
+    margin-bottom: 3 * $contentPadding;
+  }
+
+  &.short-list > .preview:nth-child(3) + .preview {
+    $minWidth: 3 * $previewWidth + 4 * $contentPadding;
+
+    @media only screen and (min-width: #{$minWidth}) {
+      display: none;
+    }
+  }
+}

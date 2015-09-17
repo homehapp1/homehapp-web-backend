@@ -126,8 +126,9 @@ export default class Homepage extends React.Component {
           </LargeText>
         </BigImage>
         <div className='mainpage-list clearfix'>
-          <h2>Exclusively for Homehapp</h2>
-          <PropertyList items={this.state.homes} max={3} />
+          <PropertyList items={this.state.homes} max={3} className='mainpage-list short-list'>
+            <h2>Exclusively for Homehapp</h2>
+          </PropertyList>
           <p className='call-to-action'>
             <Link to='properties' className='button'>Find more</Link>
           </p>
@@ -154,8 +155,8 @@ export default class Homepage extends React.Component {
           </Columns>
         </ContentBlock>
         <div className='mainpage-list clearfix with-gradient widget'>
-          <h2>Where is your home</h2>
-          <div className='neighborhood-list' ref='neighborhoodList'>
+          <div className='neighborhood-list preview-list short-list' ref='neighborhoodList'>
+            <h2>Where is your home</h2>
             {
               neighborhoods.map((neighborhood, index) => {
                 let image = (neighborhood.images && neighborhood.images[0]) ? neighborhood.images[0] : null;
