@@ -6,6 +6,9 @@
   text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
   padding-top: 5 * $contentPadding;
   padding-bottom: 5 * $contentPadding;
+  max-width: 3.5 * $previewWidth;
+  margin-left: auto;
+  margin-right: auto;
 
   .preview {
     background-color: white;
