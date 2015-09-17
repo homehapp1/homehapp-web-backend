@@ -108,7 +108,7 @@ export default class Story extends React.Component {
     let content = (item.properties.description) ? (<div className='content'>{item.properties.description}</div>) : null;
 
     return (
-      <ContentImage image={item.properties.image} imageAlign={item.properties.imageAlign}>
+      <ContentImage image={item.properties.image} imageAlign={item.properties.imageAlign} key={index}>
         {title}
         {content}
       </ContentImage>

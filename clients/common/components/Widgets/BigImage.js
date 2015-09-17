@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { setFullHeight, merge } from '../../Helpers';
-import DOMManipulator from '../../DOMManipulator';
 import classNames from 'classnames';
 import Image from './Image';
 

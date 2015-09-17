@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import Tabs from 'react-simpletabs';
+// import Tabs from 'react-simpletabs';
 
 import HomeListStore from '../../stores/HomeListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
@@ -16,8 +16,6 @@ import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Loading from '../../../common/components/Widgets/Loading';
-
-import { formatPrice } from '../../../common/Helpers';
 
 export default class Homepage extends React.Component {
   constructor() {
