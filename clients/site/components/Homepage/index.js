@@ -7,6 +7,8 @@ import Tabs from 'react-simpletabs';
 import HomeListStore from '../../stores/HomeListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
+import PropertyList from '../Property/List';
+
 import BigImage from '../../../common/components/Widgets/BigImage';
 import Columns from '../../../common/components/Widgets/Columns';
 import Hoverable from '../../../common/components/Widgets/Hoverable';
@@ -79,8 +81,6 @@ export default class Homepage extends React.Component {
       alt: ''
     };
 
-    let homes = this.state.homes.splice(0, 4);
-
     let images = [
       { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9094.jpg', alt: '', aspectRatio: 0.8443 },
       { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9096.jpg', alt: '', aspectRatio: 2.1757 },
@@ -127,58 +127,7 @@ export default class Homepage extends React.Component {
         </BigImage>
         <div className='mainpage-list clearfix'>
           <h2>Exclusively for Homehapp</h2>
-          <div className='home-list' ref='homeList'>
-            {
-              homes.map((home, index) => {
-                if (index > 3) {
-                  return null;
-                }
-
-                let link = {
-                  to: 'home',
-                  params: {
-                    slug: home.slug
-                  }
-                };
-                let rooms = 0;
-
-                for (let i = 0; i < home.attributes.length; i++) {
-                  if (home.attributes[i].name !== 'rooms') {
-                    continue;
-                  }
-
-                  rooms = home.attributes[i].value;
-                  break;
-                }
-
-                if (rooms === 1) {
-                  rooms = `${rooms} bedroom`;
-                } else {
-                  rooms = `${rooms} bedrooms`;
-                }
-
-                let price = home.costs.sellingPrice;
-
-                return (
-                  <div className='preview' key={index}>
-                    <Link {...link}>
-                      <Hoverable {...home.images[0]} width={464} height={556} mode='fill' applySize={true}>
-                        <span className='title'>{home.homeTitle}</span>
-                      </Hoverable>
-                    </Link>
-                    <div className='description'>
-                      <p className='price'>{formatPrice(price)}</p>
-                      <p className='address'>
-                        <span className='street'>{home.location.address.street}</span>
-                        <span className='neighborhood'>{home.location.neighborhood.title}</span>
-                        <span className='city'>{home.location.address.city}</span>
-                      </p>
-                    </div>
-                  </div>
-                );
-              })
-            }
-          </div>
+          <PropertyList items={this.state.homes} max={3} />
           <p className='call-to-action'>
             <Link to='properties' className='button'>Find more</Link>
           </p>
