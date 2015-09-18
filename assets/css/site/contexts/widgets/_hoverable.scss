@@ -6,6 +6,12 @@
   & > img {
     opacity: 0;
     display: block;
+
+    @include small() {
+      opacity: 1;
+      width: 100%;
+      height: auto;
+    }
   }
 
   & > .hoverable-wrapper {
@@ -17,6 +23,12 @@
     bottom: 0;
     overflow: hidden;
     z-index: 1;
+
+    @include small() {
+      &, & > img.hoverable-image {
+        display: none;
+      }
+    }
 
     & > img.hoverable-image {
       opacity: 1;

@@ -96,7 +96,8 @@ export default class Homepage extends React.Component {
     let neighborhoods = [
       {
         title: 'St. John`s Wood',
-        slug: 'st_johns_wood'
+        slug: 'st_johns_wood',
+        images: [images[0]]
       },
       {
         title: 'West End',
@@ -110,7 +111,8 @@ export default class Homepage extends React.Component {
       },
       {
         title: 'The City',
-        slug: 'the_city'
+        slug: 'the_city',
+        images: [images[4]]
       }
     ];
 
