@@ -177,7 +177,7 @@ export default class Story extends React.Component {
               }
 
               return (
-                <div className='icon-wrapper'>
+                <div className='icon-wrapper' key={ind}>
                   {label}
                 </div>
               );
