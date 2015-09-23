@@ -6,8 +6,11 @@ import DOMManipulator from '../../DOMManipulator';
 
 export default class Modal extends React.Component {
   static propTypes = {
-    children: React.PropTypes.object.isRequired,
-    onclose: React.PropTypes.function,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.array,
+      React.PropTypes.object
+    ]).isRequired,
+    onclose: React.PropTypes.func,
     className: React.PropTypes.string
   }
 
