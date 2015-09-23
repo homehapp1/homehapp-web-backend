@@ -1,0 +1,18 @@
+&.contact-form {
+  .modal-content {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+    padding: $contentPadding 8 * $contentPadding;
+
+    @include medium() {
+      padding: 0;
+    }
+
+    & > .content-block {
+      padding: $contentPadding;
+    }
+  }
+
+  .modal-wrapper .modal-close {
+    display: none;
+  }
+}

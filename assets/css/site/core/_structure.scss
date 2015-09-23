@@ -20,6 +20,10 @@ body {
 
   &.no-scroll {
     overflow-y: hidden;
+
+    & > #app {
+      overflow-y: scroll;
+    }
   }
 
   @include small() {

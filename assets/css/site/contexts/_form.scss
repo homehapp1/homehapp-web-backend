@@ -26,6 +26,10 @@ form {
   .widget.columns {
     padding: 0;
   }
+
+  .buttons {
+    text-align: center;
+  }
 }
 
 input[type='text'], input[type='email'], input[type='password'], input[type='tel'], select, textarea {
