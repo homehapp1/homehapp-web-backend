@@ -1,0 +1,26 @@
+#contentNavigation {
+  $iconSize: $navigationIconSize + 14px;
+  position: fixed;
+  top: $contentPadding / 2;
+  right: $contentPadding * 1.5 + $navigationIconSize;
+  z-index: $zNavigation - 1;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      height: $iconSize;
+      line-height: $iconSize;
+      font-size: $iconSize * 0.8;
+      margin-right: $contentPadding;
+      vertical-align: middle;
+
+      a {
+        color: white;
+        text-shadow: $textShadow;
+      }
+    }
+  }
+}
