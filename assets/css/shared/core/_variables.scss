@@ -1,7 +1,8 @@
 $blue: #5785D4;
 $turquoise: #62d8b9;
 $orange: #ff7d5a;
-$red: #aa0000;
+$red: #ff5555;
+$pink: #ffaaa5;
 $lightGray: #d5d9d9;
 $extraLightGray: #f1f1f1;
 $mediumGray: #888888;
@@ -30,6 +31,10 @@ $largeWidth: $pageWidth;
 $mediumWidth: $pageWidth;
 $smallWidth: 600px;
 
+// Misc
+$maskOpacity: 0.1;
+
+// Fonts
 $cols: 12;
 $baseSize: 20px;
 $fontSize: $baseSize;
@@ -41,6 +46,8 @@ $fontSizeButton: 0.8 * $baseSize;
 $defaultWeight: 200;
 $titleWeight: 200;
 $navigationWeight: 200;
+
+$textShadow: 0 0 2px rgba(0, 0, 0, 5 * $maskOpacity);
 
 // Z-indexes
 $zHeader: 100;

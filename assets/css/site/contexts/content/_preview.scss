@@ -1,9 +1,8 @@
 .preview-list {
-  $o: 0.1;
   $previewWidth: 464px;
   text-align: center;
   background-color: white;
-  text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
+  text-shadow: $textShadow;
   padding-top: 5 * $contentPadding;
   padding-bottom: 5 * $contentPadding;
   max-width: 3.5 * $previewWidth;
@@ -36,7 +35,7 @@
         font-size: $fontSizeHeading3;
         font-weight: 500;
         color: white;
-        text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
+        text-shadow: $textShadow;
       }
     }
 
@@ -92,13 +91,13 @@
     .neighborhood-title, .actions {
       &, a {
         color: white;
-        text-shadow: 0 0 4px rgba(0, 0, 0, 3 * $o);
+        text-shadow: $textShadow;
       }
     }
 
     .actions a {
-      background-color: rgba(0, 0, 0, $o);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 3 * $o);
+      background-color: rgba(0, 0, 0, $maskOpacity);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 3 * $maskOpacity);
       @include vendors(transition-property, all);
       @include vendors(transition-duration, $transitionDuration);
 

@@ -3,6 +3,7 @@
 import React from 'react';
 import ApplicationStore from '../../stores/ApplicationStore';
 import { merge } from '../../Helpers';
+import DOMManipulator from '../../DOMManipulator';
 // import classNames from 'classnames';
 
 export default class Image extends React.Component {
@@ -38,6 +39,7 @@ export default class Image extends React.Component {
     height: null,
     alt: '',
     title: '',
+    className: null,
     type: 'content',
     mode: null,
     applySize: false,
@@ -53,6 +55,21 @@ export default class Image extends React.Component {
 
   componentDidMount() {
     ApplicationStore.listen(this.storeListener);
+
+    this.image = React.findDOMNode(this.refs.image);
+    this.image.onerror = function() {
+      let img = new DOMManipulator(this);
+      img.addClass('load-error');
+
+      if (!img.attr('data-src')) {
+        img.attr('data-src', img.attr('src'));
+      }
+
+      // Replace the broken src with pixel.gif
+      // img.attr('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+    };
+
+    console.log('added image', this.image);
   }
 
   componentWillUnmount() {
@@ -87,9 +104,13 @@ export default class Image extends React.Component {
     this.attributes.alt = this.props.alt || '';
     this.attributes.title = this.props.title || this.attributes.alt;
 
+    let classes = ['image-widget'];
+
     if (this.props.className) {
-      this.attributes.className = this.props.className;
+      classes.push(this.props.className);
     }
+
+    this.attributes.className = classes.join(' ');
 
     if (this.props.width && this.props.height) {
       this.props.aspectRatio = this.props.width / this.props.height;
@@ -98,6 +119,8 @@ export default class Image extends React.Component {
     if (this.props.aspectRatio) {
       this.attributes['data-aspect-ratio'] = this.props.aspectRatio;
     }
+
+    return this.attributes;
   }
 
   applyDimensions() {
@@ -251,13 +274,13 @@ export default class Image extends React.Component {
       let href = this.resolveSrc(this.props.linked);
       return (
         <a href={href} data-linked={this.props.linked}>
-          <img {...this.attributes} />
+          <img {...this.attributes} ref='image' />
         </a>
       );
     }
 
     return (
-      <img {...this.attributes} />
+      <img {...this.attributes} ref='image' />
     );
   }
 
