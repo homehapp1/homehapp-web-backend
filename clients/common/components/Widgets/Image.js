@@ -68,8 +68,6 @@ export default class Image extends React.Component {
       // Replace the broken src with pixel.gif
       // img.attr('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
     };
-
-    console.log('added image', this.image);
   }
 
   componentWillUnmount() {
