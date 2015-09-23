@@ -35,6 +35,12 @@
     padding-bottom: 5 * $contentPadding;
     margin: 0;
 
+    @include small() {
+      padding-bottom: $contentPadding;
+      margin-left: $contentPadding / 2;
+      margin-right: $contentPadding / 2;
+    }
+
     .button {
       max-width: 20em;
       width: 100%;

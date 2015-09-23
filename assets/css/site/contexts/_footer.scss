@@ -9,6 +9,10 @@
   font-weight: 400;
   font-size: $fontSizeSecondary;
 
+  @include small() {
+    padding: $contentPadding 0;
+  }
+
   h3 {
     margin-bottom: 0.4 * $w;
 
@@ -32,14 +36,27 @@
     margin-right: auto;
     margin-bottom: 4 * $contentPadding;
     width: 200px;
+
+    @include small() {
+      width: 100%;
+      margin-bottom: $contentPadding;
+    }
   }
 
   ul {
-    margin: 0 0 4 * $contentPadding;
+    margin: 0;
     padding: 0;
     list-style: none;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+
+    & + ul {
+      margin-top: 4 * $contentPadding;
+
+      @include small() {
+        margin-top: $contentPadding;
+      }
+    }
 
     &.social a {
       font-size: 300%;
@@ -55,15 +72,24 @@
     li {
       display: inline;
 
-      @include small() {
-        display: block;
-      }
-
       & + li {
         margin-left: 1.5em;
 
         @include small() {
-          margin-left: 0;
+          margin-left: 0.5em;
+        }
+      }
+    }
+
+    &.main {
+      @include small() {
+        li {
+          display: block;
+
+          & + li {
+            margin-left: 0;
+            margin-top: 1em;
+          }
         }
       }
     }

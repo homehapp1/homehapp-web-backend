@@ -51,6 +51,8 @@ body {
   color: $fontMediumGray;
 }
 
+$smallQ: 0.6;
+
 h1, h2, h3, h4, h5, h6, li, p {
   line-height: 1.4em;
   color: $fontGray;
@@ -59,11 +61,19 @@ h1, h2, h3, h4, h5, h6, li, p {
 h3 {
   font-size: $fontSizeHeading3;
   font-weight: $titleWeight;
+
+  @include small() {
+    font-size: $fontSizeHeading3 * $smallQ;
+  }
 }
 
 h2 {
   font-size: $fontSizeHeading2;
   font-weight: $titleWeight;
+
+  @include small() {
+    font-size: $fontSizeHeading2 * $smallQ;
+  }
 }
 
 h1, .block-title, .big-image h2 {
@@ -71,6 +81,10 @@ h1, .block-title, .big-image h2 {
   font-weight: $titleWeight;
   font-family: $highlightFont;
   font-weight: 400;
+
+  @include small() {
+    font-size: $fontSizeHeading1 * $smallQ;
+  }
 }
 
 h1, h2, h3 {
@@ -124,6 +138,14 @@ button, .button, .btn {
       color: white;
       background-color: $buttonBackgroundHover;
     }
+  }
+
+  @include small() {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    display: block;
+    text-align: center;
   }
 }
 

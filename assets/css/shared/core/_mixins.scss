@@ -64,6 +64,12 @@
   }
 }
 
+@mixin verySmall() {
+  @media only screen and (max-width: $smallWidth / 2) {
+    @content;
+  }
+}
+
 @mixin notSmall() {
   @media only screen and (min-width: $smallWidth) {
     @content;
