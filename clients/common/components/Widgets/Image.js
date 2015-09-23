@@ -244,6 +244,7 @@ export default class Image extends React.Component {
   }
 
   getOptions(params) {
+    let options = [];
     for (let i in params) {
       if (!params[i]) {
         continue;
