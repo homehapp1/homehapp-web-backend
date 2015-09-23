@@ -33,7 +33,11 @@ class UploadArea extends React.Component {
     instanceId: React.PropTypes.number,
     thumbnailWidth: React.PropTypes.number,
     thumbnailHeight: React.PropTypes.number,
-    clickable: React.PropTypes.bool
+    clickable: React.PropTypes.bool,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.array,
+      React.PropTypes.object
+    ])
   }
 
   static defaultProps = {
