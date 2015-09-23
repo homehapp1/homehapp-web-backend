@@ -24,7 +24,7 @@
           width: $i / $cols * 100%;
         }
 
-        & > .cols-#{i}, & > .span#{$i} {
+        & > .cols-#{$i}, & > .span#{$i} {
           display: block;
           float: left;
           padding-left: 0.5 * $padding;
