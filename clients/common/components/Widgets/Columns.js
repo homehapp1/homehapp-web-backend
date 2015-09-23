@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import DOMManipulator from '../../DOMManipulator';
 
 export default class Columns extends React.Component {
   static propTypes = {
@@ -20,6 +21,21 @@ export default class Columns extends React.Component {
     align: 'left',
     valign: 'top',
     className: null
+  }
+
+  componentDidMount() {
+    let node = new DOMManipulator(this.refs.container);
+    let rows = node.getByClass('row');
+
+    for (let i = 0; i < rows.length; i++) {
+      let columns = rows[i].children();
+      for (let n = 0; n < columns.length; n++) {
+        let children = columns[n].children();
+        if (children.length) {
+          columns[n].addClass(children[0].node.className);
+        }
+      }
+    }
   }
 
   renderChildren() {
@@ -91,7 +107,7 @@ export default class Columns extends React.Component {
     }
 
     return (
-      <div className={classes.join(' ')} data-align={this.props.align} data-valign={this.props.valign}>
+      <div className={classes.join(' ')} data-align={this.props.align} data-valign={this.props.valign} ref='container'>
         {this.renderChildren()}
       </div>
     );
