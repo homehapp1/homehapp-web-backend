@@ -10,6 +10,7 @@ import Homepage from './Homepage';
 
 // Home handlers
 import HomeContainer from './Home/HomeContainer';
+import HomeContactContainer from './Home/HomeContactContainer';
 import HomeDetailsContainer from './Home/HomeDetailsContainer';
 import RouteNotFound from './ErrorPages/RouteNotFound';
 
@@ -36,6 +37,7 @@ module.exports = (
     <DefaultRoute handler={Homepage}/>
     <Route name='home' path='/home/:slug'>
       <Route name='homeDetails' path='details' handler={HomeDetailsContainer} />
+      <Route name='homeForm' path='contact' handler={HomeContactContainer} />
       <DefaultRoute handler={HomeContainer}/>
       <NotFoundRoute handler={RouteNotFound} />
     </Route>

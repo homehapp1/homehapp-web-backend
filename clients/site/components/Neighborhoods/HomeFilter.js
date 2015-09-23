@@ -42,6 +42,11 @@ export default class NeighborhoodHomeFilter extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    homes: HomeListStore.getState().homes
+  };
+
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
     HomeListStore.fetchHomes({limit: 20});
@@ -50,11 +55,6 @@ export default class NeighborhoodHomeFilter extends React.Component {
   componentWillUnmount() {
     HomeListStore.unlisten(this.storeListener);
   }
-
-  state = {
-    error: null,
-    homes: HomeListStore.getState().homes
-  };
 
   onChange(state) {
     this.setState(state);

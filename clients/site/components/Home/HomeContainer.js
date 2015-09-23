@@ -10,12 +10,17 @@ import ErrorPage from '../../../common/components/Layout/ErrorPage';
 export default class HomeContainer extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
-  }
+  };
 
   constructor(props) {
     super(props);
     this.homeStoreListener = this.homeStoreOnChange.bind(this);
   }
+
+  state = {
+    error: null,
+    home: HomeStore.getState().home
+  };
 
   componentDidMount() {
     HomeStore.listen(this.homeStoreListener);
@@ -24,11 +29,6 @@ export default class HomeContainer extends React.Component {
 
   componentWillUnmount() {
     HomeStore.unlisten(this.homeStoreListener);
-  }
-
-  state = {
-    error: null,
-    home: HomeStore.getState().home
   }
 
   homeStoreOnChange(state) {

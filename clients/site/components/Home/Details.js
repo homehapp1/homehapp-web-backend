@@ -1,7 +1,10 @@
 'use strict';
 
 import React from 'react';
+
 import Story from '../../../common/components/Widgets/Story';
+import HomeNavigation from './Navigation';
+
 import { formatPrice, primaryHomeTitle } from '../../../common/Helpers';
 
 export default class HomeDetails extends React.Component {
@@ -152,7 +155,10 @@ export default class HomeDetails extends React.Component {
     });
 
     return (
-      <Story blocks={blocks} />
+      <div className='home-view'>
+        <HomeNavigation home={this.props.home} />
+        <Story blocks={blocks} />
+      </div>
     );
   }
 }
