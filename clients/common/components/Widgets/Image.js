@@ -56,9 +56,14 @@ export default class Image extends React.Component {
   componentDidMount() {
     ApplicationStore.listen(this.storeListener);
 
-    this.image = React.findDOMNode(this.refs.image);
-    this.image.onerror = function() {
-      let img = new DOMManipulator(this);
+    let img = new DOMManipulator(this.refs.image);
+    img.addClass('loading');
+
+    img.node.onload = function() {
+      img.removeClass('loading');
+    };
+
+    img.node.onerror = function() {
       img.addClass('load-error');
 
       if (!img.attr('data-src')) {
@@ -102,7 +107,7 @@ export default class Image extends React.Component {
     this.attributes.alt = this.props.alt || '';
     this.attributes.title = this.props.title || this.attributes.alt;
 
-    let classes = ['image-widget'];
+    let classes = ['image-widget', `type-${this.props.type}`];
 
     if (this.props.className) {
       classes.push(this.props.className);
