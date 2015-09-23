@@ -53,6 +53,10 @@ export default class Image extends React.Component {
     this.attributes = {};
   }
 
+  state = {
+    config: ApplicationStore.getState().config
+  };
+
   componentDidMount() {
     ApplicationStore.listen(this.storeListener);
 
@@ -77,10 +81,6 @@ export default class Image extends React.Component {
 
   componentWillUnmount() {
     ApplicationStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    config: ApplicationStore.getState().config
   }
 
   onStateChange() {
@@ -126,6 +126,14 @@ export default class Image extends React.Component {
     return this.attributes;
   }
 
+  setByAspectRatio(d) {
+    if (d.width) {
+      d.height = Math.round(d.width / this.props.aspectRatio);
+    } else if (d.height) {
+      d.width = Math.round(d.height * this.props.aspectRatio);
+    }
+  }
+
   applyDimensions() {
     let d = {
       width: this.attributes.width || this.props.width,
@@ -145,13 +153,13 @@ export default class Image extends React.Component {
     }
 
     if (this.props.aspectRatio) {
-      if (d.width) {
-        d.height = Math.round(d.width / this.props.aspectRatio);
-      } else if (d.height) {
-        d.width = Math.round(d.height * this.props.aspectRatio);
-      }
+      this.setByAspectRatio(d);
     }
 
+    this.propagateAttributes(d);
+  }
+
+  propagateAttributes(d) {
     for (let i in d) {
       if (d[i]) {
         this.attributes[i] = d[i];
@@ -203,58 +211,70 @@ export default class Image extends React.Component {
     return src.replace(/^(https?:)?\/\/.+(v[0-9]+)/, '$2');
   }
 
-  resolveContentSrc(src, variant) {
-    let mask = '';
-    let options = [];
-    let params = merge({}, this.props);
-    this.getVariant(params, variant);
+  getOption(i, v) {
+    let rval = null;
 
+    switch (i) {
+      case 'width':
+        if (v === 'auto') {
+          break;
+        }
+
+        rval = `w_${v}`;
+        break;
+
+      case 'height':
+        if (v === 'auto') {
+          break;
+        }
+
+        rval = `h_${v}`;
+        break;
+
+      case 'mode':
+        rval = `c_${v}`;
+        break;
+
+      case 'gravity':
+        rval = `g_${v}`;
+        break;
+    }
+
+    return rval;
+  }
+
+  getOptions(params) {
     for (let i in params) {
       if (!params[i]) {
         continue;
       }
 
-      let v = params[i];
+      let val = this.getOption(i, params[i]);
 
-      switch (i) {
-        case 'width':
-          if (v === 'auto') {
-            break;
-          }
+      if (val) {
+        options.push(val);
+      }
+    }
+    return options;
+  }
 
-          options.push(`w_${v}`);
-          break;
+  resolveContentSrc(src, variant) {
+    let mask = '';
+    let params = merge({}, this.props);
+    let options = this.getOptions(params);
+    this.getVariant(params, variant);
 
-        case 'height':
-          if (v === 'auto') {
-            break;
-          }
+    if (params.mask) {
+      mask = `/l_${params.mask},fl_cutter`;
 
-          options.push(`h_${v}`);
-          break;
-
-        case 'mode':
-          options.push(`c_${v}`);
-          break;
-
-        case 'gravity':
-          options.push(`g_${v}`);
-          break;
-
-        case 'mask':
-          mask = `/l_${v},fl_cutter`;
-
-          if (src.match(/\.jpe?g$/i)) {
-            src = src.replace(/\.jpe?g$/i, '.png');
-          }
-          break;
+      if (src.match(/\.jpe?g$/i)) {
+        src = src.replace(/\.jpe?g$/i, '.png');
       }
     }
 
     // Load everything in interlaced/progressive mode to show
     // content to the users as quickly as possible
     options.push('fl_progressive');
-
     return `${this.getBaseUrl(src)}/${options.join(',')}${mask}/${this.getPath(src)}`;
   }
 
