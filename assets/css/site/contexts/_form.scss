@@ -1,0 +1,53 @@
+form {
+  display: block;
+
+  label, .label {
+    display: block;
+  }
+
+  label {
+    &.radio, &.checkbox {
+      font-weight: 400;
+      color: black;
+    }
+  }
+
+  .label {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.2em;
+  }
+
+  .control {
+    margin-bottom: 1em;
+  }
+
+  .widget.columns {
+    padding: 0;
+  }
+}
+
+input[type='text'], input[type='email'], input[type='password'], input[type='tel'], select, textarea {
+  border: solid 1px $lightGray;
+  display: block;
+  width: 100%;
+  font-size: $fontSizeInput;
+  font-weight: $defaultWeight;
+  outline: none;
+
+  &:active, &:hover {
+    border-color: $mediumGray;
+  }
+}
+
+input[type='text'], input[type='email'], input[type='password'], input[type='tel'], select {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 $contentPadding / 2;
+}
+
+textarea {
+  height: 10em;
+  resize: none;
+}
