@@ -157,6 +157,16 @@ class DOMManipulator {
     return new DOMManipulator(node);
   }
 
+  children() {
+    let children = this.node.children;
+    let tmp = [];
+
+    for (let i = 0; i < children.length; i++) {
+      tmp.push(new DOMManipulator(children[i]));
+    }
+    return tmp;
+  }
+
   visible(tolerance = 0) {
     let el = this.node;
     var top = el.offsetTop;
