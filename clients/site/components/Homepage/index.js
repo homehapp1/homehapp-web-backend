@@ -116,10 +116,17 @@ export default class Homepage extends React.Component {
       }
     ];
 
+    let partnerImage = {
+      src: 'http://res.cloudinary.com/homehapp/image/upload/v1442998167/site/images/content/tablelamp.jpg',
+      alt: '',
+      width: 424,
+      height: 515
+    };
+
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.9}>
-          <LargeText align='center' valign='middle' proportion={0.9}>
+        <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.8}>
+          <LargeText align='center' valign='middle' proportion={0.8}>
             <div className='splash'>
               <h1>Every home has<br /> a unique story</h1>
             </div>
@@ -140,8 +147,9 @@ export default class Homepage extends React.Component {
             <hr className='spacer' />
           </div>
           <h2 className='block-title'>Partner with us</h2>
-          <Columns cols={2} className='table important' align='center' valign='middle'>
-            <div className='first center'>
+          <Columns cols={4} className='table important' align='center' valign='middle'>
+            <div className='span1'></div>
+            <div className='span5 centered'>
               <p>
                 <em>Become a service provider in Homehapp. We are looking for estate agents partners, legals, home decor...</em>
               </p>
@@ -149,9 +157,10 @@ export default class Homepage extends React.Component {
                 <Link to='formsPartners' className='button white'>Contact</Link>
               </p>
             </div>
-            <div className='second center'>
-              @TODO: image
+            <div className='span5 centered'>
+              <Image {...partnerImage} />
             </div>
+            <div className='span1'></div>
           </Columns>
         </ContentBlock>
         <div className='mainpage-list clearfix with-gradient widget'>
@@ -164,9 +173,11 @@ export default class Homepage extends React.Component {
                   <div className='preview' key={index}>
                     <Hoverable {...image} width={464} height={556} mode='fill' applySize={true}>
                       <div className='neighborhood-title'>
-                        <Link to='neighborhoodsView' params={{city: 'london', neighborhood: neighborhood.slug}}>
-                          <span className='title'>{neighborhood.title}</span>
-                        </Link>
+                        <div className='wrapper'>
+                          <Link to='neighborhoodsView' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                            <span className='title'>{neighborhood.title}</span>
+                          </Link>
+                        </div>
                       </div>
 
                       <div className='actions'>
