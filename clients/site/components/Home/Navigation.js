@@ -15,7 +15,6 @@ export default class HomeNavigation extends React.Component {
   constructor() {
     super();
     this.displayForm = this.displayForm.bind(this);
-    this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount() {
@@ -29,14 +28,10 @@ export default class HomeNavigation extends React.Component {
     em.addEventListener('click', this.displayForm, true);
   }
 
-  closeModal() {
-
-  }
-
   createModal() {
     return (
-      <Modal onclose={this.closeModal}>
-        <HomeContact home={this.props.home} />
+      <Modal className='white with-overflow contact-form'>
+        <HomeContact home={this.props.home} context={this.context} />
       </Modal>
     );
   }
@@ -48,17 +43,10 @@ export default class HomeNavigation extends React.Component {
     this.modal = this.createModal();
     this.modalContainer = null;
     this.preloaded = {};
+    console.log('modal', this.modal);
 
-    // Reference to self
-    let app = this;
-    React.render(this.modal, document.getElementById('modals'), function() {
-      try {
-        app.modalContainer = this.refs.modal.getDOMNode();
-        // app.startCapture();
-      } catch (err) {
-        console.error(err.message);
-      }
-    });
+    // Create the modal
+    React.render(this.modal, document.getElementById('modals'));
 
     return false;
   }
@@ -72,12 +60,15 @@ export default class HomeNavigation extends React.Component {
   }
 
   render() {
-    console.log('home', this.props.home);
+    let todo = function() {
+      alert('@TODO');
+    };
+    
     return (
       <ContentNavigation>
         <ul>
           <li>
-            <a href='#'><i className='fa fa-phone'></i></a>
+            <a href='#' onClick={todo}><i className='fa fa-phone'></i></a>
           </li>
           <li>
             <Link ref='contact' to='homeForm' params={{slug: this.props.home.slug}}><i className='fa fa-envelope-o'></i></Link>

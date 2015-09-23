@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 
 import HomeContainer from './HomeContainer';
 import HomeStore from '../../stores/HomeStore';
@@ -58,7 +57,7 @@ export default class HomeContact extends React.Component {
             <input type='submit' className='button' value='Send message' />
           </div>
           <p className='fineprint'>
-            By submitting this form you accept our <Link to='contentTerms'>Terms of use</Link>
+            By submitting this form you accept our <a href='/terms'>Terms of use</a>
           </p>
         </form>
       </ContentBlock>
