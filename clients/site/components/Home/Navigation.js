@@ -63,7 +63,7 @@ export default class HomeNavigation extends React.Component {
     let todo = function() {
       alert('@TODO');
     };
-    
+
     return (
       <ContentNavigation>
         <ul>
