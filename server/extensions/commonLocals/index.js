@@ -39,7 +39,8 @@ export function register(app) {
       cssIncludeHtml: '',
       jsIncludeHtml: '',
       bodyClass: '',
-      metadatas: []
+      metadatas: [],
+      openGraph: {}
     }, appLocals, resLocals, ext);
 
     if (!opts.body) {

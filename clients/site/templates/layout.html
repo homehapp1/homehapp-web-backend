@@ -1,13 +1,40 @@
 <%
 var title = [];
 
-if (typeof content !== 'undefined' && typeof content.title !== 'undefined') {
-  title.push(content.title);
+if (typeof content !== 'undefined') {
+  console.log('content', content);
+}
+
+if (typeof page !== 'undefined' && typeof page.title !== 'undefined') {
+  title.push(page.title);
 }
 
 title.push(site.title);
+openGraph['og:title'] = title.join(' | ');
+
+if (!openGraph['og:type']) {
+  openGraph['og:type'] = 'article';
+}
+
+for (var key in openGraph) {
+  var values = openGraph[key];
+  if (!values) {
+    continue;
+  }
+
+  if (!Array.isArray(values)) {
+    values = [values];
+  }
+
+  for (var i = 0; i < values.length; i++) {
+    metadatas.push({
+      property: key,
+      value: values[i]
+    });
+  }
+}
 %><!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
   <title><%- title.join(' | ') %></title>
   <meta charset="utf-8">
@@ -29,22 +56,22 @@ title.push(site.title);
     <% } %>
   <% } %>
 
-  <%
+<%
     if (metadatas.length) {
-      console.log('metadatas', metadatas);
-      var meta = [];
+      var tags = [];
       for (var i = 0; i < metadatas.length; i++) {
+        var tag = [];
         for (var k in metadatas[i]) {
-          var str = k + '="' + metadatas[i][k] + '"';
-
-          if (meta.indexOf(str) === -1) {
-            meta.push(str);
-          }
+          tag.push(k + '="' + metadatas[i][k] + '"');
+        }
+        var str = tag.join(' ');
+        if (tags.indexOf(str) === -1) {
+          tags.push(str);
         }
       }
 
-      if (meta.length) {
-        %><meta <%- meta.join(' ') %> />
+      for (var i = 0; i < tags.length; i++) {
+      %>  <meta <%- tags[i] %> />
 <%
       }
     }
