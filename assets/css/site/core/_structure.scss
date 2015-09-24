@@ -17,12 +17,19 @@ html, body {
 
 body {
   margin: 0;
+  position: relative;
+  @include vendors(transition-property, transform);
+  @include vendors(transition-duration, $transitionDuration);
 
   &.no-scroll {
     overflow-y: hidden;
 
     & > #app {
       overflow-y: scroll;
+
+      #navigation, #contentNavigation {
+        opacity: 0;
+      }
     }
   }
 
@@ -41,9 +48,6 @@ body {
       overflow-y: hidden;
     }
   }
-
-  @include vendors(transition-property, transform);
-  @include vendors(transition-duration, $transitionDuration);
 
   &.away-for-small {
     #container {

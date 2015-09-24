@@ -140,8 +140,13 @@ export default class Image extends React.Component {
       height: this.attributes.height || this.props.height
     };
 
+    let apply = !!(this.props.applyDimensions);
+
     if (this.props.variant) {
       let variant = this.state.config.cloudinary.transformations[this.props.variant];
+      if (typeof variant.applyDimensions !== 'undefined') {
+        apply = variant.applyDimensions;
+      }
 
       if (!d.width && variant.width) {
         d.width = variant.width;
@@ -156,7 +161,9 @@ export default class Image extends React.Component {
       this.setByAspectRatio(d);
     }
 
-    this.propagateAttributes(d);
+    if (apply) {
+      this.propagateAttributes(d);
+    }
   }
 
   propagateAttributes(d) {
@@ -243,7 +250,7 @@ export default class Image extends React.Component {
     return rval;
   }
 
-  getOptions(params) {
+  getOptions(params, variant) {
     let options = [];
     for (let i in params) {
       if (!params[i]) {
@@ -262,8 +269,9 @@ export default class Image extends React.Component {
   resolveContentSrc(src, variant) {
     let mask = '';
     let params = merge({}, this.props);
-    let options = this.getOptions(params);
     this.getVariant(params, variant);
+    let options = this.getOptions(params);
+    this.applyDimensions();
 
     if (params.mask) {
       mask = `/l_${params.mask},fl_cutter`;
