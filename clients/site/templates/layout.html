@@ -3,11 +3,11 @@ var title = [];
 
 if (typeof page !== 'undefined' && typeof page.title !== 'undefined') {
   title.push(page.title);
+  openGraph['og:description'] = page.description;
 }
 
 title.push(site.title);
 openGraph['og:title'] = title.join(' | ');
-openGraph['og:description'] = page.description;
 
 if (!openGraph['og:type']) {
   openGraph['og:type'] = 'article';
