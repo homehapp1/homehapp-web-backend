@@ -39,11 +39,9 @@ export default class HomeNavigation extends React.Component {
   displayForm(e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log('display form');
     this.modal = this.createModal();
     this.modalContainer = null;
     this.preloaded = {};
-    console.log('modal', this.modal);
 
     // Create the modal
     React.render(this.modal, document.getElementById('modals'));
@@ -61,7 +59,7 @@ export default class HomeNavigation extends React.Component {
 
   render() {
     let todo = function() {
-      alert('@TODO');
+      console.info('Implement phone calling');
     };
 
     return (

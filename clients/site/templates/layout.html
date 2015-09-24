@@ -1,9 +1,13 @@
 <%
 var title = [];
 
-if (typeof page !== 'undefined' && typeof page.title !== 'undefined') {
-  title.push(page.title);
-  openGraph['og:description'] = page.description;
+if (typeof page !== 'undefined') {
+  if (page.title) {
+    title.push(page.title);
+  }
+  if (page.description) {
+    openGraph['og:description'] = page.description;
+  }
 }
 
 title.push(site.title);

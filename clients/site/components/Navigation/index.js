@@ -37,7 +37,6 @@ export default class Navigation extends React.Component {
   }
 
   click(e) {
-    console.log('event', e);
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
 
     if (this.navigation.hasClass('open')) {

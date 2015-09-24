@@ -69,5 +69,7 @@ exports.registerRoutes = (app) => {
   app.get('/home/:slug/details', function(req, res, next) {
     returnHomeBySlug(req.params.slug, res, next);
   });
-
+  app.get('/home/:slug/story', function(req, res, next) {
+    returnHomeBySlug(req.params.slug, res, next);
+  });
 };
