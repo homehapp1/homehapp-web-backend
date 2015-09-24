@@ -14,14 +14,7 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       debug('res', result.home);
       res.locals.data.title = [result.home.homeTitle];
-      res.locals.metadatas = [
-        {
-          property: 'foo',
-          value: 'bar'
-        }
-      ];
       let images = [];
-
       if (result.home.images) {
         for (let i = 0; i < result.home.images.length; i++) {
           let src = result.home.images[i].url || result.home.images[i].src;
@@ -37,16 +30,11 @@ exports.registerRoutes = (app) => {
         };
       }
 
+      if (typeof res.locals.metadatas === 'undefined') {
+        res.locals.metadatas = [];
+      }
+
       let title = [result.home.homeTitle];
-
-      if (result.home.location.neighborhood) {
-        title.push(result.home.location.neighborhood.title);
-      }
-
-      if (result.home.location.address.city) {
-        title.push(result.home.location.address.city);
-      }
-
       let description = result.home.description || title.join('; ');
 
       if (description.length > 200) {
@@ -54,11 +42,16 @@ exports.registerRoutes = (app) => {
       }
 
       res.locals.openGraph['og:image'] = images.concat(res.locals.openGraph['og:image']);
+      res.locals.openGraph['og:updated_time'] = result.home.updatedAt.toISOString();
       res.locals.page = {
         title: title.join(' | '),
         description: description
       };
-      res.locals.metadatas.push({name: 'description', content: description});
+
+      res.locals.metadatas.push({
+        'http-equiv': 'last-modified',
+        'content': res.locals.openGraph['og:updated_time']
+      });
 
       res.locals.data.HomeStore = {
         home: result.homeJson
