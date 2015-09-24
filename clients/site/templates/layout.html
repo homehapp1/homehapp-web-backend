@@ -1,8 +1,15 @@
-<!DOCTYPE html>
+<%
+var title = [];
+
+if (typeof content !== 'undefined' && typeof content.title !== 'undefined') {
+  title.push(content.title);
+}
+
+title.push(site.title);
+%><!DOCTYPE html>
 <html lang="en">
 <head>
-  <title><%- site.title %></title>
-
+  <title><%- title.join(' | ') %></title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=EDGE, IE=10, IE=9, IE=8" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,7 +17,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- !Stylesheets -->
   <% if (env !== 'development') { %>
     <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/all.min.css">
   <% } else { %>
@@ -23,12 +29,26 @@
     <% } %>
   <% } %>
 
-  <!-- !OpenGraph -->
-  <% if (metadatas.length) { %>
-    <% for (var i = 0; i < metadatas.length; i++) { %>
-      <meta property="<%- metadatas[i].property %>" content="<%- metadatas[i].content %>" />
-    <% } %>
-  <% } %>
+  <%
+    if (metadatas.length) {
+      console.log('metadatas', metadatas);
+      var meta = [];
+      for (var i = 0; i < metadatas.length; i++) {
+        for (var k in metadatas[i]) {
+          var str = k + '="' + metadatas[i][k] + '"';
+
+          if (meta.indexOf(str) === -1) {
+            meta.push(str);
+          }
+        }
+      }
+
+      if (meta.length) {
+        %><meta <%- meta.join(' ') %> />
+<%
+      }
+    }
+  %>
 
   <!-- !Favicons -->
   <link rel="shortcut icon" type="image/x-icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
@@ -44,10 +64,6 @@
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="<%= revisionedStaticPath %>/images/favicon-57.png" />
 
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing"></script>
-
-  </script>
-
-
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
