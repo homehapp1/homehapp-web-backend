@@ -7,10 +7,15 @@ exports.registerRoutes = (app) => {
 
   let returnHomeBySlug = (slug, res, next) => {
     QB
-    .query('Home')
+    .forModel('Home')
     .findBySlug(slug)
     .fetch()
     .then((result) => {
+      console.log('res', result);
+      res.locals.content = {
+        title: result.homeTitle
+      };
+
       res.locals.metadatas = [
         {property: 'testProp', content: 'testCont'}
       ];
