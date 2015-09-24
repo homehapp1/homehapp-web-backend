@@ -1,83 +1,97 @@
+/*eslint-env es6 */
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 
-// List modes
+// Internal components
+import HomeListStore from '../../stores/HomeListStore';
+import ErrorPage from '../../../common/components/Layout/ErrorPage';
+
+// Property List
 import PropertyList from './List';
-import Cards from '../../../common/components/Widgets/Cards';
-import PropertyPreview from './Preview';
 
-import BigImage from '../../../common/components/Widgets/BigImage';
+// Story widgets
+import ContentBlock from '../../../common/components/Widgets/ContentBlock';
+import Icon from '../../../common/components/Widgets/Icon';
+import LargeText from '../../../common/components/Widgets/LargeText';
+import Loading from '../../../common/components/Widgets/Loading';
 
 export default class PropertyFilter extends React.Component {
   static propTypes = {
-    // home: React.PropTypes.object.isRequired,
     params: React.PropTypes.object
+  };
+
+  constructor() {
+    super();
+    this.storeListener = this.onChange.bind(this);
+  }
+
+  state = {
+    error: null,
+    homes: HomeListStore.getState().homes
+  };
+
+  componentDidMount() {
+    HomeListStore.listen(this.storeListener);
+    HomeListStore.fetchHomes({limit: 20});
+  }
+
+  componentWillUnmount() {
+    HomeListStore.unlisten(this.storeListener);
+  }
+
+  onChange(state) {
+    this.setState(state);
+  }
+
+  handlePendingState() {
+    return (
+      <Loading>
+        <p>Loading homes...</p>
+      </Loading>
+    );
+  }
+
+  handleErrorState() {
+    let error = {
+      title: 'Error loading homes!',
+      message: this.state.error.message
+    };
+
+    return (
+      <ErrorPage {...error} />
+    );
   }
 
   render() {
-    let modes = [
-      {
-        mode: 'cards',
-        icon: 'fa fa-th'
-      },
-      {
-        mode: 'list',
-        icon: 'fa fa-th-list'
-      },
-      {
-        mode: 'preview',
-        icon: 'fa fa-stop'
-      }
-    ];
-    let mode = this.props.params.mode || modes[0].mode;
+    if (this.state.error) {
+      return this.handleErrorState();
+    }
 
-    // Populate fake properties
-    let items = [];
+    if (HomeListStore.isLoading()) {
+      return this.handlePendingState();
+    }
 
-    let imageSrc = 'v1439885926/site/images/content/staircase.jpg';
+    let defaultImage = {
+      src: 'images/content/content-placeholder.jpg',
+      alt: ''
+    };
+
+    let mode = 'sale';
+
+    if (this.props.params && this.props.params.mode) {
+      mode = this.props.params.mode;
+    }
 
     return (
-      <div className='property-filter'>
-        <BigImage src={imageSrc} gradient='black' fixed={true} />
-        <div className='details property-list clearfix gray'>
-          <h2>Properties</h2>
-          <ul className='mode-selector'>
-            {
-              modes.map((item, index) => {
-                let className = (mode === item.mode) ? 'active' : '';
-
-                return (
-                  <li className={className} key={index}>
-                    <Link to='propertiesMode' params={{mode: item.mode}}>
-                      <i className={item.icon}></i>
-                    </Link>
-                  </li>
-                );
-              })
-            }
-          </ul>
-          {
-            (() => {
-              switch (mode) {
-                case 'list':
-                  return (
-                    <PropertyList items={items} />
-                  );
-                case 'preview':
-                  return (
-                    <PropertyPreview items={items} />
-                  );
-                case 'cards':
-                default:
-                  return (
-                    <Cards items={items} />
-                  );
-              }
-            })()
-          }
-        </div>
+      <div id='propertyFilter'>
+        <ContentBlock className='padded'>
+          <h1>Our exclusive properties for {mode}</h1>
+          <p>
+            @TODO: filtering properties
+          </p>
+        </ContentBlock>
+        <PropertyList items={this.state.homes} />
       </div>
     );
   }
