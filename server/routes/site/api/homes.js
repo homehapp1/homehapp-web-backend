@@ -6,11 +6,8 @@ exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
   app.get('/api/home/:slug', function(req, res, next) {
-    console.log('API fetch home with slug', req.params.slug);
-    console.log('req.query', req.query);
-
     QB
-    .query('Home')
+    .forModel('Home')
     .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
@@ -23,11 +20,8 @@ exports.registerRoutes = (app) => {
   });
 
   app.get('/api/home', function(req, res, next) {
-    console.log('API fetch home');
-    console.log('req.query', req.query);
-
     QB
-    .query('Home')
+    .forModel('Home')
     .parseRequestArguments(req)
     .findAll()
     .fetch()
