@@ -1,16 +1,13 @@
 <%
 var title = [];
 
-if (typeof content !== 'undefined') {
-  console.log('content', content);
-}
-
 if (typeof page !== 'undefined' && typeof page.title !== 'undefined') {
   title.push(page.title);
 }
 
 title.push(site.title);
 openGraph['og:title'] = title.join(' | ');
+openGraph['og:description'] = page.description;
 
 if (!openGraph['og:type']) {
   openGraph['og:type'] = 'article';
@@ -62,7 +59,8 @@ for (var key in openGraph) {
       for (var i = 0; i < metadatas.length; i++) {
         var tag = [];
         for (var k in metadatas[i]) {
-          tag.push(k + '="' + metadatas[i][k] + '"');
+          var value = metadatas[i][k].replace(/"/, '”');
+          tag.push(k + '="' + value + '"');
         }
         var str = tag.join(' ');
         if (tags.indexOf(str) === -1) {
