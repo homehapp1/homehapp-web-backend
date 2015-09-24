@@ -63,7 +63,7 @@ export default class Navigation extends React.Component {
           <ul>
             <li className='homepage'><Link to='app'>Homepage</Link></li>
             <li><Link to='properties'>Buy</Link></li>
-            <li><Link to='propertiesMode' params={{mode: 'cards'}}>Rent</Link></li>
+            <li><Link to='propertiesMode' params={{mode: 'rent'}}>Rent</Link></li>
             <li>
               <Link to='neighborhoods'>Neighbourhoods</Link>
               <ul>
