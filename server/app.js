@@ -285,7 +285,8 @@ exports.run = function(projectName, afterRun) {
               'og:locale': 'en_GB',
               'og:image': [
                 'http://res.cloudinary.com/homehapp/image/upload/v1443094360/site/images/content/site-photo.jpg'
-              ]
+              ],
+              'fb:app_id': '151239851889238'
             };
 
             if (!res.locals.openGraph) {
