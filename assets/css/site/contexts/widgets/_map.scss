@@ -32,7 +32,7 @@
 
     &, & > * {
       width: $s;
-      border-radius: $s;
+      //border-radius: $s;
       overflow: hidden;
 
       @include medium() {
