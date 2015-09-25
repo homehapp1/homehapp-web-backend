@@ -16,6 +16,8 @@ import Icon from '../../../common/components/Widgets/Icon';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 export default class PropertyFilter extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
@@ -82,6 +84,7 @@ export default class PropertyFilter extends React.Component {
     if (this.props.params && this.props.params.mode) {
       mode = this.props.params.mode;
     }
+    setPageTitle(`Our exclusive properties for ${mode}`);
 
     return (
       <div id='propertyFilter'>
