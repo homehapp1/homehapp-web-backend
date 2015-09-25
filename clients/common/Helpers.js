@@ -290,3 +290,13 @@ exports.moveToIndex = function moveToIndex(arr, currentIndex, newIndex) {
   arr.splice(newIndex, 0, arr.splice(currentIndex, 1)[0]);
   return arr;
 };
+
+exports.setPageTitle = function setPageTitle(title) {
+  console.log('document', typeof document);
+  if (typeof document === 'undefined' || typeof document.title === 'undefined') {
+    return null;
+  }
+  // Always append with the site title
+  title = String(title).replace(/ \| Homehapp$/, '') + ' | Homehapp';
+  document.title = title;
+};
