@@ -116,11 +116,15 @@ export default class Image extends React.Component {
     this.attributes.className = classes.join(' ');
 
     if (this.props.width && this.props.height) {
-      this.props.aspectRatio = this.props.width / this.props.height;
+      this.aspectRatio = this.props.width / this.props.height;
     }
 
     if (this.props.aspectRatio) {
-      this.attributes['data-aspect-ratio'] = this.props.aspectRatio;
+      this.aspectRatio = this.props.aspectRatio;
+    }
+
+    if (this.aspectRatio) {
+      this.attributes['data-aspect-ratio'] = this.aspectRatio;
     }
 
     return this.attributes;
@@ -144,6 +148,10 @@ export default class Image extends React.Component {
 
     if (this.props.variant) {
       let variant = this.state.config.cloudinary.transformations[this.props.variant];
+      if (!variant) {
+        console.error('Tried to use an undefined variant', this.props.variant);
+        variant = {};
+      }
       if (typeof variant.applyDimensions !== 'undefined') {
         apply = variant.applyDimensions;
       }
