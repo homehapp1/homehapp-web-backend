@@ -6,6 +6,8 @@ import React from 'react';
 import Columns from '../../../common/components/Widgets/Columns';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Icon from '../../../common/components/Widgets/Icon';
+import Video from '../../../common/components/Widgets/Video';
+
 import { setPageTitle } from '../../../common/Helpers';
 
 
@@ -29,7 +31,7 @@ export default class ContentAbout extends React.Component {
           Homehapp stands for dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
         </p>
         <hr className='spacer' />
-        <iframe src='https://player.vimeo.com/video/74145280' width='100%' height='650' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>
+        <Video src='https://player.vimeo.com/video/74145280' mode='iframe' aspectRatio='16:9' />
         <hr className='spacer' />
         <Columns cols={2} className='padded'>
           <ContentBlock>
