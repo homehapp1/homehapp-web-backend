@@ -207,6 +207,17 @@ exports.loadSchemas = function (mongoose, next) {
     return title.trim();
   });
 
+  schemas.Home.virtual('pageTitle').get(function () {
+    let title = [this.homeTitle];
+    if (this.location.neighborhood && this.location.neighborhood.title) {
+      title.push(this.location.neighborhood.title);
+    }
+    if (this.location.address.city) {
+      title.push(this.location.address.city);
+    }
+    return title.join(' | ');
+  });
+
   schemas.Home.virtual('waterChargeSuffix').get(function () {
     let suffix = `${this.costs.waterChargePerType} / month`;
     return suffix;
