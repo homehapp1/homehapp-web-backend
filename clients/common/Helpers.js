@@ -292,7 +292,6 @@ exports.moveToIndex = function moveToIndex(arr, currentIndex, newIndex) {
 };
 
 exports.setPageTitle = function setPageTitle(title = null) {
-  console.log('document', typeof document);
   if (typeof document === 'undefined' || typeof document.title === 'undefined') {
     return null;
   }
