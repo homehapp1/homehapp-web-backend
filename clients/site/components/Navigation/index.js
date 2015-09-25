@@ -60,7 +60,6 @@ export default class Navigation extends React.Component {
         </div>
         <div className='container'>
           <ul>
-            <li className='homepage'><Link to='app'>Homepage</Link></li>
             <li><Link to='properties'>Buy</Link></li>
             <li><Link to='propertiesMode' params={{mode: 'rent'}}>Rent</Link></li>
             <li>
@@ -70,8 +69,6 @@ export default class Navigation extends React.Component {
               </ul>
             </li>
             <li className='secondary'><Link to='contentAbout'>About us</Link></li>
-            <li className='secondary'><Link to='contentTerms'>Terms & conditions</Link></li>
-            <li className='secondary'><Link to='contentPrivacy'>Privacy</Link></li>
           </ul>
         </div>
       </div>
