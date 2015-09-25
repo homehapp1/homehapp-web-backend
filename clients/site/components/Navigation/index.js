@@ -8,6 +8,7 @@ export default class Navigation extends React.Component {
   constructor() {
     super();
     this.click = this.click.bind(this);
+    this.hideNavigation = this.hideNavigation.bind(this);
     this.body = null;
   }
 
@@ -16,12 +17,19 @@ export default class Navigation extends React.Component {
     this.icon.addEvent('touchstart', this.click, true);
     this.icon.addEvent('mousedown', this.click, true);
 
+    this.container = new DOMManipulator(this.refs.container);
+    this.container.addEvent('touchstart', this.hideNavigation, false);
+    this.container.addEvent('mousedown', this.hideNavigation, false);
+
     this.navigation = new DOMManipulator(this.refs.navigation);
   }
 
   componentWillUnmount() {
     this.icon.removeEvent('touchstart', this.click, true);
     this.icon.removeEvent('mousedown', this.click, true);
+    this.container.removeEvent('touchstart', this.hideNavigation, false);
+    this.container.removeEvent('mousedown', this.hideNavigation, false);
+    console.log('umount');
   }
 
   hideNavigation() {
@@ -58,7 +66,7 @@ export default class Navigation extends React.Component {
           <div className='bar middle'></div>
           <div className='bar bottom'></div>
         </div>
-        <div className='container'>
+        <div className='container' ref='container'>
           <ul>
             <li><Link to='properties'>Buy</Link></li>
             <li><Link to='propertiesMode' params={{mode: 'rent'}}>Rent</Link></li>
