@@ -1,10 +1,12 @@
-&.big-image, &.video {
+&.big-image, &.big-video {
   background-color: transparent;
   opacity: 1;
+  border-top: solid 1px transparent;
+  margin-top: -1px;
 
   &, h1, h2, h3, p {
     color: white;
-    text-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5), 0 0 1em rgba(0, 0, 0, 0.3);
+    text-shadow: $textShadow;
   }
 
   & > .image-content {
@@ -21,7 +23,7 @@
     position: absolute;
     bottom: $contentPadding;
     right: $contentPadding;
-    text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    text-shadow: $textShadow;
     color: white;
     z-index: 1;
   }
