@@ -6,7 +6,7 @@ let debug = require('debug')('app');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  let returnNeighbohroodBySlug = (city, slug, res, next) => {
+  let returnNeighborhoodBySlug = (city, slug, res, next) => {
     QB
     .forModel('Neighborhood')
     .findByCity(city)
@@ -75,15 +75,15 @@ exports.registerRoutes = (app) => {
 
   };
 
-  app.get('/neighborhoods/:city', function(req, res, next) {
-    console.log('req.params', req.params);
-    returnNeighborhoodsByCity(req.params.city, res, next);
-  });
-
-  app.get('/neighborhoods/:city/:slug', function(req, res, next) {
-    returnNeighborhoodBySlug(req.params.city, req.params.slug, res, next);
-  });
-  app.get('/neighborhoods/:city/:slug/homes', function(req, res, next) {
-    returnNeighborhoodBySlug(req.params.city, req.params.slug, res, next);
-  });
+  // app.get('/neighborhoods/:city', function(req, res, next) {
+  //   console.log('req.params', req.params);
+  //   returnNeighborhoodsByCity(req.params.city, res, next);
+  // });
+  //
+  // app.get('/neighborhoods/:city/:slug', function(req, res, next) {
+  //   returnNeighborhoodBySlug(req.params.city, req.params.slug, res, next);
+  // });
+  // app.get('/neighborhoods/:city/:slug/homes', function(req, res, next) {
+  //   returnNeighborhoodBySlug(req.params.city, req.params.slug, res, next);
+  // });
 };
