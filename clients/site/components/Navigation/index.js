@@ -29,7 +29,6 @@ export default class Navigation extends React.Component {
     this.icon.removeEvent('mousedown', this.click, true);
     this.container.removeEvent('touchstart', this.hideNavigation, false);
     this.container.removeEvent('mousedown', this.hideNavigation, false);
-    console.log('umount');
   }
 
   hideNavigation() {

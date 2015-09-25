@@ -26,7 +26,6 @@ export default class PropertyList extends React.Component {
   };
 
   render() {
-    console.log('PropertyList', this.props.items);
     let containerClass = ['home-list', 'preview-list'];
 
     if (this.props.className) {
