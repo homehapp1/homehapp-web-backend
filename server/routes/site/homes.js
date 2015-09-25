@@ -12,7 +12,6 @@ exports.registerRoutes = (app) => {
     .findBySlug(slug)
     .fetch()
     .then((result) => {
-      debug('res', result.home);
       res.locals.data.title = [result.home.homeTitle];
       let images = [];
       if (result.home.images) {
