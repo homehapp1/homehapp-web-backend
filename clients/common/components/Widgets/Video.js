@@ -11,13 +11,21 @@ export default class Video extends React.Component {
       React.PropTypes.number,
       React.PropTypes.string
     ]),
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    formats: React.PropTypes.array,
+    poster: React.PropTypes.string
   };
 
   static defaultProps = {
     mode: 'html5',
     aspectRatio: 16 / 9,
-    className: null
+    className: null,
+    formats: [
+      'webm',
+      'mp4',
+      'ogg'
+    ],
+    poster: null
   };
 
   constructor() {
@@ -26,6 +34,10 @@ export default class Video extends React.Component {
   }
 
   componentDidMount() {
+    if (!this.refs.container) {
+      return;
+    }
+
     this.container = new DOMManipulator(this.refs.container);
     window.addEventListener('resize', this.resize);
     this.resize();
@@ -71,11 +83,36 @@ export default class Video extends React.Component {
       return (<iframe src={this.props.src} width='100%' height='100%' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>);
     }
 
+    if (this.props.mode === 'html5') {
+      let regexp = new RegExp(`\.(mov|avi|mpe?g|${this.props.formats.join('|')})$`, 'i');
+      let baseUrl = this.props.src.replace(regexp, '');
+      let poster = this.props.poster || `${baseUrl}.jpg`;
+
+      return (
+        <video controls width='100%' height='100%' poster={poster}>
+          {
+            this.props.formats.map((format, index) => {
+              let src = `${baseUrl}.${format}`;
+              let type = `video/${format}`.toLowerCase();
+              return (
+                <source src={src} type={type} key={index} />
+              );
+            })
+          }
+        </video>
+      );
+    }
+
     return `Not yet implemented '${this.props.mode}' with src '${this.props.src}'`;
   }
 
   render() {
     this.resolveAspectRatio();
+
+    if (!this.props.src) {
+      console.error('No `src` defined for video, cannot continue', this.props);
+      return null;
+    }
 
     let image = {
       src: `images/icons/white/${this.props.type}.svg`,
