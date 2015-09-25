@@ -291,12 +291,15 @@ exports.moveToIndex = function moveToIndex(arr, currentIndex, newIndex) {
   return arr;
 };
 
-exports.setPageTitle = function setPageTitle(title) {
+exports.setPageTitle = function setPageTitle(title = null) {
   console.log('document', typeof document);
   if (typeof document === 'undefined' || typeof document.title === 'undefined') {
     return null;
   }
+
   // Always append with the site title
-  title = String(title).replace(/ \| Homehapp$/, '') + ' | Homehapp';
-  document.title = title;
+  if (title) {
+    title = String(title).replace(/ \| Homehapp$/, '') + ' | ';
+  }
+  document.title = title + 'Homehapp';
 };
