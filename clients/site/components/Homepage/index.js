@@ -154,7 +154,7 @@ export default class Homepage extends React.Component {
                 <em>Become a service provider in Homehapp. We are looking for estate agents partners, legals, home decor...</em>
               </p>
               <p>
-                <Link to='formsPartners' className='button white'>Contact</Link>
+                <Link to='partners' className='button white'>Contact</Link>
               </p>
             </div>
             <div className='span5 centered'>
