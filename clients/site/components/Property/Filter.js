@@ -87,9 +87,6 @@ export default class PropertyFilter extends React.Component {
       <div id='propertyFilter'>
         <ContentBlock className='padded'>
           <h1>Our exclusive properties for {mode}</h1>
-          <p>
-            @TODO: filtering properties
-          </p>
         </ContentBlock>
         <PropertyList items={this.state.homes} />
       </div>
