@@ -16,6 +16,7 @@ import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Loading from '../../../common/components/Widgets/Loading';
+import { setPageTitle } from '../../../common/Helpers';
 
 export default class Homepage extends React.Component {
   constructor() {
@@ -35,11 +36,13 @@ export default class Homepage extends React.Component {
 
     HomeListStore.listen(this.storeListener);
     HomeListStore.fetchHomes({limit: 20});
+    setPageTitle('Discover y');
   }
 
   componentWillUnmount() {
     document.getElementsByTagName('body')[0].removeAttribute('data-handler');
     HomeListStore.unlisten(this.storeListener);
+    setPageTitle();
   }
 
   onChange(state) {
