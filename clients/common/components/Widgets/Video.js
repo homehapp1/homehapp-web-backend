@@ -13,7 +13,10 @@ export default class Video extends React.Component {
     ]),
     className: React.PropTypes.string,
     formats: React.PropTypes.array,
-    poster: React.PropTypes.string
+    poster: React.PropTypes.string,
+    autoPlay: React.PropTypes.bool,
+    loop: React.PropTypes.bool,
+    controls: React.PropTypes.bool
   };
 
   static defaultProps = {
@@ -25,7 +28,10 @@ export default class Video extends React.Component {
       'mp4',
       'ogg'
     ],
-    poster: null
+    poster: null,
+    autoPlay: false,
+    loop: false,
+    controls: true
   };
 
   constructor() {
@@ -88,8 +94,17 @@ export default class Video extends React.Component {
       let baseUrl = this.props.src.replace(regexp, '');
       let poster = this.props.poster || `${baseUrl}.jpg`;
 
+      let video = {
+        poster: poster,
+        controls: this.props.controls,
+        autoPlay: this.props.autoPlay,
+        loop: this.props.loop,
+        width: '100%',
+        height: '100%'
+      };
+
       return (
-        <video controls width='100%' height='100%' poster={poster}>
+        <video {...video}>
           {
             this.props.formats.map((format, index) => {
               let src = `${baseUrl}.${format}`;
