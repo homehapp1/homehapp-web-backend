@@ -10,6 +10,7 @@ import PartnersForm from './Form';
 import Modal from '../../../common/components/Widgets/Modal';
 
 import DOMManipulator from '../../../common/DOMManipulator';
+import { setPageTitle } from '../../../common/Helpers';
 
 export default class ContentPartners extends React.Component {
   constructor() {
@@ -18,9 +19,10 @@ export default class ContentPartners extends React.Component {
   }
 
   componentDidMount() {
-    console.log('button', this.refs);
     this.button = new DOMManipulator(this.refs.button);
     this.button.addEvent('click', this.displayForm, true);
+
+    setPageTitle('Become our partner');
   }
 
   componentWillUnmount() {
