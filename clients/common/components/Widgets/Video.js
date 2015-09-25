@@ -16,7 +16,18 @@ export default class Video extends React.Component {
     poster: React.PropTypes.string,
     autoPlay: React.PropTypes.bool,
     loop: React.PropTypes.bool,
-    controls: React.PropTypes.bool
+    controls: React.PropTypes.bool,
+    standalone: React.PropTypes.bool,
+    width: React.PropTypes.oneOfType([
+      React.PropTypes.null,
+      React.PropTypes.number,
+      React.PropTypes.string
+    ]),
+    height: React.PropTypes.oneOfType([
+      React.PropTypes.null,
+      React.PropTypes.number,
+      React.PropTypes.string
+    ])
   };
 
   static defaultProps = {
@@ -31,7 +42,10 @@ export default class Video extends React.Component {
     poster: null,
     autoPlay: false,
     loop: false,
-    controls: true
+    controls: true,
+    standalone: false,
+    width: '100%',
+    height: '100%'
   };
 
   constructor() {
@@ -99,8 +113,8 @@ export default class Video extends React.Component {
         controls: this.props.controls,
         autoPlay: this.props.autoPlay,
         loop: this.props.loop,
-        width: '100%',
-        height: '100%'
+        width: this.props.width,
+        height: this.props.height
       };
 
       return (
@@ -142,6 +156,11 @@ export default class Video extends React.Component {
     }
 
     let video = this.getVideo();
+
+    // Skip the wrappers, serve only the pure video
+    if (this.props.standalone) {
+      return video;
+    }
 
     return (
       <div className={classes.join(' ')}>
