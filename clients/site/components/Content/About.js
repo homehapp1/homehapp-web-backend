@@ -6,8 +6,18 @@ import React from 'react';
 import Columns from '../../../common/components/Widgets/Columns';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Icon from '../../../common/components/Widgets/Icon';
+import { setPageTitle } from '../../../common/Helpers';
+
 
 export default class ContentAbout extends React.Component {
+  componentDidMount() {
+    setPageTitle('About us');
+  }
+
+  componentWillUnmount() {
+    setPageTitle();
+  }
+
   render() {
     return (
       <ContentBlock className='padded about' align='left' valign='top'>
