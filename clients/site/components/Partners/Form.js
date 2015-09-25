@@ -11,7 +11,7 @@ export default class PartnersForm extends React.Component {
   render() {
     return (
       <ContentBlock className='home contact-form'>
-        <h2>Contact us</h2>
+        <h1>Contact us</h1>
         <form method='post'>
           <div className='form'>
             <label className='control'>
