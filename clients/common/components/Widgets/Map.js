@@ -2,9 +2,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import { merge } from '../../Helpers';
 import DOMManipulator from '../../DOMManipulator';
-import Loading from './Loading';
 
 export default class Map extends React.Component {
   static propTypes = {
@@ -144,18 +142,14 @@ export default class Map extends React.Component {
     let width = Math.floor(container.parent().width());
 
     if (container.css('display') === 'table') {
-      width = Math.floor(width / 2);
+      width = Math.floor(width / 2) - 60;
     }
 
+    // Maximum size for the map
     let mapSize = 600;
-
     map.width(Math.min(mapSize, width));
     map.height(Math.min(mapSize, width));
     content.width(width);
-    // Refresh the map
-    if (this.map) {
-      this.map.setZoom(this.map.getZoom());
-    }
   }
 
   // Get a plain arithmetic average for the center position for a set of
@@ -188,7 +182,8 @@ export default class Map extends React.Component {
 
     let classes = [
       'widget',
-      'map'
+      'map',
+      'width-wrapper'
     ];
 
     return (
