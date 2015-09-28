@@ -223,6 +223,14 @@ exports.loadSchemas = function (mongoose, next) {
     return suffix;
   });
 
+  schemas.Home.virtual('fomattedPrice').get(function() {
+    if (!this.costs.sellingPrice) {
+      return '';
+    }
+
+    return `£${String(Math.round(this.costs.sellingPrice)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
+  });
+
   schemas.Home.statics.editableFields = function () {
     return [
       'title', 'description', 'location', 'costs', 'story', 'amenities',
