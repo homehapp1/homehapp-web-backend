@@ -1,8 +1,7 @@
 'use strict';
 
 import React from 'react';
-
-import ContentBlock from './ContentBlock';
+// import ContentBlock from './ContentBlock';
 
 export default class Loading extends React.Component {
   static propTypes = {

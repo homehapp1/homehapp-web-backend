@@ -12,8 +12,6 @@ import PropertyList from './List';
 
 // Story widgets
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
-import Icon from '../../../common/components/Widgets/Icon';
-import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
 
 import { setPageTitle } from '../../../common/Helpers';
@@ -73,11 +71,6 @@ export default class PropertyFilter extends React.Component {
     if (HomeListStore.isLoading()) {
       return this.handlePendingState();
     }
-
-    let defaultImage = {
-      src: 'images/content/content-placeholder.jpg',
-      alt: ''
-    };
 
     let mode = 'sale';
 

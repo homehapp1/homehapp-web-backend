@@ -1,6 +1,5 @@
 'use strict';
 import React from 'react';
-import Image from './Image';
 import DOMManipulator from '../../DOMManipulator';
 
 export default class Video extends React.Component {
@@ -142,12 +141,6 @@ export default class Video extends React.Component {
       console.error('No `src` defined for video, cannot continue', this.props);
       return null;
     }
-
-    let image = {
-      src: `images/icons/white/${this.props.type}.svg`,
-      alt: '',
-      type: 'asset'
-    };
 
     let classes = ['widget', 'video'];
 

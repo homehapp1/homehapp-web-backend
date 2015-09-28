@@ -5,7 +5,7 @@ import React from 'react';
 import Story from '../../../common/components/Widgets/Story';
 import HomeNavigation from './Navigation';
 
-import { formatPrice, setPageTitle } from '../../../common/Helpers';
+import { setPageTitle } from '../../../common/Helpers';
 
 export default class HomeDetails extends React.Component {
   static propTypes = {
@@ -32,7 +32,7 @@ export default class HomeDetails extends React.Component {
       return rval;
     });
 
-    content.push((<span>{formatPrice(this.props.home.costs.sellingPrice)}</span>));
+    content.push((<span>{this.props.home.formattedPrice}</span>));
 
     return content;
   }

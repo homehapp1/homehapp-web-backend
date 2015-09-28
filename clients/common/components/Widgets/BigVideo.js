@@ -1,9 +1,8 @@
 'use strict';
 
 import React from 'react';
-import { setFullHeight, merge } from '../../Helpers';
+import { setFullHeight } from '../../Helpers';
 import classNames from 'classnames';
-import Image from './Image';
 import Video from './Video';
 
 export default class BigVideo extends React.Component {
@@ -12,6 +11,7 @@ export default class BigVideo extends React.Component {
     className: React.PropTypes.string,
     poster: React.PropTypes.string,
     fixed: React.PropTypes.bool,
+    gradient: React.PropTypes.string,
     proportion: React.PropTypes.number,
     children: React.PropTypes.oneOfType([
       React.PropTypes.array,
@@ -76,7 +76,7 @@ export default class BigVideo extends React.Component {
 
     let author = null;
     if (this.props.author) {
-      author = (<div className='image-author'>&copy; {this.props.image.author}</div>);
+      author = (<div className='image-author'>&copy; {this.props.author}</div>);
     }
 
     return (

@@ -42,7 +42,7 @@ export default class ErrorPage extends React.Component {
 
     return (
       <div className='widget'>
-        <BigImage image={this.props.image} proportion={proportion} fixed={true} align={this.props.align} valign={this.props.valign}>
+        <BigImage image={this.props.image} proportion={proportion} fixed align={this.props.align} valign={this.props.valign}>
           <LargeText align='center' valign='middle' proportion={proportion}>
             <h1>{this.props.title}</h1>
             <p>{this.props.message}</p>

@@ -128,7 +128,7 @@ export default class Homepage extends React.Component {
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.8}>
+        <BigImage gradient='green' fixed image={mainImage} proportion={0.8}>
           <LargeText align='center' valign='middle' proportion={0.8}>
             <div className='splash'>
               <h1>Every home has<br /> a unique story</h1>
@@ -174,7 +174,7 @@ export default class Homepage extends React.Component {
                 let image = (neighborhood.images && neighborhood.images[0]) ? neighborhood.images[0] : null;
                 return (
                   <div className='preview' key={index}>
-                    <Hoverable {...image} width={464} height={556} mode='fill' applySize={true}>
+                    <Hoverable {...image} width={464} height={556} mode='fill' applySize>
                       <div className='neighborhood-title'>
                         <div className='wrapper'>
                           <Link to='neighborhoodsView' params={{city: 'london', neighborhood: neighborhood.slug}}>

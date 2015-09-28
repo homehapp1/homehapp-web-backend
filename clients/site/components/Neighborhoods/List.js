@@ -68,7 +68,7 @@ export default class NeighborhoodsList extends React.Component {
           {
             neighborhoods.map((item, index) => {
               return (
-                <div className='neighborhood'>
+                <div className='neighborhood' key={index}>
                   <Link className='image-wrapper' to='neighborhoodsView' params={{city: this.city, neighborhood: item.slug}}>
                     <Image {...item.image} width={1200} height={680} mode='fill' />
                   </Link>

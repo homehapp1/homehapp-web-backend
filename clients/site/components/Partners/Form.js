@@ -1,11 +1,8 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 
-import Columns from '../../../common/components/Widgets/Columns';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
-import Icon from '../../../common/components/Widgets/Icon';
 
 export default class PartnersForm extends React.Component {
   render() {

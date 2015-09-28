@@ -2,10 +2,6 @@
 
 import React from 'react';
 
-import HomeContainer from './HomeContainer';
-import HomeStore from '../../stores/HomeStore';
-
-import HomeNavigation from './Navigation';
 import Columns from '../../../common/components/Widgets/Columns';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 

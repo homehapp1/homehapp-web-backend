@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+// import React from 'react';
 import BaseBlock from '../Widgets/BaseBlock';
 
 export default class AdminContentBlock extends BaseBlock {
