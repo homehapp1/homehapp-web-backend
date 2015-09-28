@@ -29,6 +29,13 @@ table {
   }
 }
 
+.ellipsis-overflow {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;;
+}
+
 a {
   color: $linkBlue;
 
@@ -51,11 +58,17 @@ body {
   color: $fontMediumGray;
 }
 
-$smallQ: 0.6;
+$smallQ: 0.8;
 
 h1, h2, h3, h4, h5, h6, li, p {
   line-height: 1.4em;
   color: $fontGray;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  a {
+    color: $fontGray;
+  }
 }
 
 h3 {
