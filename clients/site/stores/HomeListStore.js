@@ -42,12 +42,10 @@ class HomeListStore {
   }
 
   handleUpdateHomes(homes) {
-    debug('handleUpdateHomes', homes);
     this.homes = homes;
     this.error = null;
   }
   handleFetchHomes() {
-    debug('handleFetchHomes');
     this.homes = [];
     this.error = null;
   }

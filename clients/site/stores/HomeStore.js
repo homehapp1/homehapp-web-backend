@@ -11,7 +11,6 @@ let debug = require('../../common/debugger')('HomeStore');
 class HomeStore {
   constructor() {
     this.on('bootstrap', () => {
-      debug('bootstrapping', this.home);
       if (this.home) {
         Cache.set('homesBySlug', this.home.slug, this.home);
       }
@@ -34,12 +33,10 @@ class HomeStore {
   }
 
   handleUpdateHome(home) {
-    debug('handleUpdateHome', home);
     this.home = home;
     this.error = null;
   }
   handleFetchHomeBySlug(slug) {
-    debug('handleFetchHomeBySlug', slug);
     this.home = null;
     this.error = null;
   }
