@@ -5,7 +5,25 @@ import React from 'react';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
 export default class PartnersForm extends React.Component {
+  static propTypes = {
+    context: React.PropTypes.object
+  }
+
+  static contextTypes = {
+    router: React.PropTypes.object
+  };
+
   render() {
+    let terms = '/terms';
+
+    if (this.props.context) {
+      this.context = this.props.context;
+    }
+
+    if (this.context && this.context.router) {
+      terms = this.context.router.makeHref('contentTerms');
+    }
+
     return (
       <ContentBlock className='home contact-form'>
         <h1>Contact us</h1>
@@ -36,7 +54,7 @@ export default class PartnersForm extends React.Component {
             <input type='submit' className='button' value='Send message' />
           </div>
           <p className='fineprint'>
-            By submitting this form you accept our <a href='/terms'>Terms of use</a>
+            By submitting this form you accept our <a href={terms}>Terms of use</a>
           </p>
         </form>
       </ContentBlock>

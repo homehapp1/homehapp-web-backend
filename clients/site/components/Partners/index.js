@@ -13,6 +13,10 @@ import DOMManipulator from '../../../common/DOMManipulator';
 import { setPageTitle } from '../../../common/Helpers';
 
 export default class ContentPartners extends React.Component {
+  static contextTypes = {
+    router: React.PropTypes.func
+  };
+
   constructor() {
     super();
     this.displayForm = this.displayForm.bind(this);
@@ -32,7 +36,7 @@ export default class ContentPartners extends React.Component {
   createModal() {
     return (
       <Modal className='white with-overflow contact-form'>
-        <PartnersForm />
+        <PartnersForm context={this.context} />
       </Modal>
     );
   }

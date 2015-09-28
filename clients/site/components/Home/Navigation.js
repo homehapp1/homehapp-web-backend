@@ -12,6 +12,10 @@ export default class HomeNavigation extends React.Component {
     home: React.PropTypes.object.isRequired
   };
 
+  static contextTypes = {
+    router: React.PropTypes.object
+  };
+
   constructor() {
     super();
     this.displayForm = this.displayForm.bind(this);
