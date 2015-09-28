@@ -17,7 +17,7 @@ exports.floor = function floor(v) {
   return v;
 };
 
-exports.setCDNUrlProperties = function(url, props) {
+exports.setCDNUrlProperties = function setCDNUrlProperties(url, props) {
   let propStr = '';
   for (let [key, val] of enumerate(props)) {
     propStr += `${key}_${val},`;
@@ -89,7 +89,7 @@ exports.checkElementInViewport = function checkElementInViewport(element, viewpo
   return elementOffsetTop < (viewportHeight + offset);
 };
 
-exports.scrollTop = function(offset = null, speed = 500) {
+exports.scrollTop = function scrollTop(offset = null, speed = 500) {
   if (offset === null) {
     return window.pageYOffset || document.documentElement.scrollTop;
   }
@@ -117,7 +117,7 @@ exports.scrollTop = function(offset = null, speed = 500) {
   nextHop();
 };
 
-exports.setFullHeight = function() {
+exports.setFullHeight = function setFullHeight() {
   let items = document.getElementsByClassName('full-height');
   let height = window.innerHeight;
 
@@ -160,7 +160,7 @@ exports.setFullHeight = function() {
   }
 };
 
-exports.itemViews = function() {
+exports.itemViews = function itemViews() {
   let tmp = document.getElementsByClassName('item');
   let items = [];
 
@@ -188,15 +188,7 @@ exports.itemViews = function() {
   }
 };
 
-exports.formatPrice = function(price) {
-  if (!price) {
-    return '';
-  }
-
-  return `£${String(Math.round(price)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
-};
-
-exports.literals = function(q, type = 'base') {
+exports.literals = function literals(q, type = 'base') {
   let rval = (type === 'ordinal') ? `${q}th` : String(q);
 
   switch (q % 10) {
@@ -228,13 +220,13 @@ exports.literals = function(q, type = 'base') {
   return rval;
 };
 
-exports.capitalize = function(str) {
+exports.capitalize = function capitalize(str) {
   return str && str[0].toUpperCase() + str.slice(1);
 };
 
 // The contents of this function are open for discussion. Currently
 // this method extrapolates some values, trying to make sane results
-exports.primaryHomeTitle = function(home) {
+exports.primaryHomeTitle = function primaryHomeTitle(home) {
   if (home.title) {
     return home.title;
   }
