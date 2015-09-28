@@ -106,15 +106,20 @@ export default class NeighborhoodsStory extends React.Component {
 
   getMarkers(homes) {
     let markers = [];
-    console.log('homes', homes);
 
     for (let i = 0; i < homes.length; i++) {
       if (!Array.isArray(homes[i].location.coordinates)) {
         continue;
       }
       markers.push({
-        lat: homes[i].location.coordinates[0],
-        lng: homes[i].location.coordinates[1]
+        location: homes[i].location.coordinates,
+        title: homes[i].homeTitle,
+        route: {
+          to: 'home',
+          params: {
+            slug: homes[i].slug
+          }
+        }
       });
     }
 
@@ -136,34 +141,30 @@ export default class NeighborhoodsStory extends React.Component {
     let markers = this.getMarkers(homes);
 
     return (
-      <ContentBlock>
-        <h2>Homes</h2>
-          <Map center={this.neighborhood.location.coordinates} markers={markers}>
-            {
-              homes.map((home, index) => {
-                if (index >= 3) {
-                  return null;
-                }
-
-                return (
-                  <div className='home'>
-                    <h3>
-                      <Link to='home' params={{slug: home.slug}} className='ellipsis-overflow'>
-                        {home.homeTitle}
-                      </Link>
-                    </h3>
-                    <ul>
-                      <li>3 bedrooms</li>
-                      <li>{home.fomattedPrice}</li>
-                      <li>3 bedrooms</li>
-                    </ul>
-                  </div>
-                );
-              })
+      <Map center={this.neighborhood.location.coordinates} markers={markers}>
+        {
+          homes.map((home, index) => {
+            if (index >= 3) {
+              return null;
             }
-          </Map>
-        <h2>/Homes</h2>
-      </ContentBlock>
+
+            return (
+              <div className='home' key={index}>
+                <h3>
+                  <Link to='home' params={{slug: home.slug}} className='ellipsis-overflow'>
+                    {home.homeTitle}
+                  </Link>
+                </h3>
+                <ul>
+                  <li>3 bedrooms</li>
+                  <li>{home.fomattedPrice}</li>
+                  <li>3 bedrooms</li>
+                </ul>
+              </div>
+            );
+          })
+        }
+      </Map>
     );
   }
 
