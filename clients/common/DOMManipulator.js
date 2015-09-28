@@ -58,9 +58,12 @@ class DOMManipulator {
   }
 
   css(args, value = null) {
-    if (typeof args === 'string' && typeof value === 'string') {
-      this.node.style[args] = value;
-      return this;
+    if (typeof args === 'string') {
+      if (value) {
+        this.node.style[args] = value;
+        return this;
+      }
+      return (this.node.currentStyle) ? this.node.currentStyle[args] : getComputedStyle(this.node, null)[args];
     }
 
     for (let i in args) {
