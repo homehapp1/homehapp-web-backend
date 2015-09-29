@@ -1,12 +1,12 @@
 'use strict';
 
 import React from 'react';
-import HomeListStore from '../../stores/HomeListStore';
-import HomesIndex from './Index';
+import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
+import NeighborhoodsIndex from './Index';
 
 import Loading from '../../../common/components/Widgets/Loading';
 
-class HomesIndexContainer extends React.Component {
+class NeighborhoodsIndexContainer extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
   }
@@ -18,16 +18,16 @@ class HomesIndexContainer extends React.Component {
 
   state = {
     error: null,
-    homes: HomeListStore.getState().homes
+    neighborhoods: NeighborhoodListStore.getState().neighborhoods
   }
 
   componentDidMount() {
-    HomeListStore.listen(this.storeListener);
-    HomeListStore.fetchHomes();
+    NeighborhoodListStore.listen(this.storeListener);
+    NeighborhoodListStore.fetchNeighborhoods();
   }
 
   componentWillUnmount() {
-    HomeListStore.unlisten(this.storeListener);
+    NeighborhoodListStore.unlisten(this.storeListener);
   }
 
   onChange(state) {
@@ -37,15 +37,15 @@ class HomesIndexContainer extends React.Component {
   handlePendingState() {
     return (
       <Loading>
-        <h3>Loading homes...</h3>
+        <h3>Loading neighborhoods...</h3>
       </Loading>
     );
   }
 
   handleErrorState() {
     return (
-      <div className='homes-error'>
-        <h3>Error loading homes!</h3>
+      <div className='neighborhoods-error'>
+        <h3>Error loading neighborhoods!</h3>
         <p>{this.state.error.message}</p>
       </div>
     );
@@ -55,14 +55,14 @@ class HomesIndexContainer extends React.Component {
     if (this.state.error) {
       return this.handleErrorState();
     }
-    if (HomeListStore.isLoading() || !this.state.homes) {
+    if (NeighborhoodListStore.isLoading() || !this.state.neighborhoods) {
       return this.handlePendingState();
     }
 
     return (
-      <HomesIndex homes={this.state.homes} />
+      <NeighborhoodsIndex neighborhoods={this.state.neighborhoods} />
     );
   }
 }
 
-export default HomesIndexContainer;
+export default NeighborhoodsIndexContainer;

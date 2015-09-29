@@ -7,9 +7,15 @@ let {Route, DefaultRoute, NotFoundRoute} = Router;
 
 import Application from './Application';
 import Homepage from './Homepage';
+import RouteNotFound from './ErrorPages/RouteNotFound';
+
+// Homes
 import HomesIndexContainer from './Homes/IndexContainer';
 import HomesEditContainer from './Homes/EditContainer';
-import RouteNotFound from './ErrorPages/RouteNotFound';
+
+// eighborhoods
+import NeighborhoodsIndexContainer from './Neighborhoods/IndexContainer';
+import NeighborhoodsEditContainer from './Neighborhoods/EditContainer';
 
 let routes = (
   <Route name='app' path='/' handler={Application}>
@@ -17,6 +23,10 @@ let routes = (
     <Route name='homes' path='/homes'>
       <DefaultRoute handler={HomesIndexContainer}/>
       <Route name='homeEdit' path='edit/:id' handler={HomesEditContainer} />
+    </Route>
+    <Route name='neighborhoods' path='/neighborhoods'>
+      <DefaultRoute handler={NeighborhoodsIndexContainer}/>
+      <Route name='neighborhoodEdit' path='edit/:id' handler={NeighborhoodsEditContainer} />
     </Route>
     <NotFoundRoute handler={RouteNotFound} />
   </Route>
