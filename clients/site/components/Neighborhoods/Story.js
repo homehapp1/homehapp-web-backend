@@ -130,14 +130,9 @@ export default class NeighborhoodsStory extends React.Component {
     let homes = (this.state.homes) ? this.state.homes : [];
 
     if (!homes.length) {
-      return (
-        <ContentBlock>
-          <h2>Homes</h2>
-          <p>No homes</p>
-          <h2>/Homes</h2>
-        </ContentBlock>
-      );
+      return null;
     }
+
     let markers = this.getMarkers(homes);
 
     return (
@@ -146,6 +141,12 @@ export default class NeighborhoodsStory extends React.Component {
           homes.map((home, index) => {
             if (index >= 3) {
               return null;
+            }
+            let rooms = null;
+            for (let i = 0; i < home.attributes.length; i++) {
+              if (home.attributes[i].name === 'rooms') {
+                rooms = (<li>{home.attributes[i].value} rooms</li>);
+              }
             }
 
             return (
@@ -156,9 +157,8 @@ export default class NeighborhoodsStory extends React.Component {
                   </Link>
                 </h3>
                 <ul>
-                  <li>3 bedrooms</li>
+                  {rooms}
                   <li>{home.fomattedPrice}</li>
-                  <li>3 bedrooms</li>
                 </ul>
               </div>
             );
