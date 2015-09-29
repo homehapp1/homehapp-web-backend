@@ -8,7 +8,7 @@ let debug = require('../debugger')('AuthSource');
 let AuthSource = {
   fetchUser: () => {
     return {
-      remote(storeState) {
+      remote(/*storeState*/) {
         debug('fetchUser:remote', arguments);
         return request.get(`/api/auth/user`)
           .then((response) => {
@@ -32,7 +32,7 @@ let AuthSource = {
             return Promise.reject(response);
           });
       },
-      local(storeStat) {
+      local(/*storeState*/) {
         return null;
       },
       success: AuthActions.updateUser,

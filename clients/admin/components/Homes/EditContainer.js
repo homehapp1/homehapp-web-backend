@@ -31,7 +31,7 @@ class HomesEditContainer extends React.Component {
     HomeListStore.unlisten(this.storeListener);
   }
 
-  onChange(state) {
+  onChange(/*state*/) {
     this.setState({
       error: HomeListStore.getState().error,
       home: HomeListStore.getHome(this.props.params.id)

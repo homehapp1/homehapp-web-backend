@@ -3,7 +3,7 @@
 import alt from '../../common/alt';
 import HomeActions from '../actions/HomeActions';
 import HomeSource from '../sources/HomeSource';
-import Cache from '../../common/Cache';
+// import Cache from '../../common/Cache';
 
 let debug = require('../../common/debugger')('HomeStore');
 

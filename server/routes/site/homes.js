@@ -1,7 +1,6 @@
 'use strict';
 
 import QueryBuilder from '../../lib/QueryBuilder';
-let debug = require('debug')('app');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);

@@ -36,7 +36,7 @@ class HomeStore {
     this.home = home;
     this.error = null;
   }
-  handleFetchHomeBySlug(slug) {
+  handleFetchHomeBySlug(/*slug*/) {
     this.home = null;
     this.error = null;
   }

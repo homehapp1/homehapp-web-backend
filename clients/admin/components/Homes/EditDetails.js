@@ -58,7 +58,7 @@ class HomesEditDetails extends React.Component {
     });
   }
 
-  onFormChange(event) {
+  onFormChange(/*event*/) {
     // let {type, target} = event;
     // TODO: Validation could be done here
     //debug('onFormChange', event, type, target);
@@ -177,7 +177,7 @@ class HomesEditDetails extends React.Component {
     this.setState({currentAttributes: newAttributes});
   }
 
-  onAddAttributeClicked(event) {
+  onAddAttributeClicked(/*event*/) {
     this.state.currentAttributes.push({
       name: '', value: '', valueType: 'string'
     });

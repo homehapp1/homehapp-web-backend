@@ -24,7 +24,6 @@ import NeighborhoodsStory from './Neighborhoods/Story';
 import NeighborhoodsHomeFilter from './Neighborhoods/HomeFilter';
 
 // MIscellaneous other handlers
-import Content from './Content';
 import ContentAbout from './Content/About';
 import ContentCareers from './Content/Careers';
 import ContentPrivacy from './Content/Privacy';
