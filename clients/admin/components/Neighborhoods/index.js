@@ -25,7 +25,7 @@ export default class NeighborhoodsIndex extends React.Component {
         <Nav sidebar>
           <NavItemLink to='app'>Frontpage</NavItemLink>
           <h2 className="navigation-title">
-            @TODO: Neighborhoods
+            Neighborhoods
           </h2>
         </Nav>
         <Row>
