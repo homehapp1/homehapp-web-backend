@@ -1,17 +1,17 @@
 'use strict';
 
-var generateUniqueSlug = function (neighorhood, cb, iteration) {
+var generateUniqueSlug = function (neighborhood, cb, iteration) {
   if (iteration > 10) {
     return cb(new Error('iteration overflow'));
   }
 
-  neighorhood.slug = neighborhood.title.toLowerCase();
+  neighborhood.slug = neighborhood.title.toLowerCase();
 
   if (iteration) {
     neighborhood.slug += `-${iteration}`;
   }
 
-  neighorhood.constructor.count({slug: neighorhood.slug, deletedAt: null}, function (err, count) {
+  neighborhood.constructor.count({slug: neighborhood.slug, deletedAt: null}, function (err, count) {
     if (err) {
       return cb(err);
     }
@@ -20,7 +20,7 @@ var generateUniqueSlug = function (neighorhood, cb, iteration) {
       return cb();
     }
     // slug is not unique
-    generateUniqueSlug(neighorhood, cb, (iteration || 0) + 1);
+    generateUniqueSlug(neighborhood, cb, (iteration || 0) + 1);
   });
 };
 

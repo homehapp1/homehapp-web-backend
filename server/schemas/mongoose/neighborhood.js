@@ -8,10 +8,10 @@ exports.loadSchemas = function (mongoose, next) {
 
   let schemas = {};
 
-  // This *probably* should be named as something else than NeighorhoodImage
+  // This *probably* should be named as something else than NeighborhoodImage
   // as the same image schema can (and should) be used wherever images
   // are used
-  schemas.NeighorhoodImage = new Schema({
+  schemas.NeighborhoodImage = new Schema({
     url: {
       type: String
     },
@@ -46,11 +46,11 @@ exports.loadSchemas = function (mongoose, next) {
     }
   });
 
-  // schemas.NeighorhoodImage.virtual('aspectRatio').get(function () {
+  // schemas.NeighborhoodImage.virtual('aspectRatio').get(function () {
   //   return this.width / this.height;
   // });
 
-  schemas.Neighorhood = new Schema({
+  schemas.Neighborhood = new Schema({
     uuid: {
       type: String,
       index: true,
@@ -87,7 +87,7 @@ exports.loadSchemas = function (mongoose, next) {
         index: '2dsphere'
       }
     },
-    images: [schemas.NeighorhoodImage],
+    images: [schemas.NeighborhoodImage],
     // Flags
     visible: {
       type: Boolean,
@@ -110,15 +110,15 @@ exports.loadSchemas = function (mongoose, next) {
     }
   });
 
-  schemas.Neighorhood.virtual('pageTitle').get(function () {
-    let title = [this.neighorhoodTitle];
+  schemas.Neighborhood.virtual('pageTitle').get(function () {
+    let title = [this.neighborhoodTitle];
     if (this.location.city) {
       title.push(this.location.city.title);
     }
     return title.join(' | ');
   });
 
-  schemas.Neighorhood.statics.editableFields = function () {
+  schemas.Neighborhood.statics.editableFields = function () {
     return [
       'title', 'description', 'location', 'images'
     ];
@@ -129,7 +129,7 @@ exports.loadSchemas = function (mongoose, next) {
     schemas[name].options.toJSON.transform = (doc, ret) => {
       return commonJsonTransform(ret);
     };
-    if (name === 'NeighorhoodStoryBlock' || name === 'NeighorhoodAttribute') {
+    if (name === 'NeighborhoodStoryBlock' || name === 'NeighborhoodAttribute') {
       schemas[name].options.toJSON.transform = (doc, ret) => {
         ret = commonJsonTransform(ret);
         delete ret.id;
