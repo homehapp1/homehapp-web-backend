@@ -6,8 +6,13 @@ import HomeContainer from './HomeContainer';
 import HomeContact from './HomeContact';
 
 import Loading from '../../../common/components/Widgets/Loading';
+import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
 export default class HomeContactContainer extends HomeContainer {
+  static propTypes = {
+    params: React.PropTypes.object
+  };
+
   constructor(props) {
     super(props);
     this.homeStoreListener = this.homeStoreOnChange.bind(this);
