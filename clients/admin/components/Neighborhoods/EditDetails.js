@@ -79,6 +79,7 @@ class NeighborhoodsEditDetails extends React.Component {
 
     let neighborhoodProps = {
       uuid: this.props.neighborhood.id,
+      slug: this.refs.slug.getValue(),
       title: this.refs.title.getValue(),
       description: this.refs.description.getValue(),
       location: {
@@ -205,6 +206,14 @@ class NeighborhoodsEditDetails extends React.Component {
                 placeholder='Title (optional)'
                 defaultValue={this.props.neighborhood.title}
                 onChange={this.onFormChange.bind(this)}
+              />
+              <Input
+                type='text'
+                ref='slug'
+                label='Slug'
+                placeholder='Slug'
+                readOnly
+                defaultValue={this.props.neighborhood.slug}
               />
               <Input
                 type='textarea'
