@@ -7,7 +7,7 @@ import Nav from 'react-bootstrap/lib/Nav';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 
-class NeighborhoodsIndex extends React.Component {
+export default class NeighborhoodsIndex extends React.Component {
   static propTypes = {
     neighborhoods: React.PropTypes.array
   }
@@ -50,5 +50,3 @@ class NeighborhoodsIndex extends React.Component {
     );
   }
 }
-
-export default neighborhoodsIndex;
