@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Nav from 'react-bootstrap/lib/Nav';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
-import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
+// import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 
 class HomesIndex extends React.Component {
   static propTypes = {
@@ -20,7 +20,6 @@ class HomesIndex extends React.Component {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <NavItemLink to='app'>Frontpage</NavItemLink>
           <h2 className="navigation-title">
             Homes ({this.props.homes.length})
           </h2>
