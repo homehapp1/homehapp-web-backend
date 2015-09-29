@@ -7,6 +7,13 @@ import Col from 'react-bootstrap/lib/Col';
 import SubNavigation from './SubNavigation';
 
 class SubNavigationWrapper extends React.Component {
+  static propTypes = {
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.array,
+      React.PropTypes.object,
+      React.PropTypes.null
+    ])
+  };
   render() {
     return (
       <Row>

@@ -2,7 +2,7 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Nav from 'react-bootstrap/lib/Nav';
 import TabbedArea from 'react-bootstrap/lib/TabbedArea';
@@ -32,7 +32,7 @@ class HomesEdit extends React.Component {
         </Nav>
         <Row>
           <h1>Edit {this.props.home.homeTitle}</h1>
-          <TabbedArea defaultActiveKey={2}>
+          <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Details'>
               <EditDetails home={this.props.home} />
             </TabPane>

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Row from 'react-bootstrap/lib/Row';
 import Table from 'react-bootstrap/lib/Table';
 import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
@@ -20,12 +19,14 @@ export default class ImageList extends React.Component {
     images: React.PropTypes.array,
     onRemove: React.PropTypes.func.isRequired,
     onChange: React.PropTypes.func.isRequired,
-    storageKey: React.PropTypes.string
+    storageKey: React.PropTypes.string,
+    label: React.PropTypes.string
   };
 
   static defaultProps = {
     images: [],
-    storageKey: null
+    storageKey: null,
+    label: null
   };
 
   render() {
@@ -81,9 +82,7 @@ export default class ImageList extends React.Component {
                     <Button
                       bsStyle='danger'
                       bsSize='small'
-                      onClick={(event) => {
-                        this.props.onRemove(idx, this.props.storageKey);
-                      }}>
+                      onClick={() => this.props.onRemove(idx, this.props.storageKey)}>
                       Remove
                     </Button>
                   </td>

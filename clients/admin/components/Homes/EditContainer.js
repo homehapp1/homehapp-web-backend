@@ -15,6 +15,11 @@ class HomesEditContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    home: HomeListStore.getHome(this.props.params.id)
+  }
+
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
     if (!HomeListStore.getHome(this.props.params.id)) {
@@ -24,11 +29,6 @@ class HomesEditContainer extends React.Component {
 
   componentWillUnmount() {
     HomeListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    home: HomeListStore.getHome(this.props.params.id)
   }
 
   onChange(state) {

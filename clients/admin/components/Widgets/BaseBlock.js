@@ -9,7 +9,7 @@ import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import {randomNumericId, enumerate, setCDNUrlProperties} from '../../../common/Helpers';
+import {randomNumericId, setCDNUrlProperties} from '../../../common/Helpers';
 import ImageList from './ImageList';
 
 let debug = require('../../../common/debugger')('WidgetsBaseBlock');
@@ -22,8 +22,6 @@ function getFullImageUrl(url) {
 }
 
 export default class WidgetsBaseBlock extends React.Component {
-  blockProperties = {}
-
   constructor(props) {
     super(props);
     this.uploadListener = this.onUploadChange.bind(this);
@@ -34,7 +32,9 @@ export default class WidgetsBaseBlock extends React.Component {
 
   state = {
     uploads: UploadAreaUtils.UploadStore.getState().uploads
-  }
+  };
+
+  blockProperties = {};
 
   onUploadChange(state) {
     debug('onUploadChange', state);
@@ -123,7 +123,7 @@ export default class WidgetsBaseBlock extends React.Component {
     return input;
   }
 
-  renderImageInput(key, prop) {
+  renderImageInput(key) {
     this.uploaderInstanceIds[key] = randomNumericId();
 
     let imageUrl = null;

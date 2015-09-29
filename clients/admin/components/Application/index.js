@@ -5,7 +5,7 @@ let {RouteHandler} = require('react-router');
 
 import Layout from '../Layout';
 import Navigation from '../Navigation';
-import AuthActions from '../../../common/actions/AuthActions';
+// import AuthActions from '../../../common/actions/AuthActions';
 import AuthStore from '../../../common/stores/AuthStore';
 
 class Application extends React.Component {

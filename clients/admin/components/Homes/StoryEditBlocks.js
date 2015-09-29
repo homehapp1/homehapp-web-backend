@@ -73,7 +73,7 @@ export default class StoryEditBlocks extends React.Component {
       upButton = (
         <Button
           bsSize='small'
-          onClick={(event) => {
+          onClick={() => {
             this.onReArrangeItem(index, 'up');
           }}
         >
@@ -86,7 +86,7 @@ export default class StoryEditBlocks extends React.Component {
       downButton = (
         <Button
           bsSize='small'
-          onClick={(event) => {
+          onClick={() => {
             this.onReArrangeItem(index, 'down');
           }}
         >
@@ -112,7 +112,7 @@ export default class StoryEditBlocks extends React.Component {
           <Button
             bsStyle='danger'
             bsSize='small'
-            onClick={(event) => {
+            onClick={() => {
               this.onRemoveBlock(index);
             }}
           >
@@ -125,13 +125,12 @@ export default class StoryEditBlocks extends React.Component {
   }
 
   getBigImage(item, index) {
-    let primary = null;
-    let secondary = null;
+    // let primary = null;
+    // let secondary = null;
 
     return (
       <Panel header={this.getBlockHeader(item, index)} key={index}>
-        <AdminBigImage {...item.properties}>
-        </AdminBigImage>
+        <AdminBigImage {...item.properties} />
       </Panel>
     );
   }
@@ -139,8 +138,7 @@ export default class StoryEditBlocks extends React.Component {
   getContentBlock(item, index) {
     return (
       <Panel header={this.getBlockHeader(item, index)} key={index}>
-        <AdminContentBlock {...item.properties}>
-        </AdminContentBlock>
+        <AdminContentBlock {...item.properties} />
       </Panel>
     );
   }
@@ -148,8 +146,7 @@ export default class StoryEditBlocks extends React.Component {
   getGallery(item, index) {
     return (
       <Panel header={this.getBlockHeader(item, index)} key={index}>
-        <AdminGallery {...item.properties}>
-        </AdminGallery>
+        <AdminGallery {...item.properties} />
       </Panel>
     );
   }

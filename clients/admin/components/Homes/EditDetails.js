@@ -1,17 +1,14 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Table from 'react-bootstrap/lib/Table';
 import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
-import ApplicationStore from '../../../common/stores/ApplicationStore';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import {randomNumericId, enumerate} from '../../../common/Helpers';
@@ -34,19 +31,19 @@ class HomesEditDetails extends React.Component {
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
   }
 
+  state = {
+    error: null,
+    uploads: UploadAreaUtils.UploadStore.getState().uploads,
+    currentAttributes: this.props.home.attributes,
+    homeImages: []
+  }
+
   componentDidMount() {
     HomeStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     HomeStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    uploads: UploadAreaUtils.UploadStore.getState().uploads,
-    currentAttributes: this.props.home.attributes,
-    homeImages: []
   }
 
   onHomeStoreChange(state) {
@@ -62,7 +59,7 @@ class HomesEditDetails extends React.Component {
   }
 
   onFormChange(event) {
-    let {type, target} = event;
+    // let {type, target} = event;
     // TODO: Validation could be done here
     //debug('onFormChange', event, type, target);
     //this.props.home.facilities = this.refs.facilities.getValue().split("\n");
@@ -206,7 +203,7 @@ class HomesEditDetails extends React.Component {
         <Button
           bsStyle='danger'
           bsSize='small'
-          onClick={(event) => this.onRemoveAttributeClicked(index)}>
+          onClick={() => this.onRemoveAttributeClicked(index)}>
           -
         </Button>
       </Col>
@@ -217,7 +214,7 @@ class HomesEditDetails extends React.Component {
           <Button
             bsStyle='danger'
             bsSize='small'
-            onClick={(event) => this.onRemoveAttributeClicked(index)}>
+            onClick={() => this.onRemoveAttributeClicked(index)}>
             -
           </Button>
           <Button

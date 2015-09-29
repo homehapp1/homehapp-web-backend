@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import DropdownButton from 'react-bootstrap/lib/DropdownButton';
-import NavItem from 'react-bootstrap/lib/NavItem';
+// import NavItem from 'react-bootstrap/lib/NavItem';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 import CollapsibleNav from 'react-bootstrap/lib/CollapsibleNav';
 
