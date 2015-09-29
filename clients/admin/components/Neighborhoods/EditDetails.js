@@ -13,6 +13,7 @@ import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import {randomNumericId, enumerate} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
+import Loading from '../../../common/components/Widgets/Loading';
 
 let debug = require('../../../common/debugger')('NeighborhoodsEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
@@ -81,31 +82,11 @@ class NeighborhoodsEditDetails extends React.Component {
       title: this.refs.title.getValue(),
       description: this.refs.description.getValue(),
       location: {
-        address: {
-          street: this.refs.addressStreet.getValue(),
-          apartment: this.refs.addressApartment.getValue(),
-          city: this.refs.addressCity.getValue(),
-          zipcode: this.refs.addressZipcode.getValue(),
-          country: this.refs.addressCountry.getValue()
-        },
         coordinates: [
           this.refs.locationLatitude.getValue(),
           this.refs.locationLongitude.getValue()
         ]
       },
-      costs: {
-        currency: this.refs.costsCurrency.getValue(),
-        deptFreePrice: this.refs.costsDeptFreePrice.getValue(),
-        sellingPrice: this.refs.costsSellingPrice.getValue(),
-        squarePrice: this.refs.costsSquarePrice.getValue(),
-        realEstateTaxPerYear: this.refs.costsReTaxPerYear.getValue(),
-        electricChargePerMonth: this.refs.costsEcPerMonth.getValue(),
-        waterChargePerMonth: this.refs.costsWcPerMonth.getValue(),
-        waterChargePerType: this.refs.costsWcPerType.getValue()
-      },
-      amenities: this.refs.amenities.getValue().split('\n'),
-      facilities: this.refs.facilities.getValue().split('\n'),
-      attributes: this.state.currentAttributes,
       images: images
     };
 
@@ -167,102 +148,11 @@ class NeighborhoodsEditDetails extends React.Component {
     this.setState({neighborhoodImages: newImages});
   }
 
-  onRemoveAttributeClicked(index) {
-    let newAttributes = [];
-    this.state.currentAttributes.forEach((item, idx) => {
-      if (idx !== index) {
-        newAttributes.push(item);
-      }
-    });
-    this.setState({currentAttributes: newAttributes});
-  }
-
-  onAddAttributeClicked(/*event*/) {
-    this.state.currentAttributes.push({
-      name: '', value: '', valueType: 'string'
-    });
-    this.setState({currentAttributes: this.state.currentAttributes});
-  }
-
-  onAttributeValueChanged(event, index, field) {
-    let newAttributes = this.state.currentAttributes;
-    if (!newAttributes[index]) {
-      newAttributes[index] = {
-        name: '', value: '', valueType: 'string'
-      };
-    }
-    newAttributes[index][field] = event.currentTarget.value;
-    this.setState({
-      currentAttributes: newAttributes
-    });
-  }
-
-  renderAttributeRow(index, attr, isLast) {
-    let actions = (
-      <Col md={2}>
-        <Button
-          bsStyle='danger'
-          bsSize='small'
-          onClick={() => this.onRemoveAttributeClicked(index)}>
-          -
-        </Button>
-      </Col>
-    );
-    if (isLast) {
-      actions = (
-        <Col md={2}>
-          <Button
-            bsStyle='danger'
-            bsSize='small'
-            onClick={() => this.onRemoveAttributeClicked(index)}>
-            -
-          </Button>
-          <Button
-            bsStyle='success'
-            bsSize='small'
-            ref='addAttributeButton'
-            onClick={this.onAddAttributeClicked.bind(this)}>
-            +
-          </Button>
-        </Col>
-      );
-    }
-    return (
-      <Row key={'attribute-' + index + '-' + attr.name}>
-        <Col md={4}>
-          <Input
-            type='select'
-            addonBefore='Name'
-            placeholder='Select Attribute'
-            name={'attributes[' + index + '][name]'}
-            defaultValue={attr.name}
-            onChange={(event) => this.onAttributeValueChanged(event, index, 'name')}
-          >
-            <option value=''>Select Attribute</option>
-            <option value='floor'>Floor</option>
-            <option value='rooms'>Rooms</option>
-            <option value='elevator'>Elevator</option>
-          </Input>
-        </Col>
-        <Col md={4}>
-          <Input
-            type='text'
-            addonBefore='Value'
-            name={'attributes[' + index + '][value]'}
-            defaultValue={attr.value}
-            onChange={(event) => this.onAttributeValueChanged(event, index, 'value')}
-          />
-        </Col>
-        {actions}
-      </Row>
-    );
-  }
-
   handlePendingState() {
     return (
-      <div className='neighborhood-saving'>
+      <Loading>
         <h3>Saving neighborhood...</h3>
-      </div>
+      </Loading>
     );
   }
 
@@ -327,51 +217,8 @@ class NeighborhoodsEditDetails extends React.Component {
             </Panel>
             <Panel header='Location'>
               <Input
-                type='text'
-                ref='addressStreet'
-                label='Street Address'
-                placeholder='ie. Kauppakartanonkuja 3 B'
-                defaultValue={this.props.neighborhood.location.address.street}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='addressApartment'
-                label='Apartment'
-                placeholder='ie. 22'
-                defaultValue={this.props.neighborhood.location.address.apartment}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='addressCity'
-                label='City'
-                placeholder='ie. Helsinki'
-                defaultValue={this.props.neighborhood.location.address.city}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='addressZipcode'
-                label='Zipcode'
-                placeholder=''
-                defaultValue={this.props.neighborhood.location.address.zipcode}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='select'
-                ref='addressCountry'
-                label='Country'
-                placeholder='Select Country'
-                defaultValue={this.props.neighborhood.location.address.country}
-                onChange={this.onFormChange.bind(this)}>
-                <option value=''>Select country</option>
-                {countrySelections}
-              </Input>
-
-              <Input
                 label='Coordinates'
-                help='Optional coordinates for the neighborhood' wrapperClassName='wrapper'>
+                help='Coordinates for the neighborhood' wrapperClassName='wrapper'>
                 <Row>
                   <Col xs={6}>
                     <Input
@@ -391,108 +238,6 @@ class NeighborhoodsEditDetails extends React.Component {
                   </Col>
                 </Row>
               </Input>
-            </Panel>
-            <Panel header='Costs'>
-              <Input
-                type='select'
-                ref='costsCurrency'
-                label='Currency'
-                placeholder='Select Applied Currency'
-                defaultValue={this.props.neighborhood.costs.currency}
-                onChange={this.onFormChange.bind(this)}>
-                <option value='EUR'>Euro</option>
-                <option value='GBP'>British Pounds</option>
-                <option value='SUD'>US Dollars</option>
-              </Input>
-              <Input
-                type='text'
-                ref='costsDeptFreePrice'
-                label='Dept Free Price'
-                placeholder='(optional)'
-                defaultValue={this.props.neighborhood.costs.deptFreePrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsSellingPrice'
-                label='Selling Price'
-                placeholder='(optional)'
-                defaultValue={this.props.neighborhood.costs.sellingPrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsSquarePrice'
-                label='Square meter Price'
-                placeholder='(optional)'
-                defaultValue={this.props.neighborhood.costs.squarePrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsReTaxPerYear'
-                label='Real estate Tax (per year)'
-                placeholder='(optional)'
-                defaultValue={this.props.neighborhood.costs.realEstateTaxPerYear}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsEcPerMonth'
-                label='Electrict Charge (per month)'
-                placeholder='(optional)'
-                defaultValue={this.props.neighborhood.costs.electricChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsWcPerMonth'
-                label='Water charge (per month)'
-                placeholder='(optional)'
-                defaultValue={this.props.neighborhood.costs.waterChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='select'
-                ref='costsWcPerType'
-                label='Water charge type'
-                placeholder='Water charge type'
-                defaultValue={this.props.neighborhood.costs.waterChargePerType}
-                onChange={this.onFormChange.bind(this)}>
-                <option value='person'>Per Person</option>
-                <option value='household'>Per Household</option>
-              </Input>
-            </Panel>
-            <Panel header='Amenities'>
-              <Input
-                type='textarea'
-                ref='amenities'
-                label='Input Amenities (one per line)'
-                placeholder='(optional)'
-                defaultValue={this.props.neighborhood.amenities.join(`\n`)}
-                onChange={this.onFormChange.bind(this)}
-              />
-            </Panel>
-            <Panel header='Facilities'>
-              <Input
-                type='textarea'
-                ref='facilities'
-                label='Input Facilities (one per line)'
-                placeholder='(optional)'
-                defaultValue={this.props.neighborhood.facilities.join(`\n`)}
-                onChange={this.onFormChange.bind(this)}
-              />
-            </Panel>
-            <Panel header='Other Attributes'>
-              {
-                this.state.currentAttributes.map((attr, index) => {
-                  let isLast = false;
-                  if (index === this.state.currentAttributes.length - 1) {
-                    isLast = true;
-                  }
-                  return this.renderAttributeRow(index, attr, isLast);
-                })
-              }
             </Panel>
             <Panel header='Images'>
               <Row>
