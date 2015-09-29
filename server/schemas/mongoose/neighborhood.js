@@ -46,6 +46,16 @@ exports.loadSchemas = function (mongoose, next) {
     }
   });
 
+  schemas.NeighborhoodStoryBlock = new Schema({
+    template: {
+      type: String,
+      default: 'default'
+    },
+    properties: {
+      type: Schema.Types.Mixed
+    }
+  });
+
   // schemas.NeighborhoodImage.virtual('aspectRatio').get(function () {
   //   return this.width / this.height;
   // });
@@ -103,7 +113,16 @@ exports.loadSchemas = function (mongoose, next) {
         index: '2dsphere'
       }
     },
+    // Story
+    story: {
+      enabled: {
+        type: Boolean,
+        default: false
+      },
+      blocks: [schemas.NeighborhoodStoryBlock]
+    },
     images: [schemas.NeighborhoodImage],
+
     // Flags
     visible: {
       type: Boolean,
