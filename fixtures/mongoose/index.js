@@ -44,10 +44,6 @@ let randomSeed = function(min, max, precision = 0) {
   return min + Math.floor(max * Math.random());
 };
 
-let createNeighborhood = function createNeighborhood(index) {
-
-};
-
 let createHome = function(index)
 {
   let images = [
@@ -390,15 +386,18 @@ exports.execute = function execute(migrator) {
   let User = db.getModel('User');
   let Home = db.getModel('Home');
   let Neighborhood = db.getModel('Neighborhood');
+  let City = db.getModel('City');
 
   let admin = null;
   let adminUsername = 'administrator@homehapp.com';
+
+  let city = null;
 
   function createOrUpdateAdmin() {
     return new Promise((resolve, reject) => {
       User.findOne({username: adminUsername}).execAsync()
       .then((model) => {
-        console.log('got model', model);
+        console.log('Got user', model);
         if (model) {
           admin = model;
           return resolve();
@@ -423,13 +422,54 @@ exports.execute = function execute(migrator) {
         });
       })
       .catch((err) => {
-        console.error('catched error', err);
+        console.error('Caught error', err);
+        reject(err);
+      });
+    });
+  }
+
+  function createOrUpdateLondon() {
+    return new Promise((resolve, reject) => {
+      City.findOne({title: 'London'}).execAsync()
+      .then((model) => {
+        console.log('Got city', model);
+        if (model) {
+          city = model;
+          return resolve();
+        }
+        city = new City({
+          slug: 'london',
+          title: 'London',
+          location: {
+            country: 'Great Britain',
+            coordinates: [
+              51.5073509,
+              -0.1277583
+            ]
+          },
+          createdBy: admin.id
+        });
+        city.saveAsync()
+        .spread(function(model, numAffected) {
+          console.log('Created city', model);
+          resolve();
+        })
+        .catch((err) => {
+          console.error('error while creating the main city', err);
+          reject(err);
+        });
+      })
+      .catch((err) => {
+        console.error('Caught error', err);
         reject(err);
       });
     });
   }
 
   return createOrUpdateAdmin()
+    .then(() => {
+      return createOrUpdateLondon();
+    })
     .then(() => {
       if (!version || version === 0) {
         neighborhoodsData.forEach((neighborhoodData) => {
@@ -456,6 +496,7 @@ exports.execute = function execute(migrator) {
 
                 let neighborhood = new Neighborhood(neighborhoodData);
                 neighborhood.createdBy = admin.id;
+                neighborhood.city = city.id;
 
                 neighborhood.saveAsync()
                 .spread(function(model, numAffected) {
