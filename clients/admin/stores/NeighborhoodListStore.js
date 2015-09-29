@@ -15,8 +15,8 @@ class NeighborhoodListStore {
     });
 
     this.bindListeners({
-      handleUpdateNeighborhoods: NeighborhoodListActions.UPDATE_HOMES,
-      handleFetchNeighborhoods: NeighborhoodListActions.FETCH_HOMES,
+      handleUpdateNeighborhoods: NeighborhoodListActions.UPDATE_NEIGHBORHOODS,
+      handleFetchNeighborhoods: NeighborhoodListActions.FETCH_NEIGHBORHOODS,
       handleFetchFailed: NeighborhoodListActions.FETCH_FAILED
     });
 
