@@ -17,10 +17,17 @@ function getFullImageUrl(url) {
 
 export default class ImageList extends React.Component {
   static propTypes = {
-    images: React.PropTypes.array.isRequired,
+    images: React.PropTypes.array,
     onRemove: React.PropTypes.func.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func.isRequired,
+    storageKey: React.PropTypes.string
   };
+
+  static defaultProps = {
+    images: [],
+    storageKey: null
+  };
+
   render() {
     return (
       <Table>
@@ -74,7 +81,9 @@ export default class ImageList extends React.Component {
                     <Button
                       bsStyle='danger'
                       bsSize='small'
-                      onClick={(event) => this.props.onRemove(idx)}>
+                      onClick={(event) => {
+                        this.props.onRemove(idx, this.props.storageKey);
+                      }}>
                       Remove
                     </Button>
                   </td>
