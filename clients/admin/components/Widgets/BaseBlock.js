@@ -11,6 +11,7 @@ import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 import {randomNumericId, enumerate, setCDNUrlProperties} from '../../../common/Helpers';
+import ImageList from './ImageList';
 
 let debug = require('../../../common/debugger')('WidgetsBaseBlock');
 
@@ -28,6 +29,8 @@ export default class WidgetsBaseBlock extends React.Component {
     super(props);
     this.uploadListener = this.onUploadChange.bind(this);
     this.uploaderInstanceIds = {};
+    this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
+    this.onImageChange = this.onImageChange.bind(this);
   }
 
   state = {
@@ -45,7 +48,7 @@ export default class WidgetsBaseBlock extends React.Component {
     debug('onImageUpload', data);
   }
 
-  onRemoveImageClicked(key, index) {
+  onRemoveImageClicked(index, key) {
     let newImages = [];
     this.props[key].forEach((item, idx) => {
       if (idx !== index) {
@@ -57,7 +60,11 @@ export default class WidgetsBaseBlock extends React.Component {
   }
 
   onFormChange(event) {
+    console.log('onFormChange event', event);
+  }
 
+  onImageChange(event) {
+    console.log('onImageChange event', event);
   }
 
   renderPropertyRow(key, prop) {
@@ -175,49 +182,7 @@ export default class WidgetsBaseBlock extends React.Component {
       <Row>
         <Col md={6}>
           <h2>Current images</h2>
-          <Table>
-            <thead>
-              <tr>
-                <th>Thumbnail</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                images.map((image, idx) => {
-                  if (!image.url) {
-                    return null;
-                  }
-
-                  let imageUrl = getFullImageUrl(image.url);
-                  let thumbnailUrl = setCDNUrlProperties(imageUrl, {
-                    w: 80,
-                    h: 80,
-                    c: 'fill'
-                  });
-                  return (
-                    <tr key={`homeImage-${idx}`}>
-                      <td>
-                        <a href={imageUrl}>
-                          <img src={thumbnailUrl} alt='' />
-                        </a>
-                      </td>
-                      <td>
-                        <Button
-                          bsStyle='danger'
-                          bsSize='small'
-                          onClick={(event) =>
-                            this.onRemoveImageClicked(key, idx)
-                          }>
-                          Remove
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })
-              }
-            </tbody>
-          </Table>
+          <ImageList images={images} onChange={this.onImageChange} onRemove={this.onRemoveImageClicked} storageKey={key} />
         </Col>
         <Col md={6}>
           <UploadArea
