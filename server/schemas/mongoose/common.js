@@ -3,6 +3,43 @@
 import Plugins from './Plugins';
 import moment from 'moment';
 
+exports.getImageSchema = function getImageSchema() {
+  return {
+    url: {
+      type: String
+    },
+    aspectRatio: { // TODO: Remove this and use the virtual property
+      type: Number,
+      required: true
+    },
+    width: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    height: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    alt: {
+      type: String,
+      default: ''
+    },
+    tag: {
+      type: String
+    },
+    isMaster: {
+      type: Boolean,
+      default: false
+    },
+    author: {
+      type: String,
+      default: ''
+    }
+  };
+};
+
 exports.loadCommonPlugins = (schema, name, mongoose) => {
   let extensionsFile = require('path').join(__dirname, name.toLowerCase() + '_extensions.js');
   if (require('fs').existsSync(extensionsFile)) {
