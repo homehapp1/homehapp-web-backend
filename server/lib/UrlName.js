@@ -16,7 +16,7 @@ exports.urlName = function urlName(str) {
     ['\\s+', '_']
   ];
 
-  let tmp = entities.encode(str.toLowerCase());
+  let tmp = entities.encode(String(str).toLowerCase());
   let encoded = tmp;
 
   for (let pattern of patterns) {
