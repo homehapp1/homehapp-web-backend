@@ -22,8 +22,6 @@ exports.urlName = function urlName(str) {
   for (let pattern of patterns) {
     let regexp = new RegExp(pattern[0], 'ig');
     encoded = encoded.replace(regexp, pattern[1]);
-    console.log('--', pattern[0], '->', pattern[1], ':', encoded);
   }
-  console.log(str, tmp, encoded);
   return encoded;
 };
