@@ -59,7 +59,8 @@ exports.loadSchemas = function (mongoose, next) {
       default: false
     },
     author: {
-      type: String
+      type: String,
+      default: ''
     }
   });
 
