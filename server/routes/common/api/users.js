@@ -8,7 +8,7 @@ exports.registerRoutes = (app) => {
   app.get('/api/users', function(req, res, next) {
 
     QB
-    .query('User')
+    .forModel('User')
     .parseRequestArguments(req)
     .findAll()
     .fetch()
@@ -24,7 +24,7 @@ exports.registerRoutes = (app) => {
   app.get('/api/users/:idOrUsername', function(req, res, next) {
 
     QB
-    .query('User')
+    .forModel('User')
     .findByIdOrUsername(req.params.idOrUsername)
     .fetch()
     .then((result) => {
@@ -40,7 +40,7 @@ exports.registerRoutes = (app) => {
     let data = req.body.user;
 
     QB
-    .query('User')
+    .forModel('User')
     .findByUuid(req.params.uuid)
     .update(data)
     .then((user) => {
@@ -56,7 +56,7 @@ exports.registerRoutes = (app) => {
     let data = req.body.user;
 
     QB
-    .query('User')
+    .forModel('User')
     .create(data, {context: {
       internal: true
     }})
