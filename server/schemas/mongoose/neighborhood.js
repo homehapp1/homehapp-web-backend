@@ -66,11 +66,27 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: ''
     },
+    aliases: {
+      type: [String],
+      default: []
+    },
     description: {
       type: String,
       default: ''
     },
     location: {
+      borough: {
+        type: String,
+        default: null
+      },
+      postCodes: {
+        type: [String],
+        default: []
+      },
+      postOffice: {
+        type: String,
+        default: null
+      },
       city: {
         title: {
           type: String,
