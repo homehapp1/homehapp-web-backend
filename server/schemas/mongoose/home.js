@@ -26,7 +26,9 @@ exports.loadSchemas = function (mongoose, next) {
       type: Schema.Types.Mixed
     }
   });
-
+  // This *probably* should be named as something else than HomeImage
+  // as the same image schema can (and should) be used wherever images
+  // are used
   schemas.HomeImage = new Schema({
     url: {
       type: String
@@ -55,6 +57,9 @@ exports.loadSchemas = function (mongoose, next) {
     isMaster: {
       type: Boolean,
       default: false
+    },
+    author: {
+      type: String
     }
   });
 
