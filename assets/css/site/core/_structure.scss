@@ -73,6 +73,13 @@ body {
   padding-right: $contentPadding;
 }
 
+.full-height {
+  min-height: 700px;
+  @include vendors(transition-property, all);
+  @include vendors(transition-duration, $transitionDuration);
+  @include vendors(transition-timing-function, ease-out);
+}
+
 #app {
   min-height: 100%;
 
