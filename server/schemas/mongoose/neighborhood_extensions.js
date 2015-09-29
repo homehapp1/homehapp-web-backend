@@ -1,11 +1,11 @@
 'use strict';
+import { urlName } from '../../lib/UrlName';
 
 var generateUniqueSlug = function (neighborhood, cb, iteration) {
   if (iteration > 10) {
     return cb(new Error('iteration overflow'));
   }
-
-  neighborhood.slug = neighborhood.title.toLowerCase();
+  neighborhood.slug = urlName(neighborhood.title);
 
   if (iteration) {
     neighborhood.slug += `-${iteration}`;
