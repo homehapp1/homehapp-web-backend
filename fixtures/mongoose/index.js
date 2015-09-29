@@ -1,4 +1,15 @@
 'use strict';
+
+import { urlName } from '../../server/lib/UrlName';
+let neighborhoodsData = require('../../data/london-neighborhoods.json');
+
+for (let neighborhood of neighborhoodsData) {
+  if (typeof neighborhood.slug !== 'undefined' && neighborhood.slug) {
+    continue;
+  }
+  neighborhood.slug = urlName(neighborhood.title);
+}
+
 let getRandom = function (arr, l = 0) {
   if (l) {
     l = Math.min(arr.length, l);
@@ -31,6 +42,10 @@ let randomSeed = function(min, max, precision = 0) {
   }
 
   return min + Math.floor(max * Math.random());
+};
+
+let createNeighborhood = function createNeighborhood(index) {
+
 };
 
 let createHome = function(index)
@@ -374,6 +389,7 @@ exports.execute = function execute(migrator) {
 
   let User = db.getModel('User');
   let Home = db.getModel('Home');
+  let Neighborhood = db.getModel('Neighborhood');
 
   let admin = null;
   let adminUsername = 'administrator@homehapp.com';
@@ -416,12 +432,55 @@ exports.execute = function execute(migrator) {
   return createOrUpdateAdmin()
     .then(() => {
       if (!version || version === 0) {
+        neighborhoodsData.forEach((neighborhoodData) => {
+          tasks.push(
+            new Promise((resolve, reject) => {
+              Neighborhood.findOne({
+                slug: neighborhoodData.slug
+              })
+              .execAsync()
+              .then((model) => {
+                if (model) {
+                  Neighborhood.findByIdAndUpdate(model.id, {
+                    $set: neighborhoodData
+                  }).execAsync()
+                  .then(function(model) {
+                    resolve();
+                  })
+                  .catch((err) => {
+                    console.error('error while updating neighborhood', err);
+                    reject(err);
+                  });
+                  return;
+                }
+
+                let neighborhood = new Neighborhood(neighborhoodData);
+                neighborhood.createdBy = admin.id;
+
+                neighborhood.saveAsync()
+                .spread(function(model, numAffected) {
+                  console.log('Created neighborhood', neighborhood);
+                  resolve();
+                })
+                .catch((err) => {
+                  console.error('error while creating neighborhood', err);
+                  reject(err);
+                });
+              })
+              .catch((err) => {
+                console.error('caught error while working on neighborhoods', error);
+              });
+            })
+          );
+        });
+
         demoHomes.forEach((homeData) => {
           tasks.push(
             new Promise((resolve, reject) => {
               Home.findOne({
                 slug: homeData.slug
-              }).execAsync()
+              })
+              .execAsync()
               .then((model) => {
                 //console.log('got exiting home', model);
                 if (model) {
@@ -453,7 +512,7 @@ exports.execute = function execute(migrator) {
                 });
               })
               .catch((err) => {
-                console.error('catched error', err);
+                console.error('caught error while working on homes', err);
                 reject(err);
               });
             })
