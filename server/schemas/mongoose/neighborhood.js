@@ -1,6 +1,6 @@
 'use strict';
 
-import {loadCommonPlugins, commonJsonTransform} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -8,57 +8,8 @@ exports.loadSchemas = function (mongoose, next) {
 
   let schemas = {};
 
-  // This *probably* should be named as something else than NeighborhoodImage
-  // as the same image schema can (and should) be used wherever images
-  // are used
-  schemas.NeighborhoodImage = new Schema({
-    url: {
-      type: String
-    },
-    aspectRatio: { // TODO: Remove this and use the virtual property
-      type: Number,
-      required: true
-    },
-    width: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    height: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    alt: {
-      type: String,
-      default: ''
-    },
-    tag: {
-      type: String
-    },
-    isMaster: {
-      type: Boolean,
-      default: false
-    },
-    author: {
-      type: String,
-      default: ''
-    }
-  });
-
-  schemas.NeighborhoodStoryBlock = new Schema({
-    template: {
-      type: String,
-      default: 'default'
-    },
-    properties: {
-      type: Schema.Types.Mixed
-    }
-  });
-
-  // schemas.NeighborhoodImage.virtual('aspectRatio').get(function () {
-  //   return this.width / this.height;
-  // });
+  schemas.NeighborhoodStoryBlock = new Schema(getStoryBlockSchema(Schema));
+  schemas.NeighborhoodImage = new Schema(getImageSchema(Schema));
 
   schemas.Neighborhood = new Schema({
     uuid: {
@@ -164,7 +115,7 @@ exports.loadSchemas = function (mongoose, next) {
     schemas[name].options.toJSON.transform = (doc, ret) => {
       return commonJsonTransform(ret);
     };
-    if (name === 'NeighborhoodStoryBlock' || name === 'NeighborhoodAttribute') {
+    if (name === 'NeighborhoodStoryBlock') {
       schemas[name].options.toJSON.transform = (doc, ret) => {
         ret = commonJsonTransform(ret);
         delete ret.id;

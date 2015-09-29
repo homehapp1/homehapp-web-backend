@@ -3,7 +3,7 @@
 import Plugins from './Plugins';
 import moment from 'moment';
 
-exports.getImageSchema = function getImageSchema() {
+exports.getImageSchema = function getImageSchema(Schema) {
   return {
     url: {
       type: String
@@ -36,6 +36,18 @@ exports.getImageSchema = function getImageSchema() {
     author: {
       type: String,
       default: ''
+    }
+  };
+};
+
+exports.getStoryBlockSchema = function getStoryBlockSchema(Schema) {
+  return {
+    template: {
+      type: String,
+      default: 'default'
+    },
+    properties: {
+      type: Schema.Types.Mixed
     }
   };
 };

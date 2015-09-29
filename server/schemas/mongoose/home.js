@@ -1,6 +1,6 @@
 'use strict';
 
-import {loadCommonPlugins, commonJsonTransform} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -16,57 +16,8 @@ exports.loadSchemas = function (mongoose, next) {
       default: 'string'
     }
   });
-
-  schemas.HomeStoryBlock = new Schema({
-    template: {
-      type: String,
-      default: 'default'
-    },
-    properties: {
-      type: Schema.Types.Mixed
-    }
-  });
-  // This *probably* should be named as something else than HomeImage
-  // as the same image schema can (and should) be used wherever images
-  // are used
-  schemas.HomeImage = new Schema({
-    url: {
-      type: String
-    },
-    aspectRatio: { // TODO: Remove this and use the virtual property
-      type: Number,
-      required: true
-    },
-    width: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    height: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    alt: {
-      type: String,
-      default: ''
-    },
-    tag: {
-      type: String
-    },
-    isMaster: {
-      type: Boolean,
-      default: false
-    },
-    author: {
-      type: String,
-      default: ''
-    }
-  });
-
-  // schemas.HomeImage.virtual('aspectRatio').get(function () {
-  //   return this.width / this.height;
-  // });
+  schemas.HomeImage = new Schema(getImageSchema(Schema));
+  schemas.HomeStoryBlock = new Schema(getStoryBlockSchema(Schema));
 
   schemas.Home = new Schema({
     uuid: {
