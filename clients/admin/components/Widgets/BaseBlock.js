@@ -5,7 +5,6 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Table from 'react-bootstrap/lib/Table';
 import Input from 'react-bootstrap/lib/Input';
-import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
@@ -182,7 +181,7 @@ export default class WidgetsBaseBlock extends React.Component {
       <Row>
         <Col md={6}>
           <h2>Current images</h2>
-          <ImageList images={images} onChange={this.onImageChange} onRemove={this.onRemoveImageClicked} storageKey={key} />
+          <ImageList images={images} onChange={this.onImageChange} onRemove={this.onRemoveImageClicked} storageKey={key} label={prop.label} />
         </Col>
         <Col md={6}>
           <UploadArea
