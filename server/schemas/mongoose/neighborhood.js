@@ -49,14 +49,9 @@ exports.loadSchemas = function (mongoose, next) {
         default: null
       },
       city: {
-        title: {
-          type: String,
-          default: 'London'
-        },
-        slug: {
-          type: String,
-          default: 'london'
-        }
+        type: ObjectId,
+        ref: 'City',
+        index: true
       },
       coordinates: {
         type: [Number],
