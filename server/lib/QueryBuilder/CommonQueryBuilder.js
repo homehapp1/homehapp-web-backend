@@ -2,43 +2,62 @@
 
 import async from 'async';
 
-class CommonQueryBuilder {
+/**
+ * Common QueryBuilder which different Database implementations
+ * base classes extend from.
+ */
+export default class CommonQueryBuilder {
   constructor(app, modelName) {
-    this.app = app;
-    this.Model = app.db.getModel(modelName);
-    this.queries = [];
-    this.result = {
-      queryBuilder: this
-    };
+    this._app = app;
+    this._queries = [];
     this._opts = {};
     this._loadedModel = null;
 
-    this.initialize();
+    this.Model = app.db.getModel(modelName);
+    this.result = {
+      queryBuilder: this
+    };
   }
 
-  initialize() {}
-
+  /**
+   * Limit query results by number
+   * @param  {number} limit Limit results to number of items
+   */
   limit(limit) {
     this._opts.limit = parseInt(limit);
     return this;
   }
 
+  /**
+   * Sort query result
+   * @param  {{"sortBy": "order"}} sort Sort by rules
+   */
   sort(sort) {
     this._opts.sort = sort;
     return this;
   }
 
+  /**
+   * Skip query results items by number
+   * @param  {number} skipCount How many items to skip
+   */
   skip(skipCount) {
     this._opts.skip = parseInt(skipCount);
     return this;
   }
 
+  /**
+   * Execute fetch
+   */
   fetch() {
     return this._executeTasks();
   }
 
+  /**
+   * Execute count
+   */
   count() {
-    this._opts = {count: true};
+    this._opts.count = true;
     return this._executeTasks();
   }
 
@@ -49,6 +68,7 @@ class CommonQueryBuilder {
    * req.query.sortBy     String (defaults to updatedAt)
    * req.query.limit      Number
    * req.query.skip       Number
+   * @param {object} req  Express.js Request object
    */
   parseRequestArguments(req) {
     // Here we allow this convenience handling to sort ascendingly by the updatedAt value
@@ -115,8 +135,8 @@ class CommonQueryBuilder {
 
   _executeTasks() {
     return new Promise((resolve, reject) => {
-      async.series(this.queries, (err) => {
-        this.queries = [];
+      async.series(this._queries, (err) => {
+        this._queries = [];
         if (err) {
           return reject(err);
         } else {
@@ -128,8 +148,8 @@ class CommonQueryBuilder {
 
   _save() {
     return new Promise((resolve, reject) => {
-      async.series(this.queries, (err) => {
-        this.queries = [];
+      async.series(this._queries, (err) => {
+        this._queries = [];
         if (err) {
           return reject(err);
         } else {
@@ -139,5 +159,3 @@ class CommonQueryBuilder {
     });
   }
 }
-
-module.exports = CommonQueryBuilder;
