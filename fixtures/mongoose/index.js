@@ -496,11 +496,11 @@ exports.execute = function execute(migrator) {
 
                 let neighborhood = new Neighborhood(neighborhoodData);
                 neighborhood.createdBy = admin.id;
-                neighborhood.city = city.id;
+                neighborhood.location.city = city.id;
 
                 neighborhood.saveAsync()
                 .spread(function(model, numAffected) {
-                  console.log('Created neighborhood', neighborhood);
+                  console.log('Created neighborhood', neighborhood.title);
                   resolve();
                 })
                 .catch((err) => {
@@ -509,7 +509,7 @@ exports.execute = function execute(migrator) {
                 });
               })
               .catch((err) => {
-                console.error('caught error while working on neighborhoods', error);
+                console.error('caught error while working on neighborhoods', err);
               });
             })
           );
@@ -529,7 +529,7 @@ exports.execute = function execute(migrator) {
                     $set: homeData
                   }).execAsync()
                   .then(function(model) {
-                    //console.log('Updated home', home);
+                    console.log('Updated home', home.title);
                     resolve();
                   })
                   .catch((err) => {
@@ -544,7 +544,7 @@ exports.execute = function execute(migrator) {
 
                 home.saveAsync()
                 .spread(function(model, numAffected) {
-                  //console.log('Created home', home);
+                  console.log('Created home', home.title);
                   resolve();
                 })
                 .catch((err) => {
