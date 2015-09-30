@@ -2,7 +2,7 @@
 
 import React from 'react';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
-import NeighborhoodsIndex from './Index';
+import NeighborhoodsIndex from './index';
 
 import Loading from '../../../common/components/Widgets/Loading';
 
