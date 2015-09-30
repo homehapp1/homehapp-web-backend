@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import DropdownButton from 'react-bootstrap/lib/DropdownButton';
-import NavItem from 'react-bootstrap/lib/NavItem';
+// import NavItem from 'react-bootstrap/lib/NavItem';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 import CollapsibleNav from 'react-bootstrap/lib/CollapsibleNav';
 
@@ -28,6 +28,7 @@ class Navigation extends React.Component {
         <CollapsibleNav eventKey={0}>
           <Nav navbar>
             <NavItemLink eventKey={1} to='homes'>Homes</NavItemLink>
+            <NavItemLink eventKey={2} to='neighborhoods'>Neighborhoods</NavItemLink>
           </Nav>
           <Nav navbar right>
             <DropdownButton eventKey={1} title={userName}>

@@ -31,10 +31,18 @@ export default class Columns extends React.Component {
       let columns = rows[i].children();
       for (let n = 0; n < columns.length; n++) {
         let children = columns[n].children();
-        if (children.length) {
-          columns[n].addClass(children[0].node.className);
-        }
+        this.copyClass(children, columns[n]);
       }
+    }
+  }
+
+  copyClass(children, column) {
+    if (!children.length) {
+      return null;
+    }
+    let cls = String(children[0].node.className).match(/(span[0-9+])/);
+    if (cls) {
+      column.addClass(cls[1]);
     }
   }
 

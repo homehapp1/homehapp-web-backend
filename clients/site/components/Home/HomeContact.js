@@ -1,21 +1,31 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 
-import HomeContainer from './HomeContainer';
-import HomeStore from '../../stores/HomeStore';
-
-import HomeNavigation from './Navigation';
 import Columns from '../../../common/components/Widgets/Columns';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
 export default class HomeContact extends React.Component {
   static propTypes = {
-    home: React.PropTypes.object.isRequired
+    home: React.PropTypes.object.isRequired,
+    context: React.PropTypes.object
   }
 
+  static contextTypes = {
+    router: React.PropTypes.func
+  };
+
   render() {
+    let terms = '/404';
+
+    if (this.props.context) {
+      this.context = this.props.context;
+    }
+
+    if (this.context && this.context.router) {
+      terms = this.context.router.makeHref('contentTerms');
+    }
+
     return (
       <ContentBlock className='home contact-form'>
         <h2>Property details</h2>
@@ -58,7 +68,7 @@ export default class HomeContact extends React.Component {
             <input type='submit' className='button' value='Send message' />
           </div>
           <p className='fineprint'>
-            By submitting this form you accept our <Link to='contentTerms'>Terms of use</Link>
+            By submitting this form you accept our <a href={terms}>Terms of use</a>
           </p>
         </form>
       </ContentBlock>

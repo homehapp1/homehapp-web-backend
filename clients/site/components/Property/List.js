@@ -7,7 +7,6 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Hoverable from '../../../common/components/Widgets/Hoverable';
-import { formatPrice } from '../../../common/Helpers';
 
 export default class PropertyList extends React.Component {
   static propTypes = {
@@ -26,7 +25,6 @@ export default class PropertyList extends React.Component {
   };
 
   render() {
-    console.log('PropertyList', this.props.items);
     let containerClass = ['home-list', 'preview-list'];
 
     if (this.props.className) {
@@ -75,17 +73,15 @@ export default class PropertyList extends React.Component {
               rooms = `${rooms} bedrooms`;
             }
 
-            let price = home.costs.sellingPrice;
-
             return (
               <div className={classes.join(' ')} key={index}>
                 <Link {...link} className='thumbnail'>
-                  <Hoverable {...home.images[0]} width={464} height={556} mode='fill' applySize={true}>
+                  <Hoverable {...home.images[0]} width={464} height={556} mode='fill' applySize>
                     <span className='title'>{home.homeTitle}</span>
                   </Hoverable>
                 </Link>
                 <div className='description'>
-                  <p className='price'>{formatPrice(price)}</p>
+                  <p className='price'>{home.formattedPrice}</p>
                   <p className='address'>
                     <span className='street'>{home.location.address.street}</span>
                     <span className='neighborhood'>{home.location.neighborhood.title}</span>

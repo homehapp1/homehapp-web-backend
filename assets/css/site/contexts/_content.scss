@@ -17,6 +17,23 @@
   text-align: right;
 }
 
+.fineprint {
+  margin-top: 5 * $contentPadding;
+  text-align: center;
+  font-size: $fontSizeSecondary;
+
+  &, a {
+    color: $fontLightGray;
+  }
+
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      color: $fontGray;
+    }
+  }
+}
 
 .spacer {
   height: 3 * $contentPadding;

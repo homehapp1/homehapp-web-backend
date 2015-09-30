@@ -29,6 +29,13 @@ table {
   }
 }
 
+.ellipsis-overflow {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;;
+}
+
 a {
   color: $linkBlue;
 
@@ -51,11 +58,17 @@ body {
   color: $fontMediumGray;
 }
 
-$smallQ: 0.6;
+$smallQ: 0.8;
 
 h1, h2, h3, h4, h5, h6, li, p {
   line-height: 1.4em;
   color: $fontGray;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  a {
+    color: $fontGray;
+  }
 }
 
 h3 {
@@ -67,16 +80,17 @@ h3 {
   }
 }
 
-h2 {
+h2, .modal-container h1 {
   font-size: $fontSizeHeading2;
   font-weight: $titleWeight;
+  font-family: $defaultFont;
 
   @include small() {
     font-size: $fontSizeHeading2 * $smallQ;
   }
 }
 
-h1, .block-title, .big-image h2 {
+h1, .block-title, .big-image h2, .big-video h2 {
   font-size: $fontSizeHeading1;
   font-weight: $titleWeight;
   font-family: $highlightFont;
@@ -105,54 +119,6 @@ h1, h2, h3 {
 
 p {
   margin: 1em 0;
-}
-
-button {
-  font-size: $fontSizeButton;
-}
-
-button, .button, .btn {
-  display: inline-block;
-  color: white;
-  background-color: $buttonBackground;
-  border: solid 1px $buttonBackground;
-  min-height: $buttonHeight;
-  text-align: center;
-  vertical-align: middle;
-  padding: 0.6em 3em;
-  text-decoration: none !important;
-  font-size: $fontSizeButton;
-  font-weight: 400;
-  @include vendors(transition-property, all);
-  @include vendors(transition-duration, $transitionDuration);
-
-  &:hover, &:active {
-    background-color: $buttonBackgroundHover;
-  }
-
-  &.white {
-    background-color: white;
-    color: $darkGray;
-
-    &:hover, &:active {
-      color: white;
-      background-color: $buttonBackgroundHover;
-    }
-  }
-
-  @include small() {
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-    display: block;
-    text-align: center;
-  }
-}
-
-.buttons a {
-  &:hover, &:visited:hover {
-    text-decoration: none;
-  }
 }
 
 blockquote {

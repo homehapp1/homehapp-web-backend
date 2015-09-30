@@ -4,6 +4,8 @@ import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
 import HomesIndex from './Index';
 
+import Loading from '../../../common/components/Widgets/Loading';
+
 class HomesIndexContainer extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
@@ -12,6 +14,11 @@ class HomesIndexContainer extends React.Component {
   constructor(props) {
     super(props);
     this.storeListener = this.onChange.bind(this);
+  }
+
+  state = {
+    error: null,
+    homes: HomeListStore.getState().homes
   }
 
   componentDidMount() {
@@ -23,20 +30,15 @@ class HomesIndexContainer extends React.Component {
     HomeListStore.unlisten(this.storeListener);
   }
 
-  state = {
-    error: null,
-    homes: HomeListStore.getState().homes
-  }
-
   onChange(state) {
     this.setState(state);
   }
 
   handlePendingState() {
     return (
-      <div className='homes-loader'>
+      <Loading>
         <h3>Loading homes...</h3>
-      </div>
+      </Loading>
     );
   }
 

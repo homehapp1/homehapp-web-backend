@@ -5,12 +5,12 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Table from 'react-bootstrap/lib/Table';
 import Input from 'react-bootstrap/lib/Input';
-import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import {randomNumericId, enumerate, setCDNUrlProperties, merge} from '../../../common/Helpers';
+import {randomNumericId, setCDNUrlProperties} from '../../../common/Helpers';
+import ImageList from './ImageList';
 
 let debug = require('../../../common/debugger')('WidgetsBaseBlock');
 
@@ -22,17 +22,19 @@ function getFullImageUrl(url) {
 }
 
 export default class WidgetsBaseBlock extends React.Component {
-  blockProperties = {}
-
   constructor(props) {
     super(props);
     this.uploadListener = this.onUploadChange.bind(this);
     this.uploaderInstanceIds = {};
+    this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
+    this.onImageChange = this.onImageChange.bind(this);
   }
 
   state = {
     uploads: UploadAreaUtils.UploadStore.getState().uploads
-  }
+  };
+
+  blockProperties = {};
 
   onUploadChange(state) {
     debug('onUploadChange', state);
@@ -45,7 +47,7 @@ export default class WidgetsBaseBlock extends React.Component {
     debug('onImageUpload', data);
   }
 
-  onRemoveImageClicked(key, index) {
+  onRemoveImageClicked(index, key) {
     let newImages = [];
     this.props[key].forEach((item, idx) => {
       if (idx !== index) {
@@ -57,7 +59,11 @@ export default class WidgetsBaseBlock extends React.Component {
   }
 
   onFormChange(event) {
+    console.log('onFormChange event', event);
+  }
 
+  onImageChange(event) {
+    console.log('onImageChange event', event);
   }
 
   renderPropertyRow(key, prop) {
@@ -117,7 +123,7 @@ export default class WidgetsBaseBlock extends React.Component {
     return input;
   }
 
-  renderImageInput(key, prop) {
+  renderImageInput(key) {
     this.uploaderInstanceIds[key] = randomNumericId();
 
     let imageUrl = null;
@@ -187,49 +193,7 @@ export default class WidgetsBaseBlock extends React.Component {
       <Row>
         <Col md={6}>
           <h2>Current images</h2>
-          <Table>
-            <thead>
-              <tr>
-                <th>Thumbnail</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                images.map((image, idx) => {
-                  if (!image.url) {
-                    return null;
-                  }
-
-                  let imageUrl = getFullImageUrl(image.url);
-                  let thumbnailUrl = setCDNUrlProperties(imageUrl, {
-                    w: 80,
-                    h: 80,
-                    c: 'fill'
-                  });
-                  return (
-                    <tr key={`homeImage-${idx}`}>
-                      <td>
-                        <a href={imageUrl}>
-                          <img src={thumbnailUrl} alt='' />
-                        </a>
-                      </td>
-                      <td>
-                        <Button
-                          bsStyle='danger'
-                          bsSize='small'
-                          onClick={(event) =>
-                            this.onRemoveImageClicked(key, idx)
-                          }>
-                          Remove
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })
-              }
-            </tbody>
-          </Table>
+          <ImageList images={images} onChange={this.onImageChange} onRemove={this.onRemoveImageClicked} storageKey={key} label={prop.label} />
         </Col>
         <Col md={6}>
           <UploadArea

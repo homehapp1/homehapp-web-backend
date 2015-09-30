@@ -3,6 +3,7 @@
 import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
 import HomesEdit from './Edit';
+import Loading from '../../../common/components/Widgets/Loading';
 
 class HomesEditContainer extends React.Component {
   static propTypes = {
@@ -12,6 +13,11 @@ class HomesEditContainer extends React.Component {
   constructor(props) {
     super(props);
     this.storeListener = this.onChange.bind(this);
+  }
+
+  state = {
+    error: null,
+    home: HomeListStore.getHome(this.props.params.id)
   }
 
   componentDidMount() {
@@ -25,13 +31,7 @@ class HomesEditContainer extends React.Component {
     HomeListStore.unlisten(this.storeListener);
   }
 
-  state = {
-    error: null,
-    home: HomeListStore.getHome(this.props.params.id)
-  }
-
-  onChange(state) {
-    console.log('onChange', state);
+  onChange(/*state*/) {
     this.setState({
       error: HomeListStore.getState().error,
       home: HomeListStore.getHome(this.props.params.id)
@@ -40,9 +40,9 @@ class HomesEditContainer extends React.Component {
 
   handlePendingState() {
     return (
-      <div className='homes-loader'>
+      <Loading>
         <h3>Loading homes...</h3>
-      </div>
+      </Loading>
     );
   }
 

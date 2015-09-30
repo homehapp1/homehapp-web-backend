@@ -1,8 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title><%- site.title %></title>
+<%
+var title = [];
 
+if (typeof page !== 'undefined') {
+  if (page.title) {
+    title.push(page.title);
+  }
+  if (page.description) {
+    openGraph['og:description'] = page.description;
+  }
+}
+
+title.push(site.title);
+openGraph['og:title'] = title.join(' | ');
+
+if (!openGraph['og:type']) {
+  openGraph['og:type'] = 'article';
+}
+
+for (var key in openGraph) {
+  var values = openGraph[key];
+  if (!values) {
+    continue;
+  }
+
+  if (!Array.isArray(values)) {
+    values = [values];
+  }
+
+  for (var i = 0; i < values.length; i++) {
+    metadatas.push({
+      property: key,
+      value: values[i]
+    });
+  }
+}
+%><!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+  <title><%- title.join(' | ') %></title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=EDGE, IE=10, IE=9, IE=8" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,7 +45,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- !Stylesheets -->
   <% if (env !== 'development') { %>
     <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/all.min.css">
   <% } else { %>
@@ -23,12 +57,27 @@
     <% } %>
   <% } %>
 
-  <!-- !OpenGraph -->
-  <% if (metadatas.length) { %>
-    <% for (var i = 0; i < metadatas.length; i++) { %>
-      <meta property="<%- metadatas[i].property %>" content="<%- metadatas[i].content %>" />
-    <% } %>
-  <% } %>
+<%
+    if (metadatas.length) {
+      var tags = [];
+      for (var i = 0; i < metadatas.length; i++) {
+        var tag = [];
+        for (var k in metadatas[i]) {
+          var value = metadatas[i][k].replace(/"/, '”');
+          tag.push(k + '="' + value + '"');
+        }
+        var str = tag.join(' ');
+        if (tags.indexOf(str) === -1) {
+          tags.push(str);
+        }
+      }
+
+      for (var i = 0; i < tags.length; i++) {
+      %>  <meta <%- tags[i] %> />
+<%
+      }
+    }
+  %>
 
   <!-- !Favicons -->
   <link rel="shortcut icon" type="image/x-icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
@@ -43,11 +92,7 @@
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%= revisionedStaticPath %>/images/favicon-72.png" />
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="<%= revisionedStaticPath %>/images/favicon-57.png" />
 
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing"></script>
-
-  </script>
-
-
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.2&libraries=geometry,drawing"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>

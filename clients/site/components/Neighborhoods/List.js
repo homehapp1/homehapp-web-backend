@@ -9,10 +9,20 @@ import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 export default class NeighborhoodsList extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
   };
+
+  componentDidMount() {
+    setPageTitle(`Neighbourhoods of ${this.city.substr(0, 1).toUpperCase()}${this.city.substr(1)}`);
+  }
+
+  componentWillUnmount() {
+    setPageTitle();
+  }
 
   render() {
     let image = {
@@ -41,10 +51,10 @@ export default class NeighborhoodsList extends React.Component {
       }
     ];
 
-    let city = 'london';
+    this.city = 'london';
 
     if (typeof this.props.params !== 'undefined' && typeof this.props.params.city !== 'undefined') {
-      city = this.props.params.city;
+      this.city = this.props.params.city;
     }
 
     return (
@@ -58,19 +68,19 @@ export default class NeighborhoodsList extends React.Component {
           {
             neighborhoods.map((item, index) => {
               return (
-                <div className='neighborhood'>
-                  <Link className='image-wrapper' to='neighborhoodsView' params={{city: city, neighborhood: item.slug}}>
+                <div className='neighborhood' key={index}>
+                  <Link className='image-wrapper' to='neighborhoodsView' params={{city: this.city, neighborhood: item.slug}}>
                     <Image {...item.image} width={1200} height={680} mode='fill' />
                   </Link>
                   <ContentBlock valign='center'>
                     <h2 className='block-title'>
-                      <Link to='neighborhoodsView' params={{city: city, neighborhood: item.slug}}>
+                      <Link to='neighborhoodsView' params={{city: this.city, neighborhood: item.slug}}>
                         {item.title}
                       </Link>
                     </h2>
                     <ul className='buttons'>
                       <li>
-                        <Link to='neighborhoodsView' params={{city: city, neighborhood: item.slug}}>
+                        <Link to='neighborhoodsView' params={{city: this.city, neighborhood: item.slug}}>
                           Read about
                         </Link>
                       </li>

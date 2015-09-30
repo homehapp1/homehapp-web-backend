@@ -52,15 +52,6 @@ class UploadArea extends React.Component {
     isVideo: false
   }
 
-  static fetchCloudinarySignature(folder) {
-    debug('fetchCloudinarySignature', folder);
-    let data = {
-      folder: folder
-    };
-    let reqPath = ApplicationStore.getState().config.cloudinary.signatureRoute;
-    return request.post(reqPath, data);
-  }
-
   constructor(props) {
     let type = 'image';
     if (props.isVideo) {
@@ -75,6 +66,11 @@ class UploadArea extends React.Component {
     //this.state.signatureData = this.props.signatureData;
   }
 
+  state = {
+    //signatureData: null,
+    uploading: false
+  }
+
   componentDidMount() {
     this._buildDropzone();
   }
@@ -84,33 +80,13 @@ class UploadArea extends React.Component {
     this.dropzone = null;
   }
 
-  state = {
-    //signatureData: null,
-    uploading: false
-  }
-
-  render() {
-    let className = this.props.className;
-    let loader = null;
-    if (this.state.uploading) {
-      loader = (
-        <span>
-          <i className=''></i> Uploading...
-        </span>
-      );
-    }
-
-    return (
-      <div
-        className={className}
-        ref='uploader'
-        style={{ width: this.props.width, height: this.props.height }}>
-        <div className='dz-message'>
-          {this.props.children}
-          {loader}
-        </div>
-      </div>
-    );
+  static fetchCloudinarySignature(folder) {
+    debug('fetchCloudinarySignature', folder);
+    let data = {
+      folder: folder
+    };
+    let reqPath = ApplicationStore.getState().config.cloudinary.signatureRoute;
+    return request.post(reqPath, data);
   }
 
   _fetchCloudinarySignature() {
@@ -213,6 +189,30 @@ class UploadArea extends React.Component {
         uploading: false
       });
     });
+  }
+
+  render() {
+    let className = this.props.className;
+    let loader = null;
+    if (this.state.uploading) {
+      loader = (
+        <span>
+          <i className=''></i> Uploading...
+        </span>
+      );
+    }
+
+    return (
+      <div
+        className={className}
+        ref='uploader'
+        style={{ width: this.props.width, height: this.props.height }}>
+        <div className='dz-message'>
+          {this.props.children}
+          {loader}
+        </div>
+      </div>
+    );
   }
 }
 

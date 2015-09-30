@@ -63,7 +63,7 @@ export default class Story extends React.Component {
       content = item.properties.contentBlock;
     } else {
       content = (
-        <div className='content-wrapper'>
+        <div className='content-wrapper' key={index}>
           <h3>{item.properties.label}</h3>
           {item.properties.content}
         </div>
@@ -157,7 +157,7 @@ export default class Story extends React.Component {
 
   getIconList(item, index) {
     return (
-      <ContentBlock key={index} className='icon-list pattern'>
+      <ContentBlock className='icon-list pattern' key={index}>
         <Columns cols={item.properties.icons.length}>
           {
             item.properties.icons.map((col, ind) => {

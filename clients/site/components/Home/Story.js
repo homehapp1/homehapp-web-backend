@@ -4,10 +4,19 @@ import React from 'react';
 
 import HomeNavigation from './Navigation';
 import Story from '../../../common/components/Widgets/Story';
+import { setPageTitle } from '../../../common/Helpers';
 
 export default class HomeStory extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired
+  }
+
+  componentDidMount() {
+    setPageTitle(this.props.home.homeTitle);
+  }
+
+  componentWillUnmount() {
+    setPageTitle();
   }
 
   render() {

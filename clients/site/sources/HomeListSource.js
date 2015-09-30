@@ -8,7 +8,7 @@ let debug = require('../../common/debugger')('HomeListSource');
 let HomeListSource = {
   fetchHomes: () => {
     return {
-      remote(storeState) {
+      remote(/*storeState*/) {
         debug('fetchHomes:remote', arguments);
         return request.get(`/api/home`)
           .then((response) => {
@@ -32,7 +32,7 @@ let HomeListSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState, slug) {
+      local(/*storeState, slug*/) {
         return null;
       },
       success: HomeListActions.updateHomes,

@@ -21,13 +21,13 @@ class CacheStorage {
     this.initialize();
   }
   initialize() {}
-  hasValue(group, key) {
+  hasValue(/*group, key*/) {
     return false;
   }
-  getValue(group, key) {
+  getValue(/*group, key*/) {
     return null;
   }
-  setValue(group, key, value) {
+  setValue(/*group, key, value*/) {
     return false;
   }
   _isValidItem(cachedItem) {

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+// Widgets
 import Gallery from '../../../common/components/Widgets/Gallery';
 import BigImage from '../../../common/components/Widgets/BigImage';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
@@ -10,6 +11,15 @@ import Icon from '../../../common/components/Widgets/Icon';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Map from '../../../common/components/Widgets/Map';
 import Separator from '../../../common/components/Widgets/Separator';
+
+// Layouts
+import Loading from '../../../common/components/Widgets/Loading';
+import ErrorPage from '../../../common/components/Layout/ErrorPage';
+
+// Stores
+import HomeListStore from '../../stores/HomeListStore';
+
+import { setPageTitle } from '../../../common/Helpers';
 
 export default class NeighborhoodsStory extends React.Component {
   static propTypes = {
@@ -49,8 +59,125 @@ export default class NeighborhoodsStory extends React.Component {
     }
   };
 
+  constructor() {
+    super();
+    this.storeListener = this.onChange.bind(this);
+  }
+
+  state = {
+    error: null,
+    homes: HomeListStore.getState().homes
+  };
+
+  componentDidMount() {
+    setPageTitle(`${this.props.neighborhood.title} | Neighbourhoods of ${this.props.neighborhood.city.title}`);
+
+    HomeListStore.listen(this.storeListener);
+    HomeListStore.fetchHomes({limit: 5});
+  }
+
+  componentWillUnmount() {
+    HomeListStore.unlisten(this.storeListener);
+    setPageTitle();
+  }
+
+  onChange(state) {
+    this.setState(state);
+  }
+
+  handlePendingState() {
+    return (
+      <Loading>
+        <p>Loading homes...</p>
+      </Loading>
+    );
+  }
+
+  handleErrorState() {
+    let error = {
+      title: 'Error loading homes!',
+      message: this.state.error.message
+    };
+
+    return (
+      <ErrorPage {...error} />
+    );
+  }
+
+  getMarkers(homes) {
+    let markers = [];
+
+    for (let i = 0; i < homes.length; i++) {
+      if (!Array.isArray(homes[i].location.coordinates)) {
+        continue;
+      }
+      markers.push({
+        location: homes[i].location.coordinates,
+        title: homes[i].homeTitle,
+        route: {
+          to: 'home',
+          params: {
+            slug: homes[i].slug
+          }
+        }
+      });
+    }
+
+    return markers;
+  }
+
+  getMap() {
+    let homes = (this.state.homes) ? this.state.homes : [];
+
+    if (!homes.length) {
+      return null;
+    }
+
+    let markers = this.getMarkers(homes);
+
+    return (
+      <Map center={this.neighborhood.location.coordinates} markers={markers}>
+        {
+          homes.map((home, index) => {
+            if (index >= 3) {
+              return null;
+            }
+            let rooms = null;
+            for (let i = 0; i < home.attributes.length; i++) {
+              if (home.attributes[i].name === 'rooms') {
+                rooms = (<li>{home.attributes[i].value} rooms</li>);
+              }
+            }
+
+            return (
+              <div className='home' key={index}>
+                <h3>
+                  <Link to='home' params={{slug: home.slug}} className='ellipsis-overflow'>
+                    {home.homeTitle}
+                  </Link>
+                </h3>
+                <ul>
+                  {rooms}
+                  <li>{home.fomattedPrice}</li>
+                </ul>
+              </div>
+            );
+          })
+        }
+      </Map>
+    );
+  }
+
   render() {
-    let neighborhood = this.props.neighborhood;
+    if (this.state.error) {
+      return this.handleErrorState();
+    }
+
+    if (HomeListStore.isLoading()) {
+      return this.handlePendingState();
+    }
+
+    this.neighborhood = this.props.neighborhood;
 
     let primaryImage = {
       src: 'images/content/london-view.jpg',
@@ -59,58 +186,46 @@ export default class NeighborhoodsStory extends React.Component {
       applySize: false
     };
 
-    if (typeof neighborhood.images[0] !== 'undefined') {
-      primaryImage = neighborhood.images[0];
+    if (typeof this.neighborhood.images[0] !== 'undefined') {
+      primaryImage = this.neighborhood.images[0];
     }
 
     let secondaryImage = primaryImage;
-    if (typeof neighborhood.images[1] !== 'undefined') {
-      secondaryImage = neighborhood.images[1];
+    if (typeof this.neighborhood.images[1] !== 'undefined') {
+      secondaryImage = this.neighborhood.images[1];
     }
-
-    let markers = [
-      {
-        position: {
-          lat: neighborhood.location.coordinates[0],
-          lng: neighborhood.location.coordinates[1]
-        }
-      }
-    ];
 
     return (
       <div className='neighborhood-story'>
         <BigImage image={primaryImage} gradient='black' fixed={false}>
           <LargeText align='center' valign='middle'>
             <Icon type='marker' color='black' size='large' />
-            <h1>{neighborhood.title}</h1>
+            <h1>{this.neighborhood.title}</h1>
           </LargeText>
         </BigImage>
 
         <ContentBlock className='with-gradient padded'>
-          <blockquote>{neighborhood.description}</blockquote>
+          <blockquote>{this.neighborhood.description}</blockquote>
           <p className='call-to-action'>
-            <Link className='button' to='neighborhoodsViewHomes' params={{city: neighborhood.city.slug, neighborhood: neighborhood.slug}}>Show homes</Link>
+            <Link className='button' to='neighborhoodsViewHomes' params={{city: this.neighborhood.city.slug, neighborhood: this.neighborhood.slug}}>Show homes</Link>
           </p>
         </ContentBlock>
 
         <ContentBlock className='with-gradient'>
-          <Gallery images={this.props.neighborhood.images} columns={5} imageWidth={300} fullscreen={true} className='tight' />
+          <Gallery images={this.neighborhood.images} columns={5} imageWidth={300} fullscreen className='tight' />
         </ContentBlock>
 
         <BigImage image={secondaryImage} fixed={false}>
           <LargeText>
-            <h2>Homes of {neighborhood.title}</h2>
+            <h2>Homes of {this.neighborhood.title}</h2>
           </LargeText>
         </BigImage>
 
         <Separator icon='apartment' />
+        {this.getMap()}
 
-        <Map center={neighborhood.location.coordinates} markers={markers}>
-          <h2>@TODO:</h2>
-          <p>here comes a list of homes available in this neighborhood</p>
-        </Map>
         <ContentBlock align='center'>
-          <Link className='button' to='neighborhoodsViewHomes' params={{city: neighborhood.city.slug, neighborhood: neighborhood.slug}}>Show more homes</Link>
+          <Link className='button' to='neighborhoodsViewHomes' params={{city: this.neighborhood.city.slug, neighborhood: this.neighborhood.slug}}>Show more homes</Link>
         </ContentBlock>
       </div>
     );

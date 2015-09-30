@@ -1,0 +1,57 @@
+button {
+  font-size: $fontSizeButton;
+}
+
+button, .button, .btn {
+  display: inline-block;
+  color: white;
+  background-color: $buttonBackground;
+  border: solid 1px $buttonBackground;
+  min-height: $buttonHeight;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.6em 3em;
+  text-decoration: none !important;
+  font-size: $fontSizeButton;
+  font-weight: 400;
+  @include vendors(transition-property, all);
+  @include vendors(transition-duration, $transitionDuration);
+
+  &:hover, &:active {
+    background-color: $buttonBackgroundHover;
+  }
+
+  &.white {
+    background-color: white;
+    color: $darkGray;
+
+    &:hover, &:active {
+      color: white;
+      background-color: $buttonBackgroundHover;
+    }
+  }
+
+  &.transparent {
+    background-color: rgba(255, 255, 255, 0);
+    color: $darkGray;
+
+    &:hover, &:active {
+      color: white;
+      background-color: $buttonBackgroundHover;
+    }
+  }
+
+  @include small() {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    display: block;
+    text-align: center;
+  }
+}
+
+.buttons a {
+  &:hover, &:visited:hover {
+    text-decoration: none;
+  }
+}

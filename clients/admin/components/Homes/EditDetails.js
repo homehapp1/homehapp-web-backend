@@ -1,30 +1,21 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Table from 'react-bootstrap/lib/Table';
 import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
-import ApplicationStore from '../../../common/stores/ApplicationStore';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import {randomNumericId, enumerate, setCDNUrlProperties} from '../../../common/Helpers';
+import {randomNumericId, enumerate} from '../../../common/Helpers';
+import ImageList from '../Widgets/ImageList';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
-
-function getFullImageUrl(url) {
-  if (!url.match(/^http/)) {
-    url = `${ApplicationStore.getState().config.cloudinary.baseUrl}${url}`;
-  }
-  return url;
-}
 
 class HomesEditDetails extends React.Component {
   static propTypes = {
@@ -37,6 +28,14 @@ class HomesEditDetails extends React.Component {
     this.uploadListener = this.onUploadChange.bind(this);
     this.imageUploaderInstanceId = randomNumericId();
     this.state.homeImages = props.home.images;
+    this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
+  }
+
+  state = {
+    error: null,
+    uploads: UploadAreaUtils.UploadStore.getState().uploads,
+    currentAttributes: this.props.home.attributes,
+    homeImages: []
   }
 
   componentDidMount() {
@@ -45,13 +44,6 @@ class HomesEditDetails extends React.Component {
 
   componentWillUnmount() {
     HomeStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    uploads: UploadAreaUtils.UploadStore.getState().uploads,
-    currentAttributes: this.props.home.attributes,
-    homeImages: []
   }
 
   onHomeStoreChange(state) {
@@ -66,8 +58,8 @@ class HomesEditDetails extends React.Component {
     });
   }
 
-  onFormChange(event) {
-    let {type, target} = event;
+  onFormChange(/*event*/) {
+    // let {type, target} = event;
     // TODO: Validation could be done here
     //debug('onFormChange', event, type, target);
     //this.props.home.facilities = this.refs.facilities.getValue().split("\n");
@@ -185,7 +177,7 @@ class HomesEditDetails extends React.Component {
     this.setState({currentAttributes: newAttributes});
   }
 
-  onAddAttributeClicked(event) {
+  onAddAttributeClicked(/*event*/) {
     this.state.currentAttributes.push({
       name: '', value: '', valueType: 'string'
     });
@@ -211,7 +203,7 @@ class HomesEditDetails extends React.Component {
         <Button
           bsStyle='danger'
           bsSize='small'
-          onClick={(event) => this.onRemoveAttributeClicked(index)}>
+          onClick={() => this.onRemoveAttributeClicked(index)}>
           -
         </Button>
       </Col>
@@ -222,7 +214,7 @@ class HomesEditDetails extends React.Component {
           <Button
             bsStyle='danger'
             bsSize='small'
-            onClick={(event) => this.onRemoveAttributeClicked(index)}>
+            onClick={() => this.onRemoveAttributeClicked(index)}>
             -
           </Button>
           <Button
@@ -506,47 +498,7 @@ class HomesEditDetails extends React.Component {
               <Row>
                 <Col md={6}>
                   <h2>Current images</h2>
-                  <Table>
-                    <thead>
-                      <tr>
-                        <th>Thumbnail</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        this.state.homeImages.map((image, idx) => {
-                          if (!image.url) {
-                            return null;
-                          }
-
-                          let imageUrl = getFullImageUrl(image.url);
-                          let thumbnailUrl = setCDNUrlProperties(imageUrl, {
-                            w: 80,
-                            h: 80,
-                            c: 'fill'
-                          });
-                          return (
-                            <tr key={`homeImage-${idx}`}>
-                              <td>
-                                <a href={imageUrl}>
-                                  <img src={thumbnailUrl} alt='' />
-                                </a>
-                              </td>
-                              <td>
-                                <Button
-                                  bsStyle='danger'
-                                  bsSize='small'
-                                  onClick={(event) => this.onRemoveImageClicked(idx)}>
-                                  Remove
-                                </Button>
-                              </td>
-                            </tr>
-                          );
-                        })
-                      }
-                    </tbody>
-                  </Table>
+                  <ImageList images={this.state.homeImages} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
                 </Col>
                 <Col md={6}>
                   <UploadArea

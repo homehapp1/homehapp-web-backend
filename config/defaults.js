@@ -196,7 +196,9 @@ module.exports = (projectRoot) => {
             mode: 'fill',
             width: 271,
             height: 320,
-            mask: 'hexagon-white'
+            mask: 'hexagon',
+            gravity: 'faces',
+            applyDimensions: true
           }
         }
       }

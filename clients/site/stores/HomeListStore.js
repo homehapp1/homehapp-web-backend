@@ -3,7 +3,7 @@
 import alt from '../../common/alt';
 import HomeListActions from '../actions/HomeListActions';
 import HomeListSource from '../sources/HomeListSource';
-import Cache from '../../common/Cache';
+// import Cache from '../../common/Cache';
 
 let debug = require('../../common/debugger')('HomeListStore');
 
@@ -42,12 +42,10 @@ class HomeListStore {
   }
 
   handleUpdateHomes(homes) {
-    debug('handleUpdateHomes', homes);
     this.homes = homes;
     this.error = null;
   }
   handleFetchHomes() {
-    debug('handleFetchHomes');
     this.homes = [];
     this.error = null;
   }

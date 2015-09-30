@@ -14,6 +14,7 @@ class Homepage extends React.Component {
         <Nav sidebar>
           <h2>Frontpage</h2>
           <NavItemLink to='homes'>Homes</NavItemLink>
+          <NavItemLink to='neighborhoods'>Neighborhoods</NavItemLink>
         </Nav>
         <Row>
           <h1>Welcome to admin!</h1>

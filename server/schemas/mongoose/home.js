@@ -1,6 +1,6 @@
 'use strict';
 
-import {loadCommonPlugins, commonJsonTransform} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -16,51 +16,8 @@ exports.loadSchemas = function (mongoose, next) {
       default: 'string'
     }
   });
-
-  schemas.HomeStoryBlock = new Schema({
-    template: {
-      type: String,
-      default: 'default'
-    },
-    properties: {
-      type: Schema.Types.Mixed
-    }
-  });
-
-  schemas.HomeImage = new Schema({
-    url: {
-      type: String
-    },
-    aspectRatio: { // TODO: Remove this and use the virtual property
-      type: Number,
-      required: true
-    },
-    width: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    height: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    alt: {
-      type: String,
-      default: ''
-    },
-    tag: {
-      type: String
-    },
-    isMaster: {
-      type: Boolean,
-      default: false
-    }
-  });
-
-  // schemas.HomeImage.virtual('aspectRatio').get(function () {
-  //   return this.width / this.height;
-  // });
+  schemas.HomeImage = new Schema(getImageSchema(Schema));
+  schemas.HomeStoryBlock = new Schema(getStoryBlockSchema(Schema));
 
   schemas.Home = new Schema({
     uuid: {
@@ -207,9 +164,28 @@ exports.loadSchemas = function (mongoose, next) {
     return title.trim();
   });
 
+  schemas.Home.virtual('pageTitle').get(function () {
+    let title = [this.homeTitle];
+    if (this.location.neighborhood && this.location.neighborhood.title) {
+      title.push(this.location.neighborhood.title);
+    }
+    if (this.location.address.city) {
+      title.push(this.location.address.city);
+    }
+    return title.join(' | ');
+  });
+
   schemas.Home.virtual('waterChargeSuffix').get(function () {
     let suffix = `${this.costs.waterChargePerType} / month`;
     return suffix;
+  });
+
+  schemas.Home.virtual('fomattedPrice').get(function() {
+    if (!this.costs.sellingPrice) {
+      return '';
+    }
+
+    return `£${String(Math.round(this.costs.sellingPrice)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
   });
 
   schemas.Home.statics.editableFields = function () {

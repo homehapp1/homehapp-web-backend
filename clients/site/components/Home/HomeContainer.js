@@ -6,6 +6,7 @@ import HomeStory from './Story';
 
 import Loading from '../../../common/components/Widgets/Loading';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
+import { setPageTitle } from '../../../common/Helpers';
 
 export default class HomeContainer extends React.Component {
   static propTypes = {
@@ -62,6 +63,7 @@ export default class HomeContainer extends React.Component {
     if (HomeStore.isLoading() || !this.state.home) {
       return this.handlePendingState();
     }
+    setPageTitle(this.state.home.pageTitle);
 
     return (
       <HomeStory home={this.state.home} />

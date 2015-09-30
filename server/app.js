@@ -277,8 +277,40 @@ exports.run = function(projectName, afterRun) {
             if (!res.locals.metadatas) {
               res.locals.metadatas = [];
             }
+            let openGraph = {
+              'og:title': 'Homehapp',
+              'og:type': 'article',
+              'og:url': req.protocol + '://' + req.get('host') + req.originalUrl,
+              'og:site_name': 'Homehapp',
+              'og:locale': 'en_GB',
+              'og:image': [
+                'http://res.cloudinary.com/homehapp/image/upload/v1443094360/site/images/content/site-photo.jpg'
+              ],
+              'fb:app_id': '151239851889238'
+            };
+
+            if (!res.locals.openGraph) {
+              res.locals.openGraph = {};
+            }
+
+            // Merge with OpenGraph defaults
+            for (let k in openGraph) {
+              if (Array.isArray(res.locals.openGraph[k])) {
+                res.locals.openGraph[k] = res.locals.openGraph[k].concat(openGraph[k]);
+                continue;
+              }
+
+              if (typeof res.locals.openGraph[k] !== 'undefined') {
+                continue;
+              }
+
+              res.locals.openGraph[k] = openGraph[k];
+            }
+
             if (!res.locals.data) {
-              res.locals.data = {};
+              res.locals.data = {
+                title: []
+              };
             }
             if (!res.locals.styleSheets) {
               res.locals.styleSheets = [];

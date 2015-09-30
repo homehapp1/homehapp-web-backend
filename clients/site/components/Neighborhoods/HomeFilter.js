@@ -16,6 +16,8 @@ import Icon from '../../../common/components/Widgets/Icon';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 export default class NeighborhoodHomeFilter extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired,
@@ -54,6 +56,7 @@ export default class NeighborhoodHomeFilter extends React.Component {
 
   componentWillUnmount() {
     HomeListStore.unlisten(this.storeListener);
+    setPageTitle();
   }
 
   onChange(state) {
@@ -88,7 +91,7 @@ export default class NeighborhoodHomeFilter extends React.Component {
       return this.handlePendingState();
     }
 
-    console.log('homes', this.state.homes);
+    setPageTitle(`Homes in ${this.props.neighborhood.title} | Neighbourhoods of ${this.props.neighborhood.city.title}`);
 
     let neighborhood = this.props.neighborhood;
     let defaultImage = {

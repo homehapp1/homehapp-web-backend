@@ -15,10 +15,11 @@ export default class Agent extends React.Component {
   render() {
     if (!this.props.image || !this.props.image.url) {
       this.props.image = {
-        url: 'v1440690783/contentMockup/agent-template.jpg',
+        url: 'v1440690786/contentMockup/agent-template.jpg',
         alt: this.props.name
       };
     }
+
     let image = {
       src: this.props.image.url,
       alt: this.props.image.alt || this.props.name,

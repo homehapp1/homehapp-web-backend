@@ -99,10 +99,6 @@ export default class Gallery extends React.Component {
     this.gallery.removeEvent('touch', this.onClick, true);
   }
 
-  static INIT = 0;
-  static LOADING = 1;
-  static READY = 2;
-
   // Start moving, capture the event
   startCapture() {
     // Unbind all the old events in case of an unsuccessful unbinding

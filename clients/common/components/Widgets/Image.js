@@ -95,6 +95,29 @@ export default class Image extends React.Component {
     return params;
   }
 
+  getClass() {
+    let classes = ['image-widget', `type-${this.props.type}`];
+
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
+    return classes.join(' ');
+  }
+
+  setAspectRatio() {
+    if (this.props.width && this.props.height) {
+      this.aspectRatio = this.props.width / this.props.height;
+    }
+
+    if (this.props.aspectRatio) {
+      this.aspectRatio = this.props.aspectRatio;
+    }
+
+    if (this.aspectRatio) {
+      this.attributes['data-aspect-ratio'] = this.aspectRatio;
+    }
+  }
+
   resolveAttributes() {
     if (this.props.width && this.props.applySize !== false) {
       this.attributes.width = this.props.width;
@@ -107,26 +130,17 @@ export default class Image extends React.Component {
     this.attributes.alt = this.props.alt || '';
     this.attributes.title = this.props.title || this.attributes.alt;
 
-    let classes = ['image-widget', `type-${this.props.type}`];
-
-    if (this.props.className) {
-      classes.push(this.props.className);
-    }
-
-    this.attributes.className = classes.join(' ');
-
-    if (this.props.width && this.props.height) {
-      this.props.aspectRatio = this.props.width / this.props.height;
-    }
-
-    if (this.props.aspectRatio) {
-      this.attributes['data-aspect-ratio'] = this.props.aspectRatio;
-    }
+    this.attributes.className = this.getClass();
+    this.setAspectRatio();
 
     return this.attributes;
   }
 
   setByAspectRatio(d) {
+    if (!this.props.aspectRatio) {
+      return null;
+    }
+
     if (d.width) {
       d.height = Math.round(d.width / this.props.aspectRatio);
     } else if (d.height) {
@@ -134,14 +148,19 @@ export default class Image extends React.Component {
     }
   }
 
-  applyDimensions() {
+  applySize() {
     let d = {
       width: this.attributes.width || this.props.width,
       height: this.attributes.height || this.props.height
     };
 
+    let apply = !!(this.props.applySize);
+
     if (this.props.variant) {
-      let variant = this.state.config.cloudinary.transformations[this.props.variant];
+      let variant = this.state.config.cloudinary.transformations[this.props.variant] || {};
+      if (typeof variant.applySize !== 'undefined') {
+        apply = variant.applySize;
+      }
 
       if (!d.width && variant.width) {
         d.width = variant.width;
@@ -152,11 +171,11 @@ export default class Image extends React.Component {
       }
     }
 
-    if (this.props.aspectRatio) {
-      this.setByAspectRatio(d);
-    }
+    this.setByAspectRatio(d);
 
-    this.propagateAttributes(d);
+    if (apply) {
+      this.propagateAttributes(d);
+    }
   }
 
   propagateAttributes(d) {
@@ -262,8 +281,9 @@ export default class Image extends React.Component {
   resolveContentSrc(src, variant) {
     let mask = '';
     let params = merge({}, this.props);
-    let options = this.getOptions(params);
     this.getVariant(params, variant);
+    let options = this.getOptions(params);
+    this.applySize();
 
     if (params.mask) {
       mask = `/l_${params.mask},fl_cutter`;

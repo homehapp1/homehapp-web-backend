@@ -1,16 +1,16 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Table from 'react-bootstrap/lib/Table';
+// import Table from 'react-bootstrap/lib/Table';
 import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
-import HomeActions from '../../actions/HomeActions';
+// import HomeActions from '../../actions/HomeActions';
 import StoryEditBlocks from './StoryEditBlocks';
 
 let debug = require('../../../common/debugger')('HomesEditStory');
@@ -25,16 +25,16 @@ export default class HomesEditStory extends React.Component {
     this.storeListener = this.onHomeStoreChange.bind(this);
   }
 
+  state = {
+    error: null
+  }
+
   componentDidMount() {
     HomeStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     HomeStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null
   }
 
   onHomeStoreChange(state) {
@@ -97,7 +97,7 @@ export default class HomesEditStory extends React.Component {
               />
             </Panel>
             <Panel header='Blocks'>
-              <StoryEditBlocks blocks={blocks}></StoryEditBlocks>
+              <StoryEditBlocks blocks={blocks} />
             </Panel>
             <Well>
               <Row>

@@ -7,7 +7,7 @@ exports.registerRoutes = (app) => {
 
   app.get('/api/auth/user', function(req, res, next) {
     QB
-    .query('User')
+    .forModel('User')
     .findById(req.user.id)
     .fetch()
     .then((result) => {

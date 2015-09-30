@@ -5,16 +5,19 @@ import React from 'react';
 import Story from '../../../common/components/Widgets/Story';
 import HomeNavigation from './Navigation';
 
-import { formatPrice, primaryHomeTitle } from '../../../common/Helpers';
+import { setPageTitle } from '../../../common/Helpers';
 
 export default class HomeDetails extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired
   }
 
-  // Primary title construction should
-  getPrimaryTitle() {
-    return primaryHomeTitle(this.props.home);
+  componentDidMount() {
+    setPageTitle(this.props.home.homeTitle);
+  }
+
+  componentWillUnmount() {
+    setPageTitle();
   }
 
   getSecondaryTitle() {
@@ -29,7 +32,7 @@ export default class HomeDetails extends React.Component {
       return rval;
     });
 
-    content.push((<span>{formatPrice(this.props.home.costs.sellingPrice)}</span>));
+    content.push((<span>{this.props.home.formattedPrice}</span>));
 
     return content;
   }
@@ -51,7 +54,7 @@ export default class HomeDetails extends React.Component {
       template: 'BigImage',
       properties: {
         image: image,
-        title: this.getPrimaryTitle(),
+        title: this.props.home.homeTitle,
         align: 'center',
         valign: 'middle',
         isPageTitle: true,

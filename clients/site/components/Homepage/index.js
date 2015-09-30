@@ -16,6 +16,7 @@ import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Loading from '../../../common/components/Widgets/Loading';
+import { setPageTitle } from '../../../common/Helpers';
 
 export default class Homepage extends React.Component {
   constructor() {
@@ -35,11 +36,13 @@ export default class Homepage extends React.Component {
 
     HomeListStore.listen(this.storeListener);
     HomeListStore.fetchHomes({limit: 20});
+    setPageTitle('Discover y');
   }
 
   componentWillUnmount() {
     document.getElementsByTagName('body')[0].removeAttribute('data-handler');
     HomeListStore.unlisten(this.storeListener);
+    setPageTitle();
   }
 
   onChange(state) {
@@ -125,7 +128,7 @@ export default class Homepage extends React.Component {
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed={true} image={mainImage} proportion={0.8}>
+        <BigImage gradient='green' fixed image={mainImage} proportion={0.8}>
           <LargeText align='center' valign='middle' proportion={0.8}>
             <div className='splash'>
               <h1>Every home has<br /> a unique story</h1>
@@ -154,7 +157,7 @@ export default class Homepage extends React.Component {
                 <em>Become a service provider in Homehapp. We are looking for estate agents partners, legals, home decor...</em>
               </p>
               <p>
-                <Link to='formsPartners' className='button white'>Contact</Link>
+                <Link to='partners' className='button white'>Contact</Link>
               </p>
             </div>
             <div className='span5 centered'>
@@ -171,7 +174,7 @@ export default class Homepage extends React.Component {
                 let image = (neighborhood.images && neighborhood.images[0]) ? neighborhood.images[0] : null;
                 return (
                   <div className='preview' key={index}>
-                    <Hoverable {...image} width={464} height={556} mode='fill' applySize={true}>
+                    <Hoverable {...image} width={464} height={556} mode='fill' applySize>
                       <div className='neighborhood-title'>
                         <div className='wrapper'>
                           <Link to='neighborhoodsView' params={{city: 'london', neighborhood: neighborhood.slug}}>

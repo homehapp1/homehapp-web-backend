@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import classNames from 'classnames';
-import { formatPrice, primaryHomeTitle } from '../../../common/Helpers';
+import { primaryHomeTitle } from '../../../common/Helpers';
 
 import Hoverable from './Hoverable';
 
@@ -42,7 +42,7 @@ export default class Card extends React.Component {
           <Link to='home' params={{slug: this.props.item.slug}} className='thumbnail'>
             {image}
             <span className='details'>
-              <span className='price'>{formatPrice(this.props.item.costs.sellingPrice)}</span>
+              <span className='price'>{this.props.item.formattedPrice}</span>
               <span className='street'>{this.props.item.location.address.street}, </span>
               <span className='city'>{this.props.item.location.address.city}</span>
             </span>

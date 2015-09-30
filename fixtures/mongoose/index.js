@@ -1,4 +1,15 @@
 'use strict';
+
+import { urlName } from '../../server/lib/UrlName';
+let neighborhoodsData = require('../../data/london-neighborhoods.json');
+
+for (let neighborhood of neighborhoodsData) {
+  if (typeof neighborhood.slug !== 'undefined' && neighborhood.slug) {
+    continue;
+  }
+  neighborhood.slug = urlName(neighborhood.title);
+}
+
 let getRandom = function (arr, l = 0) {
   if (l) {
     l = Math.min(arr.length, l);
@@ -374,15 +385,19 @@ exports.execute = function execute(migrator) {
 
   let User = db.getModel('User');
   let Home = db.getModel('Home');
+  let Neighborhood = db.getModel('Neighborhood');
+  let City = db.getModel('City');
 
   let admin = null;
   let adminUsername = 'administrator@homehapp.com';
+
+  let city = null;
 
   function createOrUpdateAdmin() {
     return new Promise((resolve, reject) => {
       User.findOne({username: adminUsername}).execAsync()
       .then((model) => {
-        console.log('got model', model);
+        console.log('Got user', model);
         if (model) {
           admin = model;
           return resolve();
@@ -407,7 +422,45 @@ exports.execute = function execute(migrator) {
         });
       })
       .catch((err) => {
-        console.error('catched error', err);
+        console.error('Caught error', err);
+        reject(err);
+      });
+    });
+  }
+
+  function createOrUpdateLondon() {
+    return new Promise((resolve, reject) => {
+      City.findOne({title: 'London'}).execAsync()
+      .then((model) => {
+        console.log('Got city', model);
+        if (model) {
+          city = model;
+          return resolve();
+        }
+        city = new City({
+          slug: 'london',
+          title: 'London',
+          location: {
+            country: 'Great Britain',
+            coordinates: [
+              51.5073509,
+              -0.1277583
+            ]
+          },
+          createdBy: admin.id
+        });
+        city.saveAsync()
+        .spread(function(model, numAffected) {
+          console.log('Created city', model);
+          resolve();
+        })
+        .catch((err) => {
+          console.error('error while creating the main city', err);
+          reject(err);
+        });
+      })
+      .catch((err) => {
+        console.error('Caught error', err);
         reject(err);
       });
     });
@@ -415,13 +468,60 @@ exports.execute = function execute(migrator) {
 
   return createOrUpdateAdmin()
     .then(() => {
+      return createOrUpdateLondon();
+    })
+    .then(() => {
       if (!version || version === 0) {
+        neighborhoodsData.forEach((neighborhoodData) => {
+          tasks.push(
+            new Promise((resolve, reject) => {
+              Neighborhood.findOne({
+                slug: neighborhoodData.slug
+              })
+              .execAsync()
+              .then((model) => {
+                if (model) {
+                  Neighborhood.findByIdAndUpdate(model.id, {
+                    $set: neighborhoodData
+                  }).execAsync()
+                  .then(function(model) {
+                    resolve();
+                  })
+                  .catch((err) => {
+                    console.error('error while updating neighborhood', err);
+                    reject(err);
+                  });
+                  return;
+                }
+
+                let neighborhood = new Neighborhood(neighborhoodData);
+                neighborhood.createdBy = admin.id;
+                neighborhood.city = city.id;
+
+                neighborhood.saveAsync()
+                .spread(function(model, numAffected) {
+                  console.log('Created neighborhood', neighborhood);
+                  resolve();
+                })
+                .catch((err) => {
+                  console.error('error while creating neighborhood', err);
+                  reject(err);
+                });
+              })
+              .catch((err) => {
+                console.error('caught error while working on neighborhoods', error);
+              });
+            })
+          );
+        });
+
         demoHomes.forEach((homeData) => {
           tasks.push(
             new Promise((resolve, reject) => {
               Home.findOne({
                 slug: homeData.slug
-              }).execAsync()
+              })
+              .execAsync()
               .then((model) => {
                 //console.log('got exiting home', model);
                 if (model) {
@@ -453,7 +553,7 @@ exports.execute = function execute(migrator) {
                 });
               })
               .catch((err) => {
-                console.error('catched error', err);
+                console.error('caught error while working on homes', err);
                 reject(err);
               });
             })
