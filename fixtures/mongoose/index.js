@@ -417,7 +417,7 @@ exports.execute = function execute(migrator) {
           resolve();
         })
         .catch((err) => {
-          console.error('error while creating the main city', err);
+          console.error('Error while creating the main city', err);
           reject(err);
         });
       })
@@ -443,8 +443,8 @@ exports.execute = function execute(migrator) {
         .execAsync()
         .then((model) => {
           if (model) {
-            neighborhoodIds.push(model.id);
-            console.log('Neighborhood exists', neighborhoodData.title);
+            neighborhoodIds.push(model._id);
+            console.log('Neighborhood exists', neighborhoodData.title, model._id);
             resolve(neighborhoodIds);
             return null;
           }
@@ -455,11 +455,11 @@ exports.execute = function execute(migrator) {
 
           neighborhood.saveAsync()
           .spread(function(model, numAffected) {
-            console.log('Created neighborhood', neighborhood.title);
+            console.log('Created neighborhood', neighborhood.title, model._id);
             resolve(model);
           })
           .then((model) => {
-            neighborhoodIds.push(model.id);
+            neighborhoodIds.push(neighborhood._id);
             createOrUpdateNeighborhoods();
           })
           .catch((err) => {
@@ -499,11 +499,11 @@ exports.execute = function execute(migrator) {
                     $set: homeData
                   }).execAsync()
                   .then(function(model) {
-                    console.log('Updated home', model.title);
+                    console.log('Updated home', model.title, 'in neighborhood', model.location.neighborhood);
                     resolve();
                   })
                   .catch((err) => {
-                    console.error('error while updating home', err);
+                    console.error('Error while updating home', err);
                     reject(err);
                   });
                   return;
@@ -514,16 +514,16 @@ exports.execute = function execute(migrator) {
 
                 home.saveAsync()
                 .spread(function(model, numAffected) {
-                  console.log('Created home', home.title);
+                  console.log('Created home', model.title, 'to neighborhood', model.location.neighborhood);
                   resolve();
                 })
                 .catch((err) => {
-                  console.error('error while creating home', err);
+                  console.error('Error while creating home', err);
                   reject(err);
                 });
               })
               .catch((err) => {
-                console.error('caught error while working on homes', err);
+                console.error('Caught error while working on homes', err);
                 reject(err);
               });
             })

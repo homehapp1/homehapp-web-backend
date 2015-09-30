@@ -20,7 +20,8 @@ exports.loadSchemas = function (mongoose, next) {
     slug: {
       type: String,
       index: true,
-      required: true
+      required: true,
+      unique: true
     },
     // Details
     title: {
