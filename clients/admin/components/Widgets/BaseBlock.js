@@ -9,7 +9,7 @@ import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import {randomNumericId, setCDNUrlProperties} from '../../../common/Helpers';
+import {randomNumericId, setCDNUrlProperties, merge} from '../../../common/Helpers';
 import ImageList from './ImageList';
 
 let debug = require('../../../common/debugger')('WidgetsBaseBlock');
@@ -123,7 +123,7 @@ export default class WidgetsBaseBlock extends React.Component {
     return input;
   }
 
-  renderImageInput(key) {
+  renderImageInput(key, prop) {
     this.uploaderInstanceIds[key] = randomNumericId();
 
     let imageUrl = null;
