@@ -3,6 +3,7 @@
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
 import async from 'async';
+let debug = require('debug')('app');
 
 class HomeQueryBuilder extends BaseQueryBuilder {
   constructor(app) {
@@ -27,6 +28,35 @@ class HomeQueryBuilder extends BaseQueryBuilder {
         this.result.home = model;
         this.result.homeJson = model.toJSON();
         this._loadedModel = model;
+        callback();
+      });
+    });
+
+    return this;
+  }
+
+  findByNeighborhood(neighborhood) {
+    if (typeof neighborhood.id !== 'undefined') {
+      return this.findByNeighborhood(neighborhood.id);
+    }
+
+    this._queries.push((callback) => {
+      this.Model.find({
+        'location.neighborhood': neighborhood,
+        deletedAt: null
+      }, (err, homes) => {
+        debug('findByNeighborhood', homes);
+        if (err) {
+          debug('Got error', err);
+          return callback(err);
+        }
+        if (!homes) {
+          debug('No homes found');
+          return callback(new NotFound('Homes not found'));
+        }
+
+        this.result.models = homes;
+        this.result.homes = homes;
         callback();
       });
     });
