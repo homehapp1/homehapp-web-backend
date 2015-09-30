@@ -11,7 +11,7 @@ for (let neighborhood of neighborhoodsData) {
 }
 
 let getRandom = function (arr, l = 0) {
-  if (l) {
+  if (l > 1) {
     l = Math.min(arr.length, l);
     let rval = [];
     let i = 0;
@@ -224,44 +224,6 @@ let createHome = function(index)
     return storyBlock;
   };
 
-  let neighborhoods = [
-    {
-      title: 'St. John`s Wood',
-      slug: 'st_johns_wood'
-    },
-    {
-      title: 'West End',
-      slug: 'west_end'
-    },
-    {
-      title: 'China Town',
-      slug: 'china_town'
-    },
-    {
-      title: 'The City',
-      slug: 'the_city'
-    },
-    {
-      title: 'South Bank',
-      slug: 'south_bank'
-    },
-    {
-      title: 'East End',
-      slug: 'east_end'
-    },
-    {
-      title: 'Westminster',
-      slug: 'westminster'
-    }
-  ];
-
-  for (let i = 0; i < neighborhoods.length; i++) {
-    neighborhoods[i].images = getRandom(images, randomSeed(2, images.length));
-    neighborhoods[i].images.location = {
-      coordinates: getCoords()
-    };
-  }
-
   let getTitle = function() {
     let titles = [
       '',
@@ -290,7 +252,7 @@ let createHome = function(index)
         city: 'London',
         country: 'GB'
       },
-      neighborhood: getRandom(neighborhoods),
+      neighborhood: null,
       coordinates: getCoords(),
     },
     costs: {
@@ -466,56 +428,64 @@ exports.execute = function execute(migrator) {
     });
   }
 
+  let neighborhoodIds = [];
+  function createOrUpdateNeighborhoods() {
+    if (!neighborhoodsData.length) {
+      console.log('created all neighborhoods', neighborhoodIds);
+      resolve();
+    }
+
+    let neighborhoodData = neighborhoodsData.shift();
+    return new Promise((resolve, reject) => {
+        Neighborhood.findOne({
+          slug: neighborhoodData.slug
+        })
+        .execAsync()
+        .then((model) => {
+          if (model) {
+            neighborhoodIds.push(model.id);
+            console.log('Neighborhood exists', neighborhoodData.title);
+            resolve(neighborhoodIds);
+            return null;
+          }
+
+          let neighborhood = new Neighborhood(neighborhoodData);
+          neighborhood.createdBy = admin.id;
+          neighborhood.location.city = city.id;
+
+          neighborhood.saveAsync()
+          .spread(function(model, numAffected) {
+            console.log('Created neighborhood', neighborhood.title);
+            resolve(model);
+          })
+          .then((model) => {
+            neighborhoodIds.push(model.id);
+            createOrUpdateNeighborhoods();
+          })
+          .catch((err) => {
+            console.error('error while creating neighborhood', err);
+            reject(err);
+          });
+        })
+        .catch((err) => {
+          console.error('Error while creating a neighborhood', err);
+          reject(err);
+        });
+    });
+  };
+
   return createOrUpdateAdmin()
     .then(() => {
       return createOrUpdateLondon();
     })
     .then(() => {
+      return createOrUpdateNeighborhoods();
+    })
+    .then((ids) => {
+      console.log('create homes for neighborhoods', ids);
       if (!version || version === 0) {
-        neighborhoodsData.forEach((neighborhoodData) => {
-          tasks.push(
-            new Promise((resolve, reject) => {
-              Neighborhood.findOne({
-                slug: neighborhoodData.slug
-              })
-              .execAsync()
-              .then((model) => {
-                if (model) {
-                  Neighborhood.findByIdAndUpdate(model.id, {
-                    $set: neighborhoodData
-                  }).execAsync()
-                  .then(function(model) {
-                    resolve();
-                  })
-                  .catch((err) => {
-                    console.error('error while updating neighborhood', err);
-                    reject(err);
-                  });
-                  return;
-                }
-
-                let neighborhood = new Neighborhood(neighborhoodData);
-                neighborhood.createdBy = admin.id;
-                neighborhood.location.city = city.id;
-
-                neighborhood.saveAsync()
-                .spread(function(model, numAffected) {
-                  console.log('Created neighborhood', neighborhood.title);
-                  resolve();
-                })
-                .catch((err) => {
-                  console.error('error while creating neighborhood', err);
-                  reject(err);
-                });
-              })
-              .catch((err) => {
-                console.error('caught error while working on neighborhoods', err);
-              });
-            })
-          );
-        });
-
         demoHomes.forEach((homeData) => {
+          homeData.location.neighborhood = getRandom(ids);
           tasks.push(
             new Promise((resolve, reject) => {
               Home.findOne({
@@ -529,7 +499,7 @@ exports.execute = function execute(migrator) {
                     $set: homeData
                   }).execAsync()
                   .then(function(model) {
-                    console.log('Updated home', home.title);
+                    console.log('Updated home', model.title);
                     resolve();
                   })
                   .catch((err) => {
