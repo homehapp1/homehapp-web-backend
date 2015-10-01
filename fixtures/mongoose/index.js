@@ -353,8 +353,6 @@ exports.execute = function execute(migrator) {
   let admin = null;
   let adminUsername = 'administrator@homehapp.com';
 
-  let city = null;
-
   function createOrUpdateAdmin() {
     return new Promise((resolve, reject) => {
       User.findOne({username: adminUsername}).execAsync()
@@ -396,10 +394,10 @@ exports.execute = function execute(migrator) {
       .then((model) => {
         console.log('Got city', model);
         if (model) {
-          city = model;
-          return resolve();
+          let city = model;
+          return resolve(city);
         }
-        city = new City({
+        let city = new City({
           slug: 'london',
           title: 'London',
           location: {
@@ -414,7 +412,7 @@ exports.execute = function execute(migrator) {
         city.saveAsync()
         .spread(function(model, numAffected) {
           console.log('Created city', model);
-          resolve();
+          resolve(model);
         })
         .catch((err) => {
           console.error('Error while creating the main city', err);
@@ -428,49 +426,114 @@ exports.execute = function execute(migrator) {
     });
   }
 
-  let neighborhoodIds = [];
-  function createOrUpdateNeighborhoods() {
-    if (!neighborhoodsData.length) {
-      console.log('created all neighborhoods', neighborhoodIds);
-      resolve();
+  let neighborhoodList = [];
+
+  function createOrUpdateHomes() {
+    console.log('Create homes');
+    if (!version || version === 0) {
+      demoHomes.forEach((homeData) => {
+        let neighborhood = getRandom(neighborhoodList);
+        homeData.location.neighborhood = neighborhood;
+        tasks.push(
+          new Promise((resolve, reject) => {
+            Home.findOne({
+              slug: homeData.slug
+            })
+            .execAsync()
+            .then((model) => {
+              //console.log('got exiting home', model);
+              if (model) {
+                Home.findByIdAndUpdate(model.id, {
+                  $set: homeData
+                }).execAsync()
+                .then(function(model) {
+                  console.log(`Updated home '${model.title}' (${model._id}) in neighborhood '${neighborhood.title}' (${neighborhood._id})`);
+                  resolve();
+                })
+                .catch((err) => {
+                  console.error('Error while updating home', err);
+                  reject(err);
+                });
+                return;
+              }
+
+              let home = new Home(homeData);
+              home.createdBy = admin.id;
+
+              home.saveAsync()
+              .spread(function(model, numAffected) {
+                console.log(`Created home '${home.title}' (${model._id}) to neighborhood '${neighborhood.title}' (${neighborhood._id})`);
+                resolve();
+              })
+              .catch((err) => {
+                console.error('Error while creating home', err);
+                reject(err);
+              });
+            })
+            .catch((err) => {
+              console.error('Caught error while working on homes', err);
+              reject(err);
+            });
+          })
+        );
+      });
     }
+    return Promise.all(tasks).then(() => {
+      console.log('All fixture tasks executed');
+    });
+  }
 
-    let neighborhoodData = neighborhoodsData.shift();
-    return new Promise((resolve, reject) => {
-        Neighborhood.findOne({
-          slug: neighborhoodData.slug
-        })
-        .execAsync()
-        .then((model) => {
-          if (model) {
-            neighborhoodIds.push(model._id);
-            console.log('Neighborhood exists', neighborhoodData.title, model._id);
-            resolve(neighborhoodIds);
-            return null;
-          }
+  function createOrUpdateNeighborhoods(city) {
+    let nTasks = [];
+    console.log('Create neighborhoods');
 
-          let neighborhood = new Neighborhood(neighborhoodData);
-          neighborhood.createdBy = admin.id;
-          neighborhood.location.city = city.id;
-
-          neighborhood.saveAsync()
-          .spread(function(model, numAffected) {
-            console.log('Created neighborhood', neighborhood.title, model._id);
-            resolve(model);
-          })
+    neighborhoodsData.forEach((neighborhood) => {
+      nTasks.push(
+        new Promise((resolve, reject) => {
+          Neighborhood
+          .findOne({slug: neighborhood.slug})
+          .execAsync()
           .then((model) => {
-            neighborhoodIds.push(neighborhood._id);
-            createOrUpdateNeighborhoods();
-          })
-          .catch((err) => {
-            console.error('error while creating neighborhood', err);
-            reject(err);
+            if (model) {
+              console.log('Neighborhood already exists', model.title, model.id);
+              neighborhoodList.push(model);
+              resolve();
+              return null;
+            }
+            model = new Neighborhood(neighborhood);
+            model.createdBy = admin.id;
+            model.location.city = city;
+            console.log('Neighborhood.create', model.title);
+
+            new Promise((res, rej) => {
+              model.saveAsync()
+              .spread(function(m, numAffected) {
+                console.log('Created neighborhood', neighborhood.title, m._id);
+                neighborhoodList.push(m);
+                res(m);
+              })
+              .catch((err) => {
+                if (err.code === 11000) {
+                  console.log('Duplicate error, continue');
+                  resolve();
+                } else {
+                  console.error('Error 1 while creating neighborhood', err);
+                  rej(err);
+                }
+              });
+            })
+            .then(resolve)
+            .catch((err) => {
+              console.error('Error 2 while creating a neighborhood', err);
+              resolve();
+            });
           });
         })
-        .catch((err) => {
-          console.error('Error while creating a neighborhood', err);
-          reject(err);
-        });
+      );
+    });
+
+    return Promise.all(nTasks).then(() => {
+      console.log('All neighborhoods created');
     });
   };
 
@@ -478,61 +541,10 @@ exports.execute = function execute(migrator) {
     .then(() => {
       return createOrUpdateLondon();
     })
-    .then(() => {
-      return createOrUpdateNeighborhoods();
+    .then((city) => {
+      return createOrUpdateNeighborhoods(city);
     })
-    .then((ids) => {
-      console.log('create homes for neighborhoods', ids);
-      if (!version || version === 0) {
-        demoHomes.forEach((homeData) => {
-          homeData.location.neighborhood = getRandom(ids);
-          tasks.push(
-            new Promise((resolve, reject) => {
-              Home.findOne({
-                slug: homeData.slug
-              })
-              .execAsync()
-              .then((model) => {
-                //console.log('got exiting home', model);
-                if (model) {
-                  Home.findByIdAndUpdate(model.id, {
-                    $set: homeData
-                  }).execAsync()
-                  .then(function(model) {
-                    console.log('Updated home', model.title, 'in neighborhood', model.location.neighborhood);
-                    resolve();
-                  })
-                  .catch((err) => {
-                    console.error('Error while updating home', err);
-                    reject(err);
-                  });
-                  return;
-                }
-
-                let home = new Home(homeData);
-                home.createdBy = admin.id;
-
-                home.saveAsync()
-                .spread(function(model, numAffected) {
-                  console.log('Created home', model.title, 'to neighborhood', model.location.neighborhood);
-                  resolve();
-                })
-                .catch((err) => {
-                  console.error('Error while creating home', err);
-                  reject(err);
-                });
-              })
-              .catch((err) => {
-                console.error('Caught error while working on homes', err);
-                reject(err);
-              });
-            })
-          );
-        });
-      }
-
-      return Promise.all(tasks).then(() => {
-        console.log('All fixture tasks executed');
-      });
+    .then(() => {
+      return createOrUpdateHomes();
     });
 };
