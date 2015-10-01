@@ -65,7 +65,8 @@ exports.loadSchemas = function (mongoose, next) {
       neighborhood: {
         type: ObjectId,
         ref: 'Neighborhood',
-        index: true
+        index: true,
+        default: null
       }
     },
     costs: {
