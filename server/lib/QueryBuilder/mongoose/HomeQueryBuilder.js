@@ -3,9 +3,9 @@
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
 import async from 'async';
-let debug = require('debug')('app');
+let debug = require('debug')('HomeQueryBuilder');
 
-class HomeQueryBuilder extends BaseQueryBuilder {
+export default class HomeQueryBuilder extends BaseQueryBuilder {
   constructor(app) {
     super(app, 'Home');
   }
@@ -23,6 +23,7 @@ class HomeQueryBuilder extends BaseQueryBuilder {
           return callback(err);
         }
         if (!model) {
+          debug(`No homes found with slug '${slug}'`);
           return callback(new NotFound('home not found'));
         }
         this.result.home = model;
@@ -82,5 +83,3 @@ class HomeQueryBuilder extends BaseQueryBuilder {
     return this;
   }
 }
-
-export default HomeQueryBuilder;

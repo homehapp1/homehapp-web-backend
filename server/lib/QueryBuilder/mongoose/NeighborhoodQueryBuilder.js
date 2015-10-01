@@ -1,12 +1,11 @@
 'use strict';
 
 import BaseQueryBuilder from './BaseQueryBuilder';
-import CityQueryBuilder from './CityQueryBuilder';
 import {NotFound} from '../../Errors';
 import async from 'async';
-let debug = require('debug')('app');
+let debug = require('debug')('NeighborhoodQueryBuilder');
 
-class NeighborhoodQueryBuilder extends BaseQueryBuilder {
+export default class NeighborhoodQueryBuilder extends BaseQueryBuilder {
   constructor(app) {
     super(app, 'Neighborhood');
   }
@@ -15,26 +14,34 @@ class NeighborhoodQueryBuilder extends BaseQueryBuilder {
   }
 
   findByCity(city) {
-    if (typeof city.id !== 'undefined') {
-      return this.findByCity(city.id);
-    }
     this._queries.push((callback) => {
-      this.Model.find({
+      let query = {
         'location.city': city,
         deletedAt: null
-      }, (err, neighborhoods) => {
-        debug('findByCity', neighborhoods);
+      };
+
+      if (typeof city === 'string') {
+        query = {
+          'location.city.slug': city,
+          deletedAt: null
+        };
+      }
+      this.Model.find(query, (err, neighborhoods) => {
+        debug(`findByCity found ${neighborhoods.length} neighborhoods`);
         if (err) {
           debug('Got error', err);
           return callback(err);
         }
         if (!neighborhoods) {
           debug('No neighborhoods were found');
-          return callback(new NotFound('Neighborhoods not found'));
+          neighborhoods = [];
         }
 
         this._loadedModel = neighborhoods;
         this.result.models = neighborhoods;
+        this.result.modelsJson = JSON.stringify(neighborhoods.map((neighborhood) => {
+          return neighborhood.toJson();
+        }));
         this.result.neighborhoods = neighborhoods;
         callback();
       });
@@ -49,17 +56,19 @@ class NeighborhoodQueryBuilder extends BaseQueryBuilder {
         slug: slug,
         deletedAt: null
       }, (err, neighborhood) => {
-        debug('findBySlug', neighborhood);
+        debug('findBySlug');
         if (err) {
           debug('Got error', err);
           return callback(err);
         }
         if (!neighborhood) {
-          debug('No neighborhood found');
+          debug(`No neighborhood found with slug '${slug}'`);
           return callback(new NotFound('Neighborhood not found'));
         }
+        debug(`Found Neighborhood ${neighborhood.title} (${neighborhood._id})`);
 
         this._loadedModel = neighborhood;
+        this.result.model = neighborhood;
         this.result.models = [neighborhood];
         this.result.neighborhood = neighborhood;
         callback();
@@ -91,5 +100,3 @@ class NeighborhoodQueryBuilder extends BaseQueryBuilder {
     return this;
   }
 }
-
-export default NeighborhoodQueryBuilder;

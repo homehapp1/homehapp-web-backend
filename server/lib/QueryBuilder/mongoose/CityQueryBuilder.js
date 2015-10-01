@@ -3,9 +3,9 @@
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
 import async from 'async';
-let debug = require('debug')('app');
+let debug = require('debug')('CityQueryBuilder');
 
-class CityQueryBuilder extends BaseQueryBuilder {
+export default class CityQueryBuilder extends BaseQueryBuilder {
   constructor(app) {
     super(app, 'City');
   }
@@ -16,7 +16,7 @@ class CityQueryBuilder extends BaseQueryBuilder {
         slug: slug,
         deletedAt: null
       }, (err, city) => {
-        debug('findBySlug', city);
+        debug('findBySlug', city.title);
         if (err) {
           debug('Got error', err);
           return callback(err);
@@ -27,6 +27,7 @@ class CityQueryBuilder extends BaseQueryBuilder {
         }
 
         this._loadedModel = city;
+        this.result.model = city;
         this.result.models = [city];
         this.result.city = city;
         callback();
@@ -39,5 +40,3 @@ class CityQueryBuilder extends BaseQueryBuilder {
   initialize() {
   }
 }
-
-export default CityQueryBuilder;
