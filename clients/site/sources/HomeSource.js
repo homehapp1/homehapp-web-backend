@@ -4,13 +4,13 @@ import request from '../../common/request';
 import HomeActions from '../actions/HomeActions';
 import Cache from '../../common/Cache';
 
-let debug = require('../../common/debugger')('HomeSource');
+// let debug = require('../../common/debugger')('HomeSource');
 
 let HomeSource = {
   fetchHomeBySlug: () => {
     return {
       remote(storeState, slug) {
-        debug('fetchHomeBySlug:remote', arguments);
+        // debug('fetchHomeBySlug:remote', arguments);
         return request.get(`/api/home/${slug}`)
           .then((response) => {
             //debug('got response', response);
@@ -43,7 +43,6 @@ let HomeSource = {
           });
       },
       local(storeState, slug) {
-        debug('fetchHomeBySlug:local', arguments);
         if (Cache.has('homesBySlug', slug)) {
           return Cache.get('homesBySlug', slug);
         }
