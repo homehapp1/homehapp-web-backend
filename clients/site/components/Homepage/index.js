@@ -177,17 +177,17 @@ export default class Homepage extends React.Component {
                     <Hoverable {...image} width={464} height={556} mode='fill' applySize>
                       <div className='neighborhood-title'>
                         <div className='wrapper'>
-                          <Link to='neighborhoodsView' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                          <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
                             <span className='title'>{neighborhood.title}</span>
                           </Link>
                         </div>
                       </div>
 
                       <div className='actions'>
-                        <Link to='neighborhoodsView' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
                           Read About
                         </Link>
-                        <Link to='neighborhoodsViewHomes' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodViewHomes' params={{city: 'london', neighborhood: neighborhood.slug}}>
                           Show Homes
                         </Link>
                       </div>

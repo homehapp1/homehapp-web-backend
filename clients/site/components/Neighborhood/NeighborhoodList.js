@@ -111,26 +111,25 @@ export default class NeighborhoodsList extends React.Component {
                   }
                 }
               }
-              console.log('neighborhood.location.city', neighborhood.location.city);
               return (
                 <div className='neighborhood' key={index}>
-                  <Link className='image-wrapper' to='neighborhoodsView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                  <Link className='image-wrapper' to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
                     <Image {...img} width={1200} height={680} mode='fill' />
                   </Link>
                   <ContentBlock valign='center'>
                     <h2 className='block-title'>
-                      <Link to='neighborhoodsView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                      <Link to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
                         {neighborhood.title}
                       </Link>
                     </h2>
                     <ul className='buttons'>
                       <li>
-                        <Link to='neighborhoodsView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
                           Read about
                         </Link>
                       </li>
                       <li>
-                        <Link to='neighborhoodsViewHomes' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodViewHomes' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
                           Show homes
                         </Link>
                       </li>

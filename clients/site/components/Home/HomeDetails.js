@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Story from '../../../common/components/Widgets/Story';
-import HomeNavigation from './Navigation';
+import HomeNavigation from './HomeNavigation';
 
 import { setPageTitle } from '../../../common/Helpers';
 

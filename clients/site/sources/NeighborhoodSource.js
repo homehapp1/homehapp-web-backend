@@ -4,21 +4,21 @@ import request from '../../common/request';
 import NeighborhoodActions from '../actions/NeighborhoodActions';
 import Cache from '../../common/Cache';
 
-// let debug = require('../../common/debugger')('NeighborhoodSource');
+let debug = require('../../common/debugger')('NeighborhoodSource');
 
 let NeighborhoodSource = {
-  fetchNeighborhoodBySlug: (city, slug) => {
+  fetchNeighborhoodBySlug: () => {
     return {
-      remote(storeState) {
-        // debug('fetchNeighborhoodBySlug:remote', arguments);
+      remote(storeState, city, slug) {
+        debug('fetchNeighborhoodBySlug:remote', arguments);
         return request.get(`/api/neighborhoods/${city}/${slug}`)
           .then((response) => {
-            //debug('got response', response);
+            debug('got response');
             if (!response.data || !response.data.neighborhood) {
               let err = new Error('Invalid response');
               return Promise.reject(err);
             }
-            Cache.set('neighborhoodsBySlug', slug, response.data.neighborhood);
+            // Cache.set('neighborhoodsBySlug', slug, response.data.neighborhood);
             return Promise.resolve(response.data.neighborhood);
           })
           .catch((response) => {
@@ -42,10 +42,10 @@ let NeighborhoodSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState) {
-        if (Cache.has('neighborhoodsBySlug', slug)) {
-          return Cache.get('neighborhoodsBySlug', slug);
-        }
+      local(storeState, city, slug) {
+        // if (Cache.has('neighborhoodsBySlug', slug)) {
+        //   return Cache.get('neighborhoodsBySlug', slug);
+        // }
         return null;
       },
       success: NeighborhoodActions.updateNeighborhood,

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import HomeNavigation from './Navigation';
+import HomeNavigation from './HomeNavigation';
 import HomeContainer from './HomeContainer';
 import Story from '../../../common/components/Widgets/Story';
 import { setPageTitle } from '../../../common/Helpers';
