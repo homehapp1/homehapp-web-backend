@@ -1,6 +1,7 @@
 'use strict';
 
 import QueryBuilder from '../../lib/QueryBuilder';
+let debug = require('debug')('app');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -51,10 +52,20 @@ exports.registerRoutes = (app) => {
         'content': res.locals.openGraph['og:updated_time']
       });
 
-      res.locals.data.HomeStore = {
-        home: result.homeJson
-      };
-      next();
+      debug('get neighborhood for home', result.home.location.neighborhood);
+
+      return QB
+      .forModel('Neighborhood')
+      .findById(result.home.location.neighborhood)
+      .fetch()
+      .then((r) => {
+        result.home.location.neighborhood = r.model;
+        res.locals.data.HomeStore = {
+          home: result.home.toJSON()
+        };
+        next();
+      })
+      .catch(next);
     })
     .catch(next);
   };
