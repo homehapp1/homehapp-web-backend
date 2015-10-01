@@ -3,6 +3,7 @@
 import React from 'react';
 
 import HomeNavigation from './Navigation';
+import HomeContainer from './HomeContainer';
 import Story from '../../../common/components/Widgets/Story';
 import { setPageTitle } from '../../../common/Helpers';
 
@@ -20,6 +21,7 @@ export default class HomeStory extends React.Component {
   }
 
   render() {
+    console.log('got home', this.props.home.location.neighborhood);
     let blocks = this.props.home.story.blocks;
     blocks.push({
       template: 'Map',
