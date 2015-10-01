@@ -1,7 +1,7 @@
 'use strict';
 
 import QueryBuilder from '../../lib/QueryBuilder';
-let debug = require('debug')('neighborhoods API');
+// let debug = require('debug')('neighborhoods API');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -69,13 +69,14 @@ exports.registerRoutes = (app) => {
     })
     .count()
     .then((res) => {
-      console.log('got result', res, 'for getHomeCount');
+      // console.log('got result', res, 'for getHomeCount');
       resolve(1);
     });
   };
 
   app.get('/neighborhoods/:city', function(req, res, next) {
     let city = null;
+    neighborhoods = [];
 
     QB
     .forModel('City')
@@ -101,8 +102,12 @@ exports.registerRoutes = (app) => {
       .fetch();
     })
     .then((result) => {
+      neighborhoods = result.models;
+      for (let neighborhood of neighborhoods) {
+        neighborhood.location.city = city;
+      }
       res.locals.data.NeighborhoodListStore = {
-        neighborhoods: result.modelsJson
+        neighborhoods: neighborhoods
       };
       next();
     })
