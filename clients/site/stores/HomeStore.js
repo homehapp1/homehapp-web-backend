@@ -5,8 +5,6 @@ import HomeActions from '../actions/HomeActions';
 import HomeSource from '../sources/HomeSource';
 import Cache from '../../common/Cache';
 
-let debug = require('../../common/debugger')('HomeStore');
-
 @alt.createStore
 class HomeStore {
   constructor() {
@@ -41,7 +39,6 @@ class HomeStore {
     this.error = null;
   }
   handleFetchFailed(error) {
-    debug('handleFetchFailed', error);
     this.error = error;
   }
 }
