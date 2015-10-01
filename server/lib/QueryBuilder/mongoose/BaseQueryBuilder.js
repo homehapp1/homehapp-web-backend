@@ -64,8 +64,10 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
         if (err) {
           return callback(err);
         }
-        console.log('models', models);
         this.result.models = models;
+        this.result.modelsJson = JSON.stringify(models.map((id) => {
+          return String(id);
+        }));
         callback();
       });
     });
