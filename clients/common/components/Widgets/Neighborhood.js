@@ -14,7 +14,14 @@ export default class Neighborhood extends React.Component {
   };
 
   render() {
-    let image = this.props.images[0];
+    let image = {
+      src: 'images/content/content-placeholder.jpg',
+      alt: ''
+    };
+
+    if (Array.isArray(this.props.images) && this.props.images.length) {
+      image = this.props.images[0];
+    }
 
     return (
       <BigImage image={image}>
