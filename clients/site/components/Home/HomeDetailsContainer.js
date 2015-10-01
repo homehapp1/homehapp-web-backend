@@ -3,7 +3,7 @@
 import React from 'react';
 import HomeContainer from './HomeContainer';
 import HomeStore from '../../stores/HomeStore';
-import HomeDetails from './Details';
+import HomeDetails from './HomeDetails';
 
 export default class HomeDetailsContainer extends HomeContainer {
   render() {
