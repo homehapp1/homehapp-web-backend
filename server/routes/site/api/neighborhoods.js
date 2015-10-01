@@ -4,69 +4,85 @@ import QueryBuilder from '../../../lib/QueryBuilder';
 let debug = require('debug')('app');
 
 exports.registerRoutes = (app) => {
-  //let city = null;
   const QB = new QueryBuilder(app);
-  app.get('/api/neighborhood/:city', function(req, res, next) {
+  app.get('/api/neighborhoods/:city', function(req, res, next) {
+    let city = null;
+
     QB
     .forModel('City')
     .findBySlug(req.params.city)
     .fetch()
-    .then((resultCity) => {
-      let city = resultCity.city;
-      QB
+    .then((result) => {
+      city = result.city;
+      return QB
+      .forModel('Home')
+      .distinct('location.neighborhood')
+      .fetch();
+    })
+    .then((result) => {
+      return QB
       .forModel('Neighborhood')
-      .findByCity(city)
-      .fetch()
-      .then((result) => {
-        let neighborhoods = [];
-        debug('neighborhoods by city', result);
-        for (let neighborhood of result.models) {
-          if (String(neighborhood.location.city) !== String(city.id)) {
-            debug('Neighborhood city mismatch', neighborhood);
-            continue;
-          }
-          neighborhood.location.city = city;
-        }
-
-        res.json({
-          status: 'ok',
-          neighborhoods: result.models
-        });
+      .query({
+        _id: {
+          $in: result.models
+        },
+        'location.city': city
       })
-      .catch(next);
+      .findAll()
+      .fetch();
+    })
+    .then((result) => {
+      res.json({
+        status: 'ok',
+        neighborhoods: result.models
+      });
     })
     .catch(next);
   });
 
-  app.get('/api/neighborhood/:city/:neighborhood', function(req, res, next) {
+  app.get('/api/neighborhoods/:city/:neighborhood', function(req, res, next) {
+    let city = null;
+    let neighborhood = null;
+
     QB
     .forModel('City')
     .findBySlug(req.params.city)
     .fetch()
-    .then((resultCity) => {
-      let city = resultCity.city;
-      QB
+    .then((result) => {
+      city = result.city;
+      return QB
       .forModel('Neighborhood')
-      .findBySlug(req.params.neighborhood)
-      .fetch()
-      .then((resultNeighborhood) => {
-        debug('Neighborhood by slug', result);
-        let neighborhood = resultNeighborhood.models[0];
-        if (String(neighborhood.location.city) !== String(city.id)) {
-          throw new Error('City mismatch');
-        }
-        neighborhood.location.city = city;
-        res.json({
-          status: 'ok',
-          neighborhood: neighborhood
-        });
+      .query({
+        'location.city': city,
+        slug: req.params.neighborhood
       })
-      .catch(next);
+      .findAll()
+      .fetch();
+    })
+    .then((result) => {
+      if (result.models.length !== 1) {
+        throw new Error('Neighborhood not found');
+      }
+
+      neighborhood = result.models[0];
+      neighborhood.location.city = city;
+
+      return QB
+      .forModel('Home')
+      .findByNeighborhood(neighborhood)
+      .fetch();
+    })
+    .then((result) => {
+      neighborhood.homes = result.models;
+      res.json({
+        status: 'ok',
+        neighborhood: neighborhood
+      });
     })
     .catch(next);
   });
 
-  app.get('/api/neighborhood/:city/:neighborhood/homes', function(req, res, next) {
+  app.get('/api/neighborhoods/:city/:neighborhood/homes', function(req, res, next) {
     QB
     .forModel('City')
     .findBySlug(req.params.city)
