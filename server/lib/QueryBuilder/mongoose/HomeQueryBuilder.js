@@ -36,23 +36,19 @@ class HomeQueryBuilder extends BaseQueryBuilder {
   }
 
   findByNeighborhood(neighborhood) {
-    if (typeof neighborhood.id !== 'undefined') {
-      return this.findByNeighborhood(neighborhood.id);
-    }
+    let query = {
+      deletedAt: null,
+      'location.neighborhood': neighborhood
+    };
 
     this._queries.push((callback) => {
-      this.Model.find({
-        'location.neighborhood': neighborhood,
-        deletedAt: null
-      }, (err, homes) => {
-        debug('findByNeighborhood', homes);
+      this.Model.find(query, (err, homes) => {
         if (err) {
           debug('Got error', err);
           return callback(err);
         }
         if (!homes) {
-          debug('No homes found');
-          return callback(new NotFound('Homes not found'));
+          homes = [];
         }
 
         this.result.models = homes;
