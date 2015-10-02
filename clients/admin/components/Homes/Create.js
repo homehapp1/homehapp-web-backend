@@ -10,6 +10,7 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import CreateDetails from './CreateDetails';
+import HomesCreateStory from './CreateStory';
 
 export default class HomesCreate extends React.Component {
   static propTypes = {
@@ -31,12 +32,12 @@ export default class HomesCreate extends React.Component {
         </Nav>
         <Row>
           <h1><i className='fa fa-home'></i> Create a new home</h1>
-          <TabbedArea defaultActiveKey={1}>
+          <TabbedArea defaultActiveKey={2}>
             <TabPane eventKey={1} tab='Details'>
               <CreateDetails home={this.props.home} />
             </TabPane>
             <TabPane eventKey={2} tab='Story'>
-              <p>Please create the home first</p>
+              <HomesCreateStory />
             </TabPane>
           </TabbedArea>
         </Row>
