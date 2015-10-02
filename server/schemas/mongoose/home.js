@@ -62,6 +62,7 @@ exports.loadSchemas = function (mongoose, next) {
           default: ''
         }
       },
+      coordinates: [],
       neighborhood: {
         type: ObjectId,
         ref: 'Neighborhood',
