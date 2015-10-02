@@ -2,9 +2,9 @@
 
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
-import async from 'async';
+let debug = require('debug')('HomeQueryBuilder');
 
-class HomeQueryBuilder extends BaseQueryBuilder {
+export default class HomeQueryBuilder extends BaseQueryBuilder {
   constructor(app) {
     super(app, 'Home');
   }
@@ -12,39 +12,8 @@ class HomeQueryBuilder extends BaseQueryBuilder {
   initialize() {
   }
 
-  findAll() {
-    this.queries.push((callback) => {
-      let cursor = this.Model.find({
-        deletedAt: null
-      });
-
-      if (this._opts.limit) {
-        cursor.limit(this._opts.limit);
-      }
-      if (this._opts.sort) {
-        cursor.sort(this._opts.sort);
-      }
-      if (this._opts.skip) {
-        cursor.skip(this._opts.skip);
-      }
-
-      cursor.exec((err, models) => {
-        if (err) {
-          return callback(err);
-        }
-        this.result.homes = models;
-        this.result.homesJson = models.map(home => {
-          return home.toJSON();
-        });
-        callback();
-      });
-    });
-
-    return this;
-  }
-
   findBySlug(slug) {
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       this.Model.findOne({
         slug: slug,
         deletedAt: null
@@ -53,6 +22,7 @@ class HomeQueryBuilder extends BaseQueryBuilder {
           return callback(err);
         }
         if (!model) {
+          debug(`No homes found with slug '${slug}'`);
           return callback(new NotFound('home not found'));
         }
         this.result.home = model;
@@ -65,8 +35,33 @@ class HomeQueryBuilder extends BaseQueryBuilder {
     return this;
   }
 
+  findByNeighborhood(neighborhood) {
+    let query = {
+      deletedAt: null,
+      'location.neighborhood': neighborhood
+    };
+
+    this._queries.push((callback) => {
+      this.Model.find(query, (err, homes) => {
+        if (err) {
+          debug('Got error', err);
+          return callback(err);
+        }
+        if (!homes) {
+          homes = [];
+        }
+
+        this.result.models = homes;
+        this.result.homes = homes;
+        callback();
+      });
+    });
+
+    return this;
+  }
+
   findByUuid(uuid) {
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       this.Model.findOne({
         uuid: uuid,
         deletedAt: null
@@ -87,5 +82,3 @@ class HomeQueryBuilder extends BaseQueryBuilder {
     return this;
   }
 }
-
-export default HomeQueryBuilder;

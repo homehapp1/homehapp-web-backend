@@ -2,7 +2,7 @@
 
 import React from 'react';
 import HomeStore from '../../stores/HomeStore';
-import HomeStory from './Story';
+import HomeStory from './HomeStory';
 
 import Loading from '../../../common/components/Widgets/Loading';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';

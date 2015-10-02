@@ -14,14 +14,21 @@ export default class Neighborhood extends React.Component {
   };
 
   render() {
-    let image = this.props.images[0];
+    let image = {
+      url: 'v1439564093/london-view.jpg',
+      alt: ''
+    };
+
+    if (Array.isArray(this.props.images) && this.props.images.length) {
+      image = this.props.images[0];
+    }
 
     return (
       <BigImage image={image}>
         <LargeText align='center' valign='middle' className='full-height'>
           <p className='teaser'>...and about the neighbourhood</p>
           <h1>
-            <Link to='neighborhoodsView' params={{city: 'london', neighborhood: this.props.slug}}>
+            <Link to='neighborhoodView' params={{city: 'london', neighborhood: this.props.slug}}>
               {this.props.title}
             </Link>
           </h1>

@@ -352,8 +352,8 @@ exports.run = function(projectName, afterRun) {
             res.locals.data.ApplicationStore.config = clientConfig;
 
             debug('clientConfig', clientConfig);
-            debug('res.locals.data', res.locals.data);
-            debug('res.locals.metadatas', res.locals.metadatas);
+            // debug('res.locals.data', res.locals.data);
+            // debug('res.locals.metadatas', res.locals.metadatas);
 
             let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
 

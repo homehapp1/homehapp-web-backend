@@ -4,6 +4,8 @@ import React from 'react';
 import classNames from 'classnames';
 import DOMManipulator from '../../DOMManipulator';
 
+let debug = require('../../../common/debugger')('Map');
+
 export default class Map extends React.Component {
   static propTypes = {
     center: React.PropTypes.array,
@@ -95,19 +97,23 @@ export default class Map extends React.Component {
       }
     };
 
-    for (let i = 0; i < markers.length; i++) {
+    markers.map((markerData) => {
+      if (!markerData.location || markerData.location.length < 2) {
+        return null;
+      }
+
       let marker = new google.maps.Marker({
         position: {
-          lat: markers[i].location[0],
-          lng: markers[i].location[1]
+          lat: markerData.location[0],
+          lng: markerData.location[1]
         },
-        href: this.markerUrl(markers[i]),
-        title: markers[i].title || '',
+        href: this.markerUrl(markerData),
+        title: markerData.title || '',
         icon: this.getMarkerImage()
       });
       marker.setMap(this.map);
       marker.addListener('click', click);
-    }
+    });
   }
 
   getMarkerImage() {

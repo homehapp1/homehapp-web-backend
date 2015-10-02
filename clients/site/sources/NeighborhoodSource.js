@@ -1,25 +1,25 @@
 'use strict';
 
 import request from '../../common/request';
-import HomeActions from '../actions/HomeActions';
+import NeighborhoodActions from '../actions/NeighborhoodActions';
 import Cache from '../../common/Cache';
 
-// let debug = require('../../common/debugger')('HomeSource');
+let debug = require('../../common/debugger')('NeighborhoodSource');
 
-let HomeSource = {
-  fetchHomeBySlug: () => {
+let NeighborhoodSource = {
+  fetchNeighborhoodBySlug: () => {
     return {
-      remote(storeState, slug) {
-        // debug('fetchHomeBySlug:remote', arguments);
-        return request.get(`/api/home/${slug}`)
+      remote(storeState, city, slug) {
+        debug('fetchNeighborhoodBySlug:remote', arguments);
+        return request.get(`/api/neighborhoods/${city}/${slug}`)
           .then((response) => {
-            //debug('got response', response);
-            if (!response.data || !response.data.home) {
+            debug('got response');
+            if (!response.data || !response.data.neighborhood) {
               let err = new Error('Invalid response');
               return Promise.reject(err);
             }
-            Cache.set('homesBySlug', slug, response.data.home);
-            return Promise.resolve(response.data.home);
+            // Cache.set('neighborhoodsBySlug', slug, response.data.neighborhood);
+            return Promise.resolve(response.data.neighborhood);
           })
           .catch((response) => {
             if (response instanceof Error) {
@@ -42,17 +42,17 @@ let HomeSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState, slug) {
-        if (Cache.has('homesBySlug', slug)) {
-          return Cache.get('homesBySlug', slug);
-        }
+      local(storeState, city, slug) {
+        // if (Cache.has('neighborhoodsBySlug', slug)) {
+        //   return Cache.get('neighborhoodsBySlug', slug);
+        // }
         return null;
       },
-      success: HomeActions.updateHome,
-      error: HomeActions.fetchFailed,
-      loading: HomeActions.fetchHomeBySlug
+      success: NeighborhoodActions.updateNeighborhood,
+      error: NeighborhoodActions.fetchFailed,
+      loading: NeighborhoodActions.fetchNeighborhoodBySlug
     };
   }
 };
 
-export default HomeSource;
+export default NeighborhoodSource;

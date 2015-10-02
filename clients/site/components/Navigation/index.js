@@ -22,6 +22,7 @@ export default class Navigation extends React.Component {
     this.container.addEvent('mousedown', this.hideNavigation, false);
 
     this.navigation = new DOMManipulator(this.refs.navigation);
+    this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
   }
 
   componentWillUnmount() {
@@ -44,8 +45,6 @@ export default class Navigation extends React.Component {
   }
 
   click(e) {
-    this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
-
     if (this.navigation.hasClass('open')) {
       this.hideNavigation();
     } else {
@@ -70,10 +69,7 @@ export default class Navigation extends React.Component {
             <li><Link to='properties'>Buy</Link></li>
             <li><Link to='propertiesMode' params={{mode: 'rent'}}>Rent</Link></li>
             <li>
-              <Link to='neighborhoods'>Neighbourhoods</Link>
-              <ul>
-                <li><Link to='neighborhoodsView' params={{city: 'london', neighborhood: 'stjohnswood'}}>St. John´s Wood</Link></li>
-              </ul>
+              <Link to='neighborhoodList' params={{city: 'london'}}>Neighbourhoods</Link>
             </li>
             <li className='secondary'><Link to='contentAbout'>About us</Link></li>
           </ul>

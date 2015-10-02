@@ -4,7 +4,6 @@ import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSch
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
-  let ObjectId = Schema.Types.ObjectId;
 
   let schemas = {};
 
@@ -20,7 +19,8 @@ exports.loadSchemas = function (mongoose, next) {
     slug: {
       type: String,
       index: true,
-      required: true
+      required: true,
+      unique: true
     },
     // Details
     title: {
@@ -34,6 +34,10 @@ exports.loadSchemas = function (mongoose, next) {
     description: {
       type: String,
       default: ''
+    },
+    homes: {
+      type: [],
+      default: null
     },
     location: {
       borough: {
@@ -49,14 +53,9 @@ exports.loadSchemas = function (mongoose, next) {
         default: null
       },
       city: {
-        title: {
-          type: String,
-          default: 'London'
-        },
-        slug: {
-          type: String,
-          default: 'london'
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'City',
+        index: true
       },
       coordinates: {
         type: [Number],
@@ -82,7 +81,7 @@ exports.loadSchemas = function (mongoose, next) {
     },
     // Relations
     createdBy: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     },
     createdAt: {

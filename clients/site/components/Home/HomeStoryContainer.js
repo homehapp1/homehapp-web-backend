@@ -3,9 +3,9 @@
 import React from 'react';
 import HomeContainer from './HomeContainer';
 import HomeStore from '../../stores/HomeStore';
-import HomeDetails from './HomeDetails';
+import HomeStory from './HomeStory';
 
-export default class HomeDetailsContainer extends HomeContainer {
+export default class HomeStoryContainer extends HomeContainer {
   render() {
     if (this.state.error) {
       return this.handleErrorState();
@@ -15,7 +15,7 @@ export default class HomeDetailsContainer extends HomeContainer {
     }
 
     return (
-      <HomeDetails home={this.state.home} />
+      <HomeStory home={this.state.home} />
     );
   }
 }

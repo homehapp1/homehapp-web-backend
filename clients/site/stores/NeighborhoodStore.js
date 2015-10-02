@@ -11,19 +11,18 @@ let debug = require('../../common/debugger')('NeighborhoodStore');
 class NeighborhoodStore {
   constructor() {
     this.on('bootstrap', () => {
-      debug('bootstrapping', this.Neighborhood);
-      if (this.Neighborhood) {
-        Cache.set('NeighborhoodsBySlug', this.Neighborhood.slug, this.Neighborhood);
+      if (this.neighborhood) {
+        Cache.set('neighborhoodsBySlug', this.neighborhood.slug, this.neighborhood);
       }
     });
 
     this.bindListeners({
-      handleUpdateNeighborhood: NeighborhoodActions.UPDATE_NEIGHBORHOODS,
-      handleFetchNeighborhoodBySlug: NeighborhoodActions.FETCH_NEIGHBORHOODS_BY_SLUG,
+      handleUpdateNeighborhood: NeighborhoodActions.UPDATE_NEIGHBORHOOD,
+      handleFetchNeighborhoodBySlug: NeighborhoodActions.FETCH_NEIGHBORHOOD_BY_SLUG,
       handleFetchFailed: NeighborhoodActions.FETCH_FAILED
     });
 
-    this.Neighborhood = null;
+    this.neighborhood = null;
     this.error = null;
 
     // this.exportPublicMethods({
@@ -33,18 +32,16 @@ class NeighborhoodStore {
     this.exportAsync(NeighborhoodSource);
   }
 
-  handleUpdateNeighborhood(Neighborhood) {
-    debug('handleUpdateNeighborhood', Neighborhood);
-    this.Neighborhood = Neighborhood;
+  handleUpdateNeighborhood(neighborhood) {
+    this.neighborhood = neighborhood;
     this.error = null;
   }
-  handleFetchNeighborhoodBySlug(slug) {
-    debug('handleFetchNeighborhoodBySlug', slug);
-    this.Neighborhood = null;
+  handleFetchNeighborhoodBySlug(/*slug*/) {
+    debug('handleFetchNeighborhoodBySlug', arguments);
+    this.neighborhood = null;
     this.error = null;
   }
   handleFetchFailed(error) {
-    debug('handleFetchFailed', error);
     this.error = error;
   }
 }

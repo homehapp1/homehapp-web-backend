@@ -41,7 +41,6 @@ class HomeStore {
     this.error = null;
   }
   handleFetchFailed(error) {
-    debug('handleFetchFailed', error);
     this.error = error;
   }
 }
