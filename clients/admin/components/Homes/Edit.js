@@ -31,7 +31,7 @@ export default class HomesEdit extends React.Component {
           </NavItemLink>
         </Nav>
         <Row>
-          <h1>Edit {this.props.home.homeTitle}</h1>
+          <h1><i className='fa fa-home'></i> Edit {this.props.home.homeTitle}</h1>
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Details'>
               <EditDetails home={this.props.home} />
