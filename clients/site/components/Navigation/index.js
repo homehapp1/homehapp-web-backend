@@ -22,6 +22,7 @@ export default class Navigation extends React.Component {
     this.container.addEvent('mousedown', this.hideNavigation, false);
 
     this.navigation = new DOMManipulator(this.refs.navigation);
+    this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
   }
 
   componentWillUnmount() {
@@ -44,8 +45,6 @@ export default class Navigation extends React.Component {
   }
 
   click(e) {
-    this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
-
     if (this.navigation.hasClass('open')) {
       this.hideNavigation();
     } else {
