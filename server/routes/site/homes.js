@@ -7,16 +7,29 @@ exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
   let returnHomeBySlug = (slug, res, next) => {
+    let home = null;
+    let neighborhood = null;
+
     QB
     .forModel('Home')
     .findBySlug(slug)
     .fetch()
     .then((result) => {
-      res.locals.data.title = [result.home.homeTitle];
+      home = result.home;
+      return QB
+      .forModel('Neighborhood')
+      .findById(home.location.neighborhood)
+      .fetch();
+    })
+    .then((result) => {
+      neighborhood = result.neighborhood;
+      home.location.neighborhood = neighborhood;
+
+      res.locals.data.title = [home.homeTitle];
       let images = [];
-      if (result.home.images) {
-        for (let i = 0; i < result.home.images.length; i++) {
-          let src = result.home.images[i].url || result.home.images[i].src;
+      if (home.images) {
+        for (let i = 0; i < home.images.length; i++) {
+          let src = home.images[i].url || home.images[i].src;
           if (src) {
             images.push(src.replace(/upload\//, 'upload/c_fill,h_526,w_1000/g_south_west,l_homehapp-logo-horizontal-with-shadow,x_20,y_20/v1441911573/'));
           }
@@ -33,15 +46,15 @@ exports.registerRoutes = (app) => {
         res.locals.metadatas = [];
       }
 
-      let title = [result.home.homeTitle];
-      let description = result.home.description || title.join('; ');
+      let title = [home.homeTitle];
+      let description = home.description || title.join('; ');
 
       if (description.length > 200) {
         description = description.substr(0, 200) + '…';
       }
 
       res.locals.openGraph['og:image'] = images.concat(res.locals.openGraph['og:image']);
-      res.locals.openGraph['og:updated_time'] = result.home.updatedAt.toISOString();
+      res.locals.openGraph['og:updated_time'] = home.updatedAt.toISOString();
       res.locals.page = {
         title: title.join(' | '),
         description: description
@@ -52,20 +65,10 @@ exports.registerRoutes = (app) => {
         'content': res.locals.openGraph['og:updated_time']
       });
 
-      debug('get neighborhood for home', result.home.location.neighborhood);
-
-      return QB
-      .forModel('Neighborhood')
-      .findById(result.home.location.neighborhood)
-      .fetch()
-      .then((r) => {
-        result.home.location.neighborhood = r.model;
-        res.locals.data.HomeStore = {
-          home: result.home.toJSON()
-        };
-        next();
-      })
-      .catch(next);
+      res.locals.data.HomeStore = {
+        home: home.toJSON()
+      };
+      next();
     })
     .catch(next);
   };
