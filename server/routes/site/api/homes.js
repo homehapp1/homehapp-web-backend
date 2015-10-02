@@ -20,7 +20,7 @@ exports.registerRoutes = (app) => {
     .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
-      debug('home fetched', result);
+      debug('Home fetched', result.home.title);
       home = result.home;
       return getNeighborhood(home.location.neighborhood);
     })
