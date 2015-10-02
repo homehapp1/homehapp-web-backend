@@ -12,7 +12,7 @@ import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
 import EditStory from './EditStory';
 
-class HomesEdit extends React.Component {
+export default class HomesEdit extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired
   }
@@ -45,5 +45,3 @@ class HomesEdit extends React.Component {
     );
   }
 }
-
-export default HomesEdit;

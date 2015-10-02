@@ -5,7 +5,7 @@ import HomeListStore from '../../stores/HomeListStore';
 import HomesEdit from './Edit';
 import Loading from '../../../common/components/Widgets/Loading';
 
-class HomesEditContainer extends React.Component {
+export default class HomesEditContainer extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
   }
@@ -69,5 +69,3 @@ class HomesEditContainer extends React.Component {
     );
   }
 }
-
-export default HomesEditContainer;
