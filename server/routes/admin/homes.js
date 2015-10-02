@@ -1,6 +1,7 @@
 'use strict';
 
 import QueryBuilder from '../../lib/QueryBuilder';
+let debug = require('debug')('/homes');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -22,6 +23,16 @@ exports.registerRoutes = (app) => {
     })
     .catch(next);
 
+  });
+
+  app.get('/homes/create', function(req, res, next) {
+    debug('Create a blank home');
+    let model = new (QB.forModel('Home')).Model();
+    debug('Created a blank', model);
+    res.locals.data.HomeListStore = {
+      homes: [model]
+    };
+    next();
   });
 
   app.get('/homes/edit/:uuid', function(req, res, next) {
