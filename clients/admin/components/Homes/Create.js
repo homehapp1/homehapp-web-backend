@@ -32,7 +32,7 @@ export default class HomesCreate extends React.Component {
         </Nav>
         <Row>
           <h1><i className='fa fa-home'></i> Create a new home</h1>
-          <TabbedArea defaultActiveKey={2}>
+          <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Details'>
               <CreateDetails home={this.props.home} />
             </TabPane>
