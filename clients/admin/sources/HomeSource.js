@@ -59,7 +59,7 @@ let HomeSource = {
         };
         let id = data.uuid;
         delete data.uuid;
-        return request.put(`/api/homes/${id}`, putData)
+        return request.patch(`/api/homes/${id}`, putData)
           .then((response) => {
             debug('got response', response);
             if (!response.data || response.data.status !== 'ok') {
