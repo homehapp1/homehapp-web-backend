@@ -39,6 +39,7 @@ class HomeStore {
   handleCreateSuccess(home) {
     debug('handleCreateSuccess', home);
     this.error = null;
+    this.home = home;
   }
 
   handleUpdateItem(item) {
@@ -53,6 +54,7 @@ class HomeStore {
   handleUpdateSuccess(home) {
     debug('handleUpdateSuccess', home);
     this.error = null;
+    this.home = home;
   }
 
   handleRequestFailed(error) {
