@@ -115,10 +115,30 @@ exports.registerRoutes = (app) => {
   app.get('/neighborhoods/:city/:neighborhood', function(req, res, next) {
     getNeighborhoodBySlug(req, res, next)
     .then((neighborhood) => {
-      debug('returnNeighborhoodBySlug callback', neighborhood.title);
       res.locals.data.title = [neighborhood.title];
 
       let title = [neighborhood.title];
+      let description = neighborhood.description || title.join('; ');
+
+      if (description.length > 200) {
+        description = description.substr(0, 200) + '…';
+      }
+
+      res.locals.page = {
+        title: title.join(' | '),
+        description: description
+      };
+      next();
+    })
+    .catch(next);
+  });
+
+  app.get('/neighborhoods/:city/:neighborhood/homes', function(req, res, next) {
+    getNeighborhoodBySlug(req, res, next)
+    .then((neighborhood) => {
+      res.locals.data.title = [neighborhood.title];
+
+      let title = ['Homes', neighborhood.title];
       let description = neighborhood.description || title.join('; ');
 
       if (description.length > 200) {
@@ -133,8 +153,5 @@ exports.registerRoutes = (app) => {
       next();
     })
     .catch(next);
-  });
-  app.get('/neighborhoods/:city/:neighborhood/homes', function(req, res, next) {
-    getNeighborhoodBySlug(req, res, next);
   });
 };
