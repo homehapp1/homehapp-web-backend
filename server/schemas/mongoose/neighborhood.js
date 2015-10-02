@@ -95,7 +95,7 @@ exports.loadSchemas = function (mongoose, next) {
     }
   });
 
-  schemas.Neighborhood.virtual('pageTitle').get(function () {
+  schemas.Neighborhood.virtual('pageTitle').get(function getPageTitle() {
     let title = [this.neighborhoodTitle];
     if (this.location.city) {
       title.push(this.location.city.title);
@@ -103,11 +103,47 @@ exports.loadSchemas = function (mongoose, next) {
     return title.join(' | ');
   });
 
-  schemas.Neighborhood.statics.editableFields = function () {
+  schemas.Neighborhood.statics.editableFields = function editableFIelds() {
     return [
       'title', 'description', 'location', 'images'
     ];
   };
+
+  schemas.Neighborhood.virtual('mainImage').get(function getMainImage() {
+    // Placeholder
+    let placeholder = {
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
+      alt: 'A view over London',
+      width: 4828,
+      height: 3084,
+      aspectRatio: 4828 / 3084
+    };
+    // This should include a check for the main image, but we go now with the
+    // simplest solution
+    if (this.images.length) {
+      return this.images[0];
+    }
+    let images = [];
+    for (let block of this.story.blocks) {
+      switch (block.template.type) {
+        case 'BigImage':
+          images.push(block.properties.image);
+          break;
+        case 'Gallery':
+          for (let image of block.properties.images) {
+            images.push(image);
+            break;
+          }
+          break;
+      }
+      // Return the first available image from any story block
+      if (images.length) {
+        return images[0];
+      }
+    }
+    // Fallback placeholder
+    return placeholder;
+  });
 
   Object.keys(schemas).forEach((name) => {
     loadCommonPlugins(schemas[name], name, mongoose);

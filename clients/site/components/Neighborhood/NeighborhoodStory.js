@@ -91,25 +91,14 @@ export default class NeighborhoodStory extends React.Component {
   render() {
     debug('got neighborhood', this.props.neighborhood);
 
-    let primaryImage = {
-      src: 'images/content/london-view.jpg',
-      alt: '',
-      type: 'asset',
-      applySize: false
-    };
-
-    if (typeof this.props.neighborhood.images[0] !== 'undefined') {
-      primaryImage = this.props.neighborhood.images[0];
-    }
-
-    let secondaryImage = primaryImage;
+    let secondaryImage = this.props.neighborhood.mainImage;
     if (typeof this.props.neighborhood.images[1] !== 'undefined') {
       secondaryImage = this.props.neighborhood.images[1];
     }
 
     return (
       <div className='neighborhood-story'>
-        <BigImage image={primaryImage} gradient='black'>
+        <BigImage image={this.props.neighborhood.mainImage} gradient='black'>
           <LargeText align='center' valign='middle'>
             <Icon type='marker' color='black' size='large' />
             <h1>{this.props.neighborhood.title}</h1>

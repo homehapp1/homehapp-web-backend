@@ -80,7 +80,7 @@ export default class Homepage extends React.Component {
     // }
 
     let placeholder = {
-      url: 'v1439564093/london-view.jpg',
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
       alt: ''
     };
 
@@ -95,7 +95,7 @@ export default class Homepage extends React.Component {
     debug('Neighborhoods', neighborhoods);
 
     let partnerImage = {
-      src: 'http://res.cloudinary.com/homehapp/image/upload/v1442998167/site/images/content/tablelamp.jpg',
+      src: 'https://res.cloudinary.com/homehapp/image/upload/v1442998167/site/images/content/tablelamp.jpg',
       alt: '',
       width: 424,
       height: 515
@@ -149,11 +149,10 @@ export default class Homepage extends React.Component {
                 if (index >= 4) {
                   return null;
                 }
-                
-                let image = (neighborhood.images && neighborhood.images[0]) ? neighborhood.images[0] : placeholder;
+
                 return (
                   <div className='preview' key={index}>
-                    <Hoverable {...image} width={464} height={556} mode='fill' applySize>
+                    <Hoverable {...neighborhood.mainImage} width={464} height={556} mode='fill' applySize>
                       <div className='neighborhood-title'>
                         <div className='wrapper'>
                           <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
