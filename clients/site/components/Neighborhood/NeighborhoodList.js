@@ -101,11 +101,11 @@ export default class NeighborhoodsList extends React.Component {
             neighborhoods.map((neighborhood, index) => {
               let img = image;
 
-              if (neighborhood.images.length) {
+              if (neighborhood.images && neighborhood.images.length) {
                 img = neighborhood.images[0];
               } else {
                 for (let home of neighborhood.homes) {
-                  if (home.images.length) {
+                  if (home.images && home.images.length) {
                     img = home.images[0];
                     break;
                   }
