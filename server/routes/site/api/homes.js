@@ -14,23 +14,23 @@ exports.registerRoutes = (app) => {
   };
 
   app.get('/api/home/:slug', function(req, res, next) {
+    let home = null;
     QB
     .forModel('Home')
     .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
       debug('home fetched', result);
-      let home = result.home;
-      getNeighborhood(result.home.location.neighborhood)
-      .then((r) => {
-        debug('neighborhood received', r.model);
-        home.location.neighborhood = r.model;
-        res.json({
-          status: 'ok',
-          home: home
-        });
-      })
-      .catch(next);
+      home = result.home;
+      return getNeighborhood(home.location.neighborhood);
+    })
+    .then((result) => {
+      debug('neighborhood received', result.model);
+      home.location.neighborhood = result.model;
+      res.json({
+        status: 'ok',
+        home: home
+      });
     })
     .catch(next);
   });
