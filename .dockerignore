@@ -8,5 +8,5 @@ dist
 Dockerfile.*
 tmp
 logs
-deploySite.sh
+deploy*.sh
 
