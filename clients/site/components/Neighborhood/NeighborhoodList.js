@@ -103,13 +103,6 @@ export default class NeighborhoodsList extends React.Component {
 
               if (neighborhood.images && neighborhood.images.length) {
                 img = neighborhood.images[0];
-              } else {
-                for (let home of neighborhood.homes) {
-                  if (home.images && home.images.length) {
-                    img = home.images[0];
-                    break;
-                  }
-                }
               }
               return (
                 <div className='neighborhood' key={index}>
