@@ -15,7 +15,7 @@ export default class Neighborhood extends React.Component {
 
   render() {
     let image = {
-      src: 'images/content/content-placeholder.jpg',
+      url: 'v1439564093/london-view.jpg',
       alt: ''
     };
 
