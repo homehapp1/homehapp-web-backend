@@ -11,7 +11,10 @@ export default class AdminGallery extends BaseBlock {
     },
     images: {
       label: 'Gallery items',
-      type: 'images'
+      type: 'images',
+      config: {
+        acceptedMimes: 'image/*,video/*'
+      }
     }
   }
 }

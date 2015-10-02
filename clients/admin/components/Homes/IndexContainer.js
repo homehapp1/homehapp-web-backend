@@ -2,7 +2,7 @@
 
 import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
-import HomesIndex from './Index';
+import HomesIndex from './index';
 
 import Loading from '../../../common/components/Widgets/Loading';
 

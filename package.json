@@ -10,7 +10,7 @@
     "axios": "^0.5.4",
     "babel": "^5.8.20",
     "basic-auth-connect": "^1.0.0",
-    "bcrypt": "^0.8.3",
+    "bcrypt": "^0.8.5",
     "bluebird": "^2.9.34",
     "body-parser": "^1.12.4",
     "classnames": "^2.1.3",

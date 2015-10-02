@@ -9,7 +9,7 @@ import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import {randomNumericId, setCDNUrlProperties} from '../../../common/Helpers';
+import {randomNumericId, setCDNUrlProperties, merge} from '../../../common/Helpers';
 import ImageList from './ImageList';
 
 let debug = require('../../../common/debugger')('WidgetsBaseBlock');
@@ -123,7 +123,7 @@ export default class WidgetsBaseBlock extends React.Component {
     return input;
   }
 
-  renderImageInput(key) {
+  renderImageInput(key, prop) {
     this.uploaderInstanceIds[key] = randomNumericId();
 
     let imageUrl = null;
@@ -137,6 +137,13 @@ export default class WidgetsBaseBlock extends React.Component {
         c: 'fill'
       });
     }
+
+    let uploaderConfig = merge({
+      signatureFolder: 'homeImage',
+      acceptedMimes: 'image/*',
+      width: '100%',
+      height: '80px'
+    }, prop.config || {});
 
     return (
       <Table>
@@ -156,12 +163,10 @@ export default class WidgetsBaseBlock extends React.Component {
             <td>
               <UploadArea
                 className={`uploadarea ${key}-uploadarea`}
-                signatureFolder='homeImage'
-                width='100%'
-                height='80px'
                 onUpload={this.onImageUpload.bind(this)}
-                acceptedMimes='image/*'
-                instanceId={this.uploaderInstanceIds[key]}>
+                instanceId={this.uploaderInstanceIds[key]}
+                {...uploaderConfig}
+              >
                 <Well>
                   <p>Drag new image here, or click to select from filesystem.</p>
                 </Well>
@@ -177,6 +182,13 @@ export default class WidgetsBaseBlock extends React.Component {
     this.uploaderInstanceIds[key] = randomNumericId();
     let images = this.props[key] || [];
 
+    let uploaderConfig = merge({
+      signatureFolder: 'homeImage',
+      acceptedMimes: 'image/*',
+      width: '100%',
+      height: '80px'
+    }, prop.config || {});
+
     return (
       <Row>
         <Col md={6}>
@@ -186,12 +198,10 @@ export default class WidgetsBaseBlock extends React.Component {
         <Col md={6}>
           <UploadArea
             className={`uploadarea ${key}-uploadarea`}
-            signatureFolder='homeImage'
-            width='100%'
-            height='80px'
             onUpload={this.onImageUpload.bind(this)}
-            acceptedMimes='image/*'
-            instanceId={this.uploaderInstanceIds[key]}>
+            instanceId={this.uploaderInstanceIds[key]}
+            {...uploaderConfig}
+          >
             <Well>
               <p>Drag new image here, or click to select from filesystem.</p>
             </Well>
