@@ -132,6 +132,29 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
     return this._save();
   }
 
+  updateNoMultiset(data) {
+    this._queries.push((callback) => {
+      for (let [key, value] of enumerate(data)) {
+        this._loadedModel.set(key, value);
+      }
+
+      if (this._extraDatas) {
+        for (let [key, value] of enumerate(this._extraDatas)) {
+          this._loadedModel.set(key, value);
+        }
+      }
+
+      this._loadedModel.save((err, model) => {
+        this._loadedModel = model;
+        callback(err);
+      });
+    });
+    this._queries.push((callback) => {
+      this.afterSave(data, callback);
+    });
+    return this._save();
+  }
+
   remove() {
     this._queries.push(this.beforeRemove.bind(this));
     this._queries.push((callback) => {
