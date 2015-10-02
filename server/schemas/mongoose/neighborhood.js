@@ -144,6 +144,13 @@ exports.loadSchemas = function (mongoose, next) {
     // Fallback placeholder
     return placeholder;
   });
+  schemas.Neighborhood.virtual('allImages').get(function allImages() {
+    let images = this.images || [];
+
+    // @TODO: collect all images
+
+    return images;
+  });
 
   Object.keys(schemas).forEach((name) => {
     loadCommonPlugins(schemas[name], name, mongoose);
