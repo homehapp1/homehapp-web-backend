@@ -2,7 +2,6 @@
 
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
-import async from 'async';
 let debug = require('debug')('CityQueryBuilder');
 
 export default class CityQueryBuilder extends BaseQueryBuilder {

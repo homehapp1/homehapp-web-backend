@@ -2,7 +2,6 @@
 
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
-import async from 'async';
 let debug = require('debug')('NeighborhoodQueryBuilder');
 
 export default class NeighborhoodQueryBuilder extends BaseQueryBuilder {
