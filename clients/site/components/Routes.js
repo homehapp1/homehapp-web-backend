@@ -20,8 +20,8 @@ import PropertyFilter from './Property/Filter';
 // Neighborhoods handlers
 import CityContainer from './City/CityContainer';
 import NeighborhoodList from './Neighborhood/NeighborhoodList';
-import NeighborhoodStoryContainer from './Neighborhood/NeighborhoodStoryContainer';
-import NeighborhoodHomeFilter from './Neighborhood/NeighborhoodHomeFilter';
+import NeighborhoodContainer from './Neighborhood/NeighborhoodContainer';
+import NeighborhoodHomeFilterContainer from './Neighborhood/NeighborhoodHomeFilterContainer';
 
 // MIscellaneous other handlers
 import ContentAbout from './Content/About';
@@ -48,9 +48,9 @@ module.exports = (
     <Route name='neighborhoods' path='/neighborhoods'>
       <Route name='cityList' path='' handler={CityContainer} />
       <Route name='neighborhoodList' path=':city' handler={NeighborhoodList} />
-      <Route name='neighborhoodView' path=':city/:neighborhood' handler={NeighborhoodStoryContainer} />
-      <Route name='neighborhoodViewHomes' path=':city/:neighborhood/homes' handler={NeighborhoodHomeFilter} />
-      <DefaultRoute handler={NeighborhoodsCities} />
+      <Route name='neighborhoodView' path=':city/:neighborhood' handler={NeighborhoodContainer} />
+      <Route name='neighborhoodViewHomes' path=':city/:neighborhood/homes' handler={NeighborhoodHomeFilterContainer} />
+      <DefaultRoute handler={CityContainer} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='contentAbout' path='/about' handler={ContentAbout} />

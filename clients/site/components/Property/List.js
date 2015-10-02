@@ -8,6 +8,9 @@ import { Link } from 'react-router';
 
 import Hoverable from '../../../common/components/Widgets/Hoverable';
 
+let debug = require('../../../common/debugger')('PropertyList');
+
+
 export default class PropertyList extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired,
@@ -36,6 +39,7 @@ export default class PropertyList extends React.Component {
         {this.props.children}
         {
           this.props.items.map((home, index) => {
+            debug('home', home);
             let classes = ['preview'];
 
             if (index === this.props.max) {

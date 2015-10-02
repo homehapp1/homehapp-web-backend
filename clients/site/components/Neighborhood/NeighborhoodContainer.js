@@ -8,13 +8,15 @@ import Loading from '../../../common/components/Widgets/Loading';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 import { setPageTitle } from '../../../common/Helpers';
 
+let debug = require('../../../common/debugger')('NeighborhoodContainer');
+
 export default class NeighborhoodContainer extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
   };
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.neighborhoodStoreListener = this.neighborhoodStoreOnChange.bind(this);
   }
 
@@ -25,7 +27,7 @@ export default class NeighborhoodContainer extends React.Component {
 
   componentDidMount() {
     NeighborhoodStore.listen(this.neighborhoodStoreListener);
-    NeighborhoodStore.fetchNeighborhoodBySlug(this.props.params.city, this.props.params.slug, true);
+    NeighborhoodStore.fetchNeighborhoodBySlug(this.props.params.city, this.props.params.neighborhood, true);
   }
 
   componentWillUnmount() {

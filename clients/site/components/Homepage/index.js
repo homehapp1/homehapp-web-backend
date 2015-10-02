@@ -18,6 +18,8 @@ import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Loading from '../../../common/components/Widgets/Loading';
 import { setPageTitle } from '../../../common/Helpers';
 
+let debug = require('../../../common/debugger')('Homepage');
+
 export default class Homepage extends React.Component {
   constructor() {
     super();
@@ -35,7 +37,7 @@ export default class Homepage extends React.Component {
     document.getElementsByTagName('body')[0].setAttribute('data-handler', 'homepage');
 
     HomeListStore.listen(this.storeListener);
-    HomeListStore.fetchHomes({limit: 20});
+    HomeListStore.fetchHomes();
     setPageTitle('Discover y');
   }
 
@@ -77,47 +79,20 @@ export default class Homepage extends React.Component {
     //   return this.handlePendingState();
     // }
 
-    let mainImage = {
+    let placeholder = {
       url: 'v1439564093/london-view.jpg',
       alt: ''
     };
 
-    let images = [
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9094.jpg', alt: '', aspectRatio: 0.8443 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9096.jpg', alt: '', aspectRatio: 2.1757 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9097.jpg', alt: '', aspectRatio: 1 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9102.jpg', alt: '', aspectRatio: 1.8448 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9103.jpg', alt: '', aspectRatio: 2.1683 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9104.jpg', alt: '', aspectRatio: 0.763 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9108.jpg', alt: '', aspectRatio: 1.6141 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9136.jpg', alt: '', aspectRatio: 1 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9139.jpg', alt: '', aspectRatio: 1.1116 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9140.jpg', alt: '', aspectRatio: 0.7938 },
-      { url: 'https://res.cloudinary.com/homehapp/image/upload/v10/contentMockup/DSCF9141.jpg', alt: '', aspectRatio: 1.5 }
-    ];
-
-    let neighborhoods = [
-      {
-        title: 'St. John`s Wood',
-        slug: 'st_johns_wood',
-        images: [images[0]]
-      },
-      {
-        title: 'West End',
-        slug: 'westend',
-        images: [images[1]]
-      },
-      {
-        title: 'China Town',
-        slug: 'china_town',
-        images: [images[2]]
-      },
-      {
-        title: 'The City',
-        slug: 'the_city',
-        images: [images[4]]
+    let neighborhoods = [];
+    for (let home of this.state.homes) {
+      let neighborhood = home.location.neighborhood;
+      if (neighborhoods.indexOf(neighborhood) === -1) {
+        neighborhoods.push(neighborhood);
       }
-    ];
+    }
+
+    debug('Neighborhoods', neighborhoods);
 
     let partnerImage = {
       src: 'http://res.cloudinary.com/homehapp/image/upload/v1442998167/site/images/content/tablelamp.jpg',
@@ -128,7 +103,7 @@ export default class Homepage extends React.Component {
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed image={mainImage} proportion={0.8}>
+        <BigImage gradient='green' fixed image={placeholder} proportion={0.8}>
           <LargeText align='center' valign='middle' proportion={0.8}>
             <div className='splash'>
               <h1>Every home has<br /> a unique story</h1>
@@ -146,7 +121,7 @@ export default class Homepage extends React.Component {
         <ContentBlock className='with-gradient'>
           <div className='center'>
             <hr className='spacer' />
-            <Image {...mainImage} width={970} />
+            <Image {...placeholder} width={970} />
             <hr className='spacer' />
           </div>
           <h2 className='block-title'>Partner with us</h2>
@@ -171,7 +146,11 @@ export default class Homepage extends React.Component {
             <h2>Where is your home</h2>
             {
               neighborhoods.map((neighborhood, index) => {
-                let image = (neighborhood.images && neighborhood.images[0]) ? neighborhood.images[0] : null;
+                if (index >= 4) {
+                  return null;
+                }
+                
+                let image = (neighborhood.images && neighborhood.images[0]) ? neighborhood.images[0] : placeholder;
                 return (
                   <div className='preview' key={index}>
                     <Hoverable {...image} width={464} height={556} mode='fill' applySize>

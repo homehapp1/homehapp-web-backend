@@ -2,13 +2,14 @@
 
 import React from 'react';
 import NeighborhoodContainer from './NeighborhoodContainer';
+import NeighborhoodHomeFilter from './NeighborhoodHomeFilter';
 import NeighborhoodStore from '../../stores/NeighborhoodStore';
-import NeighborhoodStory from './NeighborhoodStory';
 
-// let debug = require('../../../common/debugger')('NeighborhoodStoryContainer');
+let debug = require('../../../common/debugger')('NeighborhoodHomeFilterContainer');
 
-export default class NeighborhoodStoryContainer extends NeighborhoodContainer {
+export default class NeighborhoodHomeFilterContainer extends NeighborhoodContainer {
   render() {
+    debug('Render');
     if (this.state.error) {
       return this.handleErrorState();
     }
@@ -17,7 +18,7 @@ export default class NeighborhoodStoryContainer extends NeighborhoodContainer {
     }
 
     return (
-      <NeighborhoodStory neighborhood={this.state.neighborhood} />
+      <NeighborhoodHomeFilter neighborhood={this.state.neighborhood} />
     );
   }
 }
