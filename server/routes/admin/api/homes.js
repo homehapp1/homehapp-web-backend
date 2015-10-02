@@ -97,4 +97,23 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
+  app.patch('/api/homes/:uuid', function(req, res, next) {
+    debug('API update home with uuid', req.params.uuid);
+    //debug('req.body', req.body);
+
+    let data = req.body.home;
+
+    QB
+    .forModel('Home')
+    .findByUuid(req.params.uuid)
+    .updateNoMultiset(data)
+    .then((model) => {
+      res.json({
+        status: 'ok', home: model
+      });
+    })
+    .catch(next);
+  });
+
+
 };
