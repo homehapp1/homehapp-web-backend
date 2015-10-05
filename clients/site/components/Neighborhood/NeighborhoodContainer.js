@@ -47,6 +47,7 @@ export default class NeighborhoodContainer extends React.Component {
   }
 
   handleErrorState() {
+    debug('Failed to load neighborhood', this.state.error);
     let error = {
       title: 'Error loading story!',
       message: this.state.error.message
