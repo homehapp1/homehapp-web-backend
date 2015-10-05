@@ -14,7 +14,12 @@ import HomesIndexContainer from './Homes/IndexContainer';
 import HomesEditContainer from './Homes/EditContainer';
 import HomesCreateContainer from './Homes/CreateContainer';
 
-// eighborhoods
+// Homes
+import AgentsIndexContainer from './Agents/IndexContainer';
+import AgentsEditContainer from './Agents/EditContainer';
+import AgentsCreateContainer from './Agents/CreateContainer';
+
+// Neighborhoods
 import NeighborhoodsIndexContainer from './Neighborhoods/IndexContainer';
 import NeighborhoodsEditContainer from './Neighborhoods/EditContainer';
 
@@ -25,6 +30,11 @@ let routes = (
       <DefaultRoute handler={HomesIndexContainer}/>
       <Route name='homeCreate' path='create' handler={HomesCreateContainer} />
       <Route name='homeEdit' path='edit/:id' handler={HomesEditContainer} />
+    </Route>
+    <Route name='agents' path='/agents'>
+      <DefaultRoute handler={AgentsIndexContainer}/>
+      <Route name='agentCreate' path='create' handler={AgentsCreateContainer} />
+      <Route name='agentEdit' path='edit/:id' handler={AgentsEditContainer} />
     </Route>
     <Route name='neighborhoods' path='/neighborhoods'>
       <DefaultRoute handler={NeighborhoodsIndexContainer}/>
