@@ -356,6 +356,7 @@ export default class HomesEditDetails extends React.Component {
                 defaultValue={this.props.home.location.address.apartment}
                 onChange={this.onFormChange.bind(this)}
               />
+              <NeighborhoodSelect ref='addressNeighborhood' selected={this.props.home.location.neighborhood} />
               <Input
                 type='text'
                 ref='addressCity'
@@ -530,7 +531,6 @@ export default class HomesEditDetails extends React.Component {
                 </Col>
               </Row>
             </Panel>
-            <NeighborhoodSelect ref='addressNeighborhood' selected={this.props.home.location.neighborhood} />
             <Well>
               <Row>
                 <Col md={6}>
