@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
@@ -537,7 +538,7 @@ export default class HomesEditDetails extends React.Component {
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
                 </Col>
                 <Col md={6} pullRight>
-                  <Button bsStyle='danger' className='pull-right'>Delete</Button>
+                  <Link to='homeDelete' params={{id: this.props.home.id}} className='pull-right btn btn-danger'>Delete</Link>
                 </Col>
               </Row>
             </Well>
