@@ -72,6 +72,8 @@ export default class HomeQueryBuilder extends BaseQueryBuilder {
         if (!model) {
           return callback(new NotFound('home not found'));
         }
+        this.result.model = model;
+        this.result.models = [model];
         this.result.home = model;
         this.result.homeJson = model.toJSON();
         this._loadedModel = model;
