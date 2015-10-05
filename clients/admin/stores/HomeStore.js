@@ -17,13 +17,14 @@ class HomeStore {
     this.bindListeners({
       handleCreateItem: HomeActions.CREATE_ITEM,
       handleUpdateItem: HomeActions.UPDATE_ITEM,
+      handleDeleteItem: HomeActions.DELETE_ITEM,
       handleRequestFailed: HomeActions.REQUEST_FAILED,
       handleCreateSuccess: HomeActions.CREATE_SUCCESS,
-      handleUpdateSuccess: HomeActions.UPDATE_SUCCESS
+      handleUpdateSuccess: HomeActions.UPDATE_SUCCESS,
+      handleDeleteSuccess: HomeActions.DELETE_SUCCESS
     });
 
     this.error = null;
-
     this.exportAsync(HomeSource);
   }
 
@@ -55,6 +56,21 @@ class HomeStore {
     debug('handleUpdateSuccess', home);
     this.error = null;
     this.home = home;
+  }
+  handleDeleteItem(item) {
+    debug('handleDeleteItem', item);
+    this.error = null;
+    if (!this.getInstance().isLoading()) {
+      setTimeout(() => {
+        debug('instance', this.getInstance());
+        this.getInstance().deleteItem(item);
+      });
+    }
+  }
+  handleDeleteSuccess(home) {
+    debug('handleDeleteSuccess', home);
+    this.error = null;
+    this.home = null;
   }
 
   handleRequestFailed(error) {
