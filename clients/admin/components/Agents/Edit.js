@@ -36,9 +36,6 @@ export default class AgentsEdit extends React.Component {
             <TabPane eventKey={1} tab='Details'>
               <EditDetails agent={this.props.agent} />
             </TabPane>
-            <TabPane eventKey={2} tab='Story'>
-              <EditStory agent={this.props.agent} />
-            </TabPane>
           </TabbedArea>
         </Row>
       </SubNavigationWrapper>

@@ -33,6 +33,7 @@ class AgentListStore {
   getAgent(id) {
     debug('getAgent', id);
     let { agents } = this.getState();
+    debug('Got agents', agents);
     for (let agent of agents) {
       if (!id) {
         return agent;

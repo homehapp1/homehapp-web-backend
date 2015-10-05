@@ -44,7 +44,6 @@ exports.registerRoutes = (app) => {
     .findByUuid(req.params.uuid)
     .fetch()
     .then((result) => {
-      agent.location.neighborhood = result.model;
       res.locals.data.AgentListStore = {
         agents: result.models
       };

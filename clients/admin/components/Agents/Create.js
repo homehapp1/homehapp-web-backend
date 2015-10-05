@@ -36,9 +36,6 @@ export default class AgentsCreate extends React.Component {
             <TabPane eventKey={1} tab='Details'>
               <CreateDetails agent={this.props.agent} />
             </TabPane>
-            <TabPane eventKey={2} tab='Story'>
-              <AgentsCreateStory />
-            </TabPane>
           </TabbedArea>
         </Row>
       </SubNavigationWrapper>

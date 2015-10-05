@@ -85,35 +85,15 @@ export default class AgentsEditDetails extends React.Component {
 
     let agentProps = {
       uuid: this.props.agent.id,
-      title: this.refs.title.getValue(),
-      description: this.refs.description.getValue(),
-      location: {
-        address: {
-          street: this.refs.addressStreet.getValue(),
-          apartment: this.refs.addressApartment.getValue(),
-          city: this.refs.addressCity.getValue(),
-          zipcode: this.refs.addressZipcode.getValue(),
-          country: this.refs.addressCountry.getValue()
-        },
-        neighborhood: this.refs.addressNeighborhood.getValue(),
-        coordinates: [
-          this.refs.locationLatitude.getValue(),
-          this.refs.locationLongitude.getValue()
-        ]
+      firstname: this.refs.firstname.getValue(),
+      lastname: this.refs.lastname.getValue(),
+      phone: this.refs.phone.getValue(),
+      email: this.refs.email.getValue(),
+      company: {
+        title: this.refs.companyTitle.getValue(),
+        phone: this.refs.companyPhone.getValue(),
+        email: this.refs.companyEmail.getValue()
       },
-      costs: {
-        currency: this.refs.costsCurrency.getValue(),
-        deptFreePrice: this.refs.costsDeptFreePrice.getValue(),
-        sellingPrice: this.refs.costsSellingPrice.getValue(),
-        squarePrice: this.refs.costsSquarePrice.getValue(),
-        realEstateTaxPerYear: this.refs.costsReTaxPerYear.getValue(),
-        electricChargePerMonth: this.refs.costsEcPerMonth.getValue(),
-        waterChargePerMonth: this.refs.costsWcPerMonth.getValue(),
-        waterChargePerType: this.refs.costsWcPerType.getValue()
-      },
-      amenities: this.refs.amenities.getValue().split('\n'),
-      facilities: this.refs.facilities.getValue().split('\n'),
-      attributes: this.state.currentAttributes,
       images: images
     };
 
@@ -189,87 +169,6 @@ export default class AgentsEditDetails extends React.Component {
     this.setState({currentAttributes: newAttributes});
   }
 
-  onAddAttributeClicked(/*event*/) {
-    this.state.currentAttributes.push({
-      name: '', value: '', valueType: 'string'
-    });
-    this.setState({currentAttributes: this.state.currentAttributes});
-  }
-
-  onAttributeValueChanged(event, index, field) {
-    let newAttributes = this.state.currentAttributes;
-    if (!newAttributes[index]) {
-      newAttributes[index] = {
-        name: '', value: '', valueType: 'string'
-      };
-    }
-    newAttributes[index][field] = event.currentTarget.value;
-    this.setState({
-      currentAttributes: newAttributes
-    });
-  }
-
-  renderAttributeRow(index, attr, isLast) {
-    let actions = (
-      <Col md={2}>
-        <Button
-          bsStyle='danger'
-          bsSize='small'
-          onClick={() => this.onRemoveAttributeClicked(index)}>
-          -
-        </Button>
-      </Col>
-    );
-    if (isLast) {
-      actions = (
-        <Col md={2}>
-          <Button
-            bsStyle='danger'
-            bsSize='small'
-            onClick={() => this.onRemoveAttributeClicked(index)}>
-            -
-          </Button>
-          <Button
-            bsStyle='success'
-            bsSize='small'
-            ref='addAttributeButton'
-            onClick={this.onAddAttributeClicked.bind(this)}>
-            +
-          </Button>
-        </Col>
-      );
-    }
-    return (
-      <Row key={'attribute-' + index + '-' + attr.name}>
-        <Col md={4}>
-          <Input
-            type='select'
-            addonBefore='Name'
-            placeholder='Select Attribute'
-            name={'attributes[' + index + '][name]'}
-            defaultValue={attr.name}
-            onChange={(event) => this.onAttributeValueChanged(event, index, 'name')}
-          >
-            <option value=''>Select Attribute</option>
-            <option value='floor'>Floor</option>
-            <option value='rooms'>Rooms</option>
-            <option value='elevator'>Elevator</option>
-          </Input>
-        </Col>
-        <Col md={4}>
-          <Input
-            type='text'
-            addonBefore='Value'
-            name={'attributes[' + index + '][value]'}
-            defaultValue={attr.value}
-            onChange={(event) => this.onAttributeValueChanged(event, index, 'value')}
-          />
-        </Col>
-        {actions}
-      </Row>
-    );
-  }
-
   handlePendingState() {
     return (
       <div className='agent-saving'>
@@ -297,23 +196,6 @@ export default class AgentsEditDetails extends React.Component {
       savingLoader = this.handlePendingState();
     }
 
-    let countrySelections = countries.map((country) => {
-      return (
-        <option
-          value={country.value}
-          key={'locCountry-' + country.value}>
-          {country.label}
-        </option>
-      );
-    });
-
-    let lat, lon = '';
-    if (this.props.agent.location.coordinates.length) {
-      lat = this.props.agent.location.coordinates[0];
-      lon = this.props.agent.location.coordinates[1];
-    }
-    debug('Neighborhood of this agent', this.props.agent.location.neighborhood);
-
     return (
       <Row>
         {error}
@@ -323,191 +205,63 @@ export default class AgentsEditDetails extends React.Component {
             <Panel header='Common'>
               <Input
                 type='text'
-                ref='title'
-                label='Title'
-                placeholder='Title (optional)'
-                defaultValue={this.props.agent.title}
+                ref='firstname'
+                label='First name'
+                placeholder='First name'
+                defaultValue={this.props.agent.firstname}
                 onChange={this.onFormChange.bind(this)}
+                required
               />
               <Input
-                type='textarea'
-                ref='description'
-                label='Description'
-                placeholder='Write description'
-                defaultValue={this.props.agent.description}
+                type='text'
+                ref='lastname'
+                label='Last name'
+                placeholder='Last name'
+                defaultValue={this.props.agent.lastname}
+                onChange={this.onFormChange.bind(this)}
+                required
+              />
+              <Input
+                type='email'
+                ref='email'
+                label='Email'
+                placeholder='firstname.lastname@company.co.uk'
+                defaultValue={this.props.agent.email}
+                onChange={this.onFormChange.bind(this)}
+                required
+              />
+              <Input
+                type='tel'
+                ref='phone'
+                label='Phone number'
+                placeholder='+44 123 00 11 22'
+                defaultValue={this.props.agent.phone}
                 onChange={this.onFormChange.bind(this)}
                 required
               />
             </Panel>
-            <Panel header='Location'>
-              <Input
-                type='text'
-                ref='addressStreet'
-                label='Street Address'
-                placeholder='ie. Kauppakartanonkuja 3 B'
-                defaultValue={this.props.agent.location.address.street}
-                onChange={this.onFormChange.bind(this)}
+            <Panel header='Contact'>
+              <Input type='text'
+                ref='companyTitle'
+                label='Company name'
+                placeholder='Company Name Ltd'
+                defaultValue={this.props.agent.company.title}
               />
-              <Input
-                type='text'
-                ref='addressApartment'
-                label='Apartment'
-                placeholder='ie. 22'
-                defaultValue={this.props.agent.location.address.apartment}
-                onChange={this.onFormChange.bind(this)}
+              <Input type='email'
+                ref='companyEmail'
+                label='Company email'
+                placeholder='email@company.co.uk'
+                defaultValue={this.props.agent.company.email}
               />
-              <NeighborhoodSelect ref='addressNeighborhood' selected={this.props.agent.location.neighborhood} />
-              <Input
-                type='text'
-                ref='addressCity'
-                label='City'
-                placeholder='ie. Helsinki'
-                defaultValue={this.props.agent.location.address.city}
-                onChange={this.onFormChange.bind(this)}
+            <Input type='tel'
+                ref='companyPhone'
+                label='Company phone'
+                placeholder='+44 123 00 11 22'
+                defaultValue={this.props.agent.company.title}
               />
-              <Input
-                type='text'
-                ref='addressZipcode'
-                label='Zipcode'
-                placeholder=''
-                defaultValue={this.props.agent.location.address.zipcode}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='select'
-                ref='addressCountry'
-                label='Country'
-                placeholder='Select Country'
-                defaultValue={this.props.agent.location.address.country}
-                onChange={this.onFormChange.bind(this)}>
-                <option value=''>Select country</option>
-                {countrySelections}
-              </Input>
+            </Panel>
+            <Panel header='Company'>
 
-              <Input
-                label='Coordinates'
-                help='Optional coordinates for the agent' wrapperClassName='wrapper'>
-                <Row>
-                  <Col xs={6}>
-                    <Input
-                      type='text'
-                      ref='locationLatitude'
-                      addonBefore='Latitude:'
-                      defaultValue={lat}
-                    />
-                  </Col>
-                  <Col xs={6}>
-                    <Input
-                      type='text'
-                      ref='locationLongitude'
-                      addonBefore='Longitude:'
-                      defaultValue={lon}
-                    />
-                  </Col>
-                </Row>
-              </Input>
-            </Panel>
-            <Panel header='Costs'>
-              <Input
-                type='select'
-                ref='costsCurrency'
-                label='Currency'
-                placeholder='Select Applied Currency'
-                defaultValue={this.props.agent.costs.currency}
-                onChange={this.onFormChange.bind(this)}>
-                <option value='EUR'>Euro</option>
-                <option value='GBP'>British Pounds</option>
-                <option value='SUD'>US Dollars</option>
-              </Input>
-              <Input
-                type='text'
-                ref='costsDeptFreePrice'
-                label='Dept Free Price'
-                placeholder='(optional)'
-                defaultValue={this.props.agent.costs.deptFreePrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsSellingPrice'
-                label='Selling Price'
-                placeholder='(optional)'
-                defaultValue={this.props.agent.costs.sellingPrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsSquarePrice'
-                label='Square meter Price'
-                placeholder='(optional)'
-                defaultValue={this.props.agent.costs.squarePrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsReTaxPerYear'
-                label='Real estate Tax (per year)'
-                placeholder='(optional)'
-                defaultValue={this.props.agent.costs.realEstateTaxPerYear}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsEcPerMonth'
-                label='Electrict Charge (per month)'
-                placeholder='(optional)'
-                defaultValue={this.props.agent.costs.electricChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsWcPerMonth'
-                label='Water charge (per month)'
-                placeholder='(optional)'
-                defaultValue={this.props.agent.costs.waterChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='select'
-                ref='costsWcPerType'
-                label='Water charge type'
-                placeholder='Water charge type'
-                defaultValue={this.props.agent.costs.waterChargePerType}
-                onChange={this.onFormChange.bind(this)}>
-                <option value='person'>Per Person</option>
-                <option value='household'>Per Household</option>
-              </Input>
-            </Panel>
-            <Panel header='Amenities'>
-              <Input
-                type='textarea'
-                ref='amenities'
-                label='Input Amenities (one per line)'
-                placeholder='(optional)'
-                defaultValue={this.props.agent.amenities.join(`\n`)}
-                onChange={this.onFormChange.bind(this)}
-              />
-            </Panel>
-            <Panel header='Facilities'>
-              <Input
-                type='textarea'
-                ref='facilities'
-                label='Input Facilities (one per line)'
-                placeholder='(optional)'
-                defaultValue={this.props.agent.facilities.join(`\n`)}
-                onChange={this.onFormChange.bind(this)}
-              />
-            </Panel>
-            <Panel header='Other Attributes'>
-              {
-                this.state.currentAttributes.map((attr, index) => {
-                  let isLast = false;
-                  if (index === this.state.currentAttributes.length - 1) {
-                    isLast = true;
-                  }
-                  return this.renderAttributeRow(index, attr, isLast);
-                })
-              }
             </Panel>
             <Panel header='Images'>
               <Row>
