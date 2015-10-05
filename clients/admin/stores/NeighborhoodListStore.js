@@ -30,9 +30,13 @@ class NeighborhoodListStore {
     this.exportAsync(NeighborhoodListSource);
   }
 
-  getNeighborhood(id) {
+  getNeighborhood(id = null) {
     debug('getNeighborhood', id);
     let { neighborhoods } = this.getState();
+    if (!id) {
+      return neighborhoods;
+    }
+
     for (let neighborhood of neighborhoods) {
       if (neighborhood.id === id) {
         return neighborhood;
@@ -46,11 +50,13 @@ class NeighborhoodListStore {
     this.neighborhoods = neighborhoods;
     this.error = null;
   }
+
   handleFetchNeighborhoods() {
     debug('handleFetchNeighborhoods');
     this.neighborhoods = [];
     this.error = null;
   }
+
   handleFetchFailed(error) {
     debug('handleFetchFailed', error);
     this.error = error;
