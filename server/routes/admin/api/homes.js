@@ -17,9 +17,13 @@ exports.registerRoutes = (app) => {
     .findAll()
     .fetch()
     .then((result) => {
+      debug('/api/homes');
+      debug(result.models);
       res.json({
         status: 'ok',
-        homes: result.models
+        homes: result.models.map((home) => {
+          return home.toJSON();
+        })
       });
     })
     .catch(next);
@@ -144,5 +148,17 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-
+  app.delete('/api/homes/:uuid', function(req, res, next) {
+    QB
+    .forModel('Home')
+    .findByUuid(req.params.uuid)
+    //.remove()
+    .fetch()
+    .then((result) => {
+      res.json({
+        status: 'deleted'
+      });
+    })
+    .catch(next);
+  });
 };
