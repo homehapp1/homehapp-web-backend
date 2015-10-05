@@ -4,6 +4,7 @@ import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
 import HomesEdit from './Edit';
 import Loading from '../../../common/components/Widgets/Loading';
+let debug = require('debug')('EditContainer');
 
 export default class HomesEditContainer extends React.Component {
   static propTypes = {
@@ -31,7 +32,8 @@ export default class HomesEditContainer extends React.Component {
     HomeListStore.unlisten(this.storeListener);
   }
 
-  onChange(/*state*/) {
+  onChange(state) {
+    debug('state', state, HomeListStore.getState());
     this.setState({
       error: HomeListStore.getState().error,
       home: HomeListStore.getHome(this.props.params.id)
@@ -59,6 +61,7 @@ export default class HomesEditContainer extends React.Component {
     if (this.state.error) {
       return this.handleErrorState();
     }
+    debug('Home', this.state.home);
 
     if (HomeListStore.isLoading() || !this.state.home) {
       return this.handlePendingState();
