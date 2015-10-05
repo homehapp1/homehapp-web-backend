@@ -44,29 +44,12 @@ exports.registerRoutes = (app) => {
     .findByUuid(req.params.uuid)
     .fetch()
     .then((result) => {
-      agent = result.agent;
-
-      return QB
-      .forModel('Neighborhood')
-      .findById(agent.location.neighborhood)
-      .fetch();
-    })
-    .then((result) => {
       agent.location.neighborhood = result.model;
       res.locals.data.AgentListStore = {
-        agents: [agent]
+        agents: result.models
       };
       next();
     })
-    .catch(() => {
-      if (agent) {
-        res.locals.data.AgentListStore = {
-          agents: [agent]
-        };
-      }
-      next();
-    });
-
+    .catch(next);
   });
-
 };
