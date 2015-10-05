@@ -72,7 +72,10 @@ export default class AgentQueryBuilder extends BaseQueryBuilder {
         if (!model) {
           return callback(new NotFound('agent not found'));
         }
+        this.result.model = model;
+        this.result.models = [model];
         this.result.agent = model;
+        this.result.agents = [model];
         this.result.agentJson = model.toJSON();
         this._loadedModel = model;
         callback();
