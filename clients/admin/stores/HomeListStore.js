@@ -42,7 +42,7 @@ class HomeListStore {
       }
     }
     debug('No matching id found in homes');
-    return null;
+    this.error = 'No matching id found in homes';
   }
 
   handleUpdateHomes(homes) {
