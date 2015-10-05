@@ -29,6 +29,20 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       required: true
     },
+    company: {
+      title: {
+        type: String,
+        default: null
+      },
+      phone: {
+        type: String,
+        required: true
+      },
+      email: {
+        type: String,
+        required: true
+      }
+    },
     phone: {
       type: String,
       required: true
