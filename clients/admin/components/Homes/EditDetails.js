@@ -13,6 +13,7 @@ import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import {randomNumericId, enumerate} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
+import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
@@ -94,6 +95,7 @@ export default class HomesEditDetails extends React.Component {
           zipcode: this.refs.addressZipcode.getValue(),
           country: this.refs.addressCountry.getValue()
         },
+        neighborhood: this.refs.addressNeighborhood.getValue(),
         coordinates: [
           this.refs.locationLatitude.getValue(),
           this.refs.locationLongitude.getValue()
@@ -310,6 +312,7 @@ export default class HomesEditDetails extends React.Component {
       lat = this.props.home.location.coordinates[0];
       lon = this.props.home.location.coordinates[1];
     }
+    debug('Neighborhood of this home', this.props.home.location.neighborhood);
 
     return (
       <Row>
@@ -527,6 +530,7 @@ export default class HomesEditDetails extends React.Component {
                 </Col>
               </Row>
             </Panel>
+            <NeighborhoodSelect ref='addressNeighborhood' selected={this.props.home.location.neighborhood} />
             <Well>
               <Row>
                 <Col md={6}>
