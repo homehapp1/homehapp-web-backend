@@ -30,12 +30,12 @@ exports.registerRoutes = (app) => {
     let model = new (QB.forModel('Home')).Model();
     debug('Created a blank', model);
     res.locals.data.HomeListStore = {
-      homes: [model]
+      homes: [model.toJSON()]
     };
     next();
   });
 
-  app.get('/homes/edit/:uuid', function(req, res, next) {
+  let getHomeByUuid = function getHomeByUuid(req, res, next) {
     debug('Fetch home by uuid', req.params.uuid);
     let home = null;
 
@@ -54,19 +54,26 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       home.location.neighborhood = result.model;
       res.locals.data.HomeListStore = {
-        homes: [home]
+        homes: [home.toJSON()]
       };
       next();
     })
     .catch(() => {
       if (home) {
         res.locals.data.HomeListStore = {
-          homes: [home]
+          homes: [home.toJSON()]
         };
       }
       next();
     });
+  };
 
+  app.get('/homes/delete/:uuid', function(req, res, next) {
+    getHomeByUuid(req, res, next);
+  });
+
+  app.get('/homes/edit/:uuid', function(req, res, next) {
+    getHomeByUuid(req, res, next);
   });
 
 };
