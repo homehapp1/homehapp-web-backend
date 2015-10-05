@@ -8,7 +8,7 @@ exports.loadSchemas = function (mongoose, next) {
 
   let schemas = {};
 
-  schemas.NeighborhoodImage = new Schema(getImageSchema(Schema));
+  schemas.AgentImage = new Schema(getImageSchema(Schema));
 
   schemas.Agent = new Schema({
     uuid: {
@@ -37,7 +37,7 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       required: true
     },
-    image: schemas.NeighborhoodImage,
+    images: [schemas.AgentImage],
     // Flags
     visible: {
       type: Boolean,
