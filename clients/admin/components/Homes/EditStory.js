@@ -13,6 +13,8 @@ import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
 import StoryEditBlocks from './StoryEditBlocks';
 
+import Loading from '../../../common/components/Widgets/Loading';
+
 let debug = require('../../../common/debugger')('HomesEditStory');
 
 export default class HomesEditStory extends React.Component {
@@ -64,9 +66,9 @@ export default class HomesEditStory extends React.Component {
 
   handlePendingState() {
     return (
-      <div className='home-saving'>
+      <Loading>
         <h3>Saving home...</h3>
-      </div>
+      </Loading>
     );
   }
 
