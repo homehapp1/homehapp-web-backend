@@ -10,7 +10,7 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
-import EditStory from './EditStory';
+// import EditStory from './EditStory';
 
 class NeighborhoodsEdit extends React.Component {
   static propTypes = {
@@ -36,13 +36,13 @@ class NeighborhoodsEdit extends React.Component {
             <TabPane eventKey={1} tab='Details'>
               <EditDetails neighborhood={this.props.neighborhood} />
             </TabPane>
-            <TabPane eventKey={2} tab='Story'>
-              <EditStory neighborhood={this.props.neighborhood} />
-            </TabPane>
           </TabbedArea>
         </Row>
       </SubNavigationWrapper>
     );
+    // <TabPane eventKey={2} tab='Story'>
+    //   <EditStory neighborhood={this.props.neighborhood} />
+    // </TabPane>
   }
 }
 
