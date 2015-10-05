@@ -75,6 +75,41 @@ exports.registerRoutes = (app) => {
 
   });
 
+  let updateHome = function updateHome(uuid, data) {
+    debug('Data', data);
+
+    if (data.location && data.location.neighborhood && String(data.location.neighborhood).match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{8}/)) {
+      debug('Get neighborhood', data.location.neighborhood);
+      return new Promise((resolve, reject) => {
+        QB
+        .forModel('Neighborhood')
+        .findByUuid(data.location.neighborhood)
+        .fetch()
+        .then((result) => {
+          debug('Got neighborhood', result.model.title, result.model.id);
+          data.location.neighborhood = result.model;
+
+          QB
+          .forModel('Home')
+          .findByUuid(uuid)
+          .updateNoMultiset(data)
+          .then((model) => {
+            debug('Updated', model);
+            resolve(model);
+          })
+          .catch((err) => {
+            debug('Failed', err);
+          });
+        });
+      });
+    }
+
+    return QB
+    .forModel('Home')
+    .findByUuid(uuid)
+    .updateNoMultiset(data);
+  };
+
   app.put('/api/homes/:uuid', function(req, res, next) {
     debug('API update home with uuid', req.params.uuid);
     //debug('req.body', req.body);
@@ -85,10 +120,7 @@ exports.registerRoutes = (app) => {
       return next(new BadRequest('invalid request body'));
     }
 
-    QB
-    .forModel('Home')
-    .findByUuid(req.params.uuid)
-    .updateNoMultiset(data)
+    updateHome(req.params.uuid, data)
     .then((model) => {
       res.json({
         status: 'ok', home: model
@@ -103,10 +135,7 @@ exports.registerRoutes = (app) => {
 
     let data = req.body.home;
 
-    QB
-    .forModel('Home')
-    .findByUuid(req.params.uuid)
-    .updateNoMultiset(data)
+    updateHome(req.params.uuid, data)
     .then((model) => {
       res.json({
         status: 'ok', home: model
