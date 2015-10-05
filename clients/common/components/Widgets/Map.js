@@ -4,7 +4,7 @@ import React from 'react';
 import classNames from 'classnames';
 import DOMManipulator from '../../DOMManipulator';
 
-let debug = require('../../../common/debugger')('Map');
+// let debug = require('../../../common/debugger')('Map');
 
 export default class Map extends React.Component {
   static propTypes = {

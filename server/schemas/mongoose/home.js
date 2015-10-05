@@ -123,6 +123,12 @@ exports.loadSchemas = function (mongoose, next) {
       type: ObjectId,
       ref: 'User'
     },
+    agents: [{
+      type: ObjectId,
+      ref: 'Neighborhood',
+      index: true,
+      default: null
+    }],
     // neighborhood: {
     //   type: ObjectId,
     //   ref: 'Neighborhood'

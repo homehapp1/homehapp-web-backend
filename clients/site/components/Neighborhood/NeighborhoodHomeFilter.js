@@ -3,10 +3,6 @@
 
 import React from 'react';
 
-// Internal components
-import HomeListStore from '../../stores/HomeListStore';
-import ErrorPage from '../../../common/components/Layout/ErrorPage';
-
 // Property List
 import PropertyList from '../Property/List';
 
@@ -14,10 +10,9 @@ import PropertyList from '../Property/List';
 import BigImage from '../../../common/components/Widgets/BigImage';
 import Icon from '../../../common/components/Widgets/Icon';
 import LargeText from '../../../common/components/Widgets/LargeText';
-import Loading from '../../../common/components/Widgets/Loading';
 
 import { setPageTitle } from '../../../common/Helpers';
-let debug = require('../../../common/debugger')('NeighborhoodHomeFilter');
+// let debug = require('../../../common/debugger')('NeighborhoodHomeFilter');
 
 export default class NeighborhoodHomeFilter extends React.Component {
   static propTypes = {
@@ -33,16 +28,8 @@ export default class NeighborhoodHomeFilter extends React.Component {
   }
 
   render() {
-    debug('Render');
     let neighborhood = this.props.neighborhood;
-    let defaultImage = {
-      src: 'images/content/london-view.jpg',
-      alt: '',
-      type: 'asset',
-      applySize: false
-    };
-
-    let image = neighborhood.images[0] || defaultImage;
+    let image = neighborhood.mainImage;
 
     for (let home of neighborhood.homes) {
       home.location.neighborhood = neighborhood;

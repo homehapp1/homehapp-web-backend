@@ -14,7 +14,7 @@ import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
 import { setPageTitle } from '../../../common/Helpers';
-let debug = require('../../../common/debugger')('NeighborhoodList');
+// let debug = require('../../../common/debugger')('NeighborhoodList');
 
 export default class NeighborhoodList extends React.Component {
   static propTypes = {
