@@ -25,14 +25,31 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
+  let validateInput = function validateInput(data) {
+    if (!data.firstname) {
+      throw new Error('Missing firstname');
+    }
+    if (!data.lastname) {
+      throw new Error('Missing lastname');
+    }
+    if (!data.email) {
+      throw new Error('Missing email address');
+    }
+    if (!data.phone) {
+      throw new Error('Missing phone number');
+    }
+  };
+
   app.post('/api/agents', function(req, res, next) {
     debug('API update agent with uuid', req.params.uuid);
     //debug('req.body', req.body);
 
     let data = req.body.agent;
-
-    if (!data.description) {
-      return next(new BadRequest('invalid request body'));
+    try {
+      validateInput(data);
+    } catch (error) {
+      debug('Validate failed', error);
+      return next(new BadRequest(error.message));
     }
 
     QB
@@ -40,10 +57,14 @@ exports.registerRoutes = (app) => {
     .createNoMultiset(data)
     .then((model) => {
       res.json({
-        status: 'ok', agent: model
+        status: 'ok',
+        agent: model
       });
     })
-    .catch(next);
+    .catch((error) => {
+      debug('Create failed', error);
+      return next(new BadRequest(error.message));
+    });
   });
 
 
@@ -90,8 +111,10 @@ exports.registerRoutes = (app) => {
 
     let data = req.body.agent;
 
-    if (!data.description) {
-      return next(new BadRequest('invalid request body'));
+    try {
+      validateInput(data);
+    } catch (error) {
+      return next(new BadRequest(error.message));
     }
 
     updateAgent(req.params.uuid, data)

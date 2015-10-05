@@ -36,11 +36,11 @@ exports.loadSchemas = function (mongoose, next) {
       },
       phone: {
         type: String,
-        required: true
+        default: null
       },
       email: {
         type: String,
-        required: true
+        default: null
       }
     },
     phone: {
