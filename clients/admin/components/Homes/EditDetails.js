@@ -13,13 +13,19 @@ import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import {randomNumericId, enumerate} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
+import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
 
-class HomesEditDetails extends React.Component {
+export default class HomesEditDetails extends React.Component {
   static propTypes = {
-    home: React.PropTypes.object.isRequired
+    home: React.PropTypes.object.isRequired,
+    context: React.PropTypes.object
+  }
+
+  static contextTypes = {
+    router: React.PropTypes.func
   }
 
   constructor(props) {
@@ -29,6 +35,7 @@ class HomesEditDetails extends React.Component {
     this.imageUploaderInstanceId = randomNumericId();
     this.state.homeImages = props.home.images;
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
+    debug('Constructor', this);
   }
 
   state = {
@@ -88,6 +95,7 @@ class HomesEditDetails extends React.Component {
           zipcode: this.refs.addressZipcode.getValue(),
           country: this.refs.addressCountry.getValue()
         },
+        neighborhood: this.refs.addressNeighborhood.getValue(),
         coordinates: [
           this.refs.locationLatitude.getValue(),
           this.refs.locationLongitude.getValue()
@@ -109,7 +117,11 @@ class HomesEditDetails extends React.Component {
       images: images
     };
 
-    console.log('homeProps', homeProps);
+    this.saveHome(homeProps);
+  }
+
+  saveHome(homeProps) {
+    debug('Update homeProps', homeProps);
     HomeActions.updateItem(homeProps);
   }
 
@@ -134,7 +146,7 @@ class HomesEditDetails extends React.Component {
       if (this.state.uploads[this.imageUploaderInstanceId]) {
         let uploads = this.state.uploads[this.imageUploaderInstanceId];
         for (let [key, imageData] of enumerate(uploads)) {
-          console.log(key, 'data:', imageData);
+          debug(key, 'data:', imageData);
           let isMaster = false;
           let homeImage = {
             url: imageData.url,
@@ -300,6 +312,7 @@ class HomesEditDetails extends React.Component {
       lat = this.props.home.location.coordinates[0];
       lon = this.props.home.location.coordinates[1];
     }
+    debug('Neighborhood of this home', this.props.home.location.neighborhood);
 
     return (
       <Row>
@@ -323,6 +336,7 @@ class HomesEditDetails extends React.Component {
                 placeholder='Write description'
                 defaultValue={this.props.home.description}
                 onChange={this.onFormChange.bind(this)}
+                required
               />
             </Panel>
             <Panel header='Location'>
@@ -342,6 +356,7 @@ class HomesEditDetails extends React.Component {
                 defaultValue={this.props.home.location.address.apartment}
                 onChange={this.onFormChange.bind(this)}
               />
+              <NeighborhoodSelect ref='addressNeighborhood' selected={this.props.home.location.neighborhood} />
               <Input
                 type='text'
                 ref='addressCity'
@@ -532,5 +547,3 @@ class HomesEditDetails extends React.Component {
     );
   }
 }
-
-export default HomesEditDetails;

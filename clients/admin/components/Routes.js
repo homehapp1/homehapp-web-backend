@@ -12,6 +12,7 @@ import RouteNotFound from './ErrorPages/RouteNotFound';
 // Homes
 import HomesIndexContainer from './Homes/IndexContainer';
 import HomesEditContainer from './Homes/EditContainer';
+import HomesCreateContainer from './Homes/CreateContainer';
 
 // eighborhoods
 import NeighborhoodsIndexContainer from './Neighborhoods/IndexContainer';
@@ -22,6 +23,7 @@ let routes = (
     <DefaultRoute handler={Homepage}/>
     <Route name='homes' path='/homes'>
       <DefaultRoute handler={HomesIndexContainer}/>
+      <Route name='homeCreate' path='create' handler={HomesCreateContainer} />
       <Route name='homeEdit' path='edit/:id' handler={HomesEditContainer} />
     </Route>
     <Route name='neighborhoods' path='/neighborhoods'>

@@ -13,7 +13,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
   }
 
   findAll() {
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       let cursor = this.Model.find({
         deletedAt: null
       });
@@ -44,7 +44,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
   }
 
   findById(id) {
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       this.Model.findById(id, (err, user) => {
         if (err) {
           return callback(err);
@@ -63,7 +63,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
   }
 
   findByUuid(uuid) {
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       this.Model.findOne({
         uuid: uuid,
         deletedAt: null
@@ -85,7 +85,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
   }
 
   findByUsername(username) {
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       this.Model.findOne({
         username: username,
         deletedAt: null
@@ -110,7 +110,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
   }
 
   findByIdOrUsername(idOrUsername) {
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       async.seq(
         (cb) => {
           this.Model.findOne({

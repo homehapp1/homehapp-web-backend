@@ -9,10 +9,10 @@ import TabbedArea from 'react-bootstrap/lib/TabbedArea';
 import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
-import EditDetails from './EditDetails';
-import EditStory from './EditStory';
+import CreateDetails from './CreateDetails';
+import HomesCreateStory from './CreateStory';
 
-export default class HomesEdit extends React.Component {
+export default class HomesCreate extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired
   }
@@ -25,19 +25,19 @@ export default class HomesEdit extends React.Component {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <h2 className='navigation-title'>Edit Home</h2>
+          <h2 className='navigation-title'>Create a new Home</h2>
           <NavItemLink to='homes'>
             &lt; Back
           </NavItemLink>
         </Nav>
         <Row>
-          <h1><i className='fa fa-home'></i> Edit {this.props.home.homeTitle}</h1>
+          <h1><i className='fa fa-home'></i> Create a new home</h1>
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Details'>
-              <EditDetails home={this.props.home} />
+              <CreateDetails home={this.props.home} />
             </TabPane>
             <TabPane eventKey={2} tab='Story'>
-              <EditStory home={this.props.home} />
+              <HomesCreateStory />
             </TabPane>
           </TabbedArea>
         </Row>

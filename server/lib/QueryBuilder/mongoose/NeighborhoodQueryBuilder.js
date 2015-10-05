@@ -89,6 +89,8 @@ export default class NeighborhoodQueryBuilder extends BaseQueryBuilder {
         if (!model) {
           return callback(new NotFound('neighborhood not found'));
         }
+        this.result.model = model;
+        this.result.models = [model];
         this.result.neighborhood = model;
         this.result.neighborhoodJson = model.toJSON();
         this._loadedModel = model;

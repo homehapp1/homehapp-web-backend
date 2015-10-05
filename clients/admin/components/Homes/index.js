@@ -21,11 +21,15 @@ class HomesIndex extends React.Component {
       <SubNavigationWrapper>
         <Nav sidebar>
           <h2 className="navigation-title">
-            Homes ({this.props.homes.length})
+            Homes
           </h2>
+          <p>There are {this.props.homes.length} homes in the system currently.</p>
+          <ul>
+            <li><Link to='homeCreate'><i className='fa fa-home'></i> Create a new home</Link></li>
+          </ul>
         </Nav>
         <Row>
-          <h1>{this.props.homes.length} homes</h1>
+          <h1><i className='fa fa-home'></i> {this.props.homes.length} homes</h1>
 
           <ul>
             {this.props.homes.map((home, i) => {

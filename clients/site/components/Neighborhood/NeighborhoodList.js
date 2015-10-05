@@ -13,10 +13,10 @@ import Loading from '../../../common/components/Widgets/Loading';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
-
 import { setPageTitle } from '../../../common/Helpers';
+let debug = require('../../../common/debugger')('NeighborhoodList');
 
-export default class NeighborhoodsList extends React.Component {
+export default class NeighborhoodList extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
   };
@@ -99,22 +99,10 @@ export default class NeighborhoodsList extends React.Component {
         <ContentBlock className='neighborhoods-list'>
           {
             neighborhoods.map((neighborhood, index) => {
-              let img = image;
-
-              if (neighborhood.images.length) {
-                img = neighborhood.images[0];
-              } else {
-                for (let home of neighborhood.homes) {
-                  if (home.images.length) {
-                    img = home.images[0];
-                    break;
-                  }
-                }
-              }
               return (
                 <div className='neighborhood' key={index}>
                   <Link className='image-wrapper' to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
-                    <Image {...img} width={1200} height={680} mode='fill' />
+                    <Image {...neighborhood.mainImage} width={1200} height={680} mode='fill' />
                   </Link>
                   <ContentBlock valign='center'>
                     <h2 className='block-title'>

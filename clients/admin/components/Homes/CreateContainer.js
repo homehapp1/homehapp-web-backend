@@ -2,15 +2,11 @@
 
 import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
-import HomesEdit from './Edit';
+import HomesCreate from './Create';
 import Loading from '../../../common/components/Widgets/Loading';
-let debug = require('debug')('EditContainer');
+let blankId = null;
 
-export default class HomesEditContainer extends React.Component {
-  static propTypes = {
-    params: React.PropTypes.object
-  }
-
+export default class HomesCreateContainer extends React.Component {
   constructor(props) {
     super(props);
     this.storeListener = this.onChange.bind(this);
@@ -18,12 +14,12 @@ export default class HomesEditContainer extends React.Component {
 
   state = {
     error: null,
-    home: HomeListStore.getHome(this.props.params.id)
+    home: HomeListStore.getHome(blankId)
   }
 
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
-    if (!HomeListStore.getHome(this.props.params.id)) {
+    if (!HomeListStore.getHome(blankId)) {
       HomeListStore.fetchHomes();
     }
   }
@@ -32,18 +28,17 @@ export default class HomesEditContainer extends React.Component {
     HomeListStore.unlisten(this.storeListener);
   }
 
-  onChange(state) {
-    debug('state', state, HomeListStore.getState());
+  onChange(/*state*/) {
     this.setState({
       error: HomeListStore.getState().error,
-      home: HomeListStore.getHome(this.props.params.id)
+      home: HomeListStore.getHome(blankId)
     });
   }
 
   handlePendingState() {
     return (
       <Loading>
-        <h3>Loading homes...</h3>
+        <h3>Creating a new home template...</h3>
       </Loading>
     );
   }
@@ -51,7 +46,7 @@ export default class HomesEditContainer extends React.Component {
   handleErrorState() {
     return (
       <div className='homes-error'>
-        <h3>Error loading homes!</h3>
+        <h3>Error creating a new home template!</h3>
         <p>{this.state.error.message}</p>
       </div>
     );
@@ -61,14 +56,13 @@ export default class HomesEditContainer extends React.Component {
     if (this.state.error) {
       return this.handleErrorState();
     }
-    debug('Home', this.state.home);
 
     if (HomeListStore.isLoading() || !this.state.home) {
       return this.handlePendingState();
     }
 
     return (
-      <HomesEdit home={this.state.home} />
+      <HomesCreate home={this.state.home} />
     );
   }
 }

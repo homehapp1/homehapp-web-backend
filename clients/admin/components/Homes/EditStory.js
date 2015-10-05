@@ -10,7 +10,7 @@ import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
-// import HomeActions from '../../actions/HomeActions';
+import HomeActions from '../../actions/HomeActions';
 import StoryEditBlocks from './StoryEditBlocks';
 
 let debug = require('../../../common/debugger')('HomesEditStory');
@@ -23,6 +23,7 @@ export default class HomesEditStory extends React.Component {
   constructor(props) {
     super(props);
     this.storeListener = this.onHomeStoreChange.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   state = {
@@ -43,7 +44,22 @@ export default class HomesEditStory extends React.Component {
   }
 
   onSave() {
-    debug('save');
+    debug('onSave');
+    debug('blocks', this.refs.storyBlocks.state.blocks);
+    let homeProps = {
+      uuid: this.props.home.id,
+      story: {
+        blocks: this.refs.storyBlocks.state.blocks,
+        enabled: this.props.home.story.enabled
+      }
+    };
+
+    this.saveHome(homeProps);
+  }
+
+  saveHome(homeProps) {
+    debug('Update homeProps', homeProps);
+    HomeActions.updateItem(homeProps);
   }
 
   handlePendingState() {
@@ -61,6 +77,12 @@ export default class HomesEditStory extends React.Component {
         <p>{this.state.error.message}</p>
       </div>
     );
+  }
+
+  toggleEnabled() {
+    // Invert the value and update the view
+    this.props.home.story.enabled = !(this.props.home.story.enabled);
+    this.forceUpdate();
   }
 
   render() {
@@ -82,6 +104,7 @@ export default class HomesEditStory extends React.Component {
     if (this.props.home.story.enabled) {
       enabledStatus = {checked: true};
     }
+    debug('Home', this.props.home);
 
     return (
       <Row>
@@ -92,12 +115,15 @@ export default class HomesEditStory extends React.Component {
             <Panel header='Common'>
               <Input
                 type='checkbox'
+                ref='enabled'
                 label='Enabled'
                 {...enabledStatus}
+                addonBefore='Value'
+                onChange={this.toggleEnabled.bind(this)}
               />
             </Panel>
             <Panel header='Blocks'>
-              <StoryEditBlocks blocks={blocks} />
+              <StoryEditBlocks blocks={blocks} ref='storyBlocks' />
             </Panel>
             <Well>
               <Row>

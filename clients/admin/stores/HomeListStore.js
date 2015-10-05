@@ -34,11 +34,15 @@ class HomeListStore {
     debug('getHome', id);
     let { homes } = this.getState();
     for (let home of homes) {
+      if (!id) {
+        return home;
+      }
       if (home.id === id) {
         return home;
       }
     }
-    return null;
+    debug('No matching id found in homes');
+    this.error = 'No matching id found in homes';
   }
 
   handleUpdateHomes(homes) {

@@ -43,15 +43,15 @@ export default class HomeStory extends React.Component {
       });
     }
 
-    blocks.push({
-      template: 'Agent',
-      properties: {
-        name: 'Arttu Manninen',
-        title: 'Developer',
-        phone: '+358505958435',
-        email: 'arttu@kaktus.cc'
-      }
-    });
+    // blocks.push({
+    //   template: 'Agent',
+    //   properties: {
+    //     name: 'Arttu Manninen',
+    //     title: 'Developer',
+    //     phone: '+358505958435',
+    //     email: 'arttu@kaktus.cc'
+    //   }
+    // });
 
     return (
       <div className='home-view'>

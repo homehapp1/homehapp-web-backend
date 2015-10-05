@@ -143,15 +143,28 @@ exports.loadSchemas = function (mongoose, next) {
     if (this.title && this.title.length) {
       return this.title;
     }
-    let title = this.location.address.street;
-    title += ` ${this.location.address.apartment}`;
-    title += `, ${this.location.address.city}`;
-    return title.trim();
+
+    let title = [];
+    if (this.location.address.street) {
+      title.push(`${this.location.address.street} ${this.location.address.apartment}`);
+    }
+    if (this.location.neighborhood && typeof this.location.neighborhood.title !== 'undefined') {
+      title.push(this.location.neighborhood.title);
+    }
+    if (this.location.address.street) {
+      title.push(this.location.address.city);
+    }
+
+    if (!title.length) {
+      title.push('Unnamed');
+    }
+
+    return title.join(', ').trim();
   });
 
   schemas.Home.virtual('pageTitle').get(function () {
     let title = [this.homeTitle];
-    if (this.location.neighborhood && this.location.neighborhood.title) {
+    if (this.location.neighborhood && typeof this.location.neighborhood.title !== 'undefined') {
       title.push(this.location.neighborhood.title);
     }
     if (this.location.address.city) {
