@@ -6,7 +6,6 @@ let debug = require('../../../common/debugger')('NeighborhoodSelect');
 
 export default class NeighborhoodSelect extends React.Component {
   static propTypes = {
-    neighborhoods: React.PropTypes.array.isRequired,
     selected: React.PropTypes.oneOfType([
       React.PropTypes.null,
       React.PropTypes.object
@@ -15,34 +14,28 @@ export default class NeighborhoodSelect extends React.Component {
 
   constructor(props) {
     super(props);
-    //this.storeListener = this.onChange.bind(this);
+    this.storeListener = this.onChange.bind(this);
     this.selected = null;
-    this.updateSelected = this.updateSelected.bind(this);
   }
 
-  // state = {
-  //   error: null,
-  //   neighborhoods: []
-  // };
+  state = {
+    error: null,
+    neighborhoods: NeighborhoodListStore.getState().neighborhoods
+  };
 
   componentDidMount() {
-    // NeighborhoodListStore.listen(this.storeListener);
-    // if (!NeighborhoodListStore.getState().neighborhoods.length) {
-    //   NeighborhoodListStore.fetchNeighborhoods();
-    // }
+    NeighborhoodListStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
-    //NeighborhoodListStore.unlisten(this.storeListener);
+    NeighborhoodListStore.unlisten(this.storeListener);
   }
 
-  // onChange(state) {
-  //   debug('state', state, NeighborhoodListStore.getState());
-  //   this.setState({
-  //     error: NeighborhoodListStore.getState().error,
-  //     neighborhoods: NeighborhoodListStore.getState().neighborhoods
-  //   });
-  // }
+  onChange(state) {
+    this.setState({
+      neighborhoods: NeighborhoodListStore.getState().neighborhoods
+    });
+  }
 
   isSelected(neighborhood) {
     return !!(this.props.selected && String(this.props.selected.id) === String(neighborhood.id));
@@ -50,7 +43,6 @@ export default class NeighborhoodSelect extends React.Component {
 
   getValue() {
     if (this.selected) {
-      debug('getValue', this.selected.id);
       return this.selected.id;
     }
     return null;
@@ -58,18 +50,15 @@ export default class NeighborhoodSelect extends React.Component {
 
   updateSelected() {
     let selected = this.refs.neighborhoodSelect.getValue();
-    debug('Got value', selected);
     this.selected = null;
-    for (let neighborhood of this.props.neighborhoods) {
+    for (let neighborhood of this.state.neighborhoods) {
       if (neighborhood.id === selected) {
         this.selected = neighborhood;
       }
     }
-    debug('Set selected', this.selected);
   }
 
   render() {
-    debug('render', this.props);
     let neighborhoods = [
       {
         id: '',
@@ -83,7 +72,7 @@ export default class NeighborhoodSelect extends React.Component {
       selected = this.props.selected.id;
     }
 
-    for (let neighborhood of this.props.neighborhoods) {
+    for (let neighborhood of this.state.neighborhoods) {
       if (neighborhoods.indexOf(neighborhood) === -1) {
         neighborhoods.push(neighborhood);
       }

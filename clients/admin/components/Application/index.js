@@ -8,6 +8,8 @@ import Navigation from '../Navigation';
 // import AuthActions from '../../../common/actions/AuthActions';
 import AuthStore from '../../../common/stores/AuthStore';
 
+import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
+
 class Application extends React.Component {
   static propTypes = {
   }
@@ -18,13 +20,15 @@ class Application extends React.Component {
     super(props);
     this.state = AuthStore.getState();
     this.authStoreListener = this.onChange.bind(this);
+    this.nhStoreListener = this.onChange.bind(this);
   }
 
   componentDidMount() {
     AuthStore.listen(this.authStoreListener);
-    if (!this.state.user) {
+    if (!AuthStore.getState().user) {
       AuthStore.fetchUser();
     }
+    NeighborhoodListStore.fetchNeighborhoods();
   }
 
   componentWillUnmount() {
@@ -32,7 +36,10 @@ class Application extends React.Component {
   }
 
   onChange() {
-    this.setState(AuthStore.getState());
+    this.setState({
+      user: AuthStore.getState().user,
+      neighborhoods: NeighborhoodListStore.getState().neighborhoods
+    });
   }
 
   render() {

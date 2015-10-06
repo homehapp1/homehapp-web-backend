@@ -16,9 +16,6 @@ import {randomNumericId, enumerate, merge} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
 
-import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
-import NeighborhoodListActions from '../../actions/NeighborhoodListActions';
-
 let debug = require('../../../common/debugger')('HomesEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
 
@@ -36,7 +33,6 @@ export default class HomesEditDetails extends React.Component {
     super(props);
     this.storeListener = this.onHomeStoreChange.bind(this);
     this.uploadListener = this.onUploadChange.bind(this);
-    this.nhStoreListener = this.onNeighborhoodsChange.bind(this);
     this.imageUploaderInstanceId = randomNumericId();
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
 
@@ -56,17 +52,11 @@ export default class HomesEditDetails extends React.Component {
     error: null,
     uploads: UploadAreaUtils.UploadStore.getState().uploads,
     currentAttributes: [],
-    homeImages: [],
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
+    homeImages: []
   }
 
   componentDidMount() {
     HomeStore.listen(this.storeListener);
-    NeighborhoodListStore.listen(this.nhStoreListener);
-    if (!NeighborhoodListStore.getState().neighborhoods.length) {
-      NeighborhoodListStore.fetchNeighborhoods();
-      //NeighborhoodListActions.fetchNeighborhoods();
-    }
   }
 
   componentWillReceiveProps(props) {
@@ -92,13 +82,6 @@ export default class HomesEditDetails extends React.Component {
     debug('onUploadChange', state);
     this.setState({
       uploads: UploadAreaUtils.UploadStore.getState().uploads
-    });
-  }
-
-  onNeighborhoodsChange(state) {
-    debug('onNeighborhoodsChange', state);
-    this.setState({
-      neighborhoods: NeighborhoodListStore.getState().neighborhoods
     });
   }
 
@@ -432,7 +415,6 @@ export default class HomesEditDetails extends React.Component {
               <NeighborhoodSelect
                 ref='addressNeighborhood'
                 selected={homeLocation.neighborhood}
-                neighborhoods={this.state.neighborhoods}
               />
               <Input
                 type='text'
