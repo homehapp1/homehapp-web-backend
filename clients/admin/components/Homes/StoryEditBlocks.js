@@ -10,6 +10,7 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import AdminContentBlock from '../Widgets/ContentBlock';
 import AdminBigImage from '../Widgets/BigImage';
+import AdminBigVideo from '../Widgets/BigVideo';
 import AdminGallery from '../Widgets/Gallery';
 import {moveToIndex} from '../../../common/Helpers';
 
@@ -151,6 +152,14 @@ export default class StoryEditBlocks extends React.Component {
     );
   }
 
+  getBigVideo(item, index) {
+    return (
+      <Panel header={this.getBlockHeader(item, index)} key={index}>
+        <AdminBigVideo {...item.properties} />
+      </Panel>
+    );
+  }
+
   render() {
     return (
       <div className='edit-story'>
@@ -163,6 +172,7 @@ export default class StoryEditBlocks extends React.Component {
               >
                 <option value=''>Choose template to use</option>
                 <option value='BigImage'>Big Image</option>
+                <option value='BigVideo'>Big Video</option>
                 <option value='ContentBlock'>Content Block</option>
                 <option value='Gallery'>Gallery</option>
               </Input>
