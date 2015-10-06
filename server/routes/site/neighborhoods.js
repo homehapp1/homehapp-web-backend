@@ -1,10 +1,12 @@
 'use strict';
 
 import QueryBuilder from '../../lib/QueryBuilder';
+import { setLastMod } from '../../../clients/common/Helpers';
 let debug = require('debug')('neighborhoods API');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+
   let getNeighborhoodBySlug = (req, res, next) => {
     let city = null;
     let neighborhood = null;
@@ -64,13 +66,23 @@ exports.registerRoutes = (app) => {
         }
 
         res.locals.openGraph['og:image'] = images.concat(res.locals.openGraph['og:image']);
-        res.locals.openGraph['og:updated_time'] = neighborhood.updatedAt.toISOString();
-
+        setLastMod([neighborhood, city].concat(neighborhood.homes), res);
         resolve(neighborhood);
       })
       .catch(next);
     });
   };
+
+  app.get('/neighborhoods', function(req, res, next) {
+    if (typeof res.locals.openGraph === 'undefined') {
+      res.locals.openGraph = {
+        'og:image': []
+      };
+    }
+
+    res.locals.openGraph['og:url'] = '/neighborhoods/london';
+    next();
+  });
 
   app.get('/neighborhoods/:city', function(req, res, next) {
     let city = null;
@@ -105,15 +117,12 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       let images = [];
       neighborhoods = result.models;
-      let lastMod = null;
       for (let neighborhood of neighborhoods) {
         neighborhood.location.city = city;
         let image = neighborhood.mainImage.url;
-        images.push(image);
-        // if (images.indexOf(image) === -1) {
-        //   images.push(image);
-        // }
-        lastMod = Math.max(neighborhood.updatedAt, lastMod);
+        if (images.indexOf(image) === -1) {
+          images.push(image);
+        }
       }
 
       if (typeof res.locals.openGraph === 'undefined') {
@@ -127,14 +136,7 @@ exports.registerRoutes = (app) => {
         title: `Neighborhoods of ${city.title}`,
         description: `Neighborhoods of ${city.title}`
       };
-
-      if (lastMod) {
-        res.locals.openGraph['og:updated_time'] = lastMod.toISOString();
-        res.locals.metadatas.push({
-          'http-equiv': 'last-modified',
-          'content': res.locals.openGraph['og:updated_time']
-        });
-      }
+      setLastMod(neighborhoods, res);
 
       res.locals.data.NeighborhoodListStore = {
         neighborhoods: neighborhoods
@@ -145,12 +147,14 @@ exports.registerRoutes = (app) => {
   });
 
   app.get('/neighborhoods/:city/:neighborhood', function(req, res, next) {
+    debug(`/neighborhoods/${req.params.city}/${req.params.neighborhood}`);
     getNeighborhoodBySlug(req, res, next)
     .then((neighborhood) => {
+      debug('Got neighborhood', neighborhood);
       res.locals.data.title = [neighborhood.title];
 
-      let title = [neighborhood.title];
-      let description = neighborhood.description || title.join('; ');
+      let title = [neighborhood.title, neighborhood.location.city.title];
+      let description = neighborhood.description || `View the neighborhood of ${neighborhood.title}, ${neighborhood.location.city.title}`;
 
       if (description.length > 200) {
         description = description.substr(0, 200) + '…';
@@ -168,14 +172,11 @@ exports.registerRoutes = (app) => {
   app.get('/neighborhoods/:city/:neighborhood/homes', function(req, res, next) {
     getNeighborhoodBySlug(req, res, next)
     .then((neighborhood) => {
-      res.locals.data.title = [neighborhood.title];
+      debug('Got neighborhood', neighborhood);
+      res.locals.data.title = ['Homes', neighborhood.title];
 
-      let title = ['Homes', neighborhood.title];
-      let description = neighborhood.description || title.join('; ');
-
-      if (description.length > 200) {
-        description = description.substr(0, 200) + '…';
-      }
+      let title = [neighborhood.title, neighborhood.location.city.title];
+      let description = `View our exclusive homes in ${neighborhood.title}, ${neighborhood.location.city.title}`;
 
       res.locals.page = {
         title: title.join(' | '),
