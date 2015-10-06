@@ -21,7 +21,7 @@ export default class NeighborhoodStory extends React.Component {
   }
 
   componentDidMount() {
-    setPageTitle(this.props.neighborhood.neighborhoodTitle);
+    setPageTitle(this.state.neighborhood.pageTitle);
   }
 
   componentWillUnmount() {
@@ -52,7 +52,7 @@ export default class NeighborhoodStory extends React.Component {
     let homes = (this.props.neighborhood.homes.length) ? this.props.neighborhood.homes : [];
 
     let markers = this.getMarkers(homes);
-    console.log('markers', markers);
+    debug('Set markers', markers);
     debug('Homes', homes, this.props.neighborhood.location.coordinates);
 
     return (
