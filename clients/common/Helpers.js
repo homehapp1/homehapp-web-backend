@@ -2,6 +2,7 @@
 
 import ReactUpdates from 'react/lib/ReactUpdates';
 import DOMManipulator from './DOMManipulator';
+let debug = require('debug')('Helpers');
 
 exports.floor = function floor(v) {
   v = Math.floor(v * 100) / 100;
@@ -295,4 +296,42 @@ exports.setPageTitle = function setPageTitle(title = '') {
     title = String(title).replace(/ \| Homehapp$/, '') + ' | ';
   }
   document.title = title + 'Homehapp';
+};
+
+exports.setLastMod = function setLastMod(objects, res) {
+  let lastMod = null;
+
+  for (let object of objects) {
+    if (typeof object.updatedAt === 'undefined') {
+      continue;
+    }
+
+    try {
+      lastMod = Math.max(lastMod, object.updatedAt);
+    } catch (error) {
+      debug('Failed to use object.updatedAt, but continue as it is nothing fatal');
+    }
+  }
+
+  debug('lastMod', lastMod);
+  if (lastMod) {
+    if (typeof res.locals.metadatas === 'undefined') {
+      res.locals.metadatas = [];
+    }
+    if (typeof res.locals.openGraph === 'undefined') {
+      res.locals.openGraph = {};
+    }
+
+    let date = new Date(lastMod);
+    try {
+      res.locals.openGraph['og:updated_time'] = date.toISOString();
+      res.locals.metadatas.push({
+        'http-equiv': 'last-modified',
+        'content': res.locals.openGraph['og:updated_time']
+      });
+
+    } catch (error) {
+      debug('Failed to set the last-modified', error.message);
+    }
+  }
 };

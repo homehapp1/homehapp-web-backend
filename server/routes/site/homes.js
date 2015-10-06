@@ -1,7 +1,8 @@
 'use strict';
 
 import QueryBuilder from '../../lib/QueryBuilder';
-let debug = require('debug')('app');
+import { setLastMod } from '../../../clients/common/Helpers';
+let debug = require('debug')('/homes');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -54,16 +55,12 @@ exports.registerRoutes = (app) => {
       }
 
       res.locals.openGraph['og:image'] = images.concat(res.locals.openGraph['og:image']);
-      res.locals.openGraph['og:updated_time'] = home.updatedAt.toISOString();
       res.locals.page = {
         title: title.join(' | '),
         description: description
       };
 
-      res.locals.metadatas.push({
-        'http-equiv': 'last-modified',
-        'content': res.locals.openGraph['og:updated_time']
-      });
+      setLastMod([home, neighborhood], res);
 
       res.locals.data.HomeStore = {
         home: home.toJSON()

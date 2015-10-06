@@ -96,7 +96,7 @@ exports.loadSchemas = function (mongoose, next) {
   });
 
   schemas.Neighborhood.virtual('pageTitle').get(function getPageTitle() {
-    let title = [this.neighborhoodTitle];
+    let title = [this.title];
     if (this.location.city) {
       title.push(this.location.city.title);
     }

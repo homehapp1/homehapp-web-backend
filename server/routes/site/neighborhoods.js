@@ -1,10 +1,12 @@
 'use strict';
 
 import QueryBuilder from '../../lib/QueryBuilder';
+import { setLastMod } from '../../../clients/common/Helpers';
 let debug = require('debug')('neighborhoods API');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+
   let getNeighborhoodBySlug = (req, res, next) => {
     let city = null;
     let neighborhood = null;
@@ -64,17 +66,28 @@ exports.registerRoutes = (app) => {
         }
 
         res.locals.openGraph['og:image'] = images.concat(res.locals.openGraph['og:image']);
-        res.locals.openGraph['og:updated_time'] = neighborhood.updatedAt.toISOString();
-
+        setLastMod([neighborhood, city].concat(neighborhood.homes), res);
         resolve(neighborhood);
       })
       .catch(next);
     });
   };
 
+  app.get('/neighborhoods', function(req, res, next) {
+    if (typeof res.locals.openGraph === 'undefined') {
+      res.locals.openGraph = {
+        'og:image': []
+      };
+    }
+
+    res.locals.openGraph['og:url'] = '/neighborhoods/london';
+    next();
+  });
+
   app.get('/neighborhoods/:city', function(req, res, next) {
     let city = null;
     let neighborhoods = [];
+    debug(`/neighborhoods/${req.params.city}`);
 
     QB
     .forModel('City')
@@ -82,6 +95,8 @@ exports.registerRoutes = (app) => {
     .fetch()
     .then((result) => {
       city = result.city;
+
+      // Get each neighborhood ID that is populated with homes
       return QB
       .forModel('Home')
       .distinct('location.neighborhood')
@@ -100,10 +115,29 @@ exports.registerRoutes = (app) => {
       .fetch();
     })
     .then((result) => {
+      let images = [];
       neighborhoods = result.models;
       for (let neighborhood of neighborhoods) {
         neighborhood.location.city = city;
+        let image = neighborhood.mainImage.url;
+        if (images.indexOf(image) === -1) {
+          images.push(image);
+        }
       }
+
+      if (typeof res.locals.openGraph === 'undefined') {
+        res.locals.openGraph = {
+          'og:image': []
+        };
+      }
+      res.locals.openGraph['og:image'] = images.concat(res.locals.openGraph['og:image']);
+
+      res.locals.page = {
+        title: `Neighborhoods of ${city.title}`,
+        description: `Neighborhoods of ${city.title}`
+      };
+      setLastMod(neighborhoods, res);
+
       res.locals.data.NeighborhoodListStore = {
         neighborhoods: neighborhoods
       };
@@ -113,19 +147,20 @@ exports.registerRoutes = (app) => {
   });
 
   app.get('/neighborhoods/:city/:neighborhood', function(req, res, next) {
+    debug(`/neighborhoods/${req.params.city}/${req.params.neighborhood}`);
     getNeighborhoodBySlug(req, res, next)
     .then((neighborhood) => {
-      res.locals.data.title = [neighborhood.title];
+      debug('Got neighborhood', neighborhood);
+      res.locals.data.title = neighborhood.pageTitle;
 
-      let title = [neighborhood.title];
-      let description = neighborhood.description || title.join('; ');
+      let description = neighborhood.description || `View the neighborhood of ${neighborhood.title}, ${neighborhood.location.city.title}`;
 
       if (description.length > 200) {
         description = description.substr(0, 200) + '…';
       }
 
       res.locals.page = {
-        title: title.join(' | '),
+        title: neighborhood.pageTitle,
         description: description
       };
       next();
@@ -136,17 +171,11 @@ exports.registerRoutes = (app) => {
   app.get('/neighborhoods/:city/:neighborhood/homes', function(req, res, next) {
     getNeighborhoodBySlug(req, res, next)
     .then((neighborhood) => {
-      res.locals.data.title = [neighborhood.title];
-
-      let title = ['Homes', neighborhood.title];
-      let description = neighborhood.description || title.join('; ');
-
-      if (description.length > 200) {
-        description = description.substr(0, 200) + '…';
-      }
-
+      debug('Got neighborhood', neighborhood);
+      res.locals.data.title = [`Homes in ${neighborhood.title}`];
+      let description = `View our exclusive homes in ${neighborhood.title}, ${neighborhood.location.city.title}`;
       res.locals.page = {
-        title: title.join(' | '),
+        title: res.locals.data.title.join(' | '),
         description: description
       };
       debug('callback finished');

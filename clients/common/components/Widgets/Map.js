@@ -4,7 +4,7 @@ import React from 'react';
 import classNames from 'classnames';
 import DOMManipulator from '../../DOMManipulator';
 
-// let debug = require('../../../common/debugger')('Map');
+let debug = require('../../../common/debugger')('Map');
 
 export default class Map extends React.Component {
   static propTypes = {
@@ -101,11 +101,19 @@ export default class Map extends React.Component {
       if (!markerData.location || markerData.location.length < 2) {
         return null;
       }
+      // Type cast
+      let lat = Number(markerData.location[0]);
+      let lng = Number(markerData.location[1]);
+
+      if (isNaN(lat) || !isNaN(lng) || !lat || !lng) {
+        debug('markerData.location failed type check, skip', markerData);
+        return null;
+      }
 
       let marker = new google.maps.Marker({
         position: {
-          lat: markerData.location[0],
-          lng: markerData.location[1]
+          lat: lat,
+          lng: lng
         },
         href: this.markerUrl(markerData),
         title: markerData.title || '',
