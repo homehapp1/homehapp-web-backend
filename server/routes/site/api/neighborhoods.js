@@ -53,7 +53,7 @@ exports.registerRoutes = (app) => {
       return QB
       .forModel('Neighborhood')
       .query({
-        'location.city': city,
+        // 'location.city': city,
         slug: req.params.neighborhood
       })
       .findAll()
