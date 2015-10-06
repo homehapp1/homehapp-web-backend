@@ -369,8 +369,8 @@ export default class HomesEditDetails extends React.Component {
     if (this.props.home) {
       deleteLink = (<Link to='homeDelete' params={{id: this.props.home.id}} className='pull-right btn btn-danger btn-preview'>Delete</Link>);
       previewLink = (
-        <a href={'/home/' + this.props.home.slug}
-          targe='_blank'
+        <a href={'https://www.homehapp.co.uk/home/' + this.props.home.slug}
+          target='_blank'
           className='btn btn-primary pull-right'>
           Preview
         </a>
