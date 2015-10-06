@@ -17,7 +17,7 @@ let HomeSource = {
         let disallowed = ['uuid', 'id', '_id'];
         for (let key of disallowed) {
           if (typeof data[key] !== 'undefined') {
-            delete(data[key]);
+            delete data[key];
           }
         }
         return request.post(`/api/homes`, postData)
