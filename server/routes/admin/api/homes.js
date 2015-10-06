@@ -1,7 +1,7 @@
 'use strict';
 
 import QueryBuilder from '../../../lib/QueryBuilder';
-import {NotImplemented, BadRequest} from '../../../lib/Errors';
+import {/*NotImplemented, */BadRequest} from '../../../lib/Errors';
 let debug = require('debug')('/api/homes');
 
 exports.registerRoutes = (app) => {
@@ -44,7 +44,7 @@ exports.registerRoutes = (app) => {
       return next(new BadRequest('invalid request body'));
     }
 
-    function createHome(homeData) {
+    function createHome() {
       return QB
       .forModel('Home')
       .populate({
@@ -74,7 +74,7 @@ exports.registerRoutes = (app) => {
         createHome(data);
       })
       .catch((nhError) => {
-        app.log.error(`Error fetching Neighborhood: ${err.message}`);
+        app.log.error(`Error fetching Neighborhood: ${nhError.message}`);
         createHome(data);
       });
     } else {
