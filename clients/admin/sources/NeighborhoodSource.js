@@ -7,7 +7,6 @@ let debug = require('../../common/debugger')('NeighborhoodSource');
 
 let NeighborhoodSource = {
   createItem: function () {
-    debug('createItem', arguments);
     return {
       remote(storeState, data) {
         debug('createItem:remote', arguments, data);
@@ -50,7 +49,6 @@ let NeighborhoodSource = {
     };
   },
   updateItem: function () {
-    debug('updateItem', arguments);
     return {
       remote(storeState, data) {
         debug('updateItem:remote', arguments, data);

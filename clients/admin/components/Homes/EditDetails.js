@@ -12,9 +12,12 @@ import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import {randomNumericId, enumerate} from '../../../common/Helpers';
+import {randomNumericId, enumerate, merge} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
+
+import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
+import NeighborhoodListActions from '../../actions/NeighborhoodListActions';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
@@ -33,25 +36,51 @@ export default class HomesEditDetails extends React.Component {
     super(props);
     this.storeListener = this.onHomeStoreChange.bind(this);
     this.uploadListener = this.onUploadChange.bind(this);
+    this.nhStoreListener = this.onNeighborhoodsChange.bind(this);
     this.imageUploaderInstanceId = randomNumericId();
-    this.state.homeImages = props.home.images;
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
+
+    if (props.home) {
+      this.state.currentAttributes = props.home.attributes || [
+        {
+          name: '', value: '', valueType: 'string'
+        }
+      ];
+      this.state.homeImages = props.home.images || [];
+    }
+
     debug('Constructor', this);
   }
 
   state = {
     error: null,
     uploads: UploadAreaUtils.UploadStore.getState().uploads,
-    currentAttributes: this.props.home.attributes,
-    homeImages: []
+    currentAttributes: [],
+    homeImages: [],
+    neighborhoods: NeighborhoodListStore.getState().neighborhoods
   }
 
   componentDidMount() {
     HomeStore.listen(this.storeListener);
+    NeighborhoodListStore.listen(this.nhStoreListener);
+    if (!NeighborhoodListStore.getState().neighborhoods.length) {
+      NeighborhoodListStore.fetchNeighborhoods();
+      //NeighborhoodListActions.fetchNeighborhoods();
+    }
   }
 
   componentWillUnmount() {
     HomeStore.unlisten(this.storeListener);
+  }
+
+  componentWillReceiveProps(props) {
+    debug('componentWillReceiveProps', props);
+    if (props.home) {
+      this.setState({
+        currentAttributes: props.home.attributes || {},
+        homeImages: props.home.images || []
+      });
+    }
   }
 
   onHomeStoreChange(state) {
@@ -63,6 +92,12 @@ export default class HomesEditDetails extends React.Component {
     debug('onUploadChange', state);
     this.setState({
       uploads: UploadAreaUtils.UploadStore.getState().uploads
+    });
+  }
+
+  onNeighborhoodsChange(state) {
+    this.setState({
+      neighborhoods: NeighborhoodListStore.getState().neighborhoods
     });
   }
 
@@ -84,8 +119,13 @@ export default class HomesEditDetails extends React.Component {
       }
     });
 
+    let id = null;
+    if (this.props.home) {
+      id = this.props.home.id;
+    }
+
     let homeProps = {
-      uuid: this.props.home.id,
+      id: id,
       title: this.refs.title.getValue(),
       description: this.refs.description.getValue(),
       location: {
@@ -122,8 +162,11 @@ export default class HomesEditDetails extends React.Component {
   }
 
   saveHome(homeProps) {
-    debug('Update homeProps', homeProps);
-    HomeActions.updateItem(homeProps);
+    debug('saveHome', homeProps);
+    if (homeProps.id) {
+      return HomeActions.updateItem(homeProps);
+    }
+    return HomeActions.createItem(homeProps);
   }
 
   onCancel() {
@@ -187,6 +230,11 @@ export default class HomesEditDetails extends React.Component {
         newAttributes.push(item);
       }
     });
+    if (!newAttributes.length) {
+      newAttributes.push({
+        name: '', value: '', valueType: 'string'
+      });
+    }
     this.setState({currentAttributes: newAttributes});
   }
 
@@ -289,6 +337,7 @@ export default class HomesEditDetails extends React.Component {
   }
 
   render() {
+    debug('render', this.state);
     let error = null;
     let savingLoader = null;
     if (this.state.error) {
@@ -297,6 +346,23 @@ export default class HomesEditDetails extends React.Component {
     if (HomeStore.isLoading()) {
       savingLoader = this.handlePendingState();
     }
+
+    let home = merge({
+      costs: {},
+      amenities: [],
+      facilities: []
+    }, this.props.home || {});
+    let homeLocation = merge({
+      address: {
+        street: null,
+        apartment: null,
+        zipcode: null,
+        city: null,
+        country: 'GB'
+      },
+      coordinates: [],
+      neighborhood: null
+    }, home.location || {});
 
     let countrySelections = countries.map((country) => {
       return (
@@ -309,11 +375,11 @@ export default class HomesEditDetails extends React.Component {
     });
 
     let lat, lon = '';
-    if (this.props.home.location.coordinates.length) {
-      lat = this.props.home.location.coordinates[0];
-      lon = this.props.home.location.coordinates[1];
+    if (home && homeLocation.coordinates.length) {
+      lat = homeLocation.coordinates[0];
+      lon = homeLocation.coordinates[1];
     }
-    debug('Neighborhood of this home', this.props.home.location.neighborhood);
+    //debug('Neighborhood of this home', this.props.homeLocation.neighborhood);
 
     return (
       <Row>
@@ -327,7 +393,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='title'
                 label='Title'
                 placeholder='Title (optional)'
-                defaultValue={this.props.home.title}
+                defaultValue={home.title}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -335,7 +401,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='description'
                 label='Description'
                 placeholder='Write description'
-                defaultValue={this.props.home.description}
+                defaultValue={home.description}
                 onChange={this.onFormChange.bind(this)}
                 required
               />
@@ -346,7 +412,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='addressStreet'
                 label='Street Address'
                 placeholder='ie. Kauppakartanonkuja 3 B'
-                defaultValue={this.props.home.location.address.street}
+                defaultValue={homeLocation.address.street}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -354,16 +420,20 @@ export default class HomesEditDetails extends React.Component {
                 ref='addressApartment'
                 label='Apartment'
                 placeholder='ie. 22'
-                defaultValue={this.props.home.location.address.apartment}
+                defaultValue={homeLocation.address.apartment}
                 onChange={this.onFormChange.bind(this)}
               />
-              <NeighborhoodSelect ref='addressNeighborhood' selected={this.props.home.location.neighborhood} />
+              <NeighborhoodSelect
+                ref='addressNeighborhood'
+                selected={homeLocation.neighborhood}
+                neighborhoods={this.state.neighborhoods}
+              />
               <Input
                 type='text'
                 ref='addressCity'
                 label='City'
                 placeholder='ie. Helsinki'
-                defaultValue={this.props.home.location.address.city}
+                defaultValue={homeLocation.address.city}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -371,7 +441,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='addressZipcode'
                 label='Zipcode'
                 placeholder=''
-                defaultValue={this.props.home.location.address.zipcode}
+                defaultValue={homeLocation.address.zipcode}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -379,7 +449,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='addressCountry'
                 label='Country'
                 placeholder='Select Country'
-                defaultValue={this.props.home.location.address.country}
+                defaultValue={homeLocation.address.country}
                 onChange={this.onFormChange.bind(this)}>
                 <option value=''>Select country</option>
                 {countrySelections}
@@ -414,7 +484,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='costsCurrency'
                 label='Currency'
                 placeholder='Select Applied Currency'
-                defaultValue={this.props.home.costs.currency}
+                defaultValue={home.costs.currency}
                 onChange={this.onFormChange.bind(this)}>
                 <option value='EUR'>Euro</option>
                 <option value='GBP'>British Pounds</option>
@@ -425,7 +495,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='costsDeptFreePrice'
                 label='Dept Free Price'
                 placeholder='(optional)'
-                defaultValue={this.props.home.costs.deptFreePrice}
+                defaultValue={home.costs.deptFreePrice}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -433,7 +503,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='costsSellingPrice'
                 label='Selling Price'
                 placeholder='(optional)'
-                defaultValue={this.props.home.costs.sellingPrice}
+                defaultValue={home.costs.sellingPrice}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -441,7 +511,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='costsSquarePrice'
                 label='Square meter Price'
                 placeholder='(optional)'
-                defaultValue={this.props.home.costs.squarePrice}
+                defaultValue={home.costs.squarePrice}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -449,7 +519,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='costsReTaxPerYear'
                 label='Real estate Tax (per year)'
                 placeholder='(optional)'
-                defaultValue={this.props.home.costs.realEstateTaxPerYear}
+                defaultValue={home.costs.realEstateTaxPerYear}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -457,7 +527,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='costsEcPerMonth'
                 label='Electrict Charge (per month)'
                 placeholder='(optional)'
-                defaultValue={this.props.home.costs.electricChargePerMonth}
+                defaultValue={home.costs.electricChargePerMonth}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -465,7 +535,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='costsWcPerMonth'
                 label='Water charge (per month)'
                 placeholder='(optional)'
-                defaultValue={this.props.home.costs.waterChargePerMonth}
+                defaultValue={home.costs.waterChargePerMonth}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
@@ -473,7 +543,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='costsWcPerType'
                 label='Water charge type'
                 placeholder='Water charge type'
-                defaultValue={this.props.home.costs.waterChargePerType}
+                defaultValue={home.costs.waterChargePerType}
                 onChange={this.onFormChange.bind(this)}>
                 <option value='person'>Per Person</option>
                 <option value='household'>Per Household</option>
@@ -485,7 +555,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='amenities'
                 label='Input Amenities (one per line)'
                 placeholder='(optional)'
-                defaultValue={this.props.home.amenities.join(`\n`)}
+                defaultValue={home.amenities.join(`\n`)}
                 onChange={this.onFormChange.bind(this)}
               />
             </Panel>
@@ -495,7 +565,7 @@ export default class HomesEditDetails extends React.Component {
                 ref='facilities'
                 label='Input Facilities (one per line)'
                 placeholder='(optional)'
-                defaultValue={this.props.home.facilities.join(`\n`)}
+                defaultValue={home.facilities.join(`\n`)}
                 onChange={this.onFormChange.bind(this)}
               />
             </Panel>

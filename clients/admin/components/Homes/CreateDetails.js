@@ -7,18 +7,21 @@ let debug = require('../../../common/debugger')('HomesCreateDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
 
 export default class HomesCreateDetails extends HomesEditDetails {
-  saveHome(homeProps) {
-    debug('Create homeProps', homeProps);
-    let action = HomeActions.createItem(homeProps);
-    debug('Action', action);
-    action.then(() => {
-      debug('promise arguments', arguments);
-    });
-  }
+  // saveHome(homeProps) {
+  //   debug('Create homeProps', homeProps);
+  //   let action = HomeActions.createItem(homeProps);
+  //   debug('Action', action);
+  //   action.then(() => {
+  //     debug('promise arguments', arguments);
+  //   });
+  // }
 
   onHomeStoreChange(state) {
     debug('onHomeStoreChange', state);
-    this.setState(state);
+    console.log('state.home', state.home);
+    if (state.error) {
+      this.setState(state);
+    }
 
     if (state.home && state.home.id) {
       debug('Redirect to the newly created home');

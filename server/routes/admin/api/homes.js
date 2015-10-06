@@ -14,6 +14,11 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Home')
     .parseRequestArguments(req)
+    .populate({
+      'location.neighborhood': {
+        select: 'uuid title slug'
+      }
+    })
     .findAll()
     .fetch()
     .then((result) => {
@@ -39,15 +44,42 @@ exports.registerRoutes = (app) => {
       return next(new BadRequest('invalid request body'));
     }
 
-    QB
-    .forModel('Home')
-    .createNoMultiset(data)
-    .then((model) => {
-      res.json({
-        status: 'ok', home: model
+    function createHome(homeData) {
+      return QB
+      .forModel('Home')
+      .populate({
+        'location.neighborhood': {
+          select: 'uuid title slug'
+        }
+      })
+      .createNoMultiset(data)
+      .then((model) => {
+        res.json({
+          status: 'ok', home: model
+        });
+      })
+      .catch(next);
+    }
+
+    if (data.location.neighborhood) {
+      let neighborhoodUuid = data.location.neighborhood;
+      data.location.neighborhood = null;
+      QB
+      .forModel('Neighborhood')
+      .findByUuid(neighborhoodUuid)
+      .fetch()
+      .then((result) => {
+        debug('Got neighborhood', result.model.title, result.model.id);
+        data.location.neighborhood = result.model.id;
+        createHome(data);
+      })
+      .catch((nhError) => {
+        app.log.error(`Error fetching Neighborhood: ${err.message}`);
+        createHome(data);
       });
-    })
-    .catch(next);
+    } else {
+      createHome(data);
+    }
   });
 
 
@@ -55,19 +87,24 @@ exports.registerRoutes = (app) => {
     debug('API fetch home with uuid', req.params.uuid);
     debug('req.query', req.query);
 
-    if (req.params.uuid === 'blank') {
-      debug('Create a blank home');
-      let model = new (QB.forModel('Home')).Model();
-      debug('created a blank', model);
-      res.json({
-        status: 'ok',
-        home: model
-      });
-      return null;
-    }
+    // if (req.params.uuid === 'blank') {
+    //   debug('Create a blank home');
+    //   let model = new (QB.forModel('Home')).Model();
+    //   debug('created a blank', model);
+    //   res.json({
+    //     status: 'ok',
+    //     home: model
+    //   });
+    //   return null;
+    // }
 
     QB
     .forModel('Home')
+    .populate({
+      'location.neighborhood': {
+        select: 'uuid title slug'
+      }
+    })
     .findByUuid(req.params.uuid)
     .fetch()
     .then((result) => {
@@ -133,20 +170,20 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  app.patch('/api/homes/:uuid', function(req, res, next) {
-    debug('API update home with uuid', req.params.uuid);
-    //debug('req.body', req.body);
-
-    let data = req.body.home;
-
-    updateHome(req.params.uuid, data)
-    .then((model) => {
-      res.json({
-        status: 'ok', home: model
-      });
-    })
-    .catch(next);
-  });
+  // app.patch('/api/homes/:uuid', function(req, res, next) {
+  //   debug('API update home with uuid', req.params.uuid);
+  //   //debug('req.body', req.body);
+  //
+  //   let data = req.body.home;
+  //
+  //   updateHome(req.params.uuid, data)
+  //   .then((model) => {
+  //     res.json({
+  //       status: 'ok', home: model
+  //     });
+  //   })
+  //   .catch(next);
+  // });
 
   app.delete('/api/homes/:uuid', function(req, res, next) {
     QB

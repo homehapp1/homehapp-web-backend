@@ -1,7 +1,8 @@
 'use strict';
 
 import React from 'react';
-import HomeListStore from '../../stores/HomeListStore';
+//import HomeListStore from '../../stores/HomeListStore';
+import HomeStore from '../../stores/HomeStore';
 import HomesCreate from './Create';
 import Loading from '../../../common/components/Widgets/Loading';
 let blankId = null;
@@ -14,31 +15,31 @@ export default class HomesCreateContainer extends React.Component {
 
   state = {
     error: null,
-    home: HomeListStore.getHome(blankId)
+    home: null //HomeListStore.getHome(blankId)
   }
 
   componentDidMount() {
-    HomeListStore.listen(this.storeListener);
-    if (!HomeListStore.getHome(blankId)) {
-      HomeListStore.fetchHomes();
-    }
+    HomeStore.listen(this.storeListener);
+    // if (!HomeListStore.getHome(blankId)) {
+    //   HomeListStore.fetchHomes();
+    // }
   }
 
   componentWillUnmount() {
-    HomeListStore.unlisten(this.storeListener);
+    HomeStore.unlisten(this.storeListener);
   }
 
   onChange(/*state*/) {
     this.setState({
-      error: HomeListStore.getState().error,
-      home: HomeListStore.getHome(blankId)
+      error: HomeStore.getState().error,
+      home: HomeStore.getState().home //HomeListStore.getHome(blankId)
     });
   }
 
   handlePendingState() {
     return (
       <Loading>
-        <h3>Creating a new home template...</h3>
+        <h3>Creating a new home...</h3>
       </Loading>
     );
   }
@@ -46,7 +47,7 @@ export default class HomesCreateContainer extends React.Component {
   handleErrorState() {
     return (
       <div className='homes-error'>
-        <h3>Error creating a new home template!</h3>
+        <h3>Error creating a new home!</h3>
         <p>{this.state.error.message}</p>
       </div>
     );
@@ -57,7 +58,7 @@ export default class HomesCreateContainer extends React.Component {
       return this.handleErrorState();
     }
 
-    if (HomeListStore.isLoading() || !this.state.home) {
+    if (HomeStore.isLoading()) {
       return this.handlePendingState();
     }
 

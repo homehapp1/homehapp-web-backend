@@ -1,10 +1,12 @@
 import React from 'react';
 import Input from 'react-bootstrap/lib/Input';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
+
 let debug = require('../../../common/debugger')('NeighborhoodSelect');
 
 export default class NeighborhoodSelect extends React.Component {
   static propTypes = {
+    neighborhoods: React.PropTypes.array.isRequired,
     selected: React.PropTypes.oneOfType([
       React.PropTypes.null,
       React.PropTypes.object
@@ -13,33 +15,34 @@ export default class NeighborhoodSelect extends React.Component {
 
   constructor(props) {
     super(props);
-    this.storeListener = this.onChange.bind(this);
+    //this.storeListener = this.onChange.bind(this);
     this.selected = null;
     this.updateSelected = this.updateSelected.bind(this);
   }
 
-  state = {
-    error: null,
-    neighborhoods: []
-  };
+  // state = {
+  //   error: null,
+  //   neighborhoods: []
+  // };
 
   componentDidMount() {
-    NeighborhoodListStore.listen(this.storeListener);
-    debug('NeighborhoodListStore', NeighborhoodListStore);
-    NeighborhoodListStore.fetchNeighborhoods();
+    // NeighborhoodListStore.listen(this.storeListener);
+    // if (!NeighborhoodListStore.getState().neighborhoods.length) {
+    //   NeighborhoodListStore.fetchNeighborhoods();
+    // }
   }
 
   componentWillUnmount() {
-    NeighborhoodListStore.unlisten(this.storeListener);
+    //NeighborhoodListStore.unlisten(this.storeListener);
   }
 
-  onChange(state) {
-    debug('state', state, NeighborhoodListStore.getState());
-    this.setState({
-      error: NeighborhoodListStore.getState().error,
-      neighborhoods: NeighborhoodListStore.getNeighborhood()
-    });
-  }
+  // onChange(state) {
+  //   debug('state', state, NeighborhoodListStore.getState());
+  //   this.setState({
+  //     error: NeighborhoodListStore.getState().error,
+  //     neighborhoods: NeighborhoodListStore.getState().neighborhoods
+  //   });
+  // }
 
   isSelected(neighborhood) {
     return !!(this.props.selected && String(this.props.selected.id) === String(neighborhood.id));
@@ -57,7 +60,7 @@ export default class NeighborhoodSelect extends React.Component {
     let selected = this.refs.neighborhoodSelect.getValue();
     debug('Got value', selected);
     this.selected = null;
-    for (let neighborhood of this.neighborhoods) {
+    for (let neighborhood of this.props.neighborhoods) {
       if (neighborhood.id === selected) {
         this.selected = neighborhood;
       }
@@ -66,22 +69,23 @@ export default class NeighborhoodSelect extends React.Component {
   }
 
   render() {
-    this.neighborhoods = [
+    debug('render', this.props);
+    let neighborhoods = [
       {
         id: '',
-        title: ''
+        title: 'Select one (optional)'
       }
     ];
-    let selected = '';
+    let selected = null;
 
     if (this.props.selected) {
-      this.neighborhoods.push(this.props.selected);
+      neighborhoods.push(this.props.selected);
       selected = this.props.selected.id;
     }
 
-    for (let neighborhood of this.state.neighborhoods) {
-      if (this.neighborhoods.indexOf(neighborhood) === -1) {
-        this.neighborhoods.push(neighborhood);
+    for (let neighborhood of this.props.neighborhoods) {
+      if (neighborhoods.indexOf(neighborhood) === -1) {
+        neighborhoods.push(neighborhood);
       }
     }
 
@@ -91,13 +95,13 @@ export default class NeighborhoodSelect extends React.Component {
         ref='neighborhoodSelect'
         label='Neighborhood'
         defaultValue={selected}
-        onChange={this.updateSelected}>
-        {this.neighborhoods.map((neighborhood, index) => {
+        onChange={this.updateSelected.bind(this)}>
+        {neighborhoods.map((neighborhood, index) => {
           let opts = {
             value: neighborhood.id
           };
           return (
-            <option {...opts} key={index}>{neighborhood.title}</option>
+            <option {...opts} key={'nhs-' + index}>{neighborhood.title}</option>
           );
         })}
       </Input>
