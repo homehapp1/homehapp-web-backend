@@ -151,9 +151,8 @@ exports.registerRoutes = (app) => {
     getNeighborhoodBySlug(req, res, next)
     .then((neighborhood) => {
       debug('Got neighborhood', neighborhood);
-      res.locals.data.title = [neighborhood.title];
+      res.locals.data.title = neighborhood.pageTitle;
 
-      let title = [neighborhood.title, neighborhood.location.city.title];
       let description = neighborhood.description || `View the neighborhood of ${neighborhood.title}, ${neighborhood.location.city.title}`;
 
       if (description.length > 200) {
@@ -161,7 +160,7 @@ exports.registerRoutes = (app) => {
       }
 
       res.locals.page = {
-        title: title.join(' | '),
+        title: neighborhood.pageTitle,
         description: description
       };
       next();
@@ -173,13 +172,10 @@ exports.registerRoutes = (app) => {
     getNeighborhoodBySlug(req, res, next)
     .then((neighborhood) => {
       debug('Got neighborhood', neighborhood);
-      res.locals.data.title = ['Homes', neighborhood.title];
-
-      let title = [neighborhood.title, neighborhood.location.city.title];
+      res.locals.data.title = [`Homes in ${neighborhood.title}`];
       let description = `View our exclusive homes in ${neighborhood.title}, ${neighborhood.location.city.title}`;
-
       res.locals.page = {
-        title: title.join(' | '),
+        title: res.locals.data.title.join(' | '),
         description: description
       };
       debug('callback finished');
