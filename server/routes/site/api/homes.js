@@ -39,47 +39,18 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Home')
     .parseRequestArguments(req)
+    .populate({
+      'location.neighborhood': {}
+    })
     .findAll()
     .fetch()
     .then((result) => {
-      let homes = result.models.slice(0);
-      let neighborhoods = {};
-
-      let populateNeighborhood = function populateNeighborhood() {
-        // All homes successfully populated, return results
-        if (!homes.length) {
-          res.json({
-            status: 'ok',
-            homes: result.models
-          });
-          return null;
-        }
-
-        let home = homes[0];
-        let id = String(home.location.neighborhood);
-
-        // Neighborhood already fetched, populate with it and move to next
-        if (typeof neighborhoods[id] !== 'undefined') {
-          home.location.neighborhood = neighborhoods[id];
-          homes.shift();
-          return populateNeighborhood();
-        }
-        debug('Neighborhood not found from the list, fetch it');
-
-        getNeighborhood(home.location.neighborhood)
-        .then((r) => {
-          debug('got neighborhood', r.model.title);
-          let _id = String(r.model._id);
-          neighborhoods[_id] = r.model;
-
-          // Populate the neighborhood
-          populateNeighborhood();
-        });
-      };
-      populateNeighborhood();
+      res.json({
+        status: 'ok',
+        homes: result.models
+      });
     })
     .catch(next);
-
   });
 
 };
