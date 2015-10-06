@@ -23,6 +23,7 @@ class HomeStore {
     });
 
     this.error = null;
+    this.home = null;
 
     this.exportAsync(HomeSource);
   }
@@ -30,6 +31,7 @@ class HomeStore {
   handleCreateItem(item) {
     debug('handleCreateItem', item);
     this.error = null;
+    this.home = null;
     if (!this.getInstance().isLoading()) {
       setTimeout(() => {
         this.getInstance().createItem(item);

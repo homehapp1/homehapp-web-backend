@@ -120,25 +120,27 @@ exports.loadSchemas = function (mongoose, next) {
     };
     // This should include a check for the main image, but we go now with the
     // simplest solution
-    if (this.images.length) {
+    if (this.images && this.images.length) {
       return this.images[0];
     }
-    let images = [];
-    for (let block of this.story.blocks) {
-      switch (block.template.type) {
-        case 'BigImage':
-          images.push(block.properties.image);
-          break;
-        case 'Gallery':
-          for (let image of block.properties.images) {
-            images.push(image);
+    if (this.story && this.story.blocks) {
+      let images = [];
+      for (let block of this.story.blocks) {
+        switch (block.template.type) {
+          case 'BigImage':
+            images.push(block.properties.image);
             break;
-          }
-          break;
-      }
-      // Return the first available image from any story block
-      if (images.length) {
-        return images[0];
+          case 'Gallery':
+            for (let image of block.properties.images) {
+              images.push(image);
+              break;
+            }
+            break;
+        }
+        // Return the first available image from any story block
+        if (images.length) {
+          return images[0];
+        }
       }
     }
     // Fallback placeholder

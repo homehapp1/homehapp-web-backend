@@ -7,7 +7,6 @@ let debug = require('../../common/debugger')('AgentSource');
 
 let AgentSource = {
   createItem: function () {
-    debug('createItem', arguments);
     return {
       remote(storeState, data) {
         debug('createItem:remote', arguments, data);
@@ -50,7 +49,6 @@ let AgentSource = {
     };
   },
   updateItem: function () {
-    debug('updateItem', arguments);
     return {
       remote(storeState, data) {
         debug('updateItem:remote', arguments, data);

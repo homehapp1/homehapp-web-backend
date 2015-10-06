@@ -36,9 +36,6 @@ export default class HomesCreate extends React.Component {
             <TabPane eventKey={1} tab='Details'>
               <CreateDetails home={this.props.home} />
             </TabPane>
-            <TabPane eventKey={2} tab='Story'>
-              <HomesCreateStory />
-            </TabPane>
           </TabbedArea>
         </Row>
       </SubNavigationWrapper>

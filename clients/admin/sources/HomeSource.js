@@ -7,7 +7,6 @@ let debug = require('../../common/debugger')('HomeSource');
 
 let HomeSource = {
   createItem: function () {
-    debug('createItem', arguments);
     return {
       remote(storeState, data) {
         debug('createItem:remote', arguments, data);
@@ -50,7 +49,6 @@ let HomeSource = {
     };
   },
   updateItem: function () {
-    debug('updateItem', arguments);
     return {
       remote(storeState, data) {
         debug('updateItem:remote', arguments, data);
@@ -59,7 +57,7 @@ let HomeSource = {
         };
         let id = data.uuid;
         delete data.uuid;
-        return request.patch(`/api/homes/${id}`, putData)
+        return request.put(`/api/homes/${id}`, putData)
           .then((response) => {
             debug('got response', response);
             if (!response.data || response.data.status !== 'ok') {

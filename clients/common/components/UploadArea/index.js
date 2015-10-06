@@ -76,7 +76,9 @@ class UploadArea extends React.Component {
   }
 
   componentWillUnmount() {
-    this.dropzone.destroy();
+    if (this.dropzone) {
+      this.dropzone.destroy();
+    }
     this.dropzone = null;
   }
 
