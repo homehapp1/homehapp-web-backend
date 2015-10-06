@@ -99,7 +99,7 @@ exports.registerRoutes = (app) => {
   let updateAgent = function updateAgent(uuid, data) {
     debug('Data', data);
 
-    QB
+    return QB
     .forModel('Agent')
     .findByUuid(uuid)
     .updateNoMultiset(data);
