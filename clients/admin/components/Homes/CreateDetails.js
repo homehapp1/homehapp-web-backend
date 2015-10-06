@@ -1,6 +1,7 @@
 'use strict';
 
 import HomesEditDetails from './EditDetails';
+import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
 
 let debug = require('../../../common/debugger')('HomesCreateDetails');
@@ -18,13 +19,16 @@ export default class HomesCreateDetails extends HomesEditDetails {
 
   onHomeStoreChange(state) {
     debug('onHomeStoreChange', state);
-    let home = state.home;
-    console.log('state.home', state.home);
-    if (state.error) {
-      this.setState(state);
+    let error = HomeStore.getState().error;
+    let home = HomeStore.getState().home;
+
+    if (error) {
+      this.setState({
+        error: error
+      });
     }
 
-    if (state.home && state.home.slug) {
+    if (home && home.slug) {
       debug('Redirect to the newly created home');
       let href = this.context.router.makeHref('homeEdit', {id: state.home.id});
       debug('Redirect url', href);

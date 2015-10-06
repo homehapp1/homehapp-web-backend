@@ -6,6 +6,8 @@ import HomesIndex from './index';
 
 import Loading from '../../../common/components/Widgets/Loading';
 
+let debug = require('../../../common/debugger')('HomesIndexContainer');
+
 class HomesIndexContainer extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
@@ -22,6 +24,7 @@ class HomesIndexContainer extends React.Component {
   }
 
   componentDidMount() {
+    debug('componentDidMount');
     HomeListStore.listen(this.storeListener);
     HomeListStore.fetchHomes();
   }
@@ -31,7 +34,10 @@ class HomesIndexContainer extends React.Component {
   }
 
   onChange(state) {
-    this.setState(state);
+    debug('onChange', state);
+    this.setState({
+      homes: HomeListStore.getState().homes
+    });
   }
 
   handlePendingState() {

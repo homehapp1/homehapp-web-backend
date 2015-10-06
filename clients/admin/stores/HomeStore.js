@@ -26,6 +26,7 @@ class HomeStore {
 
     this.error = null;
     this.home = null;
+    this.deleted = false;
     this.exportAsync(HomeSource);
   }
 
@@ -43,6 +44,7 @@ class HomeStore {
     debug('handleCreateSuccess', home);
     this.error = null;
     this.home = home;
+    this.emitChange();
   }
 
   handleUpdateItem(item) {
@@ -58,10 +60,12 @@ class HomeStore {
     debug('handleUpdateSuccess', home);
     this.error = null;
     this.home = home;
+    this.emitChange();
   }
   handleDeleteItem(item) {
     debug('handleDeleteItem', item);
     this.error = null;
+    this.deleted = false;
     if (!this.getInstance().isLoading()) {
       setTimeout(() => {
         debug('instance', this.getInstance());
@@ -73,6 +77,8 @@ class HomeStore {
     debug('handleDeleteSuccess', home);
     this.error = null;
     this.home = null;
+    this.deleted = true;
+    this.emitChange();
   }
 
   handleRequestFailed(error) {

@@ -17,6 +17,7 @@ import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
+import HomeListActions from '../../actions/HomeListActions';
 
 import Loading from '../../../common/components/Widgets/Loading';
 
@@ -35,7 +36,6 @@ export default class HomesDelete extends React.Component {
   constructor(props) {
     super(props);
     this.storeListener = this.onHomeStoreChange.bind(this);
-    this.onDelete = this.onDelete.bind(this);
   }
 
   state = {
@@ -52,17 +52,18 @@ export default class HomesDelete extends React.Component {
 
   onHomeStoreChange(state) {
     debug('onHomeStoreChange', state);
+    if (!state.error && state.deleted) {
+      debug('Redirect to home listing');
+      let href = this.context.router.makeHref('homes');
+      window.location.href = href;
+      return
+    }
     this.setState(state);
   }
 
   onDelete() {
     debug('Delete');
     HomeActions.deleteItem(this.props.home);
-  }
-
-  onDeleted() {
-    debug('Redirect to home listing');
-    this.context.router.transitionTo('homes');
   }
 
   handlePendingState() {

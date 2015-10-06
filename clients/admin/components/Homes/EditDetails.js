@@ -326,16 +326,13 @@ export default class HomesEditDetails extends React.Component {
       return null;
     }
 
-    let host = ApplicationStore.getState().config.siteHost || 'http://130.211.77.56:8080';
-
     return (
         <Input
         type='text'
         label='Slug'
-        placeholder='Public URL'
+        placeholder='Home Slug (will be generated)'
         readOnly
-        defaultValue={`${host}/home/${home.slug}`}
-        onChange={this.onFormChange.bind(this)}
+        defaultValue={home.slug}
       />
     );
   }

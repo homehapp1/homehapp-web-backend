@@ -10,7 +10,6 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import CreateDetails from './CreateDetails';
-import HomesCreateStory from './CreateStory';
 
 export default class HomesCreate extends React.Component {
   static propTypes = {
