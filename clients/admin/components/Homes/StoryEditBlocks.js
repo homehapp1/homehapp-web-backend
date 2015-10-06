@@ -13,6 +13,7 @@ import AdminBigImage from '../Widgets/BigImage';
 import AdminContentImage from '../Widgets/ContentImage';
 import AdminBigVideo from '../Widgets/BigVideo';
 import AdminGallery from '../Widgets/Gallery';
+import AdminLargeText from '../Widgets/LargeText';
 import {moveToIndex} from '../../../common/Helpers';
 
 export default class StoryEditBlocks extends React.Component {
@@ -181,6 +182,12 @@ export default class StoryEditBlocks extends React.Component {
     );
   }
 
+  getLargeText(item, index) {
+    return (
+      <AdminLargeText {...item.properties} ref={'block' + index} />
+    );
+  }
+
   render() {
     return (
       <div className='edit-story'>
@@ -196,6 +203,7 @@ export default class StoryEditBlocks extends React.Component {
                 <option value='BigImage'>Big Image</option>
                 <option value='BigVideo'>Big Video</option>
                 <option value='ContentBlock'>Content Block</option>
+                <option value='ContentImage'>Content Image</option>
                 <option value='Gallery'>Gallery</option>
               </Input>
             </Col>
