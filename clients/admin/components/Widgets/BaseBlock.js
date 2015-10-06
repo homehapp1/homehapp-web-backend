@@ -85,6 +85,10 @@ export default class WidgetsBaseBlock extends React.Component {
         });
       }
     } else if (this.blockProperties[key].type === 'images') {
+      if (!Array.isArray(this.props[key])) {
+        this.props[key] = [];
+      }
+
       for (let [k, imageData] of enumerate(uploads)) {
         //debug(k, 'data:', imageData);
         this.props[key].push({
