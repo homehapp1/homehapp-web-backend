@@ -12,6 +12,7 @@ import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
 import StoryEditBlocks from './StoryEditBlocks';
+import ApplicationStore from '../../../common/stores/ApplicationStore';
 
 import Loading from '../../../common/components/Widgets/Loading';
 
@@ -108,6 +109,17 @@ export default class HomesEditStory extends React.Component {
     }
     debug('Home', this.props.home);
 
+    let previewLink = null;
+    if (this.props.home) {
+      previewLink = (
+        <a href={ApplicationStore.getState().config.siteHost + '/home/' + this.props.home.slug}
+          target='_blank'
+          className='btn btn-primary'>
+          Preview
+        </a>
+      );
+    }
+
     return (
       <Row>
         {error}
@@ -131,6 +143,7 @@ export default class HomesEditStory extends React.Component {
               <Row>
                 <Col md={6}>
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
+                  {previewLink}
                 </Col>
               </Row>
             </Well>

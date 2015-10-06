@@ -391,7 +391,7 @@ export default class HomesEditDetails extends React.Component {
       previewLink = (
         <a href={ApplicationStore.getState().config.siteHost + '/home/' + this.props.home.slug}
           target='_blank'
-          className='btn btn-primary pull-right'>
+          className='btn btn-primary'>
           Preview
         </a>
       );
@@ -623,9 +623,9 @@ export default class HomesEditDetails extends React.Component {
               <Row>
                 <Col md={6}>
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
+                  {previewLink}
                 </Col>
                 <Col md={6} pullRight>
-                  {previewLink}
                   {deleteLink}
                 </Col>
               </Row>
