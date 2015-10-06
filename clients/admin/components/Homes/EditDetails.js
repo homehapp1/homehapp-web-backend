@@ -15,6 +15,7 @@ import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import {randomNumericId, enumerate, merge} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
+import ApplicationStore from '../../../common/stores/ApplicationStore';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
@@ -368,13 +369,13 @@ export default class HomesEditDetails extends React.Component {
     let previewLink = null;
     if (this.props.home) {
       deleteLink = (<Link to='homeDelete' params={{id: this.props.home.id}} className='pull-right btn btn-danger btn-preview'>Delete</Link>);
-      // previewLink = (
-      //   <a href={'https://www.homehapp.co.uk/home/' + this.props.home.slug}
-      //     target='_blank'
-      //     className='btn btn-primary pull-right'>
-      //     Preview
-      //   </a>
-      // );
+      previewLink = (
+        <a href={ApplicationStore.getState().config.siteHost + '/home/' + this.props.home.slug}
+          target='_blank'
+          className='btn btn-primary pull-right'>
+          Preview
+        </a>
+      );
     }
     //debug('Neighborhood of this home', this.props.homeLocation.neighborhood);
 

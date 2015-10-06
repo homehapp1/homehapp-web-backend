@@ -11,6 +11,7 @@ class ApplicationStore {
     });
     this.csrf = null;
     this.config = {
+      siteHost: 'http://localhost:3001',
       revisionedStaticPath: 'https://res.cloudinary.com/homehapp/raw/upload/site/',
       cloudinary: {
         baseUrl: 'https://res.cloudinary.com/homehapp/image/upload/',
