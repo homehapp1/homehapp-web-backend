@@ -365,8 +365,16 @@ export default class HomesEditDetails extends React.Component {
     }
 
     let deleteLink = null;
+    let previewLink = null;
     if (this.props.home) {
-      deleteLink = (<Link to='homeDelete' params={{id: this.props.home.id}} className='pull-right btn btn-danger'>Delete</Link>);
+      deleteLink = (<Link to='homeDelete' params={{id: this.props.home.id}} className='pull-right btn btn-danger btn-preview'>Delete</Link>);
+      previewLink = (
+        <a href={'/home/' + this.props.home.slug}
+          targe='_blank'
+          className='btn btn-primary pull-right'>
+          Preview
+        </a>
+      );
     }
     //debug('Neighborhood of this home', this.props.homeLocation.neighborhood);
 
@@ -596,6 +604,7 @@ export default class HomesEditDetails extends React.Component {
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
                 </Col>
                 <Col md={6} pullRight>
+                  {previewLink}
                   {deleteLink}
                 </Col>
               </Row>
