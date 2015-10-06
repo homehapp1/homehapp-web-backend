@@ -80,6 +80,26 @@ exports.loadSchemas = function (mongoose, next) {
       'image'
     ];
   };
+  schemas.Agent.virtual('rname').get(function () {
+    let name = [];
+    if (this.lastname) {
+      name.push(this.lastname);
+    }
+    if (this.firstname) {
+      name.push(this.firstname);
+    }
+    return name.join(', ');
+  });
+  schemas.Agent.virtual('name').get(function () {
+    let name = [];
+    if (this.firstname) {
+      name.push(this.firstname);
+    }
+    if (this.lastname) {
+      name.push(this.lastname);
+    }
+    return name.join(' ');
+  });
 
   Object.keys(schemas).forEach((name) => {
     loadCommonPlugins(schemas[name], name, mongoose);

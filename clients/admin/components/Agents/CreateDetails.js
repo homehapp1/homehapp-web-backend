@@ -4,7 +4,6 @@ import AgentsEditDetails from './EditDetails';
 import AgentActions from '../../actions/AgentActions';
 
 let debug = require('../../../common/debugger')('AgentsCreateDetails');
-const countries = require('../../../common/lib/Countries').forSelect();
 
 export default class AgentsCreateDetails extends AgentsEditDetails {
   saveAgent(agentProps) {

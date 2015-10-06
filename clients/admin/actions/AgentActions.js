@@ -20,6 +20,13 @@ class AgentActions {
   updateSuccess(count) {
     this.dispatch(count);
   }
+  deleteItem(item) {
+    debug('deleteItem', item);
+    this.dispatch(item);
+  }
+  deleteSuccess(count) {
+    this.dispatch(count);
+  }
   fetchItem(id) {
     debug('fetchItem', id);
     this.dispatch(id);

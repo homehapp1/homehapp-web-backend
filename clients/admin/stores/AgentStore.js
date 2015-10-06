@@ -17,19 +17,22 @@ class AgentStore {
     this.bindListeners({
       handleCreateItem: AgentActions.CREATE_ITEM,
       handleUpdateItem: AgentActions.UPDATE_ITEM,
+      handleDeleteItem: AgentActions.DELETE_ITEM,
       handleRequestFailed: AgentActions.REQUEST_FAILED,
       handleCreateSuccess: AgentActions.CREATE_SUCCESS,
-      handleUpdateSuccess: AgentActions.UPDATE_SUCCESS
+      handleUpdateSuccess: AgentActions.UPDATE_SUCCESS,
+      handleDeleteSuccess: AgentActions.DELETE_SUCCESS
     });
 
     this.error = null;
-
+    this.agent = null;
     this.exportAsync(AgentSource);
   }
 
   handleCreateItem(item) {
     debug('handleCreateItem', item);
     this.error = null;
+    this.agent = null;
     if (!this.getInstance().isLoading()) {
       setTimeout(() => {
         this.getInstance().createItem(item);
@@ -55,6 +58,21 @@ class AgentStore {
     debug('handleUpdateSuccess', agent);
     this.error = null;
     this.agent = agent;
+  }
+  handleDeleteItem(item) {
+    debug('handleDeleteItem', item);
+    this.error = null;
+    if (!this.getInstance().isLoading()) {
+      setTimeout(() => {
+        debug('instance', this.getInstance());
+        this.getInstance().deleteItem(item);
+      });
+    }
+  }
+  handleDeleteSuccess(agent) {
+    debug('handleDeleteSuccess', agent);
+    this.error = null;
+    this.agent = null;
   }
 
   handleRequestFailed(error) {

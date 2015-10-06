@@ -13,6 +13,12 @@ let AgentSource = {
         let postData = {
           agent: data
         };
+        let disallowed = ['uuid', 'id', '_id'];
+        for (let key of disallowed) {
+          if (typeof data[key] !== 'undefined') {
+            delete data[key];
+          }
+        }
         return request.post(`/api/agents`, postData)
           .then((response) => {
             debug('got response', response);
@@ -55,9 +61,9 @@ let AgentSource = {
         let putData = {
           agent: data
         };
-        let id = data.uuid;
+        let id = data.uuid || data.id;
         delete data.uuid;
-        return request.patch(`/api/agents/${id}`, putData)
+        return request.put(`/api/agents/${id}`, putData)
           .then((response) => {
             debug('got response', response);
             if (!response.data || response.data.status !== 'ok') {
@@ -90,6 +96,46 @@ let AgentSource = {
       success: AgentActions.updateSuccess,
       error: AgentActions.requestFailed,
       loading: AgentActions.updateItem
+    };
+  },
+  deleteItem: function() {
+    debug('deleteItem', arguments);
+    return {
+      remote(storeState, data) {
+        debug('deleteItem:remote', arguments, data);
+        let id = data.id;
+        return request.delete(`/api/agents/${id}`)
+        .then((response) => {
+          debug('Got response when deleting', response);
+          if (!response.data || response.data.status !== 'deleted') {
+            let err = new Error(response.data.error || 'Invalid response');
+            return Promise.reject(err);
+          }
+          return Promise.resolve(null);
+        })
+        .catch((response) => {
+          if (response instanceof Error) {
+            return Promise.reject(response);
+          } else {
+            let msg = 'unexpected error';
+            if (response.data && response.data.error) {
+              msg = response.data.error;
+            }
+            return Promise.reject(new Error(msg));
+          }
+          return Promise.reject(response);
+        });
+      },
+      local(storeState, data) {
+        debug('deleteItem:local', arguments, data);
+      },
+      shouldFetch() {
+        debug('deleteItem should always fetch from the server side');
+        return true;
+      },
+      success: AgentActions.deleteSuccess,
+      error: AgentActions.requestFailed,
+      loading: AgentActions.deleteItem
     };
   }
 };

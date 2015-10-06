@@ -38,7 +38,7 @@ class AgentsIndex extends React.Component {
                   <Link
                     to="agentEdit"
                     params={{id: agent.id}}>
-                    {agent.agentTitle}
+                    {agent.rname}
                   </Link>
                 </li>
               );

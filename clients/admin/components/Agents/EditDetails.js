@@ -13,10 +13,8 @@ import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import {randomNumericId, enumerate} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
-import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
 
 let debug = require('../../../common/debugger')('AgentsEditDetails');
-const countries = require('../../../common/lib/Countries').forSelect();
 
 export default class AgentsEditDetails extends React.Component {
   static propTypes = {
@@ -240,7 +238,7 @@ export default class AgentsEditDetails extends React.Component {
                 required
               />
             </Panel>
-            <Panel header='Contact'>
+            <Panel header='Company'>
               <Input type='text'
                 ref='companyTitle'
                 label='Company name'
@@ -259,9 +257,6 @@ export default class AgentsEditDetails extends React.Component {
                 placeholder='+44 123 00 11 22'
                 defaultValue={this.props.agent.company.title}
               />
-            </Panel>
-            <Panel header='Company'>
-
             </Panel>
             <Panel header='Images'>
               <Row>
