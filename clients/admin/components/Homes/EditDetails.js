@@ -69,10 +69,6 @@ export default class HomesEditDetails extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    HomeStore.unlisten(this.storeListener);
-  }
-
   componentWillReceiveProps(props) {
     debug('componentWillReceiveProps', props);
     if (props.home) {
@@ -81,6 +77,10 @@ export default class HomesEditDetails extends React.Component {
         homeImages: props.home.images || []
       });
     }
+  }
+
+  componentWillUnmount() {
+    HomeStore.unlisten(this.storeListener);
   }
 
   onHomeStoreChange(state) {
@@ -96,6 +96,7 @@ export default class HomesEditDetails extends React.Component {
   }
 
   onNeighborhoodsChange(state) {
+    debug('onNeighborhoodsChange', state);
     this.setState({
       neighborhoods: NeighborhoodListStore.getState().neighborhoods
     });
