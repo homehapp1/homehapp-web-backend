@@ -12,7 +12,7 @@ export default class AdminContentImage extends BaseBlock {
       label: 'Description',
       type: 'textarea'
     },
-    align: {
+    imageAlign: {
       label: 'Horizontal align',
       type: 'select',
       options: [
