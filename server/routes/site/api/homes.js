@@ -33,6 +33,7 @@ exports.registerRoutes = (app) => {
   });
 
   app.get('/api/home', function(req, res, next) {
+    debug('/api/home');
     QB
     .forModel('Home')
     .parseRequestArguments(req)
@@ -42,6 +43,7 @@ exports.registerRoutes = (app) => {
     .findAll()
     .fetch()
     .then((result) => {
+      debug(`Got ${result.models.length} homes`);
       res.json({
         status: 'ok',
         homes: result.models
