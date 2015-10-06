@@ -120,7 +120,7 @@ export default class Story extends React.Component {
       <ContentBlock key={index} className='details-view'>
         <h2>Property details</h2>
         <Columns cols={2}>
-          <div className='left'>
+          <div className='first'>
             <h3>Accommodation</h3>
             <ul>
               <li>Room list</li>
@@ -135,7 +135,7 @@ export default class Story extends React.Component {
               <li>Own</li>
             </ul>
           </div>
-          <div className='right'>
+          <div className='second'>
             <h3>Amenities</h3>
             <ul>
               <li>List of amenities</li>
