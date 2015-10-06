@@ -193,7 +193,14 @@ gulp.task('compile-client-styles', () => {
     .pipe(g.size({title: 'Client styles'}));
 });
 gulp.task('minify-client-styles', () => {
-  return gulp.src(path.join(paths.clients[PROJECT_NAME].statics, 'css', '*.css'))
+  let stylesBasePath = path.join(paths.clients[PROJECT_NAME].statics, 'css');
+  let styleSources = [
+    path.join(stylesBasePath, 'vendor.css'),
+    path.join(stylesBasePath, 'common.css'),
+    path.join(stylesBasePath, `${PROJECT_NAME}.css`)
+  ];
+
+  return gulp.src(styleSources)
     .pipe(g.concat('all.css'))
     .pipe(minifyCss({
       advanced: false
@@ -231,21 +238,19 @@ gulp.task('webpack:build-site-client', function(callback) {
   // run webpack
   siteCompiler.run(function(err, stats) {
     if(err) throw new gutil.PluginError('webpack:build-site-client', err);
-    gutil.log('[webpack:build-site-client]', stats.toString({
-      colors: true
-    }));
+    // gutil.log('[webpack:build-site-client]', stats.toString({
+    //   colors: true
+    // }));
     callback();
   });
 });
 gulp.task('webpack:build-admin-client', (callback) => {
   // run webpack
   adminCompiler.run((err, stats) => {
-    if (err) {
-      throw new gutil.PluginError('webpack:build-admin-client', err);
-    }
-    gutil.log('[webpack:build-admin-client]', stats.toString({
-      colors: true
-    }));
+    if (err) throw new gutil.PluginError('webpack:build-admin-client', err);
+    // gutil.log('[webpack:build-admin-client]', stats.toString({
+    //   colors: true
+    // }));
     callback();
   });
 });
