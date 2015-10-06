@@ -15,6 +15,7 @@ export default class NeighborhoodSelect extends React.Component {
     super(props);
     this.storeListener = this.onChange.bind(this);
     this.selected = null;
+    this.updateSelected = this.updateSelected.bind(this);
   }
 
   state = {
@@ -90,13 +91,13 @@ export default class NeighborhoodSelect extends React.Component {
         ref='neighborhoodSelect'
         label='Neighborhood'
         defaultValue={selected}
-        onChange={() => {this.updateSelected()}}>
+        onChange={this.updateSelected}>
         {this.neighborhoods.map((neighborhood, index) => {
           let opts = {
             value: neighborhood.id
           };
           return (
-            <option {...opts}>{neighborhood.title}</option>
+            <option {...opts} key={index}>{neighborhood.title}</option>
           );
         })}
       </Input>
