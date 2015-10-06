@@ -61,7 +61,7 @@ let HomeSource = {
         let putData = {
           home: data
         };
-        let id = data.uuid;
+        let id = data.uuid || data.id;
         delete data.uuid;
         return request.put(`/api/homes/${id}`, putData)
           .then((response) => {
