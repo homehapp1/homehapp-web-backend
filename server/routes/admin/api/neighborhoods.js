@@ -83,7 +83,7 @@ exports.registerRoutes = (app) => {
 
     let data = req.body.neighborhood;
 
-    if (!data.description) {
+    if (!data.title) {
       return next(new BadRequest('invalid request body'));
     }
 
