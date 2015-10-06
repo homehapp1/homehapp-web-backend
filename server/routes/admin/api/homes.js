@@ -157,9 +157,9 @@ exports.registerRoutes = (app) => {
 
     let data = req.body.home;
 
-    if (!data.description) {
-      return next(new BadRequest('invalid request body'));
-    }
+    // if (!data.description) {
+    //   return next(new BadRequest('invalid request body'));
+    // }
 
     updateHome(req.params.uuid, data)
     .then((model) => {

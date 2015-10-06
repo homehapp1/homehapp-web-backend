@@ -47,11 +47,11 @@ export default class HomesEditStory extends React.Component {
 
   onSave() {
     debug('onSave');
-    debug('blocks', this.refs.storyBlocks.state.blocks);
+    debug('blocks', this.refs.storyBlocks.getBlocks());
     let homeProps = {
       uuid: this.props.home.id,
       story: {
-        blocks: this.refs.storyBlocks.state.blocks,
+        blocks: this.refs.storyBlocks.getBlocks(),
         enabled: this.props.home.story.enabled
       }
     };

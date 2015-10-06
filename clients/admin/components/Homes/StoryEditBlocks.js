@@ -22,14 +22,29 @@ export default class StoryEditBlocks extends React.Component {
   constructor(props) {
     super(props);
     this.state.blocks = props.blocks;
+    console.log('StoryEditBlocks', props);
+  }
+
+  componentDidMount() {
+    console.log('StoryEditBlocks:componentDidMount');
+  }
+
+  componentWillUnmount() {
   }
 
   state = {
     blocks: []
   };
 
+  getBlocks() {
+    return this.state.blocks;
+  }
+
   onAddBlock() {
     let blockTemplate = this.refs.blockTemplate.getValue();
+    if (!blockTemplate) {
+      return;
+    }
     this.state.blocks.push({
       template: blockTemplate,
       properties: {}
@@ -168,6 +183,7 @@ export default class StoryEditBlocks extends React.Component {
             <Col md={6} sm={6}>
               <Input
                 type='select'
+                name='blockTemplate'
                 ref='blockTemplate'
               >
                 <option value=''>Choose template to use</option>
