@@ -28,11 +28,13 @@ export default class PropertyList extends React.Component {
   };
 
   render() {
+    debug('Render');
     let containerClass = ['home-list', 'preview-list'];
 
     if (this.props.className) {
       containerClass.push(this.props.className);
     }
+    debug('Draw homes', this.props.items, this.props.max);
 
     return (
       <div className={containerClass.join(' ')} ref='homeList'>
@@ -78,10 +80,21 @@ export default class PropertyList extends React.Component {
             }
             debug('home.mainImage', home.mainImage);
 
+            let neighborhood = null;
+            if (home.location.neighborhood) {
+              neighborhood = (<span className='neighborhood'>{home.location.neighborhood.title}</span>);
+            }
+
+            let mainImage = {
+              url: home.mainImage.url,
+              alt: home.mainImage.alt
+            };
+            debug('mainImage', mainImage);
+
             return (
               <div className={classes.join(' ')} key={index}>
                 <Link {...link} className='thumbnail'>
-                  <Hoverable {...home.mainImage} width={464} height={556} mode='fill' applySize>
+                  <Hoverable {...mainImage} width={464} height={556} mode='fill' applySize>
                     <span className='title'>{home.homeTitle}</span>
                   </Hoverable>
                 </Link>
@@ -89,7 +102,7 @@ export default class PropertyList extends React.Component {
                   <p className='price'>{home.formattedPrice}</p>
                   <p className='address'>
                     <span className='street'>{home.location.address.street}</span>
-                    <span className='neighborhood'>{home.location.neighborhood.title}</span>
+                    {neighborhood}
                     <span className='city'>{home.location.address.city}</span>
                   </p>
                 </div>
