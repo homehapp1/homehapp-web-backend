@@ -10,6 +10,7 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import AdminContentBlock from '../Widgets/ContentBlock';
 import AdminBigImage from '../Widgets/BigImage';
+import AdminContentImage from '../Widgets/ContentImage';
 import AdminBigVideo from '../Widgets/BigVideo';
 import AdminGallery from '../Widgets/Gallery';
 import {moveToIndex} from '../../../common/Helpers';
@@ -22,11 +23,11 @@ export default class StoryEditBlocks extends React.Component {
   constructor(props) {
     super(props);
     this.state.blocks = props.blocks;
-    console.log('StoryEditBlocks', props);
+    //console.log('StoryEditBlocks', props);
   }
 
   componentDidMount() {
-    console.log('StoryEditBlocks:componentDidMount');
+    //console.log('StoryEditBlocks:componentDidMount');
   }
 
   componentWillUnmount() {
@@ -37,7 +38,17 @@ export default class StoryEditBlocks extends React.Component {
   };
 
   getBlocks() {
-    return this.state.blocks;
+    let updatedBlocks = this.state.blocks;
+    this.state.blocks.map((item, index) => {
+      let newProps = this.refs[`block${index}`].getValues();
+      updatedBlocks[index].properties = newProps;
+    });
+
+    this.setState({
+      blocks: updatedBlocks
+    });
+
+    return updatedBlocks;
   }
 
   onAddBlock() {
@@ -141,37 +152,32 @@ export default class StoryEditBlocks extends React.Component {
   }
 
   getBigImage(item, index) {
-    // let primary = null;
-    // let secondary = null;
-
     return (
-      <Panel header={this.getBlockHeader(item, index)} key={index}>
-        <AdminBigImage {...item.properties} />
-      </Panel>
+      <AdminBigImage {...item.properties} ref={'block' + index} />
+    );
+  }
+
+  getContentImage(item, index) {
+    return (
+      <AdminContentImage {...item.properties} ref={'block' + index} />
     );
   }
 
   getContentBlock(item, index) {
     return (
-      <Panel header={this.getBlockHeader(item, index)} key={index}>
-        <AdminContentBlock {...item.properties} />
-      </Panel>
+      <AdminContentBlock {...item.properties} ref={'block' + index} />
     );
   }
 
   getGallery(item, index) {
     return (
-      <Panel header={this.getBlockHeader(item, index)} key={index}>
-        <AdminGallery {...item.properties} />
-      </Panel>
+      <AdminGallery {...item.properties} ref={'block' + index} />
     );
   }
 
   getBigVideo(item, index) {
     return (
-      <Panel header={this.getBlockHeader(item, index)} key={index}>
-        <AdminBigVideo {...item.properties} />
-      </Panel>
+      <AdminBigVideo {...item.properties} ref={'block' + index} />
     );
   }
 
@@ -208,7 +214,15 @@ export default class StoryEditBlocks extends React.Component {
             let method = `get${item.template}`;
 
             if (typeof this[method] === 'function') {
-              return this[method](item, index);
+              let editor = this[method](item, index);
+              return (
+                <Panel
+                  key={'b-' + index}
+                  header={this.getBlockHeader(item, index)}
+                >
+                  {editor}
+                </Panel>
+              );
             }
 
             console.warn(`No method ${method} defined, cannot get story block with type ${item.template}`);
