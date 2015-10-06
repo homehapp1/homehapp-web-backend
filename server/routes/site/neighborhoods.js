@@ -75,6 +75,7 @@ exports.registerRoutes = (app) => {
   app.get('/neighborhoods/:city', function(req, res, next) {
     let city = null;
     let neighborhoods = [];
+    debug(`/neighborhoods/${req.params.city}`);
 
     QB
     .forModel('City')
@@ -82,6 +83,8 @@ exports.registerRoutes = (app) => {
     .fetch()
     .then((result) => {
       city = result.city;
+
+      // Get each neighborhood ID that is populated with homes
       return QB
       .forModel('Home')
       .distinct('location.neighborhood')
@@ -100,10 +103,39 @@ exports.registerRoutes = (app) => {
       .fetch();
     })
     .then((result) => {
+      let images = [];
       neighborhoods = result.models;
+      let lastMod = null;
       for (let neighborhood of neighborhoods) {
         neighborhood.location.city = city;
+        let image = neighborhood.mainImage.url;
+        images.push(image);
+        // if (images.indexOf(image) === -1) {
+        //   images.push(image);
+        // }
+        lastMod = Math.max(neighborhood.updatedAt, lastMod);
       }
+
+      if (typeof res.locals.openGraph === 'undefined') {
+        res.locals.openGraph = {
+          'og:image': []
+        };
+      }
+      res.locals.openGraph['og:image'] = images.concat(res.locals.openGraph['og:image']);
+
+      res.locals.page = {
+        title: `Neighborhoods of ${city.title}`,
+        description: `Neighborhoods of ${city.title}`
+      };
+
+      if (lastMod) {
+        res.locals.openGraph['og:updated_time'] = lastMod.toISOString();
+        res.locals.metadatas.push({
+          'http-equiv': 'last-modified',
+          'content': res.locals.openGraph['og:updated_time']
+        });
+      }
+
       res.locals.data.NeighborhoodListStore = {
         neighborhoods: neighborhoods
       };
