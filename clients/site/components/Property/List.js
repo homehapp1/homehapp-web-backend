@@ -76,11 +76,12 @@ export default class PropertyList extends React.Component {
             } else {
               rooms = `${rooms} bedrooms`;
             }
+            debug('home.mainImage', home.mainImage);
 
             return (
               <div className={classes.join(' ')} key={index}>
                 <Link {...link} className='thumbnail'>
-                  <Hoverable {...home.images[0]} width={464} height={556} mode='fill' applySize>
+                  <Hoverable {...home.mainImage} width={464} height={556} mode='fill' applySize>
                     <span className='title'>{home.homeTitle}</span>
                   </Hoverable>
                 </Link>

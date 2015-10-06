@@ -1,6 +1,6 @@
 'use strict';
 
-import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, getMainImage} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -155,10 +155,10 @@ exports.loadSchemas = function (mongoose, next) {
       title.push(`${this.location.address.street} ${this.location.address.apartment}`);
     }
     if (this.location.neighborhood && typeof this.location.neighborhood.title !== 'undefined') {
-      title.push(this.location.neighborhood.title);
+      title.push(`neighborhood ${this.location.neighborhood.title}`);
     }
     if (this.location.address.street) {
-      title.push(this.location.address.city);
+      title.push(`street ${this.location.address.city}`);
     }
 
     if (!title.length) {
@@ -190,6 +190,10 @@ exports.loadSchemas = function (mongoose, next) {
     }
 
     return `£${String(Math.round(this.costs.sellingPrice)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
+  });
+
+  schemas.Home.virtual('mainImage').get(function() {
+    return getMainImage(this);
   });
 
   schemas.Home.statics.editableFields = function () {

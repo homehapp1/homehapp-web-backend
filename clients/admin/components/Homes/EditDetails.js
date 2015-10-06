@@ -394,6 +394,14 @@ export default class HomesEditDetails extends React.Component {
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
+                type='text'
+                label='Slug'
+                placeholder='Slug'
+                readOnly
+                defaultValue={home.slug}
+                onChange={this.onFormChange.bind(this)}
+              />
+              <Input
                 type='textarea'
                 ref='description'
                 label='Description'

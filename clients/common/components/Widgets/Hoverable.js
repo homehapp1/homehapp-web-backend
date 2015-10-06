@@ -8,7 +8,7 @@ export default class Hoverable extends React.Component {
   static propTypes = {
     src: React.PropTypes.string,
     url: React.PropTypes.string,
-    alt: React.PropTypes.string.isRequired,
+    alt: React.PropTypes.string,
     width: React.PropTypes.number,
     height: React.PropTypes.number,
     aspectRatio: React.PropTypes.number,

@@ -97,3 +97,42 @@ exports.commonJsonTransform = (ret) => {
 
   return ret;
 };
+
+exports.getMainImage = function getMainImage(model, placeholder = null) {
+  if (!placeholder) {
+    placeholder = {
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1441913472/site/images/content/content-placeholder.jpg',
+      alt: 'Placeholder',
+      width: 1920,
+      height: 1280,
+      aspectRatio: 1920 / 1280
+    };
+  }
+  // This should include a check for the main image, but we go now with the
+  // simplest solution
+  if (model.images && model.images.length) {
+    return model.images[0];
+  }
+  if (model.story && model.story.blocks) {
+    let images = [];
+    for (let block of model.story.blocks) {
+      switch (block.template.type) {
+        case 'BigImage':
+          images.push(block.properties.image);
+          break;
+        case 'Gallery':
+          for (let image of block.properties.images) {
+            images.push(image);
+            break;
+          }
+          break;
+      }
+      // Return the first available image from any story block
+      if (images.length) {
+        return images[0];
+      }
+    }
+  }
+  // Fallback placeholder
+  return placeholder;
+};

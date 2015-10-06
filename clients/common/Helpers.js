@@ -302,7 +302,7 @@ exports.setLastMod = function setLastMod(objects, res) {
   let lastMod = null;
 
   for (let object of objects) {
-    if (typeof object.updatedAt === 'undefined') {
+    if (!object || typeof object.updatedAt === 'undefined') {
       continue;
     }
 
