@@ -1,6 +1,6 @@
 'use strict';
 
-import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, getMainImage} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -109,7 +109,7 @@ exports.loadSchemas = function (mongoose, next) {
     ];
   };
 
-  schemas.Neighborhood.virtual('mainImage').get(function getMainImage() {
+  schemas.Neighborhood.virtual('mainImage').get(function mainImage() {
     // Placeholder
     let placeholder = {
       url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
@@ -118,33 +118,7 @@ exports.loadSchemas = function (mongoose, next) {
       height: 3084,
       aspectRatio: 4828 / 3084
     };
-    // This should include a check for the main image, but we go now with the
-    // simplest solution
-    if (this.images && this.images.length) {
-      return this.images[0];
-    }
-    if (this.story && this.story.blocks) {
-      let images = [];
-      for (let block of this.story.blocks) {
-        switch (block.template.type) {
-          case 'BigImage':
-            images.push(block.properties.image);
-            break;
-          case 'Gallery':
-            for (let image of block.properties.images) {
-              images.push(image);
-              break;
-            }
-            break;
-        }
-        // Return the first available image from any story block
-        if (images.length) {
-          return images[0];
-        }
-      }
-    }
-    // Fallback placeholder
-    return placeholder;
+    return getMainImage(this, placeholder);
   });
   schemas.Neighborhood.virtual('allImages').get(function allImages() {
     let images = this.images || [];
