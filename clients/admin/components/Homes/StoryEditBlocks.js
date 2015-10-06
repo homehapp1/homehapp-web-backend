@@ -104,7 +104,7 @@ export default class StoryEditBlocks extends React.Component {
             this.onReArrangeItem(index, 'up');
           }}
         >
-          <Glyphicon glyph='arrow-up'/>
+          <i className='fa fa-arrow-up'></i>
         </Button>
       );
     }
@@ -117,7 +117,7 @@ export default class StoryEditBlocks extends React.Component {
             this.onReArrangeItem(index, 'down');
           }}
         >
-          <Glyphicon glyph='arrow-down'/>
+          <i className='fa fa-arrow-down'></i>
         </Button>
       );
     }
