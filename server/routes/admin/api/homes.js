@@ -189,11 +189,11 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Home')
     .findByUuid(req.params.uuid)
-    //.remove()
-    .fetch()
+    .remove()
     .then((result) => {
       res.json({
-        status: 'deleted'
+        status: 'deleted',
+        home: result.model
       });
     })
     .catch(next);
