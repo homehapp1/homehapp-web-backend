@@ -18,7 +18,7 @@ export default class HomeQueryBuilder extends BaseQueryBuilder {
         slug: slug,
         deletedAt: null
       });
-      
+
       this._configurePopulationForCursor(cursor);
       cursor.exec((err, model) => {
         if (err) {
