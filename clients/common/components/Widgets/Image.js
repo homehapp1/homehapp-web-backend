@@ -6,6 +6,8 @@ import { merge } from '../../Helpers';
 import DOMManipulator from '../../DOMManipulator';
 // import classNames from 'classnames';
 
+let debug = require('../../../common/debugger')('Image');
+
 export default class Image extends React.Component {
   static propTypes = {
     src: React.PropTypes.string,
@@ -202,7 +204,7 @@ export default class Image extends React.Component {
         break;
 
       default:
-        console.error('Tried to use an undefined image type', this.props.type, this.props);
+        debug('Tried to use an undefined image type', this.props.type, this.props);
         throw new Error(`Undefined image type '${this.props.type.toString()}'`);
     }
 
@@ -334,7 +336,7 @@ export default class Image extends React.Component {
     }
 
     if (!this.props.url && !this.props.src) {
-      console.warn('No image url or src provided, use a placeholder instead', this.props);
+      debug('No image url or src provided, use a placeholder instead', this.props);
       this.props.url = 'https://res.cloudinary.com/homehapp/image/upload/v1441913472/site/images/content/content-placeholder.jpg';
       this.props.alt = 'Placeholder';
     }
