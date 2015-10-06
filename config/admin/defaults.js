@@ -24,6 +24,7 @@ module.exports = (projectRoot) => {
       }
     },
     clientConfig: {
+      siteHost: 'http://localhost:3001',
       cloudinary: {
         signatureRoute: '/api/cdn/signature'
       }
