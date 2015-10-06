@@ -98,6 +98,11 @@ export default class WidgetsBaseBlock extends React.Component {
           aspectRatio: (imageData.width / imageData.height)
         });
       }
+      this.props[key] = this.props[key].filter((img) => {
+        if (img.url) {
+          return true;
+        }
+      });
     }
 
     this.forceUpdate();
