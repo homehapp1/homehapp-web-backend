@@ -21,6 +21,12 @@ function getFullImageUrl(url) {
   return url;
 }
 
+function getFullVideoUrl(url) {
+  return getFullImageUrl(url);
+}
+
+
+
 export default class WidgetsBaseBlock extends React.Component {
   constructor(props) {
     super(props);
@@ -47,6 +53,10 @@ export default class WidgetsBaseBlock extends React.Component {
     debug('onImageUpload', data);
   }
 
+  onVideoUpload(data) {
+    debug('onVideoUpload', data);
+  }
+
   onRemoveImageClicked(index, key) {
     let newImages = [];
     this.props[key].forEach((item, idx) => {
@@ -64,6 +74,10 @@ export default class WidgetsBaseBlock extends React.Component {
 
   onImageChange(event) {
     console.log('onImageChange event', event);
+  }
+
+  onVideoChange(event) {
+    console.log('onVideoChange event', event);
   }
 
   renderPropertyRow(key, prop) {
@@ -111,6 +125,9 @@ export default class WidgetsBaseBlock extends React.Component {
             {options}
           </Input>
         );
+        break;
+      case 'video':
+        input = this.renderVideoInput(key, prop);
         break;
       case 'image':
         input = this.renderImageInput(key, prop);
@@ -169,6 +186,64 @@ export default class WidgetsBaseBlock extends React.Component {
               >
                 <Well>
                   <p>Drag new image here, or click to select from filesystem.</p>
+                </Well>
+              </UploadArea>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
+    );
+  }
+
+  renderVideoInput(key, prop) {
+    this.uploaderInstanceIds[key] = randomNumericId();
+
+    let videoUrl = null;
+    let thumbnailUrl = null;
+    debug('renderVideoInput');
+    debug(this.props[key]);
+
+    if (this.props[key]) {
+      videoUrl = getFullVideoUrl(this.props[key].url);
+      thumbnailUrl = setCDNUrlProperties(videoUrl.replace(/\.[a-zA-Z0-9]{2,4}$/, '.jpg'), {
+        w: 80,
+        h: 80,
+        c: 'fill'
+      });
+    }
+
+    let uploaderConfig = merge({
+      signatureFolder: 'homeVideo',
+      acceptedMimes: 'video/*',
+      width: '100%',
+      height: '80px'
+    }, prop.config || {});
+
+    return (
+      <Table>
+        <thead>
+          <tr>
+            <th>Current</th>
+            <th>Upload new</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a href={videoUrl}>
+                <img src={thumbnailUrl} alt='' />
+              </a>
+            </td>
+            <td>
+              <UploadArea
+                isVideo
+                className={`uploadarea ${key}-uploadarea`}
+                onUpload={this.onVideoUpload.bind(this)}
+                instanceId={this.uploaderInstanceIds[key]}
+                {...uploaderConfig}
+              >
+                <Well>
+                  <p>Drag new video here, or click to select from filesystem.</p>
                 </Well>
               </UploadArea>
             </td>
