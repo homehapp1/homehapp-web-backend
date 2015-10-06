@@ -9,7 +9,7 @@ import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import {randomNumericId, setCDNUrlProperties, merge} from '../../../common/Helpers';
+import {randomNumericId, setCDNUrlProperties, merge, enumerate} from '../../../common/Helpers';
 import ImageList from './ImageList';
 
 let debug = require('../../../common/debugger')('WidgetsBaseBlock');
@@ -25,9 +25,11 @@ function getFullVideoUrl(url) {
   return getFullImageUrl(url);
 }
 
-
-
 export default class WidgetsBaseBlock extends React.Component {
+  // static propTypes = {
+  //   onPropertiesChange: React.PropTypes.func.isRequired
+  // }
+
   constructor(props) {
     super(props);
     this.uploadListener = this.onUploadChange.bind(this);
@@ -42,6 +44,20 @@ export default class WidgetsBaseBlock extends React.Component {
 
   blockProperties = {};
 
+  getValues() {
+    debug('getValues', this.props);
+    let values = this.props;
+    Object.keys(this.blockProperties).map((key) => {
+      let refKey = `${key}Ref`;
+      if (this.refs[refKey]) {
+        if (this.blockProperties[key].type !== 'checkbox') {
+          values[key] = this.refs[refKey].getValue();
+        }
+      }
+    });
+    return values;
+  }
+
   onUploadChange(state) {
     debug('onUploadChange', state);
     this.setState({
@@ -49,12 +65,44 @@ export default class WidgetsBaseBlock extends React.Component {
     });
   }
 
-  onImageUpload(data) {
-    debug('onImageUpload', data);
+  onImageUpload(key, file) {
+    debug('onImageUpload', key, file);
+    //console.log('b this.props[key]', this.props[key]);
+    if (!this.state.uploads) {
+      return;
+    }
+    //console.log('this.blockProperties[key].type', this.blockProperties[key].type);
+    let uploads = this.state.uploads[this.uploaderInstanceIds[key]];
+    //console.log('uploads', uploads);
+    if (this.blockProperties[key].type === 'image' || this.blockProperties[key].type === 'video') {
+      for (let [k, imageData] of enumerate(uploads)) {
+        //debug(k, 'data:', imageData);
+        this.props[key] = merge(this.props[key], {
+          url: imageData.url,
+          width: imageData.width,
+          height: imageData.height,
+          aspectRatio: (imageData.width / imageData.height)
+        });
+      }
+    } else if (this.blockProperties[key].type === 'images') {
+      for (let [k, imageData] of enumerate(uploads)) {
+        //debug(k, 'data:', imageData);
+        this.props[key].push({
+          url: imageData.url,
+          width: imageData.width,
+          height: imageData.height,
+          aspectRatio: (imageData.width / imageData.height)
+        });
+      }
+    }
+
+    this.forceUpdate();
+    //console.log('a this.props[key]', this.props[key]);
   }
 
-  onVideoUpload(data) {
-    debug('onVideoUpload', data);
+  onVideoUpload(key, file) {
+    debug('onVideoUpload', key, file);
+    this.onImageUpload(key, file);
   }
 
   onRemoveImageClicked(index, key) {
@@ -68,8 +116,8 @@ export default class WidgetsBaseBlock extends React.Component {
     this.forceUpdate();
   }
 
-  onFormChange(event) {
-    console.log('onFormChange event', event);
+  onFormChange(key, event, prop) {
+    // console.log('onFormChange event', key, event, prop);
   }
 
   onImageChange(event) {
@@ -92,7 +140,9 @@ export default class WidgetsBaseBlock extends React.Component {
       defaultValue = prop.defaultValue;
     }
 
-    let inputProps = {};
+    let inputProps = {
+      defaultValue: defaultValue
+    };
 
     switch(prop.type) {
       case 'text':
@@ -104,10 +154,19 @@ export default class WidgetsBaseBlock extends React.Component {
           if (this.props[key]) {
             inputProps.checked = true;
           }
+          delete inputProps.defaultValue;
         }
         if (prop.type === 'select') {
-          options = prop.options.map((inputOption) => {
-            return <option value={inputOption[0]}>{inputOption[1]}</option>;
+          options = prop.options.map((inputOption, idx) => {
+            let optKey = key + '-sv-' + idx;
+            return (
+              <option
+                key={optKey}
+                value={inputOption[0]}
+              >
+                {inputOption[1]}
+              </option>
+            );
           });
         }
 
@@ -116,10 +175,15 @@ export default class WidgetsBaseBlock extends React.Component {
             type={prop.type}
             name={key}
             label={prop.label}
-            ref={key}
+            ref={key + 'Ref'}
             placeholder={placeholder}
-            defaultValue={defaultValue}
-            onChange={this.onFormChange.bind(this)}
+            onChange={(e) => {
+              if (prop.type === 'checkbox') {
+                this.props[key] = !(this.props[key]);
+                this.forceUpdate();
+              }
+              this.onFormChange(key, e, prop);
+            }}
             {...inputProps}
           >
             {options}
@@ -180,7 +244,9 @@ export default class WidgetsBaseBlock extends React.Component {
             <td>
               <UploadArea
                 className={`uploadarea ${key}-uploadarea`}
-                onUpload={this.onImageUpload.bind(this)}
+                onUpload={(file) => {
+                  this.onImageUpload(key, file);
+                }}
                 instanceId={this.uploaderInstanceIds[key]}
                 {...uploaderConfig}
               >
@@ -238,7 +304,9 @@ export default class WidgetsBaseBlock extends React.Component {
               <UploadArea
                 isVideo
                 className={`uploadarea ${key}-uploadarea`}
-                onUpload={this.onVideoUpload.bind(this)}
+                onUpload={(file) => {
+                  this.onVideoUpload(key, file);
+                }}
                 instanceId={this.uploaderInstanceIds[key]}
                 {...uploaderConfig}
               >
@@ -273,7 +341,9 @@ export default class WidgetsBaseBlock extends React.Component {
         <Col md={6}>
           <UploadArea
             className={`uploadarea ${key}-uploadarea`}
-            onUpload={this.onImageUpload.bind(this)}
+            onUpload={(file) => {
+              this.onImageUpload(key, file);
+            }}
             instanceId={this.uploaderInstanceIds[key]}
             {...uploaderConfig}
           >
@@ -292,8 +362,10 @@ export default class WidgetsBaseBlock extends React.Component {
         <Col md={10} sm={10}>
           {
             Object.keys(this.blockProperties).map((key) => {
-              return this.renderPropertyRow(
-                key, this.blockProperties[key]
+              return (
+                <div key={'bp-' + key}>
+                  {this.renderPropertyRow(key, this.blockProperties[key])}
+                </div>
               );
             })
           }
