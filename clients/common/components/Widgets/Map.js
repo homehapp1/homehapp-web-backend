@@ -169,7 +169,8 @@ export default class Map extends React.Component {
   // Get a plain arithmetic average for the center position for a set of
   // markers
   getCenter() {
-    if (this.props.center) {
+    let defaultCenter = [51.5072, 0.1275];
+    if (this.props.center && this.props.center[0] && this.props.center[1]) {
       return this.props.center;
     }
 
@@ -178,15 +179,31 @@ export default class Map extends React.Component {
 
     // Show London if nothing else is available
     if (!this.props.markers || !this.props.markers.length) {
-      return [51.5072, 0.1275];
+      return defaultCenter;
     }
 
-    for (let i = 0; i < this.props.markers.length; i++) {
-      lat += this.props.markers.position.lat;
-      lng += this.props.markers.position.lng;
+    let count = 0;
+
+    for (let marker of this.props.markers) {
+      debug('marker', marker);
+      if (typeof marker.location !== 'undefined' && marker.location[0] && marker.location[1]) {
+        lat += Number(marker.location[0]);
+        lng += Number(marker.location[1]);
+      } else if (typeof marker.position !== 'undefined' && marker.position.lat && marker.position.lng) {
+        lat += Number(marker.position.lat);
+        lng += Number(marker.position.lng);
+      } else {
+        continue;
+      }
+      count++;
     }
 
-    return [lat / this.props.markers.length, lng / this.props.markers.length];
+    if (!lat || !lng || !count) {
+      debug('use defaultCenter', defaultCenter, lat, lng);
+      return defaultCenter;
+    }
+    debug('use calculated center', lat / count, lng / count);
+    return [lat / count, lng / count];
   }
 
   render() {
@@ -196,8 +213,7 @@ export default class Map extends React.Component {
 
     let classes = [
       'widget',
-      'map',
-      'width-wrapper'
+      'map'
     ];
 
     return (
