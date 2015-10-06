@@ -379,6 +379,11 @@ export default class HomesEditDetails extends React.Component {
       lat = homeLocation.coordinates[0];
       lon = homeLocation.coordinates[1];
     }
+
+    let deleteLink = null;
+    if (this.props.home) {
+      deleteLink = (<Link to='homeDelete' params={{id: this.props.home.id}} className='pull-right btn btn-danger'>Delete</Link>);
+    }
     //debug('Neighborhood of this home', this.props.homeLocation.neighborhood);
 
     return (
@@ -608,7 +613,7 @@ export default class HomesEditDetails extends React.Component {
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
                 </Col>
                 <Col md={6} pullRight>
-                  <Link to='homeDelete' params={{id: this.props.home.id}} className='pull-right btn btn-danger'>Delete</Link>
+                  {deleteLink}
                 </Col>
               </Row>
             </Well>
