@@ -14,10 +14,13 @@ export default class HomeQueryBuilder extends BaseQueryBuilder {
 
   findBySlug(slug) {
     this._queries.push((callback) => {
-      this.Model.findOne({
+      let cursor = this.Model.findOne({
         slug: slug,
         deletedAt: null
-      }, (err, model) => {
+      });
+
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, model) => {
         if (err) {
           return callback(err);
         }

@@ -18,16 +18,17 @@ export default class HomesCreateDetails extends HomesEditDetails {
 
   onHomeStoreChange(state) {
     debug('onHomeStoreChange', state);
+    let home = state.home;
     console.log('state.home', state.home);
     if (state.error) {
       this.setState(state);
     }
 
-    if (state.home && state.home.id) {
+    if (state.home && state.home.slug) {
       debug('Redirect to the newly created home');
       let href = this.context.router.makeHref('homeEdit', {id: state.home.id});
       debug('Redirect url', href);
-      this.context.router.transitionTo('homeEdit', {id: state.home.id});
+      window.location.href = href;
     }
   }
 }

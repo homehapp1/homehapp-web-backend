@@ -114,11 +114,11 @@ export default class HomesEditStory extends React.Component {
         {savingLoader}
         <form name='homeStory' ref='homeStoryForm' method='POST'>
           <Col md={10} sm={10}>
-            <Panel header='Common'>
+            <Panel header='Visibility settings'>
               <Input
                 type='checkbox'
                 ref='enabled'
-                label='Enabled'
+                label='Show story on the public site'
                 {...enabledStatus}
                 addonBefore='Value'
                 onChange={this.toggleEnabled.bind(this)}

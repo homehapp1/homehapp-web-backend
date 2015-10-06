@@ -7,6 +7,8 @@ import HomeNavigation from './HomeNavigation';
 
 import { setPageTitle } from '../../../common/Helpers';
 
+// let debug = require('debug')('HomeDetails');
+
 export default class HomeDetails extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired

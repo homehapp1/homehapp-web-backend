@@ -20,20 +20,22 @@ export default class HomeStory extends React.Component {
   }
 
   render() {
-    console.log('got home', this.props.home.location.neighborhood);
     let blocks = this.props.home.story.blocks;
-    blocks.push({
-      template: 'Map',
-      properties: {
-        center: this.props.home.location.coordinates,
-        markers: [{
-          location: this.props.home.location.coordinates,
-          title: this.props.home.homeTitle
-        }],
-        label: 'Lorem ipsum',
-        content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem. Quisque ligula eros ullamcorper quis, lacinia quis facilisis sed sapien. Mauris varius diam vitae arcu. Sed arcu lectus auctor vitae, consectetuer et venenatis eget velit. Sed augue orci, lacinia eu tincidunt et eleifend nec lacus.'
-      }
-    });
+
+    if (this.props.home.location.coordinates[0] && this.props.home.location.coordinates[1]) {
+      blocks.push({
+        template: 'Map',
+        properties: {
+          center: this.props.home.location.coordinates,
+          markers: [{
+            location: this.props.home.location.coordinates,
+            title: this.props.home.homeTitle
+          }],
+          label: 'Lorem ipsum',
+          content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.'
+        }
+      });
+    }
 
     if (this.props.home.location.neighborhood) {
       blocks.push({

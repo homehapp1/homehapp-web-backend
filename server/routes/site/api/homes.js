@@ -17,25 +17,23 @@ exports.registerRoutes = (app) => {
     let home = null;
     QB
     .forModel('Home')
+    .populate({
+      'location.neighborhood': {}
+    })
     .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
-      debug('Home fetched', result.home.title);
-      home = result.home;
-      return getNeighborhood(home.location.neighborhood);
-    })
-    .then((result) => {
-      debug('neighborhood received', result.model);
-      home.location.neighborhood = result.model;
+      debug('Home fetched', result);
       res.json({
         status: 'ok',
-        home: home
+        home: result.home
       });
     })
     .catch(next);
   });
 
   app.get('/api/home', function(req, res, next) {
+    debug('/api/home');
     QB
     .forModel('Home')
     .parseRequestArguments(req)
@@ -45,6 +43,7 @@ exports.registerRoutes = (app) => {
     .findAll()
     .fetch()
     .then((result) => {
+      debug(`Got ${result.models.length} homes`);
       res.json({
         status: 'ok',
         homes: result.models

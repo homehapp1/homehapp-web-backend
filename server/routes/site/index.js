@@ -1,12 +1,31 @@
 'use strict';
+import QueryBuilder from '../../lib/QueryBuilder';
+let debug = require('debug')('/');
 
 exports.registerRoutes = (app) => {
+  const QB = new QueryBuilder(app);
+
   app.get('/', function(req, res, next) {
-    res.locals.page = {
-      title: 'Discover y',
-      description: 'Homehapp - discover y'
-    };
-    next();
+    debug('GET /');
+    QB
+    .forModel('Home')
+    .parseRequestArguments(req)
+    .populate({
+      'location.neighborhood': {}
+    })
+    .findAll()
+    .fetch()
+    .then((result) => {
+      debug(`Got ${result.models.length} homes`);
+      res.locals.data.HomeListStore = {
+        homes: result.models
+      };
+      res.locals.page = {
+        title: 'Discover y',
+        description: 'Homehapp - discover y'
+      };
+      next();
+    });
   });
 
   app.get('/partners', function(req, res, next) {

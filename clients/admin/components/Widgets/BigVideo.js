@@ -14,7 +14,7 @@ export default class AdminBigVideo extends BaseBlock {
       type: 'textarea'
     },
     fixed: {
-      label: 'Fixed',
+      label: 'Static position when scrolling',
       type: 'checkbox'
     },
     align: {

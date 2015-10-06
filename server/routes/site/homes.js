@@ -14,17 +14,15 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Home')
     .findBySlug(slug)
+    .populate({
+      'location.neighborhood': {}
+    })
     .fetch()
     .then((result) => {
       home = result.home;
-      return QB
-      .forModel('Neighborhood')
-      .findById(home.location.neighborhood)
-      .fetch();
-    })
-    .then((result) => {
-      neighborhood = result.neighborhood;
-      home.location.neighborhood = neighborhood;
+      if (home.location.neighborhood) {
+        neighborhood = home.location.neighborhood;
+      }
 
       res.locals.data.title = [home.homeTitle];
       let images = [];

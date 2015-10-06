@@ -3,10 +3,13 @@
 import React from 'react';
 import HomeStore from '../../stores/HomeStore';
 import HomeStory from './HomeStory';
+import HomeDetails from './HomeDetails';
 
 import Loading from '../../../common/components/Widgets/Loading';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 import { setPageTitle } from '../../../common/Helpers';
+
+let debug = require('debug')('HomeContainer');
 
 export default class HomeContainer extends React.Component {
   static propTypes = {
@@ -64,9 +67,16 @@ export default class HomeContainer extends React.Component {
       return this.handlePendingState();
     }
     setPageTitle(this.state.home.pageTitle);
+    debug(this.state.home);
+
+    if (this.state.home.story && this.state.home.story.enabled && this.state.home.story.blocks.length) {
+      return (
+        <HomeStory home={this.state.home} />
+      );
+    }
 
     return (
-      <HomeStory home={this.state.home} />
+      <HomeDetails home={this.state.home} />
     );
   }
 }

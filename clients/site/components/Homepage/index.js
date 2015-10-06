@@ -87,6 +87,10 @@ export default class Homepage extends React.Component {
     let neighborhoods = [];
     for (let home of this.state.homes) {
       let neighborhood = home.location.neighborhood;
+      if (!neighborhood) {
+        continue;
+      }
+
       if (neighborhoods.indexOf(neighborhood) === -1) {
         neighborhoods.push(neighborhood);
       }
@@ -100,6 +104,8 @@ export default class Homepage extends React.Component {
       width: 424,
       height: 515
     };
+
+    debug('Use homes', this.state.homes);
 
     return (
       <div id='mainpage' className='mainpage'>
