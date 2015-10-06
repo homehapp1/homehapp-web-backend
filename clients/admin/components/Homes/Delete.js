@@ -56,7 +56,7 @@ export default class HomesDelete extends React.Component {
       debug('Redirect to home listing');
       let href = this.context.router.makeHref('homes');
       window.location.href = href;
-      return
+      return;
     }
     this.setState(state);
   }
