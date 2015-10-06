@@ -10,7 +10,6 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
-import EditStory from './EditStory';
 
 export default class AgentsEdit extends React.Component {
   static propTypes = {
