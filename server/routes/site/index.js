@@ -4,7 +4,7 @@ let debug = require('debug')('/');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
-  
+
   app.get('/', function(req, res, next) {
     debug('GET /');
     QB
@@ -25,8 +25,7 @@ exports.registerRoutes = (app) => {
         description: 'Homehapp - discover y'
       };
       next();
-    })
-
+    });
   });
 
   app.get('/partners', function(req, res, next) {
