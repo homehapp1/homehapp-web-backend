@@ -14,7 +14,7 @@ export default class AdminBigImage extends BaseBlock {
       type: 'textarea'
     },
     fixed: {
-      label: 'Fixed',
+      label: 'Static position when scrolling',
       type: 'checkbox'
     },
     align: {

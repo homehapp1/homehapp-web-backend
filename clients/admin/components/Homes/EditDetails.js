@@ -321,6 +321,25 @@ export default class HomesEditDetails extends React.Component {
     );
   }
 
+  getSlug(home) {
+    if (!home.slug) {
+      return null;
+    }
+
+    let host = ApplicationStore.getState().config.siteHost || 'http://130.211.77.56:8080';
+
+    return (
+        <Input
+        type='text'
+        label='Slug'
+        placeholder='Public URL'
+        readOnly
+        defaultValue={`${host}/home/${home.slug}`}
+        onChange={this.onFormChange.bind(this)}
+      />
+    );
+  }
+
   render() {
     debug('render', this.state);
     let error = null;
@@ -394,14 +413,7 @@ export default class HomesEditDetails extends React.Component {
                 defaultValue={home.title}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
-                type='text'
-                label='Slug'
-                placeholder='Slug'
-                readOnly
-                defaultValue={home.slug}
-                onChange={this.onFormChange.bind(this)}
-              />
+              {this.getSlug(home)}
               <Input
                 type='textarea'
                 ref='description'
@@ -483,11 +495,11 @@ export default class HomesEditDetails extends React.Component {
                 </Row>
               </Input>
             </Panel>
-            <Panel header='Costs'>
+            <Panel header='Pricing information'>
               <Input
                 type='select'
                 ref='costsCurrency'
-                label='Currency'
+                label='Used currency'
                 placeholder='Select Applied Currency'
                 defaultValue={home.costs.currency}
                 onChange={this.onFormChange.bind(this)}>
@@ -498,7 +510,7 @@ export default class HomesEditDetails extends React.Component {
               <Input
                 type='text'
                 ref='costsDeptFreePrice'
-                label='Dept Free Price'
+                label='Dept free selling price'
                 placeholder='(optional)'
                 defaultValue={home.costs.deptFreePrice}
                 onChange={this.onFormChange.bind(this)}
@@ -506,7 +518,7 @@ export default class HomesEditDetails extends React.Component {
               <Input
                 type='text'
                 ref='costsSellingPrice'
-                label='Selling Price'
+                label='Selling price'
                 placeholder='(optional)'
                 defaultValue={home.costs.sellingPrice}
                 onChange={this.onFormChange.bind(this)}
@@ -514,7 +526,7 @@ export default class HomesEditDetails extends React.Component {
               <Input
                 type='text'
                 ref='costsSquarePrice'
-                label='Square meter Price'
+                label='Price per square meter'
                 placeholder='(optional)'
                 defaultValue={home.costs.squarePrice}
                 onChange={this.onFormChange.bind(this)}
