@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import StoryLayout from '../../../common/components/Layouts/StoryLayout';
+import StoryLayout from '../../../common/components/Layout/StoryLayout';
 import HomeNavigation from './HomeNavigation';
 
 import { setPageTitle } from '../../../common/Helpers';
