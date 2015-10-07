@@ -261,7 +261,7 @@ export default class AgentsEditDetails extends React.Component {
             <Panel header='Images'>
               <Row>
                 <Col md={6}>
-                  <h2>Current images</h2>
+                  <h2>Images</h2>
                   <ImageList images={this.state.agentImages} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
                 </Col>
                 <Col md={6}>
