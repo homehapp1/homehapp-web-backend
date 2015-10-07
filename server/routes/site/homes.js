@@ -7,6 +7,22 @@ let debug = require('debug')('/homes');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
+  app.get('/home', function(req, res, next) {
+    debug('Redirecting the GUI call to deprecated /home');
+    res.writeHead(301, {
+      Location: `/homes`
+    });
+    res.end();
+  });
+
+  app.get('/home/:slug', function(req, res, next) {
+    debug('Redirecting the GUI call to deprecated /home/:slug');
+    res.writeHead(301, {
+      Location: `/homes/${req.params.slug}`
+    });
+    res.end();
+  });
+
   let returnHomeBySlug = (slug, res, next) => {
     let home = null;
     let neighborhood = null;
@@ -68,14 +84,14 @@ exports.registerRoutes = (app) => {
     .catch(next);
   };
 
-  app.get('/home/:slug', function(req, res, next) {
+  app.get('/homes/:slug', function(req, res, next) {
     returnHomeBySlug(req.params.slug, res, next);
   });
 
-  app.get('/home/:slug/details', function(req, res, next) {
+  app.get('/homes/:slug/details', function(req, res, next) {
     returnHomeBySlug(req.params.slug, res, next);
   });
-  app.get('/home/:slug/story', function(req, res, next) {
+  app.get('/homes/:slug/story', function(req, res, next) {
     returnHomeBySlug(req.params.slug, res, next);
   });
 };

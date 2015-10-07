@@ -13,7 +13,23 @@ exports.registerRoutes = (app) => {
     .fetch();
   };
 
+  app.get('/api/home', function(req, res, next) {
+    debug('Redirecting the API call to deprecated /api/home');
+    res.writeHead(301, {
+      Location: `/api/homes`
+    });
+    res.end();
+  });
+
   app.get('/api/home/:slug', function(req, res, next) {
+    debug('Redirecting the API call to deprecated /api/home/:slug');
+    res.writeHead(301, {
+      Location: `/api/homes/${req.params.slug}`
+    });
+    res.end();
+  });
+
+  app.get('/api/homes/:slug', function(req, res, next) {
     let home = null;
     QB
     .forModel('Home')
@@ -32,7 +48,7 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  app.get('/api/home', function(req, res, next) {
+  app.get('/api/homes', function(req, res, next) {
     QB
     .forModel('Home')
     .parseRequestArguments(req)
@@ -42,7 +58,7 @@ exports.registerRoutes = (app) => {
     .findAll()
     .fetch()
     .then((result) => {
-      app.log.debug(`/api/home Got ${result.models.length} homes`);
+      app.log.debug(`/api/homes Got ${result.models.length} homes`);
       res.json({
         status: 'ok',
         homes: result.models
