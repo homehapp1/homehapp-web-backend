@@ -12,10 +12,8 @@ import Homepage from './Homepage';
 import HomeContainer from './Home/HomeContainer';
 import HomeContactContainer from './Home/HomeContactContainer';
 import HomeDetailsContainer from './Home/HomeDetailsContainer';
+import HomeSearch from './Home/HomeSearch';
 import RouteNotFound from './ErrorPages/RouteNotFound';
-
-// Property handlers
-import PropertyFilter from './Property/Filter';
 
 // Neighborhoods handlers
 import CityContainer from './City/CityContainer';
@@ -34,15 +32,19 @@ import PartnersContact from './Partners/Contact';
 module.exports = (
   <Route name='app' path='/' handler={Application}>
     <DefaultRoute handler={Homepage}/>
-    <Route name='home' path='/home/:slug'>
-      <Route name='homeDetails' path='details' handler={HomeDetailsContainer} />
-      <Route name='homeForm' path='contact' handler={HomeContactContainer} />
-      <DefaultRoute handler={HomeContainer}/>
+    <Route name='homes' path='/homes'>
+      <Route name='home' path=':slug'>
+        <Route name='homeDetails' path='details' handler={HomeDetailsContainer} />
+        <Route name='homeForm' path='contact' handler={HomeContactContainer} />
+        <DefaultRoute handler={HomeContainer}/>
+        <NotFoundRoute handler={RouteNotFound} />
+      </Route>
+      <DefaultRoute handler={HomeSearch} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
-    <Route name='properties' path='/search'>
-      <Route name='propertiesMode' path=':mode' handler={PropertyFilter} />
-      <DefaultRoute handler={PropertyFilter} />
+    <Route name='search' path='/search'>
+      <Route name='homeSearchMode' path='search/:mode' handler={HomeSearch} />
+      <DefaultRoute handler={HomeSearch} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='neighborhoods' path='/neighborhoods'>
