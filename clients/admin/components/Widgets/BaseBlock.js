@@ -44,9 +44,13 @@ export default class WidgetsBaseBlock extends React.Component {
 
   blockProperties = {};
 
+  // Allow child classes to define which properties should be saved
+  getProps() {
+    return this.props;
+  }
+
   getValues() {
-    debug('getValues', this.props);
-    let values = this.props;
+    let values = this.getProps();
     Object.keys(this.blockProperties).map((key) => {
       let refKey = `${key}Ref`;
       if (this.refs[refKey]) {
@@ -330,6 +334,56 @@ export default class WidgetsBaseBlock extends React.Component {
     );
   }
 
+  getCopyParentImages(key) {
+    if (!this.props.parent) {
+      return null;
+    }
+    let images = this.props.parent.images || [];
+    let existing = this.props[key] || [];
+    if (!images.length) {
+      debug('No images available in the parent object');
+      return null;
+    }
+    debug('Parent images', images);
+    debug('Existing images', existing);
+    debug('Props', this.props);
+
+    let copyParentImages = function copyParentImages(event) {
+      debug('Existing images', this.props[key]);
+      debug('Copy images', images);
+      let srcs = existing.map((image) => {
+        if (typeof image.url !== 'undefined') {
+          return image.url;
+        }
+        return null;
+      });
+      debug('Existing src', srcs);
+      if (!this.props[key]) {
+        this.props[key] = [];
+      }
+      for (let image of images) {
+        debug('Check', image.url);
+        if (srcs.indexOf(image.url) === -1) {
+          this.props[key].push(image);
+          debug('Added');
+        }
+      }
+      this.onImageChange();
+      this.forceUpdate();
+      event.preventDefault();
+    };
+
+    copyParentImages = copyParentImages.bind(this);
+
+    return (
+      <Input
+        type='checkbox'
+        label={`Copy all the images from the main object (${images.length})`}
+        onChange={copyParentImages}
+      />
+    );
+  }
+
   renderImagesInput(key, prop) {
     this.uploaderInstanceIds[key] = randomNumericId();
     let images = this.props[key] || [];
@@ -344,7 +398,8 @@ export default class WidgetsBaseBlock extends React.Component {
     return (
       <Row>
         <Col md={6}>
-          <h2>Current images</h2>
+          <h2>Images</h2>
+          {this.getCopyParentImages(key)}
           <ImageList images={images} onChange={this.onImageChange} onRemove={this.onRemoveImageClicked} storageKey={key} label={prop.label} />
         </Col>
         <Col md={6}>
