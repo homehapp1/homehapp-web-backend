@@ -16,6 +16,8 @@ import AdminGallery from '../Widgets/Gallery';
 import AdminLargeText from '../Widgets/LargeText';
 import {moveToIndex} from '../../../common/Helpers';
 
+let debug = require('debug')('StoryEditBlocks');
+
 export default class StoryEditBlocks extends React.Component {
   static propTypes = {
     blocks: React.PropTypes.array.isRequired
@@ -64,6 +66,11 @@ export default class StoryEditBlocks extends React.Component {
     this.setState({
       blocks: this.state.blocks
     });
+    try {
+      this.refs.blockTemplate.getInputDOMNode().value = '';
+    } catch (error) {
+      debug('Failed to set the option to empty after the template was selected')
+    }
   }
 
   onReArrangeItem(index, dir) {
