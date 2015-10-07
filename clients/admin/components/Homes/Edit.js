@@ -14,7 +14,15 @@ import EditStory from './EditStory';
 
 export default class HomesEdit extends React.Component {
   static propTypes = {
-    home: React.PropTypes.object.isRequired
+    home: React.PropTypes.object.isRequired,
+    tab: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string
+    ])
+  }
+
+  defaultProps = {
+    tab: 1
   }
 
   constructor(props) {
@@ -22,6 +30,10 @@ export default class HomesEdit extends React.Component {
   }
 
   render() {
+    let openTab = Number(this.props.tab);
+    if (isNaN(openTab)) {
+      openTab = 1;
+    }
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
@@ -32,7 +44,7 @@ export default class HomesEdit extends React.Component {
         </Nav>
         <Row>
           <h1><i className='fa fa-home'></i> Edit {this.props.home.homeTitle}</h1>
-          <TabbedArea defaultActiveKey={1}>
+          <TabbedArea defaultActiveKey={openTab}>
             <TabPane eventKey={1} tab='Details'>
               <EditDetails home={this.props.home} />
             </TabPane>

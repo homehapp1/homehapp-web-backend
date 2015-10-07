@@ -67,8 +67,10 @@ export default class HomesEditContainer extends React.Component {
       return this.handlePendingState();
     }
 
+    let tab = this.props.params.tab || 1;
+
     return (
-      <HomesEdit home={this.state.home} />
+      <HomesEdit home={this.state.home} tab={tab} />
     );
   }
 }
