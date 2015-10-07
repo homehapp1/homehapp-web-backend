@@ -609,7 +609,7 @@ export default class HomesEditDetails extends React.Component {
             <Panel header='Images'>
               <Row>
                 <Col md={6}>
-                  <h2>Current images</h2>
+                  <h2>Images</h2>
                   <ImageList images={this.state.homeImages} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
                 </Col>
                 <Col md={6}>
