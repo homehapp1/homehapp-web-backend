@@ -11,6 +11,8 @@ import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
 
+let debug = require('debug')('Edit');
+
 export default class AgentsEdit extends React.Component {
   static propTypes = {
     agent: React.PropTypes.object.isRequired
@@ -21,6 +23,7 @@ export default class AgentsEdit extends React.Component {
   }
 
   render() {
+    debug('Render', this.props.agent);
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
@@ -30,7 +33,7 @@ export default class AgentsEdit extends React.Component {
           </NavItemLink>
         </Nav>
         <Row>
-          <h1><i className='fa fa-agent'></i> Edit {this.props.agent.agentTitle}</h1>
+          <h1><i className='fa fa-user'></i> Edit {this.props.agent.name}</h1>
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Details'>
               <EditDetails agent={this.props.agent} />

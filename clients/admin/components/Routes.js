@@ -17,8 +17,9 @@ import HomesDeleteContainer from './Homes/DeleteContainer';
 
 // Homes
 import AgentsIndexContainer from './Agents/IndexContainer';
-import AgentsEditContainer from './Agents/EditContainer';
 import AgentsCreateContainer from './Agents/CreateContainer';
+import AgentsEditContainer from './Agents/EditContainer';
+import AgentsDeleteContainer from './Agents/DeleteContainer';
 
 // Neighborhoods
 import NeighborhoodsIndexContainer from './Neighborhoods/IndexContainer';
@@ -30,19 +31,21 @@ let routes = (
     <Route name='homes' path='/homes'>
       <DefaultRoute handler={HomesIndexContainer}/>
       <Route name='homeCreate' path='create' handler={HomesCreateContainer} />
-      <Route name='homeEdit' path='edit/:id' handler={HomesEditContainer}>
+      <Route name='homeEdit' path=':id' handler={HomesEditContainer}>
         <Route name='homeEditTab' path=':tab' handler={HomesEditContainer} />
       </Route>
-      <Route name='homeDelete' path='delete/:id' handler={HomesDeleteContainer} />
+      <Route name='homeDelete' path=':id/delete' handler={HomesDeleteContainer} />
     </Route>
     <Route name='agents' path='/agents'>
       <DefaultRoute handler={AgentsIndexContainer}/>
       <Route name='agentCreate' path='create' handler={AgentsCreateContainer} />
-      <Route name='agentEdit' path='edit/:id' handler={AgentsEditContainer} />
+      <Route name='agentEdit' path=':id' handler={AgentsEditContainer} />
+      <Route name='agentDelete' path=':id/delete' handler={AgentsDeleteContainer} />
     </Route>
     <Route name='neighborhoods' path='/neighborhoods'>
       <DefaultRoute handler={NeighborhoodsIndexContainer}/>
-      <Route name='neighborhoodEdit' path='edit/:id' handler={NeighborhoodsEditContainer} />
+      <Route name='neighborhoodEdit' path=':id' handler={NeighborhoodsEditContainer} />
+      <Route name='neighborhoodDelete' path=':id/delete' handler={NeighborhoodsEditContainer} />
     </Route>
     <NotFoundRoute handler={RouteNotFound} />
   </Route>

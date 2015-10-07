@@ -25,11 +25,11 @@ class AgentsIndex extends React.Component {
           </h2>
           <p>There are {this.props.agents.length} agents in the system currently.</p>
           <ul>
-            <li><Link to='agentCreate'><i className='fa fa-agent'></i> Create a new agent</Link></li>
+            <li><Link to='agentCreate'><i className='fa fa-user'></i> Create a new agent</Link></li>
           </ul>
         </Nav>
         <Row>
-          <h1><i className='fa fa-agent'></i> {this.props.agents.length} agents</h1>
+          <h1><i className='fa fa-user'></i> {this.props.agents.length} agents</h1>
 
           <ul>
             {this.props.agents.map((agent, i) => {

@@ -30,7 +30,7 @@ export default class AgentsCreate extends React.Component {
           </NavItemLink>
         </Nav>
         <Row>
-          <h1><i className='fa fa-agent'></i> Create a new agent</h1>
+          <h1><i className='fa fa-user'></i> Create a new agent</h1>
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Details'>
               <CreateDetails agent={this.props.agent} />

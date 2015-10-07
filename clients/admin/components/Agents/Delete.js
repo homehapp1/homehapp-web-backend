@@ -15,17 +15,17 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
-import HomeStore from '../../stores/HomeStore';
-import HomeActions from '../../actions/HomeActions';
-import HomeListActions from '../../actions/HomeListActions';
+import AgentStore from '../../stores/AgentStore';
+import AgentActions from '../../actions/AgentActions';
+import AgentListActions from '../../actions/AgentListActions';
 
 import Loading from '../../../common/components/Widgets/Loading';
 
-let debug = require('../../../common/debugger')('HomesDelete');
+let debug = require('../../../common/debugger')('AgentsDelete');
 
-export default class HomesDelete extends React.Component {
+export default class AgentsDelete extends React.Component {
   static propTypes = {
-    home: React.PropTypes.object.isRequired,
+    agent: React.PropTypes.object.isRequired,
     context: React.PropTypes.object
   }
 
@@ -35,7 +35,7 @@ export default class HomesDelete extends React.Component {
 
   constructor(props) {
     super(props);
-    this.storeListener = this.onHomeStoreChange.bind(this);
+    this.storeListener = this.onAgentStoreChange.bind(this);
   }
 
   state = {
@@ -43,18 +43,18 @@ export default class HomesDelete extends React.Component {
   }
 
   componentDidMount() {
-    HomeStore.listen(this.storeListener);
+    AgentStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
-    HomeStore.unlisten(this.storeListener);
+    AgentStore.unlisten(this.storeListener);
   }
 
-  onHomeStoreChange(state) {
-    debug('onHomeStoreChange', state);
+  onAgentStoreChange(state) {
+    debug('onAgentStoreChange', state);
     if (!state.error && state.deleted) {
-      debug('Redirect to home listing');
-      let href = this.context.router.makeHref('homes');
+      debug('Redirect to agent listing');
+      let href = this.context.router.makeHref('agents');
       window.location.href = href;
       return;
     }
@@ -63,21 +63,21 @@ export default class HomesDelete extends React.Component {
 
   onDelete() {
     debug('Delete');
-    HomeActions.deleteItem(this.props.home);
+    AgentActions.deleteItem(this.props.agent);
   }
 
   handlePendingState() {
     return (
       <Loading>
-        <h3>Saving home...</h3>
+        <h3>Saving agent...</h3>
       </Loading>
     );
   }
 
   handleErrorState() {
     return (
-      <div className='home-error'>
-        <h3>Error deleting home!</h3>
+      <div className='agent-error'>
+        <h3>Error deleting agent!</h3>
         <p>{this.state.error.message}</p>
       </div>
     );
@@ -89,30 +89,30 @@ export default class HomesDelete extends React.Component {
     if (this.state.error) {
       error = this.handleErrorState();
     }
-    if (HomeStore.isLoading()) {
+    if (AgentStore.isLoading()) {
       savingLoader = this.handlePendingState();
     }
-    debug('Home being prepared for deletion', this.props.home);
+    debug('Agent being prepared for deletion', this.props.agent);
 
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <h2 className='navigation-title'>Delete Home</h2>
-          <NavItemLink to='homes'>
+          <h2 className='navigation-title'>Delete Agent</h2>
+          <NavItemLink to='agents'>
             &lt; Back
           </NavItemLink>
         </Nav>
         <Row>
-          <h1><i className='fa fa-home'></i> Edit {this.props.home.homeTitle}</h1>
+          <h1><i className='fa fa-user'></i> Delete {this.props.agent.rname}</h1>
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Delete'>
               <Row>
                 {error}
                 {savingLoader}
-                <form name='homeDetails' ref='homeDetailsForm' method='POST'>
+                <form name='agentDetails' ref='agentDetailsForm' method='POST'>
                   <Col md={10} sm={10}>
                     <Panel header='Common'>
-                      Please confirm the deletion of this property
+                      Please confirm the deletion of this agent
                     </Panel>
                     <Well>
                       <Row>

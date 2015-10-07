@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
@@ -183,6 +184,7 @@ export default class AgentsEditDetails extends React.Component {
   }
 
   render() {
+    debug('Render');
     let error = null;
     let savingLoader = null;
     if (this.state.error) {
@@ -284,7 +286,9 @@ export default class AgentsEditDetails extends React.Component {
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
                 </Col>
                 <Col md={6} pullRight>
-                  <Button bsStyle='danger' className='pull-right'>Delete</Button>
+                  <Link to='agentDelete' params={{id: this.props.agent.id}} className='btn btn-danger pull-right'>
+                    Delete
+                  </Link>
                 </Col>
               </Row>
             </Well>
