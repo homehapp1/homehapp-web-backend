@@ -130,13 +130,11 @@ export default class AgentsEditDetails extends React.Component {
             url: imageData.url,
             width: imageData.width,
             height: imageData.height,
-            // TODO: Remove me when backend supports it
-            aspectRatio: (imageData.width / imageData.height),
             isMaster: isMaster
           };
 
           if (!imageExists(agentImage.url)) {
-            this.state.agentImages.push(agentImage);
+            this.state.agentImages = [agentImage];
           }
         }
       }
@@ -261,8 +259,8 @@ export default class AgentsEditDetails extends React.Component {
             <Panel header='Images'>
               <Row>
                 <Col md={6}>
-                  <h2>Images</h2>
-                  <ImageList images={this.state.agentImages} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
+                  <h2>Image</h2>
+                  <ImageList images={this.state.agentImages} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} max={1} />
                 </Col>
                 <Col md={6}>
                   <UploadArea
