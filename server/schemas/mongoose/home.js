@@ -206,7 +206,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.Home.statics.editableFields = function () {
     return [
       'title', 'description', 'location', 'costs', 'story', 'amenities',
-      'facilities', 'attributes', 'images'
+      'facilities', 'attributes', 'images', 'announcementType'
     ];
   };
 
