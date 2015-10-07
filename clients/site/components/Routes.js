@@ -43,7 +43,7 @@ module.exports = (
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='search' path='/search'>
-      <Route name='homeSearchMode' path=':mode' handler={HomeSearch} />
+      <Route name='searchMode' path=':mode' handler={HomeSearch} />
       <DefaultRoute handler={HomeSearch} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>

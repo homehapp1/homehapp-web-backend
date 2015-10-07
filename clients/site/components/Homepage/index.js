@@ -121,7 +121,7 @@ export default class Homepage extends React.Component {
             <h2>Exclusively for Homehapp</h2>
           </HomeList>
           <p className='call-to-action'>
-            <Link to='homeSearch' className='button'>Find more</Link>
+            <Link to='search' className='button'>Find more</Link>
           </p>
         </div>
         <ContentBlock className='with-gradient'>
@@ -182,7 +182,7 @@ export default class Homepage extends React.Component {
             }
 
             <p className='call-to-action'>
-              <Link to='homeSearch' className='button'>Find more</Link>
+              <Link to='search' className='button'>Find more</Link>
             </p>
           </div>
         </div>
