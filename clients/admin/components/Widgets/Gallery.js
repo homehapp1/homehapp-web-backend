@@ -2,6 +2,9 @@
 
 // import React from 'react';
 import BaseBlock from '../Widgets/BaseBlock';
+import { merge } from '../../../common/Helpers';
+
+let debug = require('../../../common/debugger')('AdminGallery');
 
 export default class AdminGallery extends BaseBlock {
   blockProperties = {
@@ -16,5 +19,11 @@ export default class AdminGallery extends BaseBlock {
         acceptedMimes: 'image/*,video/*'
       }
     }
+  }
+
+  getProps() {
+    let props = merge({}, this.props);
+    delete props.parent;
+    return props;
   }
 }
