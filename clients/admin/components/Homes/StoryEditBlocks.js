@@ -20,8 +20,12 @@ let debug = require('debug')('StoryEditBlocks');
 
 export default class StoryEditBlocks extends React.Component {
   static propTypes = {
-    blocks: React.PropTypes.array.isRequired
+    blocks: React.PropTypes.array.isRequired,
+    parent: React.PropTypes.object
   };
+  static defaultProps = {
+    parent: null
+  }
 
   constructor(props) {
     super(props);
@@ -42,6 +46,7 @@ export default class StoryEditBlocks extends React.Component {
 
   getBlocks() {
     let updatedBlocks = this.state.blocks;
+    debug('this.state.blocks', this.state.blocks);
     this.state.blocks.map((item, index) => {
       let newProps = this.refs[`block${index}`].getValues();
       updatedBlocks[index].properties = newProps;
@@ -179,7 +184,7 @@ export default class StoryEditBlocks extends React.Component {
 
   getGallery(item, index) {
     return (
-      <AdminGallery {...item.properties} ref={'block' + index} />
+      <AdminGallery {...item.properties} ref={'block' + index} parent={this.props.parent} />
     );
   }
 
