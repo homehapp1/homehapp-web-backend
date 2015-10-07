@@ -10,7 +10,7 @@ import AuthStore from '../../../common/stores/AuthStore';
 
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 
-class Application extends React.Component {
+export default class Application extends React.Component {
   static propTypes = {
   }
   static defaultProps = {
@@ -53,5 +53,3 @@ class Application extends React.Component {
     );
   }
 }
-
-export default Application;
