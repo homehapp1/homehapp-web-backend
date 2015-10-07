@@ -7,6 +7,8 @@ import ApplicationStore from '../../../common/stores/ApplicationStore';
 
 import {setCDNUrlProperties} from '../../../common/Helpers';
 
+let debug = require('../../../common/debugger')('ImageList');
+
 function getFullImageUrl(url) {
   if (!url.match(/^http/)) {
     url = `${ApplicationStore.getState().config.cloudinary.baseUrl}${url}`;
@@ -20,16 +22,28 @@ export default class ImageList extends React.Component {
     onRemove: React.PropTypes.func.isRequired,
     onChange: React.PropTypes.func.isRequired,
     storageKey: React.PropTypes.string,
-    label: React.PropTypes.string
+    label: React.PropTypes.string,
+    max: React.PropTypes.number
   };
 
   static defaultProps = {
     images: [],
     storageKey: null,
-    label: null
+    label: null,
+    max: Infinity
   };
 
+  getValue() {
+    return this.props.images;
+  }
+
   render() {
+    // Get the last images of the stack when the max quantity is defined
+    if (this.props.images.length > this.props.max) {
+      let d = this.props.images.length - this.props.max;
+      this.props.images = this.props.images.splice(d, this.props.max);
+    }
+
     return (
       <Table>
         <thead>
