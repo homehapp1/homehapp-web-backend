@@ -112,6 +112,7 @@ export default class HomesEditDetails extends React.Component {
     let homeProps = {
       id: id,
       title: this.refs.title.getValue(),
+      announcementType: this.refs.announcementType.getValue(),
       description: this.refs.description.getValue(),
       location: {
         address: {
@@ -411,6 +412,17 @@ export default class HomesEditDetails extends React.Component {
                 onChange={this.onFormChange.bind(this)}
               />
               {this.getSlug(home)}
+              <Input
+                type='select'
+                ref='announcementType'
+                label='Announcement type'
+                defaultValue='buy'
+                value={home.announcementType}
+                onChange={this.onFormChange.bind(this)}
+              >
+                <option value='buy'>This home is for sale</option>
+                <option value='rent'>This home is for rent</option>
+              </Input>
               <Input
                 type='textarea'
                 ref='description'
