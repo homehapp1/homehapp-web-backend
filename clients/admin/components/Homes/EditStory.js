@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
-import StoryEditBlocks from './StoryEditBlocks';
+import StoryEditBlocks from '../Shared/StoryEditBlocks';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 
 import Loading from '../../../common/components/Widgets/Loading';

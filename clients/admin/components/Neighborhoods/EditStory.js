@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import NeighborhoodStore from '../../stores/NeighborhoodStore';
 // import NeighborhoodActions from '../../actions/NeighborhoodActions';
-import StoryEditBlocks from './StoryEditBlocks';
+import StoryEditBlocks from '../Shared/StoryEditBlocks';
 
 let debug = require('../../../common/debugger')('NeighborhoodsEditStory');
 
