@@ -30,7 +30,9 @@ let routes = (
     <Route name='homes' path='/homes'>
       <DefaultRoute handler={HomesIndexContainer}/>
       <Route name='homeCreate' path='create' handler={HomesCreateContainer} />
-      <Route name='homeEdit' path='edit/:id' handler={HomesEditContainer} />
+      <Route name='homeEdit' path='edit/:id' handler={HomesEditContainer}>
+        <Route name='homeEditTab' path=':tab' handler={HomesEditContainer} />
+      </Route>
       <Route name='homeDelete' path='delete/:id' handler={HomesDeleteContainer} />
     </Route>
     <Route name='agents' path='/agents'>
