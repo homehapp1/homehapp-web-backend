@@ -231,6 +231,7 @@ export default class StoryEditBlocks extends React.Component {
           >
             <option value=''>Choose template to use</option>
             <option value='BigImage'>Big Image</option>
+            <option value='BigVideo'>Video block</option>
             <option value='ContentBlock'>Content Block</option>
             <option value='ContentImage'>Content Image</option>
             <option value='Gallery'>Gallery</option>
