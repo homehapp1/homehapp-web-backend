@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Story from '../../../common/components/Widgets/Story';
+import StoryLayout from '../../../common/components/Layouts/StoryLayout';
 import HomeNavigation from './HomeNavigation';
 
 import { setPageTitle } from '../../../common/Helpers';
@@ -162,7 +162,7 @@ export default class HomeDetails extends React.Component {
     return (
       <div className='home-view'>
         <HomeNavigation home={this.props.home} />
-        <Story blocks={blocks} />
+        <StoryLayout blocks={blocks} />
       </div>
     );
   }

@@ -4,22 +4,22 @@ import React from 'react';
 import { Link } from 'react-router';
 
 // Widgets
-import Agent from './Agent';
-import BigImage from './BigImage';
-import BigVideo from './BigVideo';
-import Columns from './Columns';
-import ContentBlock from './ContentBlock';
-import ContentImage from './ContentImage';
-import Gallery from './Gallery';
-import Icon from './Icon';
-import LargeText from './LargeText';
-import Map from './Map';
-import Neighborhood from './Neighborhood';
-import Separator from './Separator';
+import Agent from '../Widgets/Agent';
+import BigImage from '../Widgets/BigImage';
+import BigVideo from '../Widgets/BigVideo';
+import Columns from '../Widgets/Columns';
+import ContentBlock from '../Widgets/ContentBlock';
+import ContentImage from '../Widgets/ContentImage';
+import Gallery from '../Widgets/Gallery';
+import Icon from '../Widgets/Icon';
+import LargeText from '../Widgets/LargeText';
+import Map from '../Widgets/Map';
+import Neighborhood from '../Widgets/Neighborhood';
+import Separator from '../Widgets/Separator';
 
-let debug = require('../../../common/debugger')('LayoutStory');
+let debug = require('../../../common/debugger')('StoryLayout');
 
-export default class Story extends React.Component {
+export default class StoryLayout extends React.Component {
   static propTypes = {
     blocks: React.PropTypes.array.isRequired
   };
