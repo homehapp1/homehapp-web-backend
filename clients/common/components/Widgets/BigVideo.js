@@ -7,7 +7,7 @@ import Video from './Video';
 
 export default class BigVideo extends React.Component {
   static propTypes = {
-    src: React.PropTypes.string.isRequired,
+    video: React.PropTypes.object.isRequired,
     className: React.PropTypes.string,
     poster: React.PropTypes.string,
     fixed: React.PropTypes.bool,
@@ -52,7 +52,7 @@ export default class BigVideo extends React.Component {
     }
 
     let video = {
-      src: this.props.src,
+      src: this.props.video.url,
       autoPlay: true,
       loop: true,
       controls: false,

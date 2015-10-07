@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 // Widgets
 import Agent from './Agent';
 import BigImage from './BigImage';
+import BigVideo from './BigVideo';
 import Columns from './Columns';
 import ContentBlock from './ContentBlock';
 import ContentImage from './ContentImage';
@@ -15,6 +16,8 @@ import LargeText from './LargeText';
 import Map from './Map';
 import Neighborhood from './Neighborhood';
 import Separator from './Separator';
+
+let debug = require('../../../common/debugger')('LayoutStory');
 
 export default class Story extends React.Component {
   static propTypes = {
@@ -49,6 +52,34 @@ export default class Story extends React.Component {
         </LargeText>
         {secondary}
       </BigImage>
+    );
+  }
+
+  getBigVideo(item, index) {
+    debug('getBigVideo', item, index);
+    let primary = null;
+    let secondary = null;
+
+    // Is this the primary title?
+    if (item.properties.isPageTitle || !index) {
+      primary = (<h1>{item.properties.title}</h1>);
+    } else {
+      primary = (<h2 className='block-title'>{item.properties.title}</h2>);
+    }
+
+    if (item.properties.secondary) {
+      secondary = (
+        <div className='secondary'>{item.properties.secondary}</div>
+      );
+    }
+
+    return (
+      <BigVideo {...item.properties} key={index}>
+        <LargeText align={item.properties.align} valign={item.properties.valign}>
+          {primary}
+        </LargeText>
+        {secondary}
+      </BigVideo>
     );
   }
 
