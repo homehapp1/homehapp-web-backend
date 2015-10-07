@@ -126,16 +126,29 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  app.patch('/api/agents/:uuid', function(req, res, next) {
-    debug('API update agent with uuid', req.params.uuid);
-    //debug('req.body', req.body);
-
-    let data = req.body.agent;
-
-    updateAgent(req.params.uuid, data)
-    .then((model) => {
+  // app.patch('/api/agents/:uuid', function(req, res, next) {
+  //   debug('API update agent with uuid', req.params.uuid);
+  //   //debug('req.body', req.body);
+  //
+  //   let data = req.body.agent;
+  //
+  //   updateAgent(req.params.uuid, data)
+  //   .then((model) => {
+  //     res.json({
+  //       status: 'ok', agent: model
+  //     });
+  //   })
+  //   .catch(next);
+  // });
+  app.delete('/api/agents/:uuid', function(req, res, next) {
+    QB
+    .forModel('Agent')
+    .findByUuid(req.params.uuid)
+    .remove()
+    .then((result) => {
       res.json({
-        status: 'ok', agent: model
+        status: 'deleted',
+        agent: result.model
       });
     })
     .catch(next);
