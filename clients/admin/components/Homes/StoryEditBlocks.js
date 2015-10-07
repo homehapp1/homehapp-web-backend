@@ -69,7 +69,7 @@ export default class StoryEditBlocks extends React.Component {
     try {
       this.refs.blockTemplate.getInputDOMNode().value = '';
     } catch (error) {
-      debug('Failed to set the option to empty after the template was selected')
+      debug('Failed to set the option to empty after the template was selected');
     }
   }
 
