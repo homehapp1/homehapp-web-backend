@@ -21,7 +21,7 @@ export default class Gallery extends React.Component {
     images: [],
     title: '',
     columns: 10,
-    imageWidth: 500,
+    imageWidth: 400,
     fullscreen: true,
     className: null
   };
@@ -426,12 +426,16 @@ export default class Gallery extends React.Component {
 
   render() {
     let classes = ['gallery', 'widget', 'clearfix'];
+    let subclasses = ['gallery-images'];
     if (this.props.className) {
       classes.push(this.props.className);
     }
+    if (this.props.images.length < 4) {
+      subclasses.push('width-wrapper');
+    }
     return (
       <div className={classes.join(' ')}>
-        <div className='gallery-images' ref='gallery'>
+        <div className={subclasses.join(' ')} ref='gallery'>
         {
           this.props.images.map((item, index) => {
             let image = {
