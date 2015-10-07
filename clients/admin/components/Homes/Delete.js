@@ -112,7 +112,7 @@ export default class HomesDelete extends React.Component {
                 <form name='homeDetails' ref='homeDetailsForm' method='POST'>
                   <Col md={10} sm={10}>
                     <Panel header='Common'>
-                      Please confirm the deletion of this property
+                      Please confirm the deletion of this home
                     </Panel>
                     <Well>
                       <Row>

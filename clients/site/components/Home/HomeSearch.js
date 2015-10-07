@@ -7,7 +7,7 @@ import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
-// Property List
+// Home List
 import HomeList from './HomeList';
 
 // Story widgets

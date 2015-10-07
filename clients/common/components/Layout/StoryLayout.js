@@ -149,7 +149,7 @@ export default class StoryLayout extends React.Component {
   getDetails(item, index) {
     return (
       <ContentBlock key={index} className='details-view'>
-        <h2>Property details</h2>
+        <h2>Home details</h2>
         <Columns cols={2}>
           <div className='first'>
             <h3>Accommodation</h3>

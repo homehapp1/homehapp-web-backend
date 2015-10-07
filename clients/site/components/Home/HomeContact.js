@@ -28,7 +28,7 @@ export default class HomeContact extends React.Component {
 
     return (
       <ContentBlock className='home contact-form'>
-        <h2>Property details</h2>
+        <h2>Home details</h2>
         <form method='post'>
           <div className='form'>
             <label className='control'>
