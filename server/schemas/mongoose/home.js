@@ -35,13 +35,13 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: ''
     },
-    mode: {
+    announcementType: {
       type: String,
       default: 'sell',
       validate: {
         validator: function validateMode(v) {
           let options = ['buy', 'rent'];
-          return (options.indexOf(v) === -1);
+          return (options.indexOf(v) !== -1);
         },
         message: 'Valid options for mode are buy and rent'
       }
