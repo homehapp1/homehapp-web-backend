@@ -191,31 +191,6 @@ export default class StoryEditBlocks extends React.Component {
   render() {
     return (
       <div className='edit-story'>
-        <Input label='Add Block' wrapperClassName='addWrapper'>
-          <Row>
-            <Col md={6} sm={6}>
-              <Input
-                type='select'
-                name='blockTemplate'
-                ref='blockTemplate'
-              >
-                <option value=''>Choose template to use</option>
-                <option value='BigImage'>Big Image</option>
-                <option value='ContentBlock'>Content Block</option>
-                <option value='ContentImage'>Content Image</option>
-                <option value='Gallery'>Gallery</option>
-              </Input>
-            </Col>
-            <Col md={6} sm={6}>
-              <Button
-                bsStyle='success'
-                onClick={this.onAddBlock.bind(this)}
-              >
-                Add
-              </Button>
-            </Col>
-          </Row>
-        </Input>
         {
           this.state.blocks.map((item, index) => {
             let method = `get${item.template}`;
@@ -235,6 +210,20 @@ export default class StoryEditBlocks extends React.Component {
             console.warn(`No method ${method} defined, cannot get story block with type ${item.template}`);
           })
         }
+        <Input label='Add Block' wrapperClassName='addWrapper'>
+          <Input
+            type='select'
+            name='blockTemplate'
+            ref='blockTemplate'
+            onChange={this.onAddBlock.bind(this)}
+          >
+            <option value=''>Choose template to use</option>
+            <option value='BigImage'>Big Image</option>
+            <option value='ContentBlock'>Content Block</option>
+            <option value='ContentImage'>Content Image</option>
+            <option value='Gallery'>Gallery</option>
+          </Input>
+        </Input>
       </div>
     );
   }
