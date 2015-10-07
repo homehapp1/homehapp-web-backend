@@ -10,7 +10,7 @@ let HomeListSource = {
     return {
       remote(/*storeState*/) {
         debug('fetchHomes:remote', arguments);
-        return request.get(`/api/home`)
+        return request.get(`/api/homes`)
           .then((response) => {
             debug('got response', response);
             if (!response.data || !response.data.homes) {

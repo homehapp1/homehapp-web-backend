@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import HomeListStore from '../../stores/HomeListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
-import PropertyList from '../Property/List';
+import HomeList from '../Home/HomeList';
 
 import BigImage from '../../../common/components/Widgets/BigImage';
 import Columns from '../../../common/components/Widgets/Columns';
@@ -117,11 +117,11 @@ export default class Homepage extends React.Component {
           </LargeText>
         </BigImage>
         <div className='mainpage-list clearfix'>
-          <PropertyList items={this.state.homes} max={3} className='mainpage-list short-list'>
+          <HomeList items={this.state.homes} max={3} className='mainpage-list short-list'>
             <h2>Exclusively for Homehapp</h2>
-          </PropertyList>
+          </HomeList>
           <p className='call-to-action'>
-            <Link to='properties' className='button'>Find more</Link>
+            <Link to='homeSearch' className='button'>Find more</Link>
           </p>
         </div>
         <ContentBlock className='with-gradient'>
@@ -182,7 +182,7 @@ export default class Homepage extends React.Component {
             }
 
             <p className='call-to-action'>
-              <Link to='properties' className='button'>Find more</Link>
+              <Link to='homeSearch' className='button'>Find more</Link>
             </p>
           </div>
         </div>

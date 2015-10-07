@@ -11,7 +11,7 @@ let HomeSource = {
     return {
       remote(storeState, slug) {
         // debug('fetchHomeBySlug:remote', arguments);
-        return request.get(`/api/home/${slug}`)
+        return request.get(`/api/homes/${slug}`)
           .then((response) => {
             //debug('got response', response);
             if (!response.data || !response.data.home) {

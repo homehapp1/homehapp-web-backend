@@ -4,7 +4,7 @@
 import React from 'react';
 
 // Property List
-import PropertyList from '../Property/List';
+import HomeList from '../Home/HomeList';
 
 // Story widgets
 import BigImage from '../../../common/components/Widgets/BigImage';
@@ -44,7 +44,7 @@ export default class NeighborhoodHomeFilter extends React.Component {
             <p>Homes</p>
           </LargeText>
         </BigImage>
-        <PropertyList items={neighborhood.homes} />
+        <HomeList items={neighborhood.homes} />
       </div>
     );
   }
