@@ -137,7 +137,7 @@ export default class HomesEditStory extends React.Component {
               />
             </Panel>
             <Panel header='Blocks'>
-              <StoryEditBlocks blocks={blocks} ref='storyBlocks' />
+              <StoryEditBlocks parent={this.props.home} blocks={blocks} ref='storyBlocks' />
             </Panel>
             <Well>
               <Row>
