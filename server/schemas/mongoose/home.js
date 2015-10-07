@@ -35,6 +35,17 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: ''
     },
+    mode: {
+      type: String,
+      default: 'sell',
+      validate: {
+        validator: function validateMode(v) {
+          let options = ['buy', 'rent'];
+          return (options.indexOf(v) === -1);
+        },
+        message: 'Valid options for mode are buy and rent'
+      }
+    },
     description: {
       type: String,
       default: ''
@@ -125,14 +136,10 @@ exports.loadSchemas = function (mongoose, next) {
     },
     agents: [{
       type: ObjectId,
-      ref: 'Neighborhood',
+      ref: 'Agent',
       index: true,
       default: null
     }],
-    // neighborhood: {
-    //   type: ObjectId,
-    //   ref: 'Neighborhood'
-    // },
     // Common metadata
     createdAt: {
       type: Date
