@@ -13,8 +13,11 @@ let debug = require('debug')('HomeContainer');
 
 export default class HomeContainer extends React.Component {
   static propTypes = {
-    params: React.PropTypes.object
-  };
+    params: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.null
+    ])
+  }
 
   constructor(props) {
     super(props);
@@ -66,8 +69,8 @@ export default class HomeContainer extends React.Component {
     if (HomeStore.isLoading() || !this.state.home) {
       return this.handlePendingState();
     }
-    setPageTitle(this.state.home.pageTitle);
     debug(this.state.home);
+    setPageTitle(this.state.home.pageTitle);
 
     if (this.state.home.story && this.state.home.story.enabled && this.state.home.story.blocks.length) {
       return (
