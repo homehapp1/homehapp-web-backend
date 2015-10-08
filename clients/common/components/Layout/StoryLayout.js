@@ -29,8 +29,14 @@ export default class StoryLayout extends React.Component {
   }
 
   getBigImage(item, index) {
+    debug('getBigImage', item.properties);
     let primary = null;
     let secondary = null;
+
+    if (!item.properties.image) {
+      console.warn('Tried to display a BigImage without any image', item);
+      return null;
+    }
 
     // Is this the primary title?
     if (item.properties.isPageTitle || !index) {
@@ -84,10 +90,12 @@ export default class StoryLayout extends React.Component {
   }
 
   getGallery(item, index) {
+    debug('getGallery', item.properties);
     return (<Gallery {...item.properties} key={index} />);
   }
 
   getMap(item, index) {
+    debug('getMap', item.properties);
     let content = null;
 
     if (item.contentBlock) {
@@ -109,12 +117,14 @@ export default class StoryLayout extends React.Component {
   }
 
   getNeighborhood(item, index) {
+    debug('getNeighborhood', item.properties);
     return (
       <Neighborhood {...item.properties} key={index} />
     );
   }
 
   getContentBlock(item, index) {
+    debug('getContentBlock', item.properties);
     let content = null;
 
     if (item.properties.quote) {
@@ -135,6 +145,11 @@ export default class StoryLayout extends React.Component {
   }
 
   getContentImage(item, index) {
+    debug('getContentImage', item.properties);
+    if (!item.properties.image) {
+      console.warn('Tried to display a getContentImage without any image', item);
+      return null;
+    }
     let title = (item.properties.title) ? (<h3>{item.properties.title}</h3>) : null;
     let content = (item.properties.description) ? (<div className='content'>{item.properties.description}</div>) : null;
 
@@ -231,6 +246,7 @@ export default class StoryLayout extends React.Component {
             let method = `get${item.template}`;
 
             if (typeof this[method] === 'function') {
+              debug('Render with', method);
               return this[method](item, index);
             }
 
