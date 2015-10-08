@@ -16,12 +16,14 @@ export default class HomeList extends React.Component {
     children: React.PropTypes.oneOfType([
       React.PropTypes.object,
       React.PropTypes.array
-    ])
+    ]),
+    page: React.PropTypes.number
   };
 
   static defaultProps = {
     max: Infinity,
-    className: null
+    className: null,
+    page: 1
   };
 
   getStreet(home) {
@@ -52,12 +54,24 @@ export default class HomeList extends React.Component {
       containerClass.push(this.props.className);
     }
     debug('Draw homes', this.props.items, this.props.max);
+    let homes = this.props.items;
+    let limit = this.props.max;
+    let page = Number(this.props.page) - 1;
+
+    if (isNaN(page)) {
+      page = 0;
+    }
+
+    if (homes.length > limit) {
+      debug('Trim array');
+      homes = homes.splice(page * limit, this.props.max);
+    }
 
     return (
       <div className={containerClass.join(' ')} ref='homeList'>
         {this.props.children}
         {
-          this.props.items.map((home, index) => {
+          homes.map((home, index) => {
             debug('Home', home.title);
             let classes = ['preview'];
 
@@ -67,10 +81,6 @@ export default class HomeList extends React.Component {
 
             if (!index) {
               classes.push('first');
-            }
-
-            if (index > this.props.max) {
-              return null;
             }
 
             let link = {
@@ -102,7 +112,7 @@ export default class HomeList extends React.Component {
             };
 
             return (
-              <div className={classes.join(' ')} key={index}>
+              <div className={classes.join(' ')} key={`homeListItem${index}`}>
                 <Link {...link} className='thumbnail'>
                   <Hoverable {...mainImage} width={464} height={556} mode='fill' applySize>
                     <span className='title'>{home.homeTitle}</span>
