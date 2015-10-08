@@ -11,10 +11,12 @@ export default class CityQueryBuilder extends BaseQueryBuilder {
 
   findBySlug(slug) {
     this._queries.push((callback) => {
-      this.Model.findOne({
+      let cursor = this.Model.findOne({
         slug: slug,
         deletedAt: null
-      }, (err, city) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, city) => {
         debug('findBySlug', city.title);
         if (err) {
           debug('Got error', err);

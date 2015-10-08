@@ -14,10 +14,12 @@ export default class AgentQueryBuilder extends BaseQueryBuilder {
 
   findBySlug(slug) {
     this._queries.push((callback) => {
-      this.Model.findOne({
+      let cursor = this.Model.findOne({
         slug: slug,
         deletedAt: null
-      }, (err, model) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, model) => {
         if (err) {
           return callback(err);
         }
@@ -27,6 +29,8 @@ export default class AgentQueryBuilder extends BaseQueryBuilder {
         }
         this.result.agent = model;
         this.result.agentJson = model.toJSON();
+        this.result.model = model;
+        this.result.models = [model];
         this._loadedModel = model;
         callback();
       });
@@ -42,7 +46,9 @@ export default class AgentQueryBuilder extends BaseQueryBuilder {
     };
 
     this._queries.push((callback) => {
-      this.Model.find(query, (err, agents) => {
+      let cursor = this.Model.find(query);
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, agents) => {
         if (err) {
           debug('Got error', err);
           return callback(err);
@@ -62,10 +68,12 @@ export default class AgentQueryBuilder extends BaseQueryBuilder {
 
   findByUuid(uuid) {
     this._queries.push((callback) => {
-      this.Model.findOne({
+      let cursor = this.Model.findOne({
         uuid: uuid,
         deletedAt: null
-      }, (err, model) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, model) => {
         if (err) {
           return callback(err);
         }

@@ -25,7 +25,9 @@ export default class NeighborhoodQueryBuilder extends BaseQueryBuilder {
           deletedAt: null
         };
       }
-      this.Model.find(query, (err, neighborhoods) => {
+      let cursor = this.Model.find(query);
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, neighborhoods) => {
         debug(`findByCity found ${neighborhoods.length} neighborhoods`);
         if (err) {
           debug('Got error', err);
@@ -51,10 +53,12 @@ export default class NeighborhoodQueryBuilder extends BaseQueryBuilder {
 
   findBySlug(slug) {
     this._queries.push((callback) => {
-      this.Model.findOne({
+      let cursor = this.Model.findOne({
         slug: slug,
         deletedAt: null
-      }, (err, neighborhood) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, neighborhood) => {
         debug('findBySlug');
         if (err) {
           debug('Got error', err);
@@ -79,10 +83,12 @@ export default class NeighborhoodQueryBuilder extends BaseQueryBuilder {
 
   findByUuid(uuid) {
     this._queries.push((callback) => {
-      this.Model.findOne({
+      let cursor = this.Model.findOne({
         uuid: uuid,
         deletedAt: null
-      }, (err, model) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, model) => {
         if (err) {
           return callback(err);
         }

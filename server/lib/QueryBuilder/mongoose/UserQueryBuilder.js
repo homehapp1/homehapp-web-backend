@@ -27,6 +27,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
       if (this._opts.skip) {
         cursor.skip(this._opts.skip);
       }
+      this._configurePopulationForCursor(cursor);
 
       cursor.exec((err, users) => {
         if (err) {
@@ -45,7 +46,9 @@ class UserQueryBuilder extends BaseQueryBuilder {
 
   findById(id) {
     this._queries.push((callback) => {
-      this.Model.findById(id, (err, user) => {
+      let cursor = this.Model.findById(id);
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, user) => {
         if (err) {
           return callback(err);
         }
@@ -64,10 +67,12 @@ class UserQueryBuilder extends BaseQueryBuilder {
 
   findByUuid(uuid) {
     this._queries.push((callback) => {
-      this.Model.findOne({
+      let cursor = this.Model.findOne({
         uuid: uuid,
         deletedAt: null
-      }, (err, user) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, user) => {
         if (err) {
           return callback(err);
         }
@@ -86,10 +91,12 @@ class UserQueryBuilder extends BaseQueryBuilder {
 
   findByUsername(username) {
     this._queries.push((callback) => {
-      this.Model.findOne({
+      let cursor = this.Model.findOne({
         username: username,
         deletedAt: null
-      }).exec((err, user) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, user) => {
         if (err) {
           return callback(err);
         }
