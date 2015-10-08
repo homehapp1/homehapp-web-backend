@@ -56,7 +56,7 @@ export default class HomeStory extends React.Component {
     //   }
     // });
     debug('Render blocks', blocks);
-    console.log('Render blocks', block);
+    console.log('Render blocks', blocks, this.props.home);
     return (
       <div className='home-view'>
         <HomeNavigation home={this.props.home} />
