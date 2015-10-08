@@ -26,9 +26,17 @@ function getFullVideoUrl(url) {
 }
 
 export default class WidgetsBaseBlock extends React.Component {
-  // static propTypes = {
-  //   onPropertiesChange: React.PropTypes.func.isRequired
-  // }
+  static propTypes = {
+    // onPropertiesChange: React.PropTypes.func.isRequired,
+    parent: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.func
+    ])
+  }
+
+  static defaultProps = {
+    parent: null
+  }
 
   constructor(props) {
     super(props);
@@ -80,7 +88,7 @@ export default class WidgetsBaseBlock extends React.Component {
     //console.log('uploads', uploads);
     if (this.blockProperties[key].type === 'image' || this.blockProperties[key].type === 'video') {
       for (let [k, imageData] of enumerate(uploads)) {
-        //debug(k, 'data:', imageData);
+        debug(k, 'data:', imageData);
         this.props[key] = merge(this.props[key], {
           url: imageData.url,
           width: imageData.width,
@@ -94,7 +102,7 @@ export default class WidgetsBaseBlock extends React.Component {
       }
 
       for (let [k, imageData] of enumerate(uploads)) {
-        //debug(k, 'data:', imageData);
+        debug(k, 'data:', imageData);
         this.props[key].push({
           url: imageData.url,
           width: imageData.width,
@@ -129,7 +137,7 @@ export default class WidgetsBaseBlock extends React.Component {
     this.forceUpdate();
   }
 
-  onFormChange(key, event, prop) {
+  onFormChange(/*key, event, prop*/) {
     // console.log('onFormChange event', key, event, prop);
   }
 
