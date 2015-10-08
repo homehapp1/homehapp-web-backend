@@ -46,8 +46,14 @@ export default class ContentImage extends React.Component {
         variant = 'full';
       }
     }
+
+    let img = {
+      url: this.props.image.url,
+      alt: this.props.image.alt,
+      aspectRatio: this.props.image.aspectRatio
+    };
     // Create the image block, all the data for its creation is now available
-    let image = (<Image {...this.props.image} variant={variant} />);
+    let image = (<Image {...img} variant={variant} />);
 
     // If there is no content, display larger image in the center
     if (!content) {
