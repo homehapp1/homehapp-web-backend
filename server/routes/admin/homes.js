@@ -14,15 +14,17 @@ exports.registerRoutes = (app) => {
     return next();
   });
 
-  app.get('/homes/:slug', function(req, res, next) {
+  let redirectBySlug = function redirectBySlug(req, res, next) {
     QB
     .forModel('Home')
     .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
-      debug('Redirecting the slug based call to UUID based URL');
+      let regexp = new RegExp(req.params.slug.replace(/\-/, '\\-'));
+      let href = req.url.replace(regexp, result.model.uuid);
+      debug('Redirecting the slug based call to UUID based URL', href);
       res.writeHead(301, {
-        Location: `/homes/${result.model.uuid}`
+        Location: href
       });
       res.end();
     })
@@ -30,6 +32,13 @@ exports.registerRoutes = (app) => {
       // Home not found by slug, do not redirect
       next();
     });
+  };
+
+  app.get('/homes/:slug', function(req, res, next) {
+    redirectBySlug(req, res, next);
+  });
+  app.get('/homes/:slug/:action', function(req, res, next) {
+    redirectBySlug(req, res, next);
   });
 
 };
