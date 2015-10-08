@@ -203,6 +203,8 @@ gulp.task('minify-client-styles', () => {
   return gulp.src(styleSources)
     .pipe(g.concat('all.css'))
     .pipe(minifyCss({
+      rebase: false,
+      noRebase: true, // Backwards compatibility of the previous switch
       advanced: false
     }))
     .pipe(g.rename('all.min.css'))
