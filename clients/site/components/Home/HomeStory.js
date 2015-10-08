@@ -6,6 +6,8 @@ import HomeNavigation from './HomeNavigation';
 import StoryLayout from '../../../common/components/Layout/StoryLayout';
 import { setPageTitle } from '../../../common/Helpers';
 
+let debug = require('debug')('HomeStory');
+
 export default class HomeStory extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired
@@ -53,7 +55,8 @@ export default class HomeStory extends React.Component {
     //     email: 'arttu@kaktus.cc'
     //   }
     // });
-
+    debug('Render blocks', blocks);
+    console.log('Render blocks', block);
     return (
       <div className='home-view'>
         <HomeNavigation home={this.props.home} />
