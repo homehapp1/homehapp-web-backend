@@ -115,7 +115,7 @@ export default class Homepage extends React.Component {
           </LargeText>
         </BigImage>
         <div className='mainpage-list clearfix'>
-          <HomeList items={this.state.homes} max={3} className='mainpage-list short-list'>
+          <HomeList items={this.state.homes} max={4} className='mainpage-list short-list'>
             <h2>Exclusively for Homehapp</h2>
           </HomeList>
           <p className='call-to-action'>
