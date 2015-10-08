@@ -82,7 +82,7 @@ exports.registerRoutes = (app) => {
       };
       next();
     })
-    .catch((err) => {
+    .catch(() => {
       debug('Home not found by slug, try if the identifier was its UUID', slug);
       QB
       .forModel('Home')
