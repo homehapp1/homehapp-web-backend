@@ -1,0 +1,52 @@
+.upload-area-progress-container {
+  $unitHeight: 26px;
+  $margin: 10px;
+
+  & > .upload {
+    display: block;
+    position: relative;
+    overflow: hidden;
+
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, 500ms);
+    @include vendors(transition-delay, 500ms);
+
+    &.finished {
+      height: 0;
+      border: none !important;
+    }
+
+    & > .bar-container {
+      position: relative;
+      width: 100%;
+      border: solid 1px #e1e1e1;
+      height: $unitHeight;
+      overflow: hidden;
+      margin-bottom: $margin;
+
+      & > .percentage {
+        position: absolute;
+        right: 10px;
+        line-height: $unitHeight;
+        z-index: 1;
+      }
+
+      & > .bar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #e1e1e1;
+        @include vendors(transition-property, all);
+        @include vendors(transition-duration, 200ms);
+        z-index: 0;
+      }
+    }
+
+    & + .upload {
+      border-top: solid 1px #e1e1e1;
+      margin-top: $margin;
+      padding-top: $margin;
+    }
+  }
+}

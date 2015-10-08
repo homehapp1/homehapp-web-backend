@@ -63,12 +63,14 @@ class UploadArea extends React.Component {
     props.uploadUrl = props.uploadUrl || defaultUploadUrl;
 
     super(props);
+    this.uploads = {};
     //this.state.signatureData = this.props.signatureData;
   }
 
   state = {
     //signatureData: null,
-    uploading: false
+    uploading: false,
+    uploads: {}
   }
 
   componentDidMount() {
@@ -124,9 +126,14 @@ class UploadArea extends React.Component {
           id: file.id,
           data: file
         });
+        this.uploads[file.id] = {
+          name: file.name,
+          progress: 0
+        };
 
         this.setState({
-          uploading: true
+          uploading: true,
+          uploads: this.uploads
         });
 
         if (this.props.useCloudinary && !this.state.signatureData) {
@@ -160,6 +167,12 @@ class UploadArea extends React.Component {
 
     this.dropzone.on('uploadprogress', (file, progress) => {
       debug('dropzone.uploadprogress', file, progress);
+      debug('this.uploads', this.uploads);
+      this.uploads[file.id].progress = progress;
+      this.setState({
+        uploading: true,
+        uploads: this.uploads
+      });
       if (this.props.onProgress) {
         this.props.onProgress(file, progress);
       }
@@ -184,25 +197,42 @@ class UploadArea extends React.Component {
         id: file.id,
         data: fileData
       });
-
       this.props.onUpload(file, response);
 
       this.setState({
-        uploading: false
+        uploading: false,
+        uploads: this.uploads
       });
     });
   }
 
   render() {
     let className = this.props.className;
-    let loader = null;
-    if (this.state.uploading) {
-      loader = (
-        <span>
-          <i className=''></i> Uploading...
-        </span>
-      );
-    }
+    let loader = (
+      <div className='upload-area-progress-container'>
+        {
+          Object.keys(this.state.uploads).map((id, index) => {
+            let file = this.state.uploads[id];
+            let progress = `${Math.round(file.progress)}%`;
+            let classes = ['upload'];
+
+            if (Math.round(file.progress) >= 100) {
+              classes.push('finished');
+            }
+
+            return (
+              <div className={classes.join(' ')}>
+                <div className='bar-container clearfix'>
+                  <div className='bar' style={{width: progress}}></div>
+                  <div className='percentage'>{progress}</div>
+                </div>
+                <div className='filename'>{file.name}</div>
+              </div>
+            );
+          })
+        }
+      </div>
+    );
 
     return (
       <div
