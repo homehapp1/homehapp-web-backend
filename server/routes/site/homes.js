@@ -23,9 +23,10 @@ exports.registerRoutes = (app) => {
     res.end();
   });
 
-  let returnHomeBySlug = (slug, res, next) => {
+  let returnHomeBySlug = (req, res, next) => {
     let home = null;
     let neighborhood = null;
+    let slug = req.params.slug;
 
     QB
     .forModel('Home')
@@ -81,17 +82,36 @@ exports.registerRoutes = (app) => {
       };
       next();
     })
-    .catch(next);
+    .catch((err) => {
+      debug('Home not found by slug, try if the identifier was its UUID', slug);
+      QB
+      .forModel('Home')
+      .findByUuid(slug)
+      .fetch()
+      .then((result) => {
+        let regexp = new RegExp(req.params.slug.replace(/\-/, '\\-'));
+        let href = req.url.replace(regexp, result.model.slug);
+        debug('Redirecting the UUID based call to slug based URL', href);
+        res.writeHead(301, {
+          Location: href
+        });
+        res.end();
+      })
+      .catch(next);
+    });
   };
 
   app.get('/homes/:slug', function(req, res, next) {
-    returnHomeBySlug(req.params.slug, res, next);
+    debug(`GET /homes/${req.params.slug}`);
+    returnHomeBySlug(req, res, next);
   });
 
   app.get('/homes/:slug/details', function(req, res, next) {
-    returnHomeBySlug(req.params.slug, res, next);
+    debug(`GET /homes/${req.params.slug}/details`);
+    returnHomeBySlug(req, res, next);
   });
   app.get('/homes/:slug/story', function(req, res, next) {
-    returnHomeBySlug(req.params.slug, res, next);
+    debug(`GET /homes/${req.params.slug}/story`);
+    returnHomeBySlug(req, res, next);
   });
 };
