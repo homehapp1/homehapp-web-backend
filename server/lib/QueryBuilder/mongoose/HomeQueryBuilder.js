@@ -28,6 +28,8 @@ export default class HomeQueryBuilder extends BaseQueryBuilder {
           debug(`No homes found with slug '${slug}'`);
           return callback(new NotFound('home not found'));
         }
+        this.result.model = model;
+        this.result.models = [model];
         this.result.home = model;
         this.result.homeJson = model.toJSON();
         this._loadedModel = model;
@@ -45,7 +47,9 @@ export default class HomeQueryBuilder extends BaseQueryBuilder {
     };
 
     this._queries.push((callback) => {
-      this.Model.find(query, (err, homes) => {
+      let cursor = this.Model.find(query);
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, homes) => {
         if (err) {
           debug('Got error', err);
           return callback(err);
@@ -65,10 +69,12 @@ export default class HomeQueryBuilder extends BaseQueryBuilder {
 
   findByUuid(uuid) {
     this._queries.push((callback) => {
-      this.Model.findOne({
+      let cursor = this.Model.findOne({
         uuid: uuid,
         deletedAt: null
-      }, (err, model) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, model) => {
         if (err) {
           return callback(err);
         }
