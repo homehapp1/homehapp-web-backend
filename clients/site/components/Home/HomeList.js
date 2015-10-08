@@ -70,67 +70,69 @@ export default class HomeList extends React.Component {
     return (
       <div className={containerClass.join(' ')} ref='homeList'>
         {this.props.children}
-        {
-          homes.map((home, index) => {
-            debug('Home', home.title);
-            let classes = ['preview'];
+        <div className='clearfix'>
+          {
+            homes.map((home, index) => {
+              debug('Home', home.title);
+              let classes = ['preview'];
 
-            if (index === this.props.max) {
-              classes.push('last');
-            }
-
-            if (!index) {
-              classes.push('first');
-            }
-
-            let link = {
-              to: 'home',
-              params: {
-                slug: home.slug
-              }
-            };
-            let rooms = 0;
-
-            for (let i = 0; i < home.attributes.length; i++) {
-              if (home.attributes[i].name !== 'rooms') {
-                continue;
+              if (index === this.props.max) {
+                classes.push('last');
               }
 
-              rooms = home.attributes[i].value;
-              break;
-            }
+              if (!index) {
+                classes.push('first');
+              }
 
-            if (rooms === 1) {
-              rooms = `${rooms} bedroom`;
-            } else {
-              rooms = `${rooms} bedrooms`;
-            }
+              let link = {
+                to: 'home',
+                params: {
+                  slug: home.slug
+                }
+              };
+              let rooms = 0;
 
-            let mainImage = {
-              url: home.mainImage.url,
-              alt: home.mainImage.alt
-            };
+              for (let i = 0; i < home.attributes.length; i++) {
+                if (home.attributes[i].name !== 'rooms') {
+                  continue;
+                }
 
-            return (
-              <div className={classes.join(' ')} key={`homeListItem${index}`}>
-                <Link {...link} className='thumbnail'>
-                  <Hoverable {...mainImage} width={464} height={556} mode='fill' applySize>
-                    <span className='title'>{home.homeTitle}</span>
-                  </Hoverable>
-                </Link>
-                <div className='description'>
-                  <p className='price'>{home.formattedPrice}</p>
-                  <p className='address'>
-                    {this.getStreet(home)}
-                    {this.getNeighborhood(home)}
-                    {this.getCity(home)}
-                    <span className='city'>{home.location.address.city}</span>
-                  </p>
+                rooms = home.attributes[i].value;
+                break;
+              }
+
+              if (rooms === 1) {
+                rooms = `${rooms} bedroom`;
+              } else {
+                rooms = `${rooms} bedrooms`;
+              }
+
+              let mainImage = {
+                url: home.mainImage.url,
+                alt: home.mainImage.alt
+              };
+
+              return (
+                <div className={classes.join(' ')} key={`homeListItem${index}`}>
+                  <Link {...link} className='thumbnail'>
+                    <Hoverable {...mainImage} width={464} height={556} mode='fill' applySize>
+                      <span className='title'>{home.homeTitle}</span>
+                    </Hoverable>
+                  </Link>
+                  <div className='description'>
+                    <p className='price'>{home.formattedPrice}</p>
+                    <p className='address'>
+                      {this.getStreet(home)}
+                      {this.getNeighborhood(home)}
+                      {this.getCity(home)}
+                      <span className='city'>{home.location.address.city}</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            );
-          })
-        }
+              );
+            })
+          }
+        </div>
       </div>
     );
   }
