@@ -25,15 +25,31 @@ export default class HomesEdit extends React.Component {
     tab: 1
   }
 
+  tabs = {
+    details: 1,
+    story: 2
+  }
+
   constructor(props) {
     super(props);
   }
 
-  render() {
-    let openTab = Number(this.props.tab);
-    if (isNaN(openTab)) {
-      openTab = 1;
+  resolveOpenTab() {
+    let tab = this.props.tab;
+
+    if (typeof this.tabs[tab] !== 'undefined') {
+      return this.tabs[tab];
     }
+
+    tab = Number(tab);
+    if (isNaN(tab)) {
+      tab = 1;
+    }
+    return tab;
+  }
+
+  render() {
+    let openTab = this.resolveOpenTab();
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
