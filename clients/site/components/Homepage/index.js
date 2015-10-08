@@ -105,8 +105,6 @@ export default class Homepage extends React.Component {
       height: 515
     };
 
-    debug('Use homes', this.state.homes);
-
     return (
       <div id='mainpage' className='mainpage'>
         <BigImage gradient='green' fixed image={placeholder} proportion={0.8}>

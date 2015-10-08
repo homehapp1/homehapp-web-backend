@@ -11,7 +11,7 @@ let debug = require('../../common/debugger')('HomeListStore');
 class HomeListStore {
   constructor() {
     this.on('bootstrap', () => {
-      debug('bootstrapping', this.homes);
+      debug('bootstrapping');
     });
 
     this.bindListeners({

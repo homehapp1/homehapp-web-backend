@@ -58,7 +58,7 @@ export default class HomeList extends React.Component {
         {this.props.children}
         {
           this.props.items.map((home, index) => {
-            debug('home', home);
+            debug('Home', home.title);
             let classes = ['preview'];
 
             if (index === this.props.max) {
@@ -95,13 +95,11 @@ export default class HomeList extends React.Component {
             } else {
               rooms = `${rooms} bedrooms`;
             }
-            debug('home.mainImage', home.mainImage);
 
             let mainImage = {
               url: home.mainImage.url,
               alt: home.mainImage.alt
             };
-            debug('mainImage', mainImage);
 
             return (
               <div className={classes.join(' ')} key={index}>
