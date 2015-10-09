@@ -14,7 +14,7 @@ import HomeActions from '../../actions/HomeActions';
 import StoryEditBlocks from '../Shared/StoryEditBlocks';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 
-import Loading from '../../../common/components/Widgets/Loading';
+import NotificationLayout from '../Layout/NotificationLayout';
 
 let debug = require('../../../common/debugger')('HomesEditStory');
 
@@ -67,9 +67,9 @@ export default class HomesEditStory extends React.Component {
 
   handlePendingState() {
     return (
-      <Loading>
+      <NotificationLayout>
         <h3>Saving home...</h3>
-      </Loading>
+      </NotificationLayout>
     );
   }
 
