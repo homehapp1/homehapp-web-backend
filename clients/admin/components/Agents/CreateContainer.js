@@ -3,7 +3,7 @@
 import React from 'react';
 import AgentListStore from '../../stores/AgentListStore';
 import AgentsCreate from './Create';
-import Loading from '../../../common/components/Widgets/Loading';
+import NotificationLayout from '../Layout/NotificationLayout';
 let blankId = null;
 
 export default class AgentsCreateContainer extends React.Component {
@@ -37,9 +37,9 @@ export default class AgentsCreateContainer extends React.Component {
 
   handlePendingState() {
     return (
-      <Loading>
+      <NotificationLayout>
         <h3>Creating a new agent template...</h3>
-      </Loading>
+      </NotificationLayout>
     );
   }
 
