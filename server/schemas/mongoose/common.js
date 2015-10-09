@@ -3,14 +3,10 @@
 import Plugins from './Plugins';
 import moment from 'moment';
 
-exports.getImageSchema = function getImageSchema() {
-  return {
+exports.getImageSchema = function getImageSchema(Schema) {
+  let image = new Schema({
     url: {
       type: String
-    },
-    aspectRatio: { // TODO: Remove this and use the virtual property
-      type: Number,
-      required: true
     },
     width: {
       type: Number,
@@ -37,11 +33,15 @@ exports.getImageSchema = function getImageSchema() {
       type: String,
       default: ''
     }
-  };
+  });
+  image.virtual('aspectRatio').get(function() {
+    return this.width / this.height;
+  });
+  return image;
 };
 
 exports.getStoryBlockSchema = function getStoryBlockSchema(Schema) {
-  return {
+  return new Schema({
     template: {
       type: String,
       default: 'default'
@@ -49,7 +49,7 @@ exports.getStoryBlockSchema = function getStoryBlockSchema(Schema) {
     properties: {
       type: Schema.Types.Mixed
     }
-  };
+  });
 };
 
 exports.loadCommonPlugins = (schema, name, mongoose) => {
