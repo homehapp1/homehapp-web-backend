@@ -1,13 +1,13 @@
 'use strict';
 
 import QueryBuilder from '../../lib/QueryBuilder';
-import { setLastMod } from '../../../clients/common/Helpers';
+import { setLastMod, initMetadata } from '../../../clients/common/Helpers';
 let debug = require('debug')('/homes');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  app.get('/home', function(req, res, next) {
+  app.get('/home', function(req, res) {
     debug('Redirecting the GUI call to deprecated /home');
     res.writeHead(301, {
       Location: `/homes`
@@ -15,7 +15,7 @@ exports.registerRoutes = (app) => {
     res.end();
   });
 
-  app.get('/home/:slug', function(req, res, next) {
+  app.get('/home/:slug', function(req, res) {
     debug('Redirecting the GUI call to deprecated /home/:slug');
     res.writeHead(301, {
       Location: `/homes/${req.params.slug}`
@@ -51,16 +51,7 @@ exports.registerRoutes = (app) => {
           }
         }
       }
-
-      if (typeof res.locals.openGraph === 'undefined') {
-        res.locals.openGraph = {
-          'og:image': []
-        };
-      }
-
-      if (typeof res.locals.metadatas === 'undefined') {
-        res.locals.metadatas = [];
-      }
+      initMetadata(req);
 
       let title = [home.homeTitle];
       let description = home.description || title.join('; ');

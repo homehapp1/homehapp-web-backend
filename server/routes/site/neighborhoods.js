@@ -1,7 +1,7 @@
 'use strict';
 
 import QueryBuilder from '../../lib/QueryBuilder';
-import { setLastMod } from '../../../clients/common/Helpers';
+import { setLastMod, initMetadata } from '../../../clients/common/Helpers';
 let debug = require('debug')('neighborhoods API');
 
 exports.registerRoutes = (app) => {
@@ -11,7 +11,7 @@ exports.registerRoutes = (app) => {
     let city = null;
     let neighborhood = null;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       QB
       .forModel('City')
       .findBySlug(req.params.city)
@@ -54,17 +54,7 @@ exports.registerRoutes = (app) => {
             }
           }
         }
-
-        if (typeof res.locals.openGraph === 'undefined') {
-          res.locals.openGraph = {
-            'og:image': []
-          };
-        }
-
-        if (typeof res.locals.metadatas === 'undefined') {
-          res.locals.metadatas = [];
-        }
-
+        initMetadata(res);
         res.locals.openGraph['og:image'] = images.concat(res.locals.openGraph['og:image']);
         setLastMod([neighborhood, city].concat(neighborhood.homes), res);
         resolve(neighborhood);
@@ -74,12 +64,7 @@ exports.registerRoutes = (app) => {
   };
 
   app.get('/neighborhoods', function(req, res, next) {
-    if (typeof res.locals.openGraph === 'undefined') {
-      res.locals.openGraph = {
-        'og:image': []
-      };
-    }
-
+    initMetadata(res);
     res.locals.openGraph['og:url'] = '/neighborhoods/london';
     next();
   });
@@ -124,14 +109,8 @@ exports.registerRoutes = (app) => {
           images.push(image);
         }
       }
-
-      if (typeof res.locals.openGraph === 'undefined') {
-        res.locals.openGraph = {
-          'og:image': []
-        };
-      }
+      initMetadata(res);
       res.locals.openGraph['og:image'] = images.concat(res.locals.openGraph['og:image']);
-
       res.locals.page = {
         title: `Neighborhoods of ${city.title}`,
         description: `Neighborhoods of ${city.title}`

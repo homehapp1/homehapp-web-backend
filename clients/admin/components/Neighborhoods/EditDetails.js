@@ -99,37 +99,39 @@ class NeighborhoodsEditDetails extends React.Component {
     React.findDOMNode(this.refs.neighborhoodDetailsForm).reset();
   }
 
+  imageExists(url) {
+    this.state.homeImages.forEach((img) => {
+      if (img.url === url) {
+        return true;
+      }
+    });
+    return false;
+  }
+
+  addImage(imageData) {
+    let isMaster = false;
+    let image = {
+      url: imageData.url,
+      width: imageData.width,
+      height: imageData.height,
+      // TODO: Remove me when backend supports it
+      aspectRatio: (imageData.width / imageData.height),
+      isMaster: isMaster
+    };
+
+    if (!this.imageExists(image.url)) {
+      this.state.meighborhoodImages.push(image);
+    }
+  }
+
   onImageUpload(data) {
     debug('onImageUpload', data);
-
-    let imageExists = (url) => {
-      let found = false;
-      this.state.neighborhoodImages.forEach((img) => {
-        if (img.url === url) {
-          found = true;
-        }
-      });
-      return found;
-    };
 
     if (this.state.uploads) {
       if (this.state.uploads[this.imageUploaderInstanceId]) {
         let uploads = this.state.uploads[this.imageUploaderInstanceId];
-        for (let [key, imageData] of enumerate(uploads)) {
-          console.log(key, 'data:', imageData);
-          let isMaster = false;
-          let neighborhoodImage = {
-            url: imageData.url,
-            width: imageData.width,
-            height: imageData.height,
-            // TODO: Remove me when backend supports it
-            aspectRatio: (imageData.width / imageData.height),
-            isMaster: isMaster
-          };
-
-          if (!imageExists(neighborhoodImage.url)) {
-            this.state.neighborhoodImages.push(neighborhoodImage);
-          }
+        for (let imageData of enumerate(uploads)) {
+          this.addImage(imageData);
         }
       }
     }
@@ -175,16 +177,6 @@ class NeighborhoodsEditDetails extends React.Component {
     if (NeighborhoodStore.isLoading()) {
       savingLoader = this.handlePendingState();
     }
-
-    let countrySelections = countries.map((country) => {
-      return (
-        <option
-          value={country.value}
-          key={'locCountry-' + country.value}>
-          {country.label}
-        </option>
-      );
-    });
 
     let lat, lon = '';
     if (this.props.neighborhood.location.coordinates.length) {

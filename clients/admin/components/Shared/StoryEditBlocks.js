@@ -1,13 +1,10 @@
 'use strict';
 
 import React from 'react';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
 import Input from 'react-bootstrap/lib/Input';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import AdminContentBlock from '../Widgets/ContentBlock';
 import AdminBigImage from '../Widgets/BigImage';
 import AdminContentImage from '../Widgets/ContentImage';
@@ -33,16 +30,16 @@ export default class StoryEditBlocks extends React.Component {
     //console.log('StoryEditBlocks', props);
   }
 
+  state = {
+    blocks: []
+  }
+
   componentDidMount() {
     //console.log('StoryEditBlocks:componentDidMount');
   }
 
   componentWillUnmount() {
   }
-
-  state = {
-    blocks: []
-  };
 
   getBlocks() {
     let updatedBlocks = this.state.blocks;

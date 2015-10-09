@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
 
-let debug = require('../../../common/debugger')('HomesEditStory');
+// let debug = require('../../../common/debugger')('HomesEditStory');
 
 export default class HomesCreateStory extends React.Component {
   render() {

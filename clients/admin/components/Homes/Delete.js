@@ -6,7 +6,6 @@ import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import Nav from 'react-bootstrap/lib/Nav';
@@ -14,12 +13,9 @@ import TabbedArea from 'react-bootstrap/lib/TabbedArea';
 import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
-import EditDetails from './EditDetails';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
-import HomeListActions from '../../actions/HomeListActions';
-
-import Loading from '../../../common/components/Widgets/Loading';
+import NotificationLayout from '../Layout/NotificationLayout';
 
 let debug = require('../../../common/debugger')('HomesDelete');
 
@@ -68,9 +64,9 @@ export default class HomesDelete extends React.Component {
 
   handlePendingState() {
     return (
-      <Loading>
+      <NotificationLayout>
         <h3>Saving home...</h3>
-      </Loading>
+      </NotificationLayout>
     );
   }
 

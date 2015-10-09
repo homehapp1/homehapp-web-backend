@@ -108,35 +108,37 @@ export default class AgentsEditDetails extends React.Component {
     React.findDOMNode(this.refs.agentDetailsForm).reset();
   }
 
+  imageExists(url) {
+    this.state.agentImages.forEach((img) => {
+      if (img.url === url) {
+        return true;
+      }
+    });
+    return false;
+  }
+
+  addImage(imageData) {
+    let isMaster = false;
+    let agentImage = {
+      url: imageData.url,
+      width: imageData.width,
+      height: imageData.height,
+      isMaster: isMaster
+    };
+
+    if (!this.imageExists(agentImage.url)) {
+      this.state.agentImages = [agentImage];
+    }
+  }
+
   onImageUpload(data) {
     debug('onImageUpload', data);
-
-    let imageExists = (url) => {
-      let found = false;
-      this.state.agentImages.forEach((img) => {
-        if (img.url === url) {
-          found = true;
-        }
-      });
-      return found;
-    };
 
     if (this.state.uploads) {
       if (this.state.uploads[this.imageUploaderInstanceId]) {
         let uploads = this.state.uploads[this.imageUploaderInstanceId];
-        for (let [key, imageData] of enumerate(uploads)) {
-          debug(key, 'data:', imageData);
-          let isMaster = false;
-          let agentImage = {
-            url: imageData.url,
-            width: imageData.width,
-            height: imageData.height,
-            isMaster: isMaster
-          };
-
-          if (!imageExists(agentImage.url)) {
-            this.state.agentImages = [agentImage];
-          }
+        for (let imageData of enumerate(uploads)) {
+          this.addIage(imageData);
         }
       }
     }

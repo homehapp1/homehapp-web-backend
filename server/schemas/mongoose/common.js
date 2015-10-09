@@ -3,7 +3,7 @@
 import Plugins from './Plugins';
 import moment from 'moment';
 
-exports.getImageSchema = function getImageSchema(Schema) {
+exports.getImageSchema = function getImageSchema() {
   return {
     url: {
       type: String

@@ -2,7 +2,7 @@ import React from 'react';
 import Input from 'react-bootstrap/lib/Input';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 
-let debug = require('../../../common/debugger')('NeighborhoodSelect');
+// let debug = require('../../../common/debugger')('NeighborhoodSelect');
 
 export default class NeighborhoodSelect extends React.Component {
   static propTypes = {
@@ -31,7 +31,7 @@ export default class NeighborhoodSelect extends React.Component {
     NeighborhoodListStore.unlisten(this.storeListener);
   }
 
-  onChange(state) {
+  onChange() {
     this.setState({
       neighborhoods: NeighborhoodListStore.getState().neighborhoods
     });

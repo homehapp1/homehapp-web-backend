@@ -16,6 +16,7 @@ import {randomNumericId, enumerate, merge} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
+import NotificationLayout from '../Layout/NotificationLayout';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
@@ -159,37 +160,38 @@ export default class HomesEditDetails extends React.Component {
     React.findDOMNode(this.refs.homeDetailsForm).reset();
   }
 
-  onImageUpload(data) {
-    debug('onImageUpload', data);
+  imageExists(url) {
+    this.state.homeImages.forEach((img) => {
+      if (img.url === url) {
+        return true;
+      }
+    });
+    return false;
+  }
 
-    let imageExists = (url) => {
-      let found = false;
-      this.state.homeImages.forEach((img) => {
-        if (img.url === url) {
-          found = true;
-        }
-      });
-      return found;
+  addImage(imageData) {
+    let isMaster = false;
+    let homeImage = {
+      url: imageData.url,
+      width: imageData.width,
+      height: imageData.height,
+      // TODO: Remove me when backend supports it
+      aspectRatio: (imageData.width / imageData.height),
+      isMaster: isMaster
     };
 
+    if (!this.imageExists(homeImage.url)) {
+      this.state.homeImages.push(homeImage);
+    }
+  }
+
+  onImageUpload(data) {
+    debug('onImageUpload', data);
     if (this.state.uploads) {
       if (this.state.uploads[this.imageUploaderInstanceId]) {
         let uploads = this.state.uploads[this.imageUploaderInstanceId];
-        for (let [key, imageData] of enumerate(uploads)) {
-          debug(key, 'data:', imageData);
-          let isMaster = false;
-          let homeImage = {
-            url: imageData.url,
-            width: imageData.width,
-            height: imageData.height,
-            // TODO: Remove me when backend supports it
-            aspectRatio: (imageData.width / imageData.height),
-            isMaster: isMaster
-          };
-
-          if (!imageExists(homeImage.url)) {
-            this.state.homeImages.push(homeImage);
-          }
+        for (let imageData of enumerate(uploads)) {
+          this.addImage(imageData);
         }
       }
     }
@@ -307,9 +309,9 @@ export default class HomesEditDetails extends React.Component {
 
   handlePendingState() {
     return (
-      <div className='home-saving'>
+      <NotificationLayout>
         <h3>Saving home...</h3>
-      </div>
+      </NotificationLayout>
     );
   }
 
@@ -345,7 +347,7 @@ export default class HomesEditDetails extends React.Component {
     if (this.state.error) {
       error = this.handleErrorState();
     }
-    if (HomeStore.isLoading()) {
+    if (HomeStore.isLoading() || true) {
       savingLoader = this.handlePendingState();
     }
 

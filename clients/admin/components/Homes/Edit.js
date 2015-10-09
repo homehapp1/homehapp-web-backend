@@ -25,13 +25,13 @@ export default class HomesEdit extends React.Component {
     tab: 1
   }
 
+  constructor(props) {
+    super(props);
+  }
+
   tabs = {
     details: 1,
     story: 2
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   resolveOpenTab() {

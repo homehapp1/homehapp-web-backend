@@ -5,7 +5,6 @@ import React from 'react';
 import HomeStore from '../../stores/HomeStore';
 import HomesCreate from './Create';
 import Loading from '../../../common/components/Widgets/Loading';
-let blankId = null;
 
 export default class HomesCreateContainer extends React.Component {
   constructor(props) {
@@ -15,14 +14,11 @@ export default class HomesCreateContainer extends React.Component {
 
   state = {
     error: null,
-    home: null //HomeListStore.getHome(blankId)
+    home: null
   }
 
   componentDidMount() {
     HomeStore.listen(this.storeListener);
-    // if (!HomeListStore.getHome(blankId)) {
-    //   HomeListStore.fetchHomes();
-    // }
   }
 
   componentWillUnmount() {
@@ -32,7 +28,7 @@ export default class HomesCreateContainer extends React.Component {
   onChange(/*state*/) {
     this.setState({
       error: HomeStore.getState().error,
-      home: HomeStore.getState().home //HomeListStore.getHome(blankId)
+      home: HomeStore.getState().home
     });
   }
 

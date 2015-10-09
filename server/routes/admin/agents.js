@@ -37,8 +37,6 @@ exports.registerRoutes = (app) => {
 
   app.get('/agents/edit/:uuid', function(req, res, next) {
     debug('Fetch agent by uuid', req.params.uuid);
-    let agent = null;
-
     QB
     .forModel('Agent')
     .findByUuid(req.params.uuid)

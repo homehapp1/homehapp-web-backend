@@ -2,7 +2,7 @@
 
 import request from '../../common/request';
 import NeighborhoodActions from '../actions/NeighborhoodActions';
-import Cache from '../../common/Cache';
+// import Cache from '../../common/Cache';
 
 let debug = require('../../common/debugger')('NeighborhoodSource');
 
@@ -42,7 +42,7 @@ let NeighborhoodSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState, city, slug) {
+      local(/*storeState, city, slug*/) {
         // if (Cache.has('neighborhoodsBySlug', slug)) {
         //   return Cache.get('neighborhoodsBySlug', slug);
         // }

@@ -55,7 +55,8 @@ exports.registerRoutes = (app) => {
       .createNoMultiset(data)
       .then((model) => {
         res.json({
-          status: 'ok', home: model
+          status: 'ok',
+          home: model
         });
       })
       .catch(next);
@@ -109,7 +110,8 @@ exports.registerRoutes = (app) => {
     .fetch()
     .then((result) => {
       res.json({
-        status: 'ok', home: result.home
+        status: 'ok',
+        home: result.home
       });
     })
     .catch(next);
@@ -121,7 +123,7 @@ exports.registerRoutes = (app) => {
 
     if (data.location && data.location.neighborhood && String(data.location.neighborhood).match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{8}/)) {
       debug('Get neighborhood', data.location.neighborhood);
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         QB
         .forModel('Neighborhood')
         .findByUuid(data.location.neighborhood)
@@ -164,7 +166,8 @@ exports.registerRoutes = (app) => {
     updateHome(req.params.uuid, data)
     .then((model) => {
       res.json({
-        status: 'ok', home: model
+        status: 'ok',
+        home: model
       });
     })
     .catch(next);

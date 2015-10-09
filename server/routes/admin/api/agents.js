@@ -1,7 +1,7 @@
 'use strict';
 
 import QueryBuilder from '../../../lib/QueryBuilder';
-import {NotImplemented, BadRequest} from '../../../lib/Errors';
+import {/*NotImplemented,*/ BadRequest} from '../../../lib/Errors';
 let debug = require('debug')('/api/agents');
 
 exports.registerRoutes = (app) => {

@@ -298,6 +298,22 @@ exports.setPageTitle = function setPageTitle(title = '') {
   document.title = title + 'Homehapp';
 };
 
+exports.initMetadata = function initMetadata(res) {
+  if (typeof res.locals === 'undefined') {
+    res.locals = {};
+  }
+
+  if (typeof res.locals.openGraph === 'undefined') {
+    res.locals.openGraph = {
+      'og:image': []
+    };
+  }
+
+  if (typeof res.locals.metadatas === 'undefined') {
+    res.locals.metadatas = [];
+  }
+};
+
 exports.setLastMod = function setLastMod(objects, res) {
   let lastMod = null;
 
@@ -315,13 +331,7 @@ exports.setLastMod = function setLastMod(objects, res) {
 
   debug('lastMod', lastMod);
   if (lastMod) {
-    if (typeof res.locals.metadatas === 'undefined') {
-      res.locals.metadatas = [];
-    }
-    if (typeof res.locals.openGraph === 'undefined') {
-      res.locals.openGraph = {};
-    }
-
+    exports.initMetadata(res);
     let date = new Date(lastMod);
     try {
       res.locals.openGraph['og:updated_time'] = date.toISOString();

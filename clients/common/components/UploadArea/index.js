@@ -221,7 +221,7 @@ class UploadArea extends React.Component {
             }
 
             return (
-              <div className={classes.join(' ')}>
+              <div className={classes.join(' ')} key={`uploadArea${index}`}>
                 <div className='bar-container clearfix'>
                   <div className='bar' style={{width: progress}}></div>
                   <div className='percentage'>{progress}</div>

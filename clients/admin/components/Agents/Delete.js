@@ -6,7 +6,7 @@ import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Input from 'react-bootstrap/lib/Input';
+// import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import Nav from 'react-bootstrap/lib/Nav';
@@ -14,10 +14,10 @@ import TabbedArea from 'react-bootstrap/lib/TabbedArea';
 import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
-import EditDetails from './EditDetails';
+// import EditDetails from './EditDetails';
 import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
-import AgentListActions from '../../actions/AgentListActions';
+// import AgentListActions from '../../actions/AgentListActions';
 
 import Loading from '../../../common/components/Widgets/Loading';
 

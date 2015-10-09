@@ -6,14 +6,7 @@ let debug = require('debug')('/api/homes');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  let getNeighborhood = function getNeighborhood(id) {
-    return QB
-    .forModel('Neighborhood')
-    .findById(id)
-    .fetch();
-  };
-
-  app.get('/api/home', function(req, res, next) {
+  app.get('/api/home', function(req, res) {
     debug('Redirecting the API call to deprecated /api/home');
     res.writeHead(301, {
       Location: `/api/homes`
@@ -21,7 +14,7 @@ exports.registerRoutes = (app) => {
     res.end();
   });
 
-  app.get('/api/home/:slug', function(req, res, next) {
+  app.get('/api/home/:slug', function(req, res) {
     debug('Redirecting the API call to deprecated /api/home/:slug');
     res.writeHead(301, {
       Location: `/api/homes/${req.params.slug}`
@@ -30,7 +23,6 @@ exports.registerRoutes = (app) => {
   });
 
   app.get('/api/homes/:slug', function(req, res, next) {
-    let home = null;
     QB
     .forModel('Home')
     .populate({
