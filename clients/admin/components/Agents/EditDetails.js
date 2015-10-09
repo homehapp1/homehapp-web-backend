@@ -14,10 +14,11 @@ import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import {randomNumericId, enumerate} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
+import EditDetails from '../Shared/EditDetails';
 
 let debug = require('../../../common/debugger')('AgentsEditDetails');
 
-export default class AgentsEditDetails extends React.Component {
+export default class AgentsEditDetails extends EditDetails {
   static propTypes = {
     agent: React.PropTypes.object.isRequired,
     context: React.PropTypes.object
@@ -32,7 +33,7 @@ export default class AgentsEditDetails extends React.Component {
     this.storeListener = this.onAgentStoreChange.bind(this);
     this.uploadListener = this.onUploadChange.bind(this);
     this.imageUploaderInstanceId = randomNumericId();
-    this.state.agentImages = props.agent.images;
+    this.state.images = props.agent.images;
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
     debug('Constructor', this);
   }
@@ -40,8 +41,7 @@ export default class AgentsEditDetails extends React.Component {
   state = {
     error: null,
     uploads: UploadAreaUtils.UploadStore.getState().uploads,
-    currentAttributes: this.props.agent.attributes,
-    agentImages: []
+    images: []
   }
 
   componentDidMount() {
@@ -76,7 +76,7 @@ export default class AgentsEditDetails extends React.Component {
 
     let images = [];
     // Clean broken images
-    this.state.agentImages.forEach((image) => {
+    this.state.images.forEach((image) => {
       if (image.url) {
         images.push(image);
       }
@@ -108,90 +108,10 @@ export default class AgentsEditDetails extends React.Component {
     React.findDOMNode(this.refs.agentDetailsForm).reset();
   }
 
-  imageExists(url) {
-    this.state.agentImages.forEach((img) => {
-      if (img.url === url) {
-        return true;
-      }
-    });
-    return false;
-  }
-
-  addImage(imageData) {
-    let isMaster = false;
-    let agentImage = {
-      url: imageData.url,
-      width: imageData.width,
-      height: imageData.height,
-      isMaster: isMaster
-    };
-
-    if (!this.imageExists(agentImage.url)) {
-      this.state.agentImages = [agentImage];
-    }
-  }
-
-  onImageUpload(data) {
-    debug('onImageUpload', data);
-
-    if (this.state.uploads) {
-      if (this.state.uploads[this.imageUploaderInstanceId]) {
-        let uploads = this.state.uploads[this.imageUploaderInstanceId];
-        for (let imageData of enumerate(uploads)) {
-          this.addIage(imageData);
-        }
-      }
-    }
-
-    this.setState({
-      agentImages: this.state.agentImages
-    });
-  }
-
-  onRemoveImageClicked(index) {
-    let newImages = [];
-    this.state.agentImages.forEach((item, idx) => {
-      if (idx !== index) {
-        newImages.push(item);
-      }
-    });
-    this.setState({agentImages: newImages});
-  }
-
-  onRemoveAttributeClicked(index) {
-    let newAttributes = [];
-    this.state.currentAttributes.forEach((item, idx) => {
-      if (idx !== index) {
-        newAttributes.push(item);
-      }
-    });
-    this.setState({currentAttributes: newAttributes});
-  }
-
-  handlePendingState() {
-    return (
-      <div className='agent-saving'>
-        <h3>Saving agent...</h3>
-      </div>
-    );
-  }
-
-  handleErrorState() {
-    return (
-      <div className='agent-error'>
-        <h3>Error updating agent!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
-    );
-  }
-
   render() {
     debug('Render');
-    let error = null;
+    let error = this.handleErrorState();
     let savingLoader = null;
-    if (this.state.error) {
-      error = this.handleErrorState();
-    }
     if (AgentStore.isLoading()) {
       savingLoader = this.handlePendingState();
     }
@@ -264,7 +184,7 @@ export default class AgentsEditDetails extends React.Component {
               <Row>
                 <Col md={6}>
                   <h2>Image</h2>
-                  <ImageList images={this.state.agentImages} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} max={1} />
+                  <ImageList images={this.state.images} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} max={1} />
                 </Col>
                 <Col md={6}>
                   <UploadArea

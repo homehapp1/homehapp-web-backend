@@ -12,16 +12,15 @@ import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import {randomNumericId, enumerate, merge} from '../../../common/Helpers';
+import {randomNumericId, merge} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import NotificationLayout from '../Layout/NotificationLayout';
+import EditDetails from '../Shared/EditDetails';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
-const countries = require('../../../common/lib/Countries').forSelect();
 
-export default class HomesEditDetails extends React.Component {
+export default class HomesEditDetails extends EditDetails {
   static propTypes = {
     home: React.PropTypes.object.isRequired,
     context: React.PropTypes.object
@@ -44,7 +43,7 @@ export default class HomesEditDetails extends React.Component {
           name: '', value: '', valueType: 'string'
         }
       ];
-      this.state.homeImages = props.home.images || [];
+      this.state.images = props.home.images || [];
     }
 
     debug('Constructor', this);
@@ -54,7 +53,7 @@ export default class HomesEditDetails extends React.Component {
     error: null,
     uploads: UploadAreaUtils.UploadStore.getState().uploads,
     currentAttributes: [],
-    homeImages: []
+    images: []
   }
 
   componentDidMount() {
@@ -66,7 +65,7 @@ export default class HomesEditDetails extends React.Component {
     if (props.home) {
       this.setState({
         currentAttributes: props.home.attributes || {},
-        homeImages: props.home.images || []
+        images: props.home.images || []
       });
     }
   }
@@ -99,7 +98,7 @@ export default class HomesEditDetails extends React.Component {
 
     let images = [];
     // Clean broken images
-    this.state.homeImages.forEach((image) => {
+    this.state.images.forEach((image) => {
       if (image.url) {
         images.push(image);
       }
@@ -109,6 +108,8 @@ export default class HomesEditDetails extends React.Component {
     if (this.props.home) {
       id = this.props.home.id;
     }
+
+    debug('Coordinates', this.getCoordinates());
 
     let homeProps = {
       id: id,
@@ -124,10 +125,7 @@ export default class HomesEditDetails extends React.Component {
           country: this.refs.addressCountry.getValue()
         },
         neighborhood: this.refs.addressNeighborhood.getValue(),
-        coordinates: [
-          this.refs.locationLatitude.getValue(),
-          this.refs.locationLongitude.getValue()
-        ]
+        coordinates: this.getCoordinates()
       },
       costs: {
         currency: this.refs.costsCurrency.getValue(),
@@ -158,57 +156,6 @@ export default class HomesEditDetails extends React.Component {
 
   onCancel() {
     React.findDOMNode(this.refs.homeDetailsForm).reset();
-  }
-
-  imageExists(url) {
-    this.state.homeImages.forEach((img) => {
-      if (img.url === url) {
-        return true;
-      }
-    });
-    return false;
-  }
-
-  addImage(imageData) {
-    let isMaster = false;
-    let homeImage = {
-      url: imageData.url,
-      width: imageData.width,
-      height: imageData.height,
-      // TODO: Remove me when backend supports it
-      aspectRatio: (imageData.width / imageData.height),
-      isMaster: isMaster
-    };
-
-    if (!this.imageExists(homeImage.url)) {
-      this.state.homeImages.push(homeImage);
-    }
-  }
-
-  onImageUpload(data) {
-    debug('onImageUpload', data);
-    if (this.state.uploads) {
-      if (this.state.uploads[this.imageUploaderInstanceId]) {
-        let uploads = this.state.uploads[this.imageUploaderInstanceId];
-        for (let imageData of enumerate(uploads)) {
-          this.addImage(imageData);
-        }
-      }
-    }
-
-    this.setState({
-      homeImages: this.state.homeImages
-    });
-  }
-
-  onRemoveImageClicked(index) {
-    let newImages = [];
-    this.state.homeImages.forEach((item, idx) => {
-      if (idx !== index) {
-        newImages.push(item);
-      }
-    });
-    this.setState({homeImages: newImages});
   }
 
   onRemoveAttributeClicked(index) {
@@ -307,49 +254,14 @@ export default class HomesEditDetails extends React.Component {
     );
   }
 
-  handlePendingState() {
-    return (
-      <NotificationLayout>
-        <h3>Saving home...</h3>
-      </NotificationLayout>
-    );
-  }
-
-  handleErrorState() {
-    return (
-      <div className='home-error'>
-        <h3>Error updating home!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
-    );
-  }
-
-  getSlug(home) {
-    if (!home.slug) {
-      return null;
-    }
-
-    return (
-        <Input
-        type='text'
-        label='Slug'
-        placeholder='Home Slug (will be generated)'
-        readOnly
-        defaultValue={home.slug}
-      />
-    );
-  }
-
   render() {
     debug('render', this.state);
-    let error = null;
+    let error = this.handleErrorState();
     let savingLoader = null;
-    if (this.state.error) {
-      error = this.handleErrorState();
-    }
     if (HomeStore.isLoading() || true) {
       savingLoader = this.handlePendingState();
     }
+    debug('savingLoader', savingLoader);
 
     let home = merge({
       costs: {},
@@ -368,15 +280,7 @@ export default class HomesEditDetails extends React.Component {
       neighborhood: null
     }, home.location || {});
 
-    let countrySelections = countries.map((country) => {
-      return (
-        <option
-          value={country.value}
-          key={'locCountry-' + country.value}>
-          {country.label}
-        </option>
-      );
-    });
+    let countrySelections = this.getCountryOptions();
 
     let lat, lon = '';
     if (home && homeLocation.coordinates.length) {
@@ -396,6 +300,7 @@ export default class HomesEditDetails extends React.Component {
         </a>
       );
     }
+    debug('Render', home);
     //debug('Neighborhood of this home', this.props.homeLocation.neighborhood);
 
     return (
@@ -467,7 +372,7 @@ export default class HomesEditDetails extends React.Component {
               <Input
                 type='text'
                 ref='addressZipcode'
-                label='Zipcode'
+                label='Post code'
                 placeholder=''
                 defaultValue={homeLocation.address.zipcode}
                 onChange={this.onFormChange.bind(this)}
@@ -545,7 +450,7 @@ export default class HomesEditDetails extends React.Component {
               <Input
                 type='text'
                 ref='costsReTaxPerYear'
-                label='Real estate Tax (per year)'
+                label='Council tax (per year)'
                 placeholder='(optional)'
                 defaultValue={home.costs.realEstateTaxPerYear}
                 onChange={this.onFormChange.bind(this)}
@@ -553,7 +458,7 @@ export default class HomesEditDetails extends React.Component {
               <Input
                 type='text'
                 ref='costsEcPerMonth'
-                label='Electrict Charge (per month)'
+                label='Charge on electicity (per month)'
                 placeholder='(optional)'
                 defaultValue={home.costs.electricChargePerMonth}
                 onChange={this.onFormChange.bind(this)}
@@ -612,7 +517,7 @@ export default class HomesEditDetails extends React.Component {
               <Row>
                 <Col md={6}>
                   <h2>Images</h2>
-                  <ImageList images={this.state.homeImages} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
+                  <ImageList images={this.state.images} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
                 </Col>
                 <Col md={6}>
                   <UploadArea

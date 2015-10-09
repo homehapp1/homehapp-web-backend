@@ -13,12 +13,12 @@ import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import {randomNumericId, enumerate} from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
-import Loading from '../../../common/components/Widgets/Loading';
+import EditDetails from '../Shared/EditDetails';
 
 let debug = require('../../../common/debugger')('NeighborhoodsEditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
 
-class NeighborhoodsEditDetails extends React.Component {
+class NeighborhoodsEditDetails extends EditDetails {
   static propTypes = {
     neighborhood: React.PropTypes.object.isRequired
   }
@@ -28,7 +28,7 @@ class NeighborhoodsEditDetails extends React.Component {
     this.storeListener = this.onNeighborhoodStoreChange.bind(this);
     this.uploadListener = this.onUploadChange.bind(this);
     this.imageUploaderInstanceId = randomNumericId();
-    this.state.neighborhoodImages = props.neighborhood.images;
+    this.state.images = props.neighborhood.images;
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
   }
 
@@ -36,7 +36,7 @@ class NeighborhoodsEditDetails extends React.Component {
     error: null,
     uploads: UploadAreaUtils.UploadStore.getState().uploads,
     currentAttributes: this.props.neighborhood.attributes,
-    neighborhoodImages: []
+    images: []
   }
 
   componentDidMount() {
@@ -71,7 +71,7 @@ class NeighborhoodsEditDetails extends React.Component {
 
     let images = [];
     // Clean broken images
-    this.state.neighborhoodImages.forEach((image) => {
+    this.state.images.forEach((image) => {
       if (image.url) {
         images.push(image);
       }
@@ -99,81 +99,9 @@ class NeighborhoodsEditDetails extends React.Component {
     React.findDOMNode(this.refs.neighborhoodDetailsForm).reset();
   }
 
-  imageExists(url) {
-    this.state.homeImages.forEach((img) => {
-      if (img.url === url) {
-        return true;
-      }
-    });
-    return false;
-  }
-
-  addImage(imageData) {
-    let isMaster = false;
-    let image = {
-      url: imageData.url,
-      width: imageData.width,
-      height: imageData.height,
-      // TODO: Remove me when backend supports it
-      aspectRatio: (imageData.width / imageData.height),
-      isMaster: isMaster
-    };
-
-    if (!this.imageExists(image.url)) {
-      this.state.meighborhoodImages.push(image);
-    }
-  }
-
-  onImageUpload(data) {
-    debug('onImageUpload', data);
-
-    if (this.state.uploads) {
-      if (this.state.uploads[this.imageUploaderInstanceId]) {
-        let uploads = this.state.uploads[this.imageUploaderInstanceId];
-        for (let imageData of enumerate(uploads)) {
-          this.addImage(imageData);
-        }
-      }
-    }
-
-    this.setState({
-      neighborhoodImages: this.state.neighborhoodImages
-    });
-  }
-
-  onRemoveImageClicked(index) {
-    let newImages = [];
-    this.state.neighborhoodImages.forEach((item, idx) => {
-      if (idx !== index) {
-        newImages.push(item);
-      }
-    });
-    this.setState({neighborhoodImages: newImages});
-  }
-
-  handlePendingState() {
-    return (
-      <Loading>
-        <h3>Saving neighborhood...</h3>
-      </Loading>
-    );
-  }
-
-  handleErrorState() {
-    return (
-      <div className='neighborhood-error'>
-        <h3>Error updating neighborhood!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
-    );
-  }
-
   render() {
-    let error = null;
+    let error = this.handleErrorState();
     let savingLoader = null;
-    if (this.state.error) {
-      error = this.handleErrorState();
-    }
     if (NeighborhoodStore.isLoading()) {
       savingLoader = this.handlePendingState();
     }
@@ -244,7 +172,7 @@ class NeighborhoodsEditDetails extends React.Component {
               <Row>
                 <Col md={6}>
                   <h2>Images</h2>
-                  <ImageList images={this.state.neighborhoodImages} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
+                  <ImageList images={this.state.images} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
                 </Col>
                 <Col md={6}>
                   <UploadArea
