@@ -88,17 +88,6 @@ exports.registerRoutes = (app) => {
     debug('API fetch home with uuid', req.params.uuid);
     debug('req.query', req.query);
 
-    // if (req.params.uuid === 'blank') {
-    //   debug('Create a blank home');
-    //   let model = new (QB.forModel('Home')).Model();
-    //   debug('created a blank', model);
-    //   res.json({
-    //     status: 'ok',
-    //     home: model
-    //   });
-    //   return null;
-    // }
-
     QB
     .forModel('Home')
     .populate({
