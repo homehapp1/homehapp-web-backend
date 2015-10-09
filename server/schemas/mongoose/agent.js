@@ -8,7 +8,7 @@ exports.loadSchemas = function (mongoose, next) {
 
   let schemas = {};
 
-  schemas.AgentImage = new Schema(getImageSchema(Schema));
+  schemas.AgentImage = getImageSchema(Schema);
 
   schemas.Agent = new Schema({
     uuid: {

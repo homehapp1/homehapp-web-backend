@@ -7,8 +7,8 @@ exports.loadSchemas = function (mongoose, next) {
 
   let schemas = {};
 
-  schemas.NeighborhoodStoryBlock = new Schema(getStoryBlockSchema(Schema));
-  schemas.NeighborhoodImage = new Schema(getImageSchema(Schema));
+  schemas.NeighborhoodStoryBlock = getStoryBlockSchema(Schema);
+  schemas.NeighborhoodImage = getImageSchema(Schema);
 
   schemas.Neighborhood = new Schema({
     uuid: {

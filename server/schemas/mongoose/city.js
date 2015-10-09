@@ -1,6 +1,6 @@
 'use strict';
 
-import {loadCommonPlugins, commonJsonTransform} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageSchema} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -11,50 +11,8 @@ exports.loadSchemas = function (mongoose, next) {
   // This *probably* should be named as something else than CityImage
   // as the same image schema can (and should) be used wherever images
   // are used
-  schemas.CityImage = new Schema({
-    url: {
-      type: String
-    },
-    aspectRatio: { // TODO: Remove this and use the virtual property
-      type: Number,
-      required: true
-    },
-    width: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    height: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    alt: {
-      type: String,
-      default: ''
-    },
-    tag: {
-      type: String
-    },
-    isMaster: {
-      type: Boolean,
-      default: false
-    },
-    author: {
-      type: String,
-      default: ''
-    }
-  });
-
-  schemas.CityStoryBlock = new Schema({
-    template: {
-      type: String,
-      default: 'default'
-    },
-    properties: {
-      type: Schema.Types.Mixed
-    }
-  });
+  schemas.CityImage = getImageSchema(Schema);
+  schemas.CityStoryBlock = getStoryBlockSchema(Schema);
 
   // schemas.CityImage.virtual('aspectRatio').get(function () {
   //   return this.width / this.height;

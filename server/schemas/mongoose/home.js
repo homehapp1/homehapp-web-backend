@@ -16,8 +16,8 @@ exports.loadSchemas = function (mongoose, next) {
       default: 'string'
     }
   });
-  schemas.HomeImage = new Schema(getImageSchema(Schema));
-  schemas.HomeStoryBlock = new Schema(getStoryBlockSchema(Schema));
+  schemas.HomeImage = getImageSchema(Schema);
+  schemas.HomeStoryBlock = getStoryBlockSchema(Schema);
 
   schemas.Home = new Schema({
     uuid: {
@@ -37,14 +37,7 @@ exports.loadSchemas = function (mongoose, next) {
     },
     announcementType: {
       type: String,
-      default: 'sell',
-      validate: {
-        validator: function validateMode(v) {
-          let options = ['buy', 'rent'];
-          return (options.indexOf(v) !== -1);
-        },
-        message: 'Valid options for mode are buy and rent'
-      }
+      default: 'sell'
     },
     description: {
       type: String,
