@@ -110,6 +110,7 @@ export default class HomesEditDetails extends EditDetails {
     }
 
     debug('Coordinates', this.getCoordinates());
+    debug('refs', this.refs, this);
 
     let homeProps = {
       id: id,
@@ -255,7 +256,6 @@ export default class HomesEditDetails extends EditDetails {
   }
 
   render() {
-    debug('render', this.state);
     let error = this.handleErrorState();
     let savingLoader = null;
     if (HomeStore.isLoading() || true) {
@@ -442,7 +442,7 @@ export default class HomesEditDetails extends EditDetails {
               <Input
                 type='text'
                 ref='costsSquarePrice'
-                label='Price per square meter'
+                label='Price per square foot'
                 placeholder='(optional)'
                 defaultValue={home.costs.squarePrice}
                 onChange={this.onFormChange.bind(this)}
