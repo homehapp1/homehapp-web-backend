@@ -18,8 +18,7 @@ import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
 // import AgentListActions from '../../actions/AgentListActions';
-
-import Loading from '../../../common/components/Widgets/Loading';
+import NotificationLayout from '../Layout/NotificationLayout';
 
 let debug = require('../../../common/debugger')('AgentsDelete');
 
@@ -68,9 +67,9 @@ export default class AgentsDelete extends React.Component {
 
   handlePendingState() {
     return (
-      <Loading>
-        <h3>Saving agent...</h3>
-      </Loading>
+      <NotificationLayout>
+        <h3>Deleting the agent...</h3>
+      </NotificationLayout>
     );
   }
 
