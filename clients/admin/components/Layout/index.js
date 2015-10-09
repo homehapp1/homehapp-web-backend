@@ -10,6 +10,7 @@ class Layout extends React.Component {
   render() {
     return (
       <div className='container-fluid'>
+        <div id='notifications'></div>
         {this.props.children}
       </div>
     );
