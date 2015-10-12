@@ -108,6 +108,7 @@ exports.getMainImage = function getMainImage(model, placeholder = null) {
       aspectRatio: 1920 / 1280
     };
   }
+
   // This should include a check for the main image, but we go now with the
   // simplest solution
   if (model.images && model.images.length) {
@@ -121,10 +122,7 @@ exports.getMainImage = function getMainImage(model, placeholder = null) {
           images.push(block.properties.image);
           break;
         case 'Gallery':
-          for (let image of block.properties.images) {
-            images.push(image);
-            break;
-          }
+          images.concat(block.properties.images);
           break;
       }
       // Return the first available image from any story block
