@@ -12,18 +12,13 @@ exports.registerRoutes = (app) => {
 
     let data = req.body.contact;
 
-    if (!data.recipient) {
-      return next(new BadRequest('invalid request body'));
-    }
-
     if (req.user) {
       data.createdBy = req.user.id;
       data.updatedBy = req.user.id;
     }
 
     QB
-    .forModel('Home')
-    .populate(populate)
+    .forModel('Contact')
     .create(data)
     .then((model) => {
       res.json({
