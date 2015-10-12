@@ -11,6 +11,7 @@ import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
 import EditStory from './EditStory';
+import ViewMetadata from '../Shared/ViewMetadata';
 
 export default class HomesEdit extends React.Component {
   static propTypes = {
@@ -31,7 +32,8 @@ export default class HomesEdit extends React.Component {
 
   tabs = {
     details: 1,
-    story: 2
+    story: 2,
+    metadata: 3
   }
 
   resolveOpenTab() {
@@ -66,6 +68,9 @@ export default class HomesEdit extends React.Component {
             </TabPane>
             <TabPane eventKey={2} tab='Story'>
               <EditStory home={this.props.home} />
+            </TabPane>
+            <TabPane eventKey={3} tab='Metadata'>
+              <ViewMetadata object={this.props.home} />
             </TabPane>
           </TabbedArea>
         </Row>
