@@ -59,12 +59,14 @@ exports.loadSchemas = function (mongoose, next) {
         type: String,
         default: null
       }
-    }
+    },
+    // Store the related tags (e.g. home ID and such) here
+    tags: []
   }));
 
   schemas.Contact.statics.editableFields = function () {
     return [
-      'title', 'message', 'type', 'from', 'recipient'
+      'title', 'message', 'type', 'from', 'recipient', 'tags'
     ];
   };
 
