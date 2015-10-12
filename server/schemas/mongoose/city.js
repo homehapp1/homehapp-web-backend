@@ -47,6 +47,13 @@ exports.loadSchemas = function (mongoose, next) {
         index: '2dsphere'
       }
     },
+    // story: {
+    //   enabled: {
+    //     type: Boolean,
+    //     default: false
+    //   },
+    //   blocks: [schemas.CityStoryBlock]
+    // },
 
     // Flags
     visible: {
