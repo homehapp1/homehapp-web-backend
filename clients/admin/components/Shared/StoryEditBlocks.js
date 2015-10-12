@@ -43,8 +43,12 @@ export default class StoryEditBlocks extends React.Component {
 
   getBlocks() {
     let updatedBlocks = this.state.blocks;
-    debug('this.state.blocks', this.state.blocks);
+    debug('this.state.blocks', this.state.blocks, this.refs);
     this.state.blocks.map((item, index) => {
+      debug('Read block', index);
+      if (typeof this.refs[`block${index}`] === 'undefined') {
+        return null;
+      }
       let newProps = this.refs[`block${index}`].getValues();
       updatedBlocks[index].properties = newProps;
     });
