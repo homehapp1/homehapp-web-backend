@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ContactListStore from '../../stores/ContactListStore';
-import ContactsEdit from './Edit';
+import ContactsView from './View';
 import Loading from '../../../common/components/Widgets/Loading';
 let debug = require('debug')('EditContainer');
 
@@ -70,7 +70,7 @@ export default class ContactsEditContainer extends React.Component {
     let tab = this.props.params.tab || 1;
 
     return (
-      <ContactsEdit contact={this.state.contact} tab={tab} />
+      <ContactsView contact={this.state.contact} tab={tab} />
     );
   }
 }

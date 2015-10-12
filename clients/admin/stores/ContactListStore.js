@@ -15,8 +15,8 @@ class ContactListStore {
     });
 
     this.bindListeners({
-      handleUpdateContacts: ContactListActions.UPDATE_HOMES,
-      handleFetchContacts: ContactListActions.FETCH_HOMES,
+      handleUpdateContacts: ContactListActions.UPDATE_CONTACTS,
+      handleFetchContacts: ContactListActions.FETCH_CONTACTS,
       handleFetchFailed: ContactListActions.FETCH_FAILED
     });
 

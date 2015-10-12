@@ -24,9 +24,6 @@ class ContactsIndex extends React.Component {
             Contacts
           </h2>
           <p>There are {this.props.contacts.length} contacts in the system currently.</p>
-          <ul>
-            <li><Link to='contactCreate'><i className='fa fa-contact'></i> Create a new contact</Link></li>
-          </ul>
         </Nav>
         <Row>
           <h1><i className='fa fa-contact'></i> {this.props.contacts.length} contacts</h1>

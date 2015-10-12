@@ -10,7 +10,6 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import ContactsViewDetails from './ViewDetails';
-import EditStory from './EditStory';
 import EditModel from '../Shared/EditModel';
 import ViewMetadata from '../Shared/ViewMetadata';
 
