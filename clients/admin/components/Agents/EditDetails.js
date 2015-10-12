@@ -12,7 +12,7 @@ import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import {randomNumericId, enumerate} from '../../../common/Helpers';
+import { randomNumericId } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import EditDetails from '../Shared/EditDetails';
 
