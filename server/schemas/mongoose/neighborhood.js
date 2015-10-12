@@ -1,6 +1,6 @@
 'use strict';
 
-import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, getMainImage} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, getMainImage, populateMetadata} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -10,7 +10,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.NeighborhoodStoryBlock = getStoryBlockSchema(Schema);
   schemas.NeighborhoodImage = getImageSchema(Schema);
 
-  schemas.Neighborhood = new Schema({
+  schemas.Neighborhood = new Schema(populateMetadata({
     uuid: {
       type: String,
       index: true,
@@ -78,22 +78,8 @@ exports.loadSchemas = function (mongoose, next) {
       type: Boolean,
       index: true,
       default: true
-    },
-    // Relations
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    },
-    createdAt: {
-      type: Date
-    },
-    updatedAt: {
-      type: Date
-    },
-    deletedAt: {
-      type: Date
     }
-  });
+  }));
 
   schemas.Neighborhood.virtual('pageTitle').get(function getPageTitle() {
     let title = [this.title];

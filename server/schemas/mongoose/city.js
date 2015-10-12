@@ -1,6 +1,6 @@
 'use strict';
 
-import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema} from './common';
+import { loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, populateMetadata } from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -18,7 +18,7 @@ exports.loadSchemas = function (mongoose, next) {
   //   return this.width / this.height;
   // });
 
-  schemas.City = new Schema({
+  schemas.City = new Schema(populateMetadata({
     uuid: {
       type: String,
       index: true,
@@ -59,22 +59,8 @@ exports.loadSchemas = function (mongoose, next) {
       type: Boolean,
       index: true,
       default: true
-    },
-    // Relations
-    createdBy: {
-      type: ObjectId,
-      ref: 'User'
-    },
-    createdAt: {
-      type: Date
-    },
-    updatedAt: {
-      type: Date
-    },
-    deletedAt: {
-      type: Date
     }
-  });
+  }));
 
   schemas.City.virtual('pageTitle').get(function () {
     let title = [this.CityTitle];

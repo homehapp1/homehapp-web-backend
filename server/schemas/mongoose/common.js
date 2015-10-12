@@ -2,6 +2,7 @@
 
 import Plugins from './Plugins';
 import moment from 'moment';
+import Mongoose from 'mongoose';
 
 exports.getImageSchema = function getImageSchema(Schema) {
   let image = new Schema({
@@ -133,4 +134,29 @@ exports.getMainImage = function getMainImage(model, placeholder = null) {
   }
   // Fallback placeholder
   return placeholder;
+};
+
+exports.populateMetadata = function populateMetadata(schema) {
+  schema.createdBy = {
+    type: Mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  };
+  schema.createdAt = {
+    type: Date
+  };
+  schema.updatedBy = {
+    type: Mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  };
+  schema.updatedAt = {
+    type: Date
+  };
+  schema.deletedBy = {
+    type: Mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  };
+  schema.deletedAt = {
+    type: Date
+  };
+  return schema;
 };

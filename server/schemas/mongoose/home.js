@@ -1,6 +1,6 @@
 'use strict';
 
-import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, getMainImage} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, getMainImage, populateMetadata} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -19,7 +19,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.HomeImage = getImageSchema(Schema);
   schemas.HomeStoryBlock = getStoryBlockSchema(Schema);
 
-  schemas.Home = new Schema({
+  schemas.Home = new Schema(populateMetadata({
     uuid: {
       type: String,
       index: true,
@@ -122,28 +122,13 @@ exports.loadSchemas = function (mongoose, next) {
       index: true,
       default: true
     },
-    // Relations
-    createdBy: {
-      type: ObjectId,
-      ref: 'User'
-    },
     agents: [{
       type: ObjectId,
       ref: 'Agent',
       index: true,
       default: null
-    }],
-    // Common metadata
-    createdAt: {
-      type: Date
-    },
-    updatedAt: {
-      type: Date
-    },
-    deletedAt: {
-      type: Date
-    }
-  });
+    }]
+  }));
 
   schemas.Home.virtual('homeTitle').get(function () {
     if (this.title && this.title.length) {

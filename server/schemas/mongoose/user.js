@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import bcrypt from 'bcrypt';
-import {loadCommonPlugins, commonJsonTransform} from './common';
+import { loadCommonPlugins, commonJsonTransform, populateMetadata } from './common';
 
 let getSalt = function () {
   let salt = bcrypt.genSaltSync(10);
@@ -20,16 +20,16 @@ exports.loadSchemas = function (mongoose, next) {
 
   let schemas = {};
 
-  schemas.User = new Schema({
+  schemas.User = new Schema(populateMetadata({
     uuid: {
       type: String,
       index: true,
       unique: true
     },
-    givenName: {
+    firstname: {
       type: String
     },
-    familyName: {
+    lastname: {
       type: String
     },
     email: {
@@ -65,21 +65,26 @@ exports.loadSchemas = function (mongoose, next) {
       type: Boolean,
       index: true,
       default: true
-    },
-    // Common metadata
-    createdAt: {
-      type: Date
-    },
-    updatedAt: {
-      type: Date
-    },
-    deletedAt: {
-      type: Date
     }
-  });
+  }));
 
   schemas.User.virtual('displayName').get(function () {
-    return [this.givenName, this.familyName].join(' ');
+    if (!this.firstname || !this.lastname) {
+      return this.username;
+    }
+    return [this.firstname, this.lastname].join(' ');
+  });
+  schemas.User.virtual('name').get(function () {
+    if (!this.firstname || !this.lastname) {
+      return this.username;
+    }
+    return [this.firstname, this.lastname].join(' ');
+  });
+  schemas.User.virtual('rname').get(function () {
+    if (!this.firstname || !this.lastname) {
+      return this.username;
+    }
+    return [this.lastname, this.firstname].join(', ');
   });
   schemas.User.virtual('password').set(function (password) {
     this._salt = getSalt();
@@ -102,7 +107,7 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.User.statics.editableFields = function () {
     return [
-      'givenName', 'familyName', 'email'
+      'firstname', 'lastname', 'email'
     ];
   };
 

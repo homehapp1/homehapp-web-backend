@@ -1,6 +1,6 @@
 'use strict';
 
-import { loadCommonPlugins, commonJsonTransform, getImageSchema } from './common';
+import { loadCommonPlugins, commonJsonTransform, getImageSchema, populateMetadata } from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -10,7 +10,7 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.AgentImage = getImageSchema(Schema);
 
-  schemas.Agent = new Schema({
+  schemas.Agent = new Schema(populateMetadata({
     uuid: {
       type: String,
       index: true,
@@ -57,22 +57,8 @@ exports.loadSchemas = function (mongoose, next) {
       type: Boolean,
       index: true,
       default: true
-    },
-    // Relations
-    createdBy: {
-      type: ObjectId,
-      ref: 'User'
-    },
-    createdAt: {
-      type: Date
-    },
-    updatedAt: {
-      type: Date
-    },
-    deletedAt: {
-      type: Date
     }
-  });
+  }));
 
   schemas.Agent.statics.editableFields = function () {
     return [
