@@ -10,11 +10,18 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
-// import EditStory from './EditStory';
+import EditModel from '../Shared/EditModel';
+import ViewMetadata from '../Shared/ViewMetadata';
 
-class NeighborhoodsEdit extends React.Component {
+// let debug = require('debug')('NeighborhoodsEdit');
+
+export default class NeighborhoodsEdit extends EditModel {
   static propTypes = {
-    neighborhood: React.PropTypes.object.isRequired
+    neighborhood: React.PropTypes.object.isRequired,
+    tab: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string
+    ])
   }
 
   constructor(props) {
@@ -22,6 +29,7 @@ class NeighborhoodsEdit extends React.Component {
   }
 
   render() {
+    let openTab = this.resolveOpenTab();
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
@@ -32,9 +40,12 @@ class NeighborhoodsEdit extends React.Component {
         </Nav>
         <Row>
           <h1>Edit {this.props.neighborhood.neighborhoodTitle}</h1>
-          <TabbedArea defaultActiveKey={1}>
+          <TabbedArea defaultActiveKey={openTab}>
             <TabPane eventKey={1} tab='Details'>
               <EditDetails neighborhood={this.props.neighborhood} />
+            </TabPane>
+            <TabPane eventKey={3} tab='Metadata'>
+              <ViewMetadata object={this.props.neighborhood} />
             </TabPane>
           </TabbedArea>
         </Row>
@@ -42,5 +53,3 @@ class NeighborhoodsEdit extends React.Component {
     );
   }
 }
-
-export default NeighborhoodsEdit;

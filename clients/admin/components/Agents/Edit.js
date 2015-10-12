@@ -10,10 +10,12 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
+import EditModel from '../Shared/EditModel';
+import ViewMetadata from '../Shared/ViewMetadata';
 
-let debug = require('debug')('Edit');
+// let debug = require('debug')('AgentsEdit');
 
-export default class AgentsEdit extends React.Component {
+export default class AgentsEdit extends EditModel {
   static propTypes = {
     agent: React.PropTypes.object.isRequired
   }
@@ -23,7 +25,7 @@ export default class AgentsEdit extends React.Component {
   }
 
   render() {
-    debug('Render', this.props.agent);
+    let openTab = this.resolveOpenTab();
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
@@ -34,9 +36,12 @@ export default class AgentsEdit extends React.Component {
         </Nav>
         <Row>
           <h1><i className='fa fa-user'></i> Edit {this.props.agent.name}</h1>
-          <TabbedArea defaultActiveKey={1}>
+          <TabbedArea defaultActiveKey={openTab}>
             <TabPane eventKey={1} tab='Details'>
               <EditDetails agent={this.props.agent} />
+            </TabPane>
+            <TabPane eventKey={3} tab='Metadata'>
+              <ViewMetadata object={this.props.agent} />
             </TabPane>
           </TabbedArea>
         </Row>

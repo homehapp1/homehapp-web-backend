@@ -11,9 +11,12 @@ import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
 import EditStory from './EditStory';
+import EditModel from '../Shared/EditModel';
 import ViewMetadata from '../Shared/ViewMetadata';
 
-export default class HomesEdit extends React.Component {
+// let debug = require('debug')('HomesEdit');
+
+export default class HomesEdit extends EditModel {
   static propTypes = {
     home: React.PropTypes.object.isRequired,
     tab: React.PropTypes.oneOfType([
@@ -22,32 +25,8 @@ export default class HomesEdit extends React.Component {
     ])
   }
 
-  defaultProps = {
-    tab: 1
-  }
-
   constructor(props) {
     super(props);
-  }
-
-  tabs = {
-    details: 1,
-    story: 2,
-    metadata: 3
-  }
-
-  resolveOpenTab() {
-    let tab = this.props.tab;
-
-    if (typeof this.tabs[tab] !== 'undefined') {
-      return this.tabs[tab];
-    }
-
-    tab = Number(tab);
-    if (isNaN(tab)) {
-      tab = 1;
-    }
-    return tab;
   }
 
   render() {
