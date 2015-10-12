@@ -4,13 +4,7 @@ import { loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSc
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
-  let ObjectId = Schema.Types.ObjectId;
-
   let schemas = {};
-
-  // This *probably* should be named as something else than CityImage
-  // as the same image schema can (and should) be used wherever images
-  // are used
   schemas.CityImage = getImageSchema(Schema);
   schemas.CityStoryBlock = getStoryBlockSchema(Schema);
 

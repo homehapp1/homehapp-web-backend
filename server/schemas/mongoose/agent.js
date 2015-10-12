@@ -4,10 +4,7 @@ import { loadCommonPlugins, commonJsonTransform, getImageSchema, populateMetadat
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
-  let ObjectId = Schema.Types.ObjectId;
-
   let schemas = {};
-
   schemas.AgentImage = getImageSchema(Schema);
 
   schemas.Agent = new Schema(populateMetadata({
