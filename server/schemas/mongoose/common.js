@@ -162,6 +162,16 @@ exports.populateMetadata = function populateMetadata(schema) {
   schema.deletedAt = {
     type: Date
   };
+  schema.metadata = {
+    title: {
+      type: String,
+      default: null
+    },
+    description: {
+      type: String,
+      default: null
+    }
+  };
   return schema;
 };
 
