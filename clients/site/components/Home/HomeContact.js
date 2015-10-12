@@ -22,6 +22,32 @@ export default class HomeContact extends React.Component {
   constructor() {
     super();
     this.sendRequest = this.sendRequest.bind(this);
+    this.storeListener = this.onContactStoreChange.bind(this);
+    this.sent = false;
+  }
+
+  state = {
+    error: null,
+    contact: null
+  }
+
+  componentDidMount() {
+    ContactStore.listen(this.storeListener);
+  }
+
+  componentWillReceiveProps(props) {
+    debug('componentWillReceiveProps', props);
+    if (props.home) {
+      this.setState({
+        currentAttributes: props.home.attributes || {},
+        images: props.home.images || []
+      });
+    }
+  }
+
+  onContactStoreChange(state) {
+    debug('onContactStoreChange', state);
+    this.setState(state);
   }
 
   sendRequest(event) {
@@ -53,6 +79,17 @@ export default class HomeContact extends React.Component {
 
     if (this.context && this.context.router) {
       terms = this.context.router.makeHref('contentTerms');
+    }
+
+    if (this.state.contact) {
+      return (
+        <ContentBlock className='home contact-form'>
+          <h2>Your message was received</h2>
+          <p className='centered'>
+            We thank you for your message and will get back at you promptly!
+          </p>
+        </ContentBlock>
+      );
     }
 
     return (
