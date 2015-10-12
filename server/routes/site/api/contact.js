@@ -6,7 +6,7 @@ let debug = require('debug')('/api/contact');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
-  app.post('/api/contact', function(req, res, next) {
+  app.post('/api/contacts', function(req, res, next) {
     debug('Create a new contact request', req.params.uuid);
     //debug('req.body', req.body);
 
@@ -23,7 +23,7 @@ exports.registerRoutes = (app) => {
     .then((model) => {
       res.json({
         status: 'ok',
-        home: model
+        contact: model
       });
     })
     .catch(next);

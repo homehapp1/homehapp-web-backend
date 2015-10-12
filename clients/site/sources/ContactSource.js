@@ -13,7 +13,7 @@ let ContactSource = {
         let postData = {
           contact: data
         };
-        return request.post(`/api/contact`, postData)
+        return request.post(`/api/contacts`, postData)
           .then((response) => {
             debug('got response', response);
             if (!response.data || response.data.status !== 'ok') {
