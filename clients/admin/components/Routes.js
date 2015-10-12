@@ -15,7 +15,7 @@ import HomesCreateContainer from './Homes/CreateContainer';
 import HomesEditContainer from './Homes/EditContainer';
 import HomesDeleteContainer from './Homes/DeleteContainer';
 
-// Homes
+// Agents
 import AgentsIndexContainer from './Agents/IndexContainer';
 import AgentsCreateContainer from './Agents/CreateContainer';
 import AgentsEditContainer from './Agents/EditContainer';
@@ -24,6 +24,10 @@ import AgentsDeleteContainer from './Agents/DeleteContainer';
 // Neighborhoods
 import NeighborhoodsIndexContainer from './Neighborhoods/IndexContainer';
 import NeighborhoodsEditContainer from './Neighborhoods/EditContainer';
+
+// Contact requests
+import ContactsIndexContainer from './Contacts/IndexContainer';
+import ContactsViewContainer from './Contacts/ViewContainer';
 
 let routes = (
   <Route name='app' path='/' handler={Application}>
@@ -46,6 +50,11 @@ let routes = (
       <DefaultRoute handler={NeighborhoodsIndexContainer}/>
       <Route name='neighborhoodEdit' path=':id' handler={NeighborhoodsEditContainer} />
       <Route name='neighborhoodDelete' path=':id/delete' handler={NeighborhoodsEditContainer} />
+    </Route>
+    <Route name='contacts' path='/contacts'>
+      <DefaultRoute handler={ContactsIndexContainer}/>
+      <Route name='contactView' path=':id' handler={ContactsViewContainer} />
+      <Route name='contactDelete' path=':id/delete' handler={ContactsViewContainer} />
     </Route>
     <NotFoundRoute handler={RouteNotFound} />
   </Route>

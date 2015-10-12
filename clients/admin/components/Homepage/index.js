@@ -16,6 +16,7 @@ class Homepage extends React.Component {
           <NavItemLink to='homes'>Homes</NavItemLink>
           <NavItemLink to='neighborhoods'>Neighborhoods</NavItemLink>
           <NavItemLink to='agents'>Agents</NavItemLink>
+          <NavItemLink to='contacts'>Contact requests</NavItemLink>
         </Nav>
         <Row>
           <h1>Welcome to admin!</h1>
