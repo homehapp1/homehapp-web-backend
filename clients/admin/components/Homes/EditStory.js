@@ -14,8 +14,6 @@ import HomeActions from '../../actions/HomeActions';
 import StoryEditBlocks from '../Shared/StoryEditBlocks';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 
-import { createNotification } from '../../../common/Helpers';
-
 let debug = require('../../../common/debugger')('HomesEditStory');
 
 export default class HomesEditStory extends React.Component {
@@ -65,19 +63,6 @@ export default class HomesEditStory extends React.Component {
     HomeActions.updateItem(homeProps);
   }
 
-  handlePendingState() {
-    createNotification({
-      message: 'Saving home...'
-    });
-  }
-
-  handleErrorState() {
-    createNotification({
-      label: 'Error updating home',
-      message: this.state.error.message
-    });
-  }
-
   toggleEnabled() {
     // Invert the value and update the view
     this.props.home.story.enabled = !(this.props.home.story.enabled);
@@ -85,13 +70,6 @@ export default class HomesEditStory extends React.Component {
   }
 
   render() {
-    if (this.state.error) {
-      this.handleErrorState();
-    }
-    if (HomeStore.isLoading()) {
-      this.handlePendingState();
-    }
-
     let blocks = [];
     if (this.props.home.story.blocks) {
       blocks = this.props.home.story.blocks;
