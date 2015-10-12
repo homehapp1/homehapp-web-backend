@@ -64,6 +64,10 @@ exports.loadSchemas = function (mongoose, next) {
     tags: []
   }));
 
+  schemas.Contact.virtual('contactTitle').get(function () {
+    return this.createdAt.toString();
+  });
+
   schemas.Contact.statics.editableFields = function () {
     return [
       'title', 'message', 'type', 'sender', 'recipient', 'tags'

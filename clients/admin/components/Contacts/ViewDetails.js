@@ -7,26 +7,42 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
 import Input from 'react-bootstrap/lib/Input';
-import Button from 'react-bootstrap/lib/Button';
-import Well from 'react-bootstrap/lib/Well';
-import HomeStore from '../../stores/HomeStore';
-import HomeActions from '../../actions/HomeActions';
-import UploadArea from '../../../common/components/UploadArea';
-import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import { randomNumericId, merge } from '../../../common/Helpers';
-import ImageList from '../Widgets/ImageList';
-import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
-import ApplicationStore from '../../../common/stores/ApplicationStore';
-import EditDetails from '../Shared/EditDetails';
 
-let debug = require('../../../common/debugger')('HomesEditDetails');
+let debug = require('../../../common/debugger')('ContactsViewDetails');
 
 export default class ContactsViewDetails extends React.Component {
+  propTypes = {
+    contact: React.PropTypes.object.isRequired,
+    context: React.PropTypes.object
+  }
   render() {
+    let contact = this.props.contact;
+    debug('Render', this.props.contact);
     return (
       <Row>
-        <h1>Contact request</h1>
-        <p>@TODO</p>
+        <Col md={10} sm={10}>
+          <Panel header='Sender'>
+            <Input
+              type='text'
+              label='Sender name'
+              readOnly
+              defaultValue={this.props.contact.sender.name}
+            />
+            <Input
+              type='email'
+              label='Sender email'
+              readOnly
+              defaultValue={this.props.contact.sender.email}
+            />
+          </Panel>
+          <Panel header='Message'>
+            <Input
+              type='textarea'
+              readOnly
+              defaultValue={this.props.contact.message}
+            />
+          </Panel>
+        </Col>
       </Row>
     );
   }

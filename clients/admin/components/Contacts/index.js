@@ -7,6 +7,8 @@ import Nav from 'react-bootstrap/lib/Nav';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 // import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 
+let debug = require('debug')('ContactsIndex');
+
 class ContactsIndex extends React.Component {
   static propTypes = {
     contacts: React.PropTypes.array.isRequired
@@ -17,6 +19,7 @@ class ContactsIndex extends React.Component {
   }
 
   render() {
+    debug('Render', this.props.contacts);
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
@@ -33,7 +36,7 @@ class ContactsIndex extends React.Component {
               return (
                 <li key={i}>
                   <Link
-                    to="contactEdit"
+                    to="contactView"
                     params={{id: contact.id}}>
                     {contact.contactTitle}
                   </Link>

@@ -33,19 +33,16 @@ export default class ContactsEdit extends EditModel {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <h2 className='navigation-title'>Edit Contact</h2>
+          <h2 className='navigation-title'>View contact</h2>
           <NavItemLink to='contacts'>
             &lt; Back
           </NavItemLink>
         </Nav>
         <Row>
-          <h1><i className='fa fa-contact'></i> Edit {this.props.contact.contactTitle}</h1>
+          <h1><i className='fa fa-contact'></i> Contact request {this.props.contact.contactTitle}</h1>
           <TabbedArea defaultActiveKey={openTab}>
             <TabPane eventKey={1} tab='Details'>
-              <ContactsViewDetails contact={this.contact} />
-            </TabPane>
-            <TabPane eventKey={2} tab='Story'>
-              <EditStory contact={this.props.contact} />
+              <ContactsViewDetails contact={this.props.contact} />
             </TabPane>
             <TabPane eventKey={3} tab='Metadata'>
               <ViewMetadata object={this.props.contact} />
