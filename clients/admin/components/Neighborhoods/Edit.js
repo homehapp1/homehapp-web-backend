@@ -40,9 +40,6 @@ class NeighborhoodsEdit extends React.Component {
         </Row>
       </SubNavigationWrapper>
     );
-    // <TabPane eventKey={2} tab='Story'>
-    //   <EditStory neighborhood={this.props.neighborhood} />
-    // </TabPane>
   }
 }
 

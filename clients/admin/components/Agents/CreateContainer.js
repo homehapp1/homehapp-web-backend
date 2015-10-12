@@ -3,8 +3,9 @@
 import React from 'react';
 import AgentListStore from '../../stores/AgentListStore';
 import AgentsCreate from './Create';
-import NotificationLayout from '../Layout/NotificationLayout';
 let blankId = null;
+
+import { createNotification } from '../../../common/Helpers';
 
 export default class AgentsCreateContainer extends React.Component {
   constructor(props) {
@@ -36,20 +37,18 @@ export default class AgentsCreateContainer extends React.Component {
   }
 
   handlePendingState() {
-    return (
-      <NotificationLayout>
-        <h3>Creating a new agent template...</h3>
-      </NotificationLayout>
-    );
+    createNotification({
+      message: 'Creating a new agent template'
+    });
+    return null;
   }
 
   handleErrorState() {
-    return (
-      <div className='agents-error'>
-        <h3>Error creating a new agent template!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
-    );
+    createNotification({
+      message: 'Error creating a new agent template',
+      type: 'danger'
+    });
+    return null;
   }
 
   render() {

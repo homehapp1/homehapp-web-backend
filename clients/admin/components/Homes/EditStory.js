@@ -14,7 +14,7 @@ import HomeActions from '../../actions/HomeActions';
 import StoryEditBlocks from '../Shared/StoryEditBlocks';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 
-import NotificationLayout from '../Layout/NotificationLayout';
+import { createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('HomesEditStory');
 
@@ -66,20 +66,16 @@ export default class HomesEditStory extends React.Component {
   }
 
   handlePendingState() {
-    return (
-      <NotificationLayout>
-        <h3>Saving home...</h3>
-      </NotificationLayout>
-    );
+    createNotification({
+      message: 'Saving home...'
+    });
   }
 
   handleErrorState() {
-    return (
-      <div className='home-error'>
-        <h3>Error updating home!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
-    );
+    createNotification({
+      label: 'Error updating home',
+      message: this.state.error.message
+    });
   }
 
   toggleEnabled() {
@@ -89,13 +85,11 @@ export default class HomesEditStory extends React.Component {
   }
 
   render() {
-    let error = null;
-    let savingLoader = null;
     if (this.state.error) {
-      error = this.handleErrorState();
+      this.handleErrorState();
     }
     if (HomeStore.isLoading()) {
-      savingLoader = this.handlePendingState();
+      this.handlePendingState();
     }
 
     let blocks = [];
@@ -122,8 +116,6 @@ export default class HomesEditStory extends React.Component {
 
     return (
       <Row>
-        {error}
-        {savingLoader}
         <form name='homeStory' ref='homeStoryForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Visibility settings'>

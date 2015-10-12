@@ -18,7 +18,7 @@ import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
 // import AgentListActions from '../../actions/AgentListActions';
-import NotificationLayout from '../Layout/NotificationLayout';
+import { createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('AgentsDelete');
 
@@ -66,30 +66,24 @@ export default class AgentsDelete extends React.Component {
   }
 
   handlePendingState() {
-    return (
-      <NotificationLayout>
-        <h3>Deleting the agent...</h3>
-      </NotificationLayout>
-    );
+    createNotification({
+      message: 'Deleting the agent...'
+    });
   }
 
   handleErrorState() {
-    return (
-      <div className='agent-error'>
-        <h3>Error deleting agent!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
-    );
+    createNotification({
+      label: 'Error deleting the agent',
+      message: this.state.error.message
+    });
   }
 
   render() {
-    let error = null;
-    let savingLoader = null;
     if (this.state.error) {
-      error = this.handleErrorState();
+      this.handleErrorState();
     }
     if (AgentStore.isLoading()) {
-      savingLoader = this.handlePendingState();
+      this.handlePendingState();
     }
     debug('Agent being prepared for deletion', this.props.agent);
 

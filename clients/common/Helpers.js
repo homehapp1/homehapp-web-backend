@@ -345,3 +345,82 @@ exports.setLastMod = function setLastMod(objects, res) {
     }
   }
 };
+
+exports.createNotification = function createNotification(d) {
+  let container = document.getElementById('notifications');
+  let data = {
+    type: d.type || 'info',
+    label: d.label || null,
+    message: d.message || '',
+    duration: d.duration || 5
+  };
+  // Translate table for wider support range of type keywords
+  let translate = {
+    error: 'danger'
+  };
+  if (typeof translate[data.type] !== 'undefined') {
+    data.type = translate[data.type];
+  }
+
+  // Set duration to zero if the original duration was not set for
+  // danger type
+  if (data.type === 'danger' && !d.duration) {
+    data.duration = 0;
+  }
+
+  let notification = document.createElement('div');
+  notification.className = 'notification';
+
+  let alert = document.createElement('div');
+  alert.className = `data alert-${data.type} alert`;
+
+  let message = document.createElement('message');
+
+  if (data.label) {
+    message.innerHTML = `<strong>${data.label}:</strong> ${data.message}`;
+  } else {
+    message.innerHTML = data.message;
+  }
+
+  let closeNotification = function closeNotification() {
+    if (notification.hover) {
+      setTimer();
+      return false;
+    }
+    notification.className += ' away';
+    // Remove the DOM node after a delay, allowing the animations to finish
+    setTimeout(function() {
+      if (notification.parentNode) {
+        // notification.parentNode.removeChild(notification);
+      }
+    }, 2000);
+  };
+
+  let forceCloseNotification = function forceCloseNotification() {
+    notification.hover = false;
+    closeNotification();
+  };
+
+  let setTimer = function setTimer() {
+    if (data.duration > 0) {
+      setTimeout(closeNotification, data.duration * 1000);
+    }
+  };
+  setTimer();
+
+  let close = document.createElement('span');
+  close.className = 'close';
+  close.textContent = '×';
+  close.addEventListener('click', forceCloseNotification);
+  alert.appendChild(message);
+  alert.appendChild(close);
+  notification.appendChild(alert);
+  container.appendChild(notification);
+
+  notification.addEventListener('mouseover', () => {
+    notification.hover = true;
+  });
+  notification.addEventListener('mouseout', () => {
+    notification.hover = false;
+  });
+};

@@ -15,7 +15,7 @@ import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
-import NotificationLayout from '../Layout/NotificationLayout';
+import { createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('HomesDelete');
 
@@ -63,30 +63,25 @@ export default class HomesDelete extends React.Component {
   }
 
   handlePendingState() {
-    return (
-      <NotificationLayout>
-        <h3>Saving home...</h3>
-      </NotificationLayout>
-    );
+    createNotification({
+      message: 'Saving home...'
+    });
+    return null;
   }
 
   handleErrorState() {
-    return (
-      <div className='home-error'>
-        <h3>Error deleting home!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
-    );
+    createNotification({
+      label: 'Error deleting home',
+      message: this.state.error.message
+    });
   }
 
   render() {
-    let error = null;
-    let savingLoader = null;
     if (this.state.error) {
-      error = this.handleErrorState();
+      this.handleErrorState();
     }
     if (HomeStore.isLoading()) {
-      savingLoader = this.handlePendingState();
+      this.handlePendingState();
     }
     debug('Home being prepared for deletion', this.props.home);
 

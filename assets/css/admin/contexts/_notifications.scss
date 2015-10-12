@@ -4,4 +4,16 @@
   left: 10px;
   right: 10px;
   z-index: 10000;
+
+  .notification {
+    margin-bottom: 5px;
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, $transitionDuration);
+    overflow: hidden;
+    height: 53px;
+
+    &.away {
+      height: 0;
+    }
+  }
 }

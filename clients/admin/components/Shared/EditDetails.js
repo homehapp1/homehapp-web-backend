@@ -1,9 +1,8 @@
 'use strict';
 
 import React from 'react';
-import NotificationLayout from '../Layout/NotificationLayout';
 import Input from 'react-bootstrap/lib/Input';
-import {enumerate} from '../../../common/Helpers';
+import { enumerate, createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('EditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
@@ -125,12 +124,9 @@ export default class EditDetails extends React.Component {
   }
 
   handlePendingState() {
-    debug('handlePendingState');
-    return (
-      <NotificationLayout>
-        <h3>Saving the data...</h3>
-      </NotificationLayout>
-    );
+    createNotification({
+      message: 'Saving the data...'
+    });
   }
 
   handleErrorState() {
@@ -138,12 +134,9 @@ export default class EditDetails extends React.Component {
     if (!typeof this.state.error === 'undefined' || !this.state.error) {
       return null;
     }
-
-    return (
-      <NotificationLayout>
-        <h3>Error saving the object!</h3>
-        <p>{this.state.error.message}</p>
-      </NotificationLayout>
-    );
+    createNotification({
+      label: 'Error saving the object',
+      message: this.state.error.message
+    });
   }
 }

@@ -110,16 +110,13 @@ export default class AgentsEditDetails extends EditDetails {
 
   render() {
     debug('Render');
-    let error = this.handleErrorState();
-    let savingLoader = null;
+    this.handleErrorState();
     if (AgentStore.isLoading()) {
-      savingLoader = this.handlePendingState();
+      this.handlePendingState();
     }
 
     return (
       <Row>
-        {error}
-        {savingLoader}
         <form name='agentDetails' ref='agentDetailsForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>

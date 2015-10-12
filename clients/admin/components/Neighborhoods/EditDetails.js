@@ -11,7 +11,7 @@ import NeighborhoodStore from '../../stores/NeighborhoodStore';
 import NeighborhoodActions from '../../actions/NeighborhoodActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import {randomNumericId, enumerate} from '../../../common/Helpers';
+import { randomNumericId, enumerate } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import EditDetails from '../Shared/EditDetails';
 
@@ -100,10 +100,9 @@ class NeighborhoodsEditDetails extends EditDetails {
   }
 
   render() {
-    let error = this.handleErrorState();
-    let savingLoader = null;
+    this.handleErrorState();
     if (NeighborhoodStore.isLoading()) {
-      savingLoader = this.handlePendingState();
+      this.handlePendingState();
     }
 
     let lat, lon = '';
@@ -114,8 +113,6 @@ class NeighborhoodsEditDetails extends EditDetails {
 
     return (
       <Row>
-        {error}
-        {savingLoader}
         <form name='neighborhoodDetails' ref='neighborhoodDetailsForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>

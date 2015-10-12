@@ -12,7 +12,7 @@ import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import {randomNumericId, merge} from '../../../common/Helpers';
+import { randomNumericId, merge } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
@@ -256,10 +256,9 @@ export default class HomesEditDetails extends EditDetails {
   }
 
   render() {
-    let error = this.handleErrorState();
-    let savingLoader = null;
+    this.handleErrorState();
     if (HomeStore.isLoading() || true) {
-      savingLoader = this.handlePendingState();
+      this.handlePendingState();
     }
     debug('savingLoader', savingLoader);
 
@@ -305,8 +304,6 @@ export default class HomesEditDetails extends EditDetails {
 
     return (
       <Row>
-        {error}
-        {savingLoader}
         <form name='homeDetails' ref='homeDetailsForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>
