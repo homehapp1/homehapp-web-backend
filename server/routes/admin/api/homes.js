@@ -7,18 +7,22 @@ let debug = require('debug')('/api/homes');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
+  let populate = {
+    'location.neighborhood': {
+      select: 'uuid title slug'
+    },
+    createdBy: {},
+    updatedBy: {}
+  };
+
   app.get('/api/homes', function(req, res, next) {
     debug('API fetch homes');
-    debug('req.query', req.query);
+    debug('req.user', req.user);
 
     QB
     .forModel('Home')
     .parseRequestArguments(req)
-    .populate({
-      'location.neighborhood': {
-        select: 'uuid title slug'
-      }
-    })
+    .populate(populate)
     .findAll()
     .fetch()
     .then((result) => {
@@ -44,14 +48,15 @@ exports.registerRoutes = (app) => {
       return next(new BadRequest('invalid request body'));
     }
 
+    if (req.user) {
+      data.createdBy = req.user.id;
+      data.updatedBy = req.user.id;
+    }
+
     function createHome() {
       return QB
       .forModel('Home')
-      .populate({
-        'location.neighborhood': {
-          select: 'uuid title slug'
-        }
-      })
+      .populate(populate)
       .createNoMultiset(data)
       .then((model) => {
         res.json({
@@ -90,11 +95,7 @@ exports.registerRoutes = (app) => {
 
     QB
     .forModel('Home')
-    .populate({
-      'location.neighborhood': {
-        select: 'uuid title slug'
-      }
-    })
+    .populate(populate)
     .findByUuid(req.params.uuid)
     .fetch()
     .then((result) => {
@@ -148,9 +149,9 @@ exports.registerRoutes = (app) => {
 
     let data = req.body.home;
 
-    // if (!data.description) {
-    //   return next(new BadRequest('invalid request body'));
-    // }
+    if (req.user) {
+      data.updatedBy = req.user.id;
+    }
 
     updateHome(req.params.uuid, data)
     .then((model) => {
