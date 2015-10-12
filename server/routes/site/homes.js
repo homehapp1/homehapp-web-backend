@@ -30,10 +30,10 @@ exports.registerRoutes = (app) => {
 
     QB
     .forModel('Home')
-    .findBySlug(slug)
     .populate({
       'location.neighborhood': {}
     })
+    .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
       home = result.home;
@@ -51,7 +51,7 @@ exports.registerRoutes = (app) => {
           }
         }
       }
-      initMetadata(req);
+      initMetadata(res);
 
       let title = [home.homeTitle];
       let description = home.description || title.join('; ');
@@ -67,9 +67,8 @@ exports.registerRoutes = (app) => {
       };
 
       setLastMod([home, neighborhood], res);
-
       res.locals.data.HomeStore = {
-        home: home.toJSON()
+        home: home
       };
       next();
     })
