@@ -47,7 +47,7 @@ export default class EditDetails extends React.Component {
       if (this.state.uploads[this.imageUploaderInstanceId]) {
         let uploads = this.state.uploads[this.imageUploaderInstanceId];
         debug('uploads str', uploads);
-        for (let [key, imageData] of enumerate(uploads)) {
+        for (let imageData of enumerate(uploads)) {
           this.addImage(imageData);
         }
       }
