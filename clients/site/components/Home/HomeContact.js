@@ -5,6 +5,10 @@ import React from 'react';
 import Columns from '../../../common/components/Widgets/Columns';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
+import ContactStore from '../../stores/ContactStore';
+import ContactActions from '../../actions/ContactActions';
+let debug = require('debug')('HomeContact');
+
 export default class HomeContact extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired,
@@ -14,6 +18,31 @@ export default class HomeContact extends React.Component {
   static contextTypes = {
     router: React.PropTypes.func
   };
+
+  constructor() {
+    super();
+    this.sendRequest = this.sendRequest.bind(this);
+  }
+
+  sendRequest(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let contactType = (React.findDOMNode(this.refs.typeDetails)).checked ? (React.findDOMNode(this.refs.typeDetails)).value : (React.findDOMNode(this.refs.typeViewing)).value;
+    let agent = this.props.home.agents[0] || null;
+
+    let props = {
+      name: React.findDOMNode(this.refs.name).value,
+      email: React.findDOMNode(this.refs.email).value,
+      type: contactType,
+      message: React.findDOMNode(this.refs.message).value,
+      agent: agent,
+      tags: ['contact', 'email', `home:${this.props.home.id}`]
+    };
+    debug('props', props);
+    let rval = ContactActions.createItem(props);
+    debug('sendRequest', rval);
+  }
 
   render() {
     let terms = '/404';
@@ -29,20 +58,34 @@ export default class HomeContact extends React.Component {
     return (
       <ContentBlock className='home contact-form'>
         <h2>Home details</h2>
-        <form method='post'>
+        <form method='post' onSubmit={this.sendRequest}>
           <div className='form'>
             <label className='control'>
               <span className='label'>
                 Name
               </span>
-              <input type='text' name='name' placeholder='Your name' required />
+              <input
+                type='text'
+                name='name'
+                placeholder='Your name'
+                ref='name'
+                required
+                defaultValue='Arttu Manninen'
+              />
             </label>
 
             <label className='control'>
               <span className='label'>
                 Email
               </span>
-              <input type='email' name='email' placeholder='myname@example.com' required />
+              <input
+                type='email'
+                name='email'
+                placeholder='myname@example.com'
+                required
+                ref='email'
+                defaultValue='arttu@kaktus.cc'
+              />
             </label>
 
             <span className='label'>
@@ -50,10 +93,10 @@ export default class HomeContact extends React.Component {
             </span>
             <Columns cols={2} className='control-group'>
               <label className='control radio'>
-                <input type='radio' name='type' value='details' /> Request details
+                <input type='radio' name='type' value='Details requested' ref='typeDetails' defaultChecked /> Request details
               </label>
               <label className='control radio'>
-                <input type='radio' name='type' value='viewing' /> Arrange viewing
+                <input type='radio' name='type' value='Arrange viewing' ref='typeViewing' /> Arrange viewing
               </label>
             </Columns>
 
@@ -61,7 +104,7 @@ export default class HomeContact extends React.Component {
               <span className='label'>
                 Message
               </span>
-              <textarea name='message'></textarea>
+              <textarea name='message' ref='message' defaultValue='Lorem ipsum'></textarea>
             </label>
           </div>
           <div className='buttons'>
