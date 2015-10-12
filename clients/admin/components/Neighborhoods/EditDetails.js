@@ -11,12 +11,12 @@ import NeighborhoodStore from '../../stores/NeighborhoodStore';
 import NeighborhoodActions from '../../actions/NeighborhoodActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import { randomNumericId, enumerate } from '../../../common/Helpers';
+import { randomNumericId } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import EditDetails from '../Shared/EditDetails';
 
 let debug = require('../../../common/debugger')('NeighborhoodsEditDetails');
-const countries = require('../../../common/lib/Countries').forSelect();
+// const countries = require('../../../common/lib/Countries').forSelect();
 
 class NeighborhoodsEditDetails extends EditDetails {
   static propTypes = {
