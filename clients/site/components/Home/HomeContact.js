@@ -58,8 +58,10 @@ export default class HomeContact extends React.Component {
     let agent = this.props.home.agents[0] || null;
 
     let props = {
-      name: React.findDOMNode(this.refs.name).value,
-      email: React.findDOMNode(this.refs.email).value,
+      sender: {
+        name: React.findDOMNode(this.refs.name).value,
+        email: React.findDOMNode(this.refs.email).value
+      },
       type: contactType,
       message: React.findDOMNode(this.refs.message).value,
       agent: agent,
@@ -68,6 +70,16 @@ export default class HomeContact extends React.Component {
     debug('props', props);
     let rval = ContactActions.createItem(props);
     debug('sendRequest', rval);
+  }
+
+  handleErrorState() {
+    if (!this.state.error) {
+      return null;
+    }
+
+    return (
+      <p className='error'>{this.state.error.message}</p>
+    );
   }
 
   render() {
@@ -80,6 +92,8 @@ export default class HomeContact extends React.Component {
     if (this.context && this.context.router) {
       terms = this.context.router.makeHref('contentTerms');
     }
+
+    let error = this.handleErrorState();
 
     if (this.state.contact) {
       return (
@@ -95,6 +109,7 @@ export default class HomeContact extends React.Component {
     return (
       <ContentBlock className='home contact-form'>
         <h2>Home details</h2>
+        {error}
         <form method='post' onSubmit={this.sendRequest}>
           <div className='form'>
             <label className='control'>
