@@ -29,6 +29,12 @@
 
   .mainpage-list {
     background-color: white;
+
+    @media only screen and (min-width: 1467px) {
+      .preview:nth-child(3n) ~ .preview {
+        display: none;
+      }
+    }
   }
 
   .call-to-action {
