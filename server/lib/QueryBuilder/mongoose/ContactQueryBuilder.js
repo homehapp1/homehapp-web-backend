@@ -11,4 +11,30 @@ export default class ContactQueryBuilder extends BaseQueryBuilder {
 
   initialize() {
   }
+
+  findByUuid(uuid) {
+    this._queries.push((callback) => {
+      let cursor = this.Model.findOne({
+        uuid: uuid,
+        deletedAt: null
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, model) => {
+        if (err) {
+          return callback(err);
+        }
+        if (!model) {
+          return callback(new NotFound('Contact request not found'));
+        }
+        this.result.model = model;
+        this.result.models = [model];
+        this.result.contact = model;
+        this.result.contactJson = model.toJSON();
+        this._loadedModel = model;
+        callback();
+      });
+    });
+
+    return this;
+  }
 }
