@@ -25,7 +25,7 @@ export default class HomeStory extends React.Component {
     // Create a copy of the blocks array
     let blocks = [].concat(this.props.home.story.blocks);
 
-    if (this.props.home.location.coordinates[0] && this.props.home.location.coordinates[1]) {
+    if (this.props.home.location.coordinates && this.props.home.location.coordinates[0] && this.props.home.location.coordinates[1]) {
       blocks.push({
         template: 'Map',
         properties: {
