@@ -9,13 +9,13 @@ let debug = require('debug')('HomeStoryContainer');
 
 export default class HomeStoryContainer extends HomeContainer {
   render() {
+    debug('Render', this.state.home, this.props);
     if (this.state.error) {
       return this.handleErrorState();
     }
     if (HomeStore.isLoading() || !this.state.home) {
       return this.handlePendingState();
     }
-    debug('Render', this.state.home);
 
     return (
       <HomeStory home={this.state.home} />

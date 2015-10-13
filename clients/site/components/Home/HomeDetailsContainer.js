@@ -5,8 +5,11 @@ import HomeContainer from './HomeContainer';
 import HomeStore from '../../stores/HomeStore';
 import HomeDetails from './HomeDetails';
 
+let debug = require('debug')('HomeDetailsContainer');
+
 export default class HomeDetailsContainer extends HomeContainer {
   render() {
+    debug('Render', this.state.home, this.props);
     if (this.state.error) {
       return this.handleErrorState();
     }
