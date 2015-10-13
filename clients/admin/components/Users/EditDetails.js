@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import UserStore from '../../stores/UserStore';
 import UserActions from '../../actions/UserActions';
-import { randomNumericId, merge, createNotification } from '../../../common/Helpers';
+import { merge, createNotification } from '../../../common/Helpers';
 import EditDetails from '../Shared/EditDetails';
 
 let debug = require('../../../common/debugger')('UsersEditDetails');
@@ -55,6 +55,35 @@ export default class UsersEditDetails extends EditDetails {
     //this.props.user.facilities = this.refs.facilities.getValue().split("\n");
   }
 
+  verifyPassword(userProps) {
+    let password = this.refs.password.getValue();
+
+    // User exists, no password change requested
+    if (userProps.id && !password) {
+      return true;
+    }
+
+    if (password !== this.refs.password2.getValue()) {
+      createNotification({
+        message: 'Password mismatch',
+        type: 'danger',
+        duration: 5
+      });
+      return false;
+    }
+
+    if (password.length < 8) {
+      createNotification({
+        message: 'Please use at least 8 characters for your password',
+        type: 'danger',
+        duration: 5
+      });
+      return false;
+    }
+    userProps.password = password;
+    return true;
+  }
+
   onSave() {
     debug('Save');
 
@@ -67,29 +96,15 @@ export default class UsersEditDetails extends EditDetails {
       id: id,
       firstname: this.refs.firstname.getValue(),
       lastname: this.refs.lastname.getValue(),
+      username: this.refs.username.getValue(),
       email: this.refs.email.getValue().toLowerCase()
     };
 
-    let password = this.refs.password.getValue();
-    if (password) {
-      if (password !== this.refs.password2.getValue()) {
-        createNotification({
-          message: 'Password mismatch',
-          type: 'danger',
-          duration: 5
-        });
-        return null;
-      }
-
-      if (password.length < 8) {
-        createNotification({
-          message: 'Please use at least 8 characters for your password',
-          type: 'danger',
-          duration: 5
-        });
-        return null;
-      }
+    if (!this.verifyPassword(userProps)) {
+      debug('Password verification failed');
+      return null;
     }
+
     debug('userProps', userProps);
     this.saveUser(userProps);
   }
@@ -115,7 +130,8 @@ export default class UsersEditDetails extends EditDetails {
       firstname: null,
       lastname: null,
       email: null,
-      password: null
+      password: null,
+      username: null
     }, this.props.user || {});
 
     let deleteLink = null;
@@ -158,7 +174,15 @@ export default class UsersEditDetails extends EditDetails {
                 onChange={this.onFormChange.bind(this)}
               />
             </Panel>
-            <Panel header='Password'>
+            <Panel header='Login credentials'>
+              <Input
+                type='email'
+                ref='username'
+                label='Username'
+                placeholder='myname@example.co.uk'
+                defaultValue={user.username}
+                onChange={this.onFormChange.bind(this)}
+              />
               <Input
                 type='password'
                 ref='password'

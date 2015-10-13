@@ -3,6 +3,7 @@
 import moment from 'moment';
 import bcrypt from 'bcrypt';
 import { loadCommonPlugins, commonJsonTransform, populateMetadata } from './common';
+let debug = require('debug')('UserSchema');
 
 let getSalt = function () {
   let salt = bcrypt.genSaltSync(10);
@@ -69,10 +70,29 @@ exports.loadSchemas = function (mongoose, next) {
   }));
 
   schemas.User.virtual('displayName').get(function () {
-    if (!this.firstname || !this.lastname) {
-      return this.username;
+    let displayName = [];
+
+    if (this.firstname) {
+      displayName.push(this.firstname);
     }
-    return [this.firstname, this.lastname].join(' ');
+    if (this.lastname) {
+      displayName.push(this.lastname);
+    }
+    if (!displayName.length) {
+      debug('populate with email');
+      displayName.push(this._email);
+    }
+    if (!displayName.length) {
+      debug('populate with username');
+      displayName.push(this.username);
+    }
+
+    let name = displayName.join(' ');
+
+    if (name.match(/[^\s]/)) {
+      return name;
+    }
+    return '<unidentified johndoe>';
   });
   schemas.User.virtual('name').get(function () {
     if (!this.firstname || !this.lastname) {
@@ -87,6 +107,7 @@ exports.loadSchemas = function (mongoose, next) {
     return [this.lastname, this.firstname].join(', ');
   });
   schemas.User.virtual('password').set(function (password) {
+    debug('Set password', password);
     this._salt = getSalt();
     this._password = calculateHash(password, this._salt);
     this._passwordSetAt = moment().utc().toDate();
@@ -100,7 +121,6 @@ exports.loadSchemas = function (mongoose, next) {
       throw new Exception('Invalid email given');
     }
     this._email = email;
-    this.username = email;
   });
   schemas.User.methods.isValidPassword = function (password) {
     if (!this._password) {
@@ -118,7 +138,8 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.User.statics.editableFields = function () {
     return [
-      'firstname', 'lastname', 'email'
+      'firstname', 'lastname', 'email', 'username',
+      'password'
     ];
   };
 

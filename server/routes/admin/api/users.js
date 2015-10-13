@@ -41,7 +41,7 @@ exports.registerRoutes = (app) => {
 
     let data = req.body.user;
 
-    if (!data.description) {
+    if (!data.username) {
       return next(new BadRequest('invalid request body'));
     }
 
