@@ -116,7 +116,7 @@ class UploadArea extends React.Component {
       previewsContainer: false,
       addRemoveLinks: false,
       maxFiles: this.props.maxFiles,
-      acceptedMimeTypes: this.props.acceptedMimes,
+      acceptedFiles: this.props.acceptedMimes,
       params: params,
       clickable: this.props.clickable,
       accept: (file, done) => {
@@ -145,6 +145,7 @@ class UploadArea extends React.Component {
         }
       }
     };
+    debug('Dropzone config', dropzoneConfig);
 
     if (this.props.dropzoneConfig) {
       dropzoneConfig = Helpers.merge(dropzoneConfig, this.props.dropzoneConfig);
@@ -207,7 +208,10 @@ class UploadArea extends React.Component {
   }
 
   render() {
-    let className = this.props.className;
+    let cls = [
+      this.props.className,
+      'clearfix'
+    ];
     let loader = (
       <div className='upload-area-progress-container'>
         {
@@ -236,7 +240,7 @@ class UploadArea extends React.Component {
 
     return (
       <div
-        className={className}
+        className={cls.join(' ')}
         ref='uploader'
         style={{ width: this.props.width, height: this.props.height }}>
         <div className='dz-message'>
