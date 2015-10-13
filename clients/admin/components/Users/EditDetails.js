@@ -10,12 +10,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import UserStore from '../../stores/UserStore';
 import UserActions from '../../actions/UserActions';
-import UploadArea from '../../../common/components/UploadArea';
-import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import { randomNumericId, merge } from '../../../common/Helpers';
-import ImageList from '../Widgets/ImageList';
-import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
-import ApplicationStore from '../../../common/stores/ApplicationStore';
+import { randomNumericId, merge, createNotification } from '../../../common/Helpers';
 import EditDetails from '../Shared/EditDetails';
 
 let debug = require('../../../common/debugger')('UsersEditDetails');
@@ -33,41 +28,15 @@ export default class UsersEditDetails extends EditDetails {
   constructor(props) {
     super(props);
     this.storeListener = this.onUserStoreChange.bind(this);
-    this.uploadListener = this.onUploadChange.bind(this);
-    this.imageUploaderInstanceId = randomNumericId();
-    this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
-
-    if (props.user) {
-      this.state.currentAttributes = props.user.attributes || [
-        {
-          name: '', value: '', valueType: 'string'
-        }
-      ];
-      this.state.images = props.user.images || [];
-    }
-
     debug('Constructor', this);
   }
 
   state = {
-    error: null,
-    uploads: UploadAreaUtils.UploadStore.getState().uploads,
-    currentAttributes: [],
-    images: []
+    error: null
   }
 
   componentDidMount() {
     UserStore.listen(this.storeListener);
-  }
-
-  componentWillReceiveProps(props) {
-    debug('componentWillReceiveProps', props);
-    if (props.user) {
-      this.setState({
-        currentAttributes: props.user.attributes || {},
-        images: props.user.images || []
-      });
-    }
   }
 
   componentWillUnmount() {
@@ -79,13 +48,6 @@ export default class UsersEditDetails extends EditDetails {
     this.setState(state);
   }
 
-  onUploadChange(state) {
-    debug('onUploadChange', state);
-    this.setState({
-      uploads: UploadAreaUtils.UploadStore.getState().uploads
-    });
-  }
-
   onFormChange(/*event*/) {
     // let {type, target} = event;
     // TODO: Validation could be done here
@@ -94,56 +56,41 @@ export default class UsersEditDetails extends EditDetails {
   }
 
   onSave() {
-    debug('save');
-
-    let images = [];
-    // Clean broken images
-    this.state.images.forEach((image) => {
-      if (image.url) {
-        images.push(image);
-      }
-    });
+    debug('Save');
 
     let id = null;
     if (this.props.user) {
       id = this.props.user.id;
     }
 
-    debug('Coordinates', this.getCoordinates());
-    debug('refs', this.refs, this);
-
     let userProps = {
       id: id,
-      title: this.refs.title.getValue(),
-      announcementType: this.refs.announcementType.getValue(),
-      description: this.refs.description.getValue(),
-      location: {
-        address: {
-          street: this.refs.addressStreet.getValue(),
-          apartment: this.refs.addressApartment.getValue(),
-          city: this.refs.addressCity.getValue(),
-          zipcode: this.refs.addressZipcode.getValue(),
-          country: this.refs.addressCountry.getValue()
-        },
-        neighborhood: this.refs.addressNeighborhood.getValue(),
-        coordinates: this.getCoordinates()
-      },
-      costs: {
-        currency: this.refs.costsCurrency.getValue(),
-        deptFreePrice: this.refs.costsDeptFreePrice.getValue(),
-        sellingPrice: this.refs.costsSellingPrice.getValue(),
-        squarePrice: this.refs.costsSquarePrice.getValue(),
-        realEstateTaxPerYear: this.refs.costsReTaxPerYear.getValue(),
-        electricChargePerMonth: this.refs.costsEcPerMonth.getValue(),
-        waterChargePerMonth: this.refs.costsWcPerMonth.getValue(),
-        waterChargePerType: this.refs.costsWcPerType.getValue()
-      },
-      amenities: this.refs.amenities.getValue().split('\n'),
-      facilities: this.refs.facilities.getValue().split('\n'),
-      attributes: this.state.currentAttributes,
-      images: images
+      firstname: this.refs.firstname.getValue(),
+      lastname: this.refs.lastname.getValue(),
+      email: this.refs.email.getValue().toLowerCase()
     };
 
+    let password = this.refs.password.getValue();
+    if (password) {
+      if (password !== this.refs.password2.getValue()) {
+        createNotification({
+          message: 'Password mismatch',
+          type: 'danger',
+          duration: 5
+        });
+        return null;
+      }
+
+      if (password.length < 8) {
+        createNotification({
+          message: 'Please use at least 8 characters for your password',
+          type: 'danger',
+          duration: 5
+        });
+        return null;
+      }
+    }
+    debug('userProps', userProps);
     this.saveUser(userProps);
   }
 
@@ -159,143 +106,21 @@ export default class UsersEditDetails extends EditDetails {
     React.findDOMNode(this.refs.userDetailsForm).reset();
   }
 
-  onRemoveAttributeClicked(index) {
-    let newAttributes = [];
-    this.state.currentAttributes.forEach((item, idx) => {
-      if (idx !== index) {
-        newAttributes.push(item);
-      }
-    });
-    if (!newAttributes.length) {
-      newAttributes.push({
-        name: '', value: '', valueType: 'string'
-      });
-    }
-    this.setState({currentAttributes: newAttributes});
-  }
-
-  onAddAttributeClicked(/*event*/) {
-    this.state.currentAttributes.push({
-      name: '', value: '', valueType: 'string'
-    });
-    this.setState({currentAttributes: this.state.currentAttributes});
-  }
-
-  onAttributeValueChanged(event, index, field) {
-    let newAttributes = this.state.currentAttributes;
-    if (!newAttributes[index]) {
-      newAttributes[index] = {
-        name: '', value: '', valueType: 'string'
-      };
-    }
-    newAttributes[index][field] = event.currentTarget.value;
-    this.setState({
-      currentAttributes: newAttributes
-    });
-  }
-
-  renderAttributeRow(index, attr, isLast) {
-    let actions = (
-      <Col md={2}>
-        <Button
-          bsStyle='danger'
-          bsSize='small'
-          onClick={() => this.onRemoveAttributeClicked(index)}>
-          -
-        </Button>
-      </Col>
-    );
-    if (isLast) {
-      actions = (
-        <Col md={2}>
-          <Button
-            bsStyle='danger'
-            bsSize='small'
-            onClick={() => this.onRemoveAttributeClicked(index)}>
-            -
-          </Button>
-          <Button
-            bsStyle='success'
-            bsSize='small'
-            ref='addAttributeButton'
-            onClick={this.onAddAttributeClicked.bind(this)}>
-            +
-          </Button>
-        </Col>
-      );
-    }
-    return (
-      <Row key={'attribute-' + index + '-' + attr.name}>
-        <Col md={4}>
-          <Input
-            type='select'
-            addonBefore='Name'
-            placeholder='Select Attribute'
-            name={'attributes[' + index + '][name]'}
-            defaultValue={attr.name}
-            onChange={(event) => this.onAttributeValueChanged(event, index, 'name')}
-          >
-            <option value=''>Select Attribute</option>
-            <option value='floor'>Floor</option>
-            <option value='rooms'>Rooms</option>
-            <option value='elevator'>Elevator</option>
-          </Input>
-        </Col>
-        <Col md={4}>
-          <Input
-            type='text'
-            addonBefore='Value'
-            name={'attributes[' + index + '][value]'}
-            defaultValue={attr.value}
-            onChange={(event) => this.onAttributeValueChanged(event, index, 'value')}
-          />
-        </Col>
-        {actions}
-      </Row>
-    );
-  }
-
   render() {
     this.handleErrorState();
     if (UserStore.isLoading()) {
       this.handlePendingState();
     }
     let user = merge({
-      costs: {},
-      amenities: [],
-      facilities: []
+      firstname: null,
+      lastname: null,
+      email: null,
+      password: null
     }, this.props.user || {});
-    let userLocation = merge({
-      address: {
-        street: null,
-        apartment: null,
-        zipcode: null,
-        city: null,
-        country: 'GB'
-      },
-      coordinates: [],
-      neighborhood: null
-    }, user.location || {});
-
-    let countrySelections = this.getCountryOptions();
-
-    let lat, lon = '';
-    if (user && userLocation.coordinates.length) {
-      lat = userLocation.coordinates[0];
-      lon = userLocation.coordinates[1];
-    }
 
     let deleteLink = null;
-    let previewLink = null;
     if (this.props.user) {
       deleteLink = (<Link to='userDelete' params={{id: this.props.user.id}} className='pull-right btn btn-danger btn-preview'>Delete</Link>);
-      previewLink = (
-        <a href={ApplicationStore.getState().config.siteHost + '/user/' + this.props.user.slug}
-          target='_blank'
-          className='btn btn-primary'>
-          Preview
-        </a>
-      );
     }
     debug('Render', user);
     //debug('Neighborhood of this user', this.props.userLocation.neighborhood);
@@ -307,234 +132,52 @@ export default class UsersEditDetails extends EditDetails {
             <Panel header='Common'>
               <Input
                 type='text'
-                ref='title'
-                label='Title'
-                placeholder='Title (optional)'
-                defaultValue={user.title}
-                onChange={this.onFormChange.bind(this)}
-              />
-              {this.getSlug(user)}
-              <Input
-                type='select'
-                ref='announcementType'
-                label='Announcement type'
-                defaultValue='buy'
-                value={user.announcementType}
-                onChange={this.onFormChange.bind(this)}
-              >
-                <option value='buy'>This user is for sale</option>
-                <option value='rent'>This user is for rent</option>
-              </Input>
-              <Input
-                type='textarea'
-                ref='description'
-                label='Description'
-                placeholder='Write description'
-                defaultValue={user.description}
-                onChange={this.onFormChange.bind(this)}
+                ref='firstname'
+                label='Firstname'
+                placeholder='Firstname'
                 required
-              />
-            </Panel>
-            <Panel header='Location'>
-              <Input
-                type='text'
-                ref='addressStreet'
-                label='Street Address'
-                placeholder='ie. Kauppakartanonkuja 3 B'
-                defaultValue={userLocation.address.street}
+                defaultValue={user.firstname}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
                 type='text'
-                ref='addressApartment'
-                label='Apartment'
-                placeholder='ie. 22'
-                defaultValue={userLocation.address.apartment}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <NeighborhoodSelect
-                ref='addressNeighborhood'
-                selected={userLocation.neighborhood}
-              />
-              <Input
-                type='text'
-                ref='addressCity'
-                label='City'
-                placeholder='ie. Helsinki'
-                defaultValue={userLocation.address.city}
+                ref='lastname'
+                label='Lastname'
+                placeholder='Lastname'
+                required
+                defaultValue={user.lastname}
                 onChange={this.onFormChange.bind(this)}
               />
               <Input
-                type='text'
-                ref='addressZipcode'
-                label='Post code'
-                placeholder=''
-                defaultValue={userLocation.address.zipcode}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='select'
-                ref='addressCountry'
-                label='Country'
-                placeholder='Select Country'
-                defaultValue={userLocation.address.country}
-                onChange={this.onFormChange.bind(this)}>
-                <option value=''>Select country</option>
-                {countrySelections}
-              </Input>
-
-              <Input
-                label='Coordinates'
-                help='Optional coordinates for the user' wrapperClassName='wrapper'>
-                <Row>
-                  <Col xs={6}>
-                    <Input
-                      type='text'
-                      ref='locationLatitude'
-                      addonBefore='Latitude:'
-                      defaultValue={lat}
-                    />
-                  </Col>
-                  <Col xs={6}>
-                    <Input
-                      type='text'
-                      ref='locationLongitude'
-                      addonBefore='Longitude:'
-                      defaultValue={lon}
-                    />
-                  </Col>
-                </Row>
-              </Input>
-            </Panel>
-            <Panel header='Pricing information'>
-              <Input
-                type='select'
-                ref='costsCurrency'
-                label='Used currency'
-                placeholder='Select Applied Currency'
-                defaultValue={user.costs.currency}
-                onChange={this.onFormChange.bind(this)}>
-                <option value='EUR'>Euro</option>
-                <option value='GBP'>British Pounds</option>
-                <option value='SUD'>US Dollars</option>
-              </Input>
-              <Input
-                type='text'
-                ref='costsDeptFreePrice'
-                label='Dept free selling price'
-                placeholder='(optional)'
-                defaultValue={user.costs.deptFreePrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsSellingPrice'
-                label='Selling price'
-                placeholder='(optional)'
-                defaultValue={user.costs.sellingPrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsSquarePrice'
-                label='Price per square foot'
-                placeholder='(optional)'
-                defaultValue={user.costs.squarePrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsReTaxPerYear'
-                label='Council tax (per year)'
-                placeholder='(optional)'
-                defaultValue={user.costs.realEstateTaxPerYear}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsEcPerMonth'
-                label='Charge on electicity (per month)'
-                placeholder='(optional)'
-                defaultValue={user.costs.electricChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsWcPerMonth'
-                label='Water charge (per month)'
-                placeholder='(optional)'
-                defaultValue={user.costs.waterChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='select'
-                ref='costsWcPerType'
-                label='Water charge type'
-                placeholder='Water charge type'
-                defaultValue={user.costs.waterChargePerType}
-                onChange={this.onFormChange.bind(this)}>
-                <option value='person'>Per Person</option>
-                <option value='household'>Per Household</option>
-              </Input>
-            </Panel>
-            <Panel header='Amenities'>
-              <Input
-                type='textarea'
-                ref='amenities'
-                label='Input Amenities (one per line)'
-                placeholder='(optional)'
-                defaultValue={user.amenities.join(`\n`)}
+                type='email'
+                ref='email'
+                label='Email'
+                placeholder='myname@example.co.uk'
+                required
+                defaultValue={user.email}
                 onChange={this.onFormChange.bind(this)}
               />
             </Panel>
-            <Panel header='Facilities'>
+            <Panel header='Password'>
               <Input
-                type='textarea'
-                ref='facilities'
-                label='Input Facilities (one per line)'
-                placeholder='(optional)'
-                defaultValue={user.facilities.join(`\n`)}
+                type='password'
+                ref='password'
+                label='Password'
+                placeholder='My very strong and secret password'
                 onChange={this.onFormChange.bind(this)}
               />
-            </Panel>
-            <Panel header='Other Attributes'>
-              {
-                this.state.currentAttributes.map((attr, index) => {
-                  let isLast = false;
-                  if (index === this.state.currentAttributes.length - 1) {
-                    isLast = true;
-                  }
-                  return this.renderAttributeRow(index, attr, isLast);
-                })
-              }
-            </Panel>
-            <Panel header='Images'>
-              <Row>
-                <Col md={6}>
-                  <h2>Images</h2>
-                  <ImageList images={this.state.images} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
-                </Col>
-                <Col md={6}>
-                  <UploadArea
-                    className='uploadarea image-uploadarea'
-                    signatureFolder='userImage'
-                    width='100%'
-                    height='80px'
-                    onUpload={this.onImageUpload.bind(this)}
-                    acceptedMimes='image/*'
-                    instanceId={this.imageUploaderInstanceId}>
-                    <Well>
-                      <p>Drag new image here, or click to select from filesystem.</p>
-                    </Well>
-                  </UploadArea>
-                </Col>
-              </Row>
+              <Input
+                type='password'
+                ref='password2'
+                label='Retype the password'
+                placeholder='Retype your password'
+                onChange={this.onFormChange.bind(this)}
+              />
             </Panel>
             <Well>
               <Row>
                 <Col md={6}>
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
-                  {previewLink}
                 </Col>
                 <Col md={6} pullRight>
                   {deleteLink}

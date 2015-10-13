@@ -29,22 +29,28 @@ import NeighborhoodsEditContainer from './Neighborhoods/EditContainer';
 import ContactsIndexContainer from './Contacts/IndexContainer';
 import ContactsViewContainer from './Contacts/ViewContainer';
 
+// Homes
+import UsersIndexContainer from './Users/IndexContainer';
+import UsersCreateContainer from './Users/CreateContainer';
+import UsersEditContainer from './Users/EditContainer';
+import UsersDeleteContainer from './Users/DeleteContainer';
+
 let routes = (
   <Route name='app' path='/' handler={Application}>
     <DefaultRoute handler={Homepage}/>
     <Route name='homes' path='/homes'>
       <DefaultRoute handler={HomesIndexContainer}/>
       <Route name='homeCreate' path='create' handler={HomesCreateContainer} />
+      <Route name='homeDelete' path=':id/delete' handler={HomesDeleteContainer} />
       <Route name='homeEdit' path=':id' handler={HomesEditContainer}>
         <Route name='homeEditTab' path=':tab' handler={HomesEditContainer} />
       </Route>
-      <Route name='homeDelete' path=':id/delete' handler={HomesDeleteContainer} />
     </Route>
     <Route name='agents' path='/agents'>
       <DefaultRoute handler={AgentsIndexContainer}/>
       <Route name='agentCreate' path='create' handler={AgentsCreateContainer} />
-      <Route name='agentEdit' path=':id' handler={AgentsEditContainer} />
       <Route name='agentDelete' path=':id/delete' handler={AgentsDeleteContainer} />
+      <Route name='agentEdit' path=':id' handler={AgentsEditContainer} />
     </Route>
     <Route name='neighborhoods' path='/neighborhoods'>
       <DefaultRoute handler={NeighborhoodsIndexContainer}/>
@@ -55,6 +61,14 @@ let routes = (
       <DefaultRoute handler={ContactsIndexContainer}/>
       <Route name='contactView' path=':id' handler={ContactsViewContainer} />
       <Route name='contactDelete' path=':id/delete' handler={ContactsViewContainer} />
+    </Route>
+    <Route name='users' path='/users'>
+      <DefaultRoute handler={UsersIndexContainer}/>
+      <Route name='userCreate' path='create' handler={UsersCreateContainer} />
+      <Route name='userDelete' path=':id/delete' handler={UsersDeleteContainer} />
+      <Route name='userEdit' path=':id' handler={UsersEditContainer}>
+        <Route name='userEditTab' path=':tab' handler={UsersEditContainer} />
+      </Route>
     </Route>
     <NotFoundRoute handler={RouteNotFound} />
   </Route>

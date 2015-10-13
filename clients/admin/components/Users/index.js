@@ -38,7 +38,7 @@ class UsersIndex extends React.Component {
                   <Link
                     to="userEdit"
                     params={{id: user.id}}>
-                    {user.userTitle}
+                    {user.displayName}
                   </Link>
                 </li>
               );

@@ -32,7 +32,7 @@ exports.loadSchemas = function (mongoose, next) {
     lastname: {
       type: String
     },
-    email: {
+    _email: {
       type: String
     },
     // Authentication related
@@ -90,6 +90,17 @@ exports.loadSchemas = function (mongoose, next) {
     this._salt = getSalt();
     this._password = calculateHash(password, this._salt);
     this._passwordSetAt = moment().utc().toDate();
+  });
+  schemas.User.virtual('email').get(function() {
+    return this._email;
+  });
+  schemas.User.virtual('email').set(function (email) {
+    email = email.toLowerCase();
+    if (!schemas.User.methods.isValidEmail(email)) {
+      throw new Exception('Invalid email given');
+    }
+    this._email = email;
+    this.username = email;
   });
   schemas.User.methods.isValidPassword = function (password) {
     if (!this._password) {

@@ -94,12 +94,10 @@ export default class UsersDelete extends React.Component {
           </NavItemLink>
         </Nav>
         <Row>
-          <h1><i className='fa fa-user'></i> Edit {this.props.user.userTitle}</h1>
+          <h1><i className='fa fa-user'></i> Delete user {this.props.user.displayName}</h1>
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Delete'>
               <Row>
-                {error}
-                {savingLoader}
                 <form name='userDetails' ref='userDetailsForm' method='POST'>
                   <Col md={10} sm={10}>
                     <Panel header='Common'>
