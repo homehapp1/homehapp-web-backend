@@ -84,7 +84,7 @@ export default class HomesEditStory extends React.Component {
     let previewLink = null;
     if (this.props.home) {
       previewLink = (
-        <a href={ApplicationStore.getState().config.siteHost + '/home/' + this.props.home.slug}
+        <a href={`${ApplicationStore.getState().config.siteHost}/homes/${this.props.home.slug}/story`}
           target='_blank'
           className='btn btn-primary'>
           Preview

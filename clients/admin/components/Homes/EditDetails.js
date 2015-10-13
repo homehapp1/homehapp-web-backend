@@ -290,7 +290,7 @@ export default class HomesEditDetails extends EditDetails {
     if (this.props.home) {
       deleteLink = (<Link to='homeDelete' params={{id: this.props.home.id}} className='pull-right btn btn-danger btn-preview'>Delete</Link>);
       previewLink = (
-        <a href={ApplicationStore.getState().config.siteHost + '/home/' + this.props.home.slug}
+        <a href={`${ApplicationStore.getState().config.siteHost}/homes/${this.props.home.slug}`}
           target='_blank'
           className='btn btn-primary'>
           Preview
