@@ -56,7 +56,7 @@
       position: absolute;
       height: 100%;
       width: 100%;
-      z-index: -1;
+      z-index: -5;
       background-color: white;
     }
 
@@ -68,7 +68,7 @@
       top: 100%;
     }
 
-    & > img, &.fixed > video, &.fixed > .image-content {
+    & > .image-content {
       z-index: -10;
       opacity: 1;
       @include vendors(transition-property, opacity);
@@ -86,13 +86,24 @@
     &.outside-viewport {
       z-index: -100;
 
-      & > img, &.fixed > video, &.fixed > .image-content {
+      & > .image-content {
         opacity: 0;
       }
     }
   }
 
-  &.content-hidden > img, &.content-hidden video, &.content-hidden .image-content {
+  & + .fixed {
+    &:before, &:after {
+      display: none;
+    }
+
+    & > .image-content {
+      position: absolute;
+      z-index: -4;
+    }
+  }
+
+  &.content-hidden > .image-content {
     z-index: -20;
     opacity: 0;
   }
