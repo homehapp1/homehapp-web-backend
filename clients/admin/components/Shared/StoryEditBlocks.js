@@ -27,6 +27,7 @@ export default class StoryEditBlocks extends React.Component {
   constructor(props) {
     super(props);
     this.state.blocks = props.blocks;
+    this.iterator = 0;
     //console.log('StoryEditBlocks', props);
   }
 
@@ -202,6 +203,8 @@ export default class StoryEditBlocks extends React.Component {
   }
 
   render() {
+    this.iterator++;
+    debug('Iteration', this.iterator, this.state.blocks[1].properties, this.state.blocks[2].properties);
     return (
       <div className='edit-story'>
         {
@@ -212,7 +215,7 @@ export default class StoryEditBlocks extends React.Component {
               let editor = this[method](item, index);
               return (
                 <Panel
-                  key={'b-' + index}
+                  key={`b-${index}-${this.iterator}`}
                   header={this.getBlockHeader(item, index)}
                 >
                   {editor}
