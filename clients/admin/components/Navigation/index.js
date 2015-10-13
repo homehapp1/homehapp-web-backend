@@ -30,7 +30,7 @@ class Navigation extends React.Component {
             <NavItemLink eventKey={1} to='homes'>Homes</NavItemLink>
             <NavItemLink eventKey={2} to='neighborhoods'>Neighborhoods</NavItemLink>
             <NavItemLink eventKey={3} to='agents'>Agents</NavItemLink>
-            <NavItemLink eventKey={4} to='agents'>Contact requests</NavItemLink>
+            <NavItemLink eventKey={4} to='contacts'>Contact requests</NavItemLink>
             <NavItemLink eventKey={5} to='users'>Users</NavItemLink>
           </Nav>
           <Nav navbar right>

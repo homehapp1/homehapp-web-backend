@@ -6,6 +6,11 @@ let debug = require('debug')('/api/contacts');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+  let populate = {
+    home: {
+      select: 'slug id uuid homeTitle'
+    }
+  };
 
   app.get('/api/contacts', function(req, res, next) {
     debug('API fetch contacts');
@@ -14,6 +19,10 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Contact')
     .parseRequestArguments(req)
+    .populate(populate)
+    .sort({
+      createdAt: -1
+    })
     .findAll()
     .fetch()
     .then((result) => {
@@ -86,6 +95,7 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Contact')
     .findByUuid(req.params.uuid)
+    .populate(populate)
     .fetch()
     .then((result) => {
       res.json({

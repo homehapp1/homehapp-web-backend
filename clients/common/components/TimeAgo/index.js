@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import {merge} from '../../Helpers';
+import { merge } from '../../Helpers';
 
-let debug = require('../../debugger')('TimeAgo');
+// let debug = require('debug')('TimeAgo');
 
 export default class TimeAgo extends React.Component {
   static propTypes = {
@@ -33,6 +33,35 @@ export default class TimeAgo extends React.Component {
   componentDidMount() {
     if (this.props.live) {
       this._tick(true);
+    }
+  }
+
+  _tick(refresh) {
+    if (!this.mounted) {
+      return;
+    }
+    let timeout = 1000;
+    let now = Date.now();
+
+    let then = (new Date(this.props.date)).valueOf();
+    let seconds = Math.round(Math.abs(now - then) / 1000);
+
+    if (seconds < 60) {
+      timeout = 1000;
+    } else if (seconds < (60 * 60)) {
+      timeout = 1000 * 60;
+    } else if (seconds < (60 * 60 * 24)) {
+      timeout = 1000 * 60 * 60;
+    } else {
+      timeout = 0;
+    }
+
+    if (timeout > 0) {
+      setTimeout(this._tick, timeout);
+    }
+
+    if (!refresh) {
+      this.forceUpdate();
     }
   }
 
@@ -68,44 +97,16 @@ export default class TimeAgo extends React.Component {
     }
 
     let props = merge({}, this.props);
-    props.title = props.data;
+    // props.title = props.date.toISOString();
     delete props.date;
     delete props.formatter;
     delete props.tag;
+    // debug('Props', props);
 
     this.mounted = true;
 
     return React.createElement(
       this.props.tag, props, this.props.formatter(value, unit, suffix)
     );
-  }
-
-  _tick(refresh) {
-    if (!this.mounted) {
-      return;
-    }
-    let timeout = 1000;
-    let now = Date.now();
-
-    let then = (new Date(this.props.date)).valueOf();
-    let seconds = Math.round(Math.abs(now - then) / 1000);
-
-    if (seconds < 60) {
-      timeout = 1000;
-    } else if (seconds < (60 * 60)) {
-      timeout = 1000 * 60;
-    } else if (seconds < (60 * 60 * 24)) {
-      timeout = 1000 * 60 * 60;
-    } else {
-      timeout = 0;
-    }
-
-    if (timeout > 0) {
-      setTimeout(this._tick, timeout);
-    }
-
-    if (!refresh) {
-      this.forceUpdate();
-    }
   }
 }
