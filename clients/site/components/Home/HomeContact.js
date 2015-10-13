@@ -83,7 +83,7 @@ export default class HomeContact extends React.Component {
         }
       });
     }
-    let rval = ContactActions.createItem(props);
+    ContactActions.createItem(props);
   }
 
   handleErrorState() {

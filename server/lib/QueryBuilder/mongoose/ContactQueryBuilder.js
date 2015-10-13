@@ -2,7 +2,7 @@
 
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
-let debug = require('debug')('ContactQueryBuilder');
+// let debug = require('debug')('ContactQueryBuilder');
 
 export default class ContactQueryBuilder extends BaseQueryBuilder {
   constructor(app) {
