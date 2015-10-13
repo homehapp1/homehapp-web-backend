@@ -67,9 +67,23 @@ export default class HomeContact extends React.Component {
       agent: agent,
       tags: ['contact', 'email', `home:${this.props.home.id}`]
     };
-    debug('props', props);
+
+    if (!props.sender.name) {
+      return this.setState({
+        error: {
+          message: 'Name is required'
+        }
+      });
+    }
+
+    if (!props.sender.email) {
+      return this.setState({
+        error: {
+          message: 'Email is required'
+        }
+      });
+    }
     let rval = ContactActions.createItem(props);
-    debug('sendRequest', rval);
   }
 
   handleErrorState() {
@@ -122,7 +136,6 @@ export default class HomeContact extends React.Component {
                 placeholder='Your name'
                 ref='name'
                 required
-                defaultValue='Arttu Manninen'
               />
             </label>
 
@@ -136,7 +149,6 @@ export default class HomeContact extends React.Component {
                 placeholder='myname@example.com'
                 required
                 ref='email'
-                defaultValue='arttu@kaktus.cc'
               />
             </label>
 
@@ -156,7 +168,7 @@ export default class HomeContact extends React.Component {
               <span className='label'>
                 Message
               </span>
-              <textarea name='message' ref='message' defaultValue='Lorem ipsum'></textarea>
+              <textarea name='message' ref='message'></textarea>
             </label>
           </div>
           <div className='buttons'>
