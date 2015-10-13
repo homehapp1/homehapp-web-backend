@@ -204,7 +204,6 @@ export default class StoryEditBlocks extends React.Component {
 
   render() {
     this.iterator++;
-    debug('Iteration', this.iterator, this.state.blocks[1].properties, this.state.blocks[2].properties);
     return (
       <div className='edit-story'>
         {
