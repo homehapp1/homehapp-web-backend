@@ -64,7 +64,7 @@ export default class HomesDelete extends React.Component {
 
   handlePendingState() {
     createNotification({
-      message: 'Saving home...'
+      message: 'Deleting home...'
     });
     return null;
   }
@@ -98,8 +98,6 @@ export default class HomesDelete extends React.Component {
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Delete'>
               <Row>
-                {error}
-                {savingLoader}
                 <form name='homeDetails' ref='homeDetailsForm' method='POST'>
                   <Col md={10} sm={10}>
                     <Panel header='Common'>
