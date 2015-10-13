@@ -12,7 +12,7 @@ import Homepage from './Homepage';
 import HomeContainer from './Home/HomeContainer';
 import HomeContactContainer from './Home/HomeContactContainer';
 import HomeDetailsContainer from './Home/HomeDetailsContainer';
-import HomeStoryContainer from './Home/HomeDetailsContainer';
+import HomeStoryContainer from './Home/HomeStoryContainer';
 import HomeSearch from './Home/HomeSearch';
 import RouteNotFound from './ErrorPages/RouteNotFound';
 
