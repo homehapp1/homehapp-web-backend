@@ -38,6 +38,11 @@ exports.loadSchemas = function (mongoose, next) {
         default: null
       }
     },
+    home: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Home',
+      default: null
+    },
     recipient: {
       agent: {
         type: mongoose.Schema.Types.ObjectId,
@@ -70,7 +75,8 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.Contact.statics.editableFields = function () {
     return [
-      'title', 'message', 'type', 'sender', 'recipient', 'tags'
+      'title', 'message', 'type', 'sender', 'recipient', 'tags',
+      'home'
     ];
   };
 
