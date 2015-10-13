@@ -223,7 +223,8 @@ export default class StoryEditBlocks extends React.Component {
             console.warn(`No method ${method} defined, cannot get story block with type ${item.template}`);
           })
         }
-        <Input label='Add Block' wrapperClassName='addWrapper'>
+        <hr />
+        <Panel header='Add a new block'>
           <Input
             type='select'
             name='blockTemplate'
@@ -237,7 +238,7 @@ export default class StoryEditBlocks extends React.Component {
             <option value='ContentImage'>Content Image</option>
             <option value='Gallery'>Gallery</option>
           </Input>
-        </Input>
+        </Panel>
       </div>
     );
   }
