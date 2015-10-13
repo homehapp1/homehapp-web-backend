@@ -35,16 +35,6 @@ export default class HomeContact extends React.Component {
     ContactStore.listen(this.storeListener);
   }
 
-  componentWillReceiveProps(props) {
-    debug('componentWillReceiveProps', props);
-    if (props.home) {
-      this.setState({
-        currentAttributes: props.home.attributes || {},
-        images: props.home.images || []
-      });
-    }
-  }
-
   onContactStoreChange(state) {
     debug('onContactStoreChange', state);
     this.setState(state);
@@ -65,6 +55,7 @@ export default class HomeContact extends React.Component {
       type: contactType,
       message: React.findDOMNode(this.refs.message).value,
       agent: agent,
+      home: this.props.home.id,
       tags: ['contact', 'email', `home:${this.props.home.id}`]
     };
 
@@ -119,6 +110,7 @@ export default class HomeContact extends React.Component {
         </ContentBlock>
       );
     }
+    debug('home', this.props.home);
 
     return (
       <ContentBlock className='home contact-form'>
