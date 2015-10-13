@@ -12,6 +12,13 @@ export default class AdminContentBlock extends BaseBlock {
     content: {
       label: 'Content',
       type: 'textarea'
+    },
+    align: {
+      label: 'Alignment',
+      type: 'select',
+      options: [
+        ['left', 'Left'], ['center', 'Center'], ['right', 'Right']
+      ]
     }
   }
 }
