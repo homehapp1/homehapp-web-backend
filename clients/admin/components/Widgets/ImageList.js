@@ -83,14 +83,6 @@ export default class ImageList extends React.Component {
                       defaultValue={image.alt}
                       onChange={this.props.onChange.bind(this)}
                     />
-                    <Input
-                      type='text'
-                      ref='author'
-                      label='Author'
-                      placeholder='(optional)'
-                      defaultValue={image.author}
-                      onChange={this.props.onChange.bind(this)}
-                    />
                   </td>
                   <td>
                     <Button
