@@ -2,7 +2,7 @@
 
 import alt from '../../common/alt';
 
-let debug = require('../../common/debugger')('NeighborhoodListActions');
+// let debug = require('../../common/debugger')('NeighborhoodListActions');
 
 @alt.createActions
 class NeighborhoodListActions {
@@ -10,7 +10,7 @@ class NeighborhoodListActions {
     this.dispatch(neighborhoods);
   }
   fetchNeighborhoods(skipCache) {
-    debug('fetchNeighborhoods', skipCache);
+    // debug('fetchNeighborhoods', skipCache);
     this.dispatch(skipCache);
   }
   fetchFailed(error) {
