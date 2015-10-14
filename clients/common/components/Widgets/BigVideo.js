@@ -96,7 +96,7 @@ export default class BigVideo extends React.Component {
             {this.props.children}
           </div>
         </div>
-        <Separator />
+        <Separator type='white' />
       </div>
     );
   }
