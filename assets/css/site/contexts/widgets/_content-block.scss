@@ -8,6 +8,10 @@
     padding-bottom: $contentPadding * 2;
   }
 
+  & + .text-block {
+    padding-top: 0;
+  }
+
   img {
     max-width: 100%;
   }

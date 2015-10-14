@@ -138,7 +138,7 @@ export default class StoryLayout extends React.Component {
     }
 
     return (
-      <ContentBlock {...item.properties} key={index}>
+      <ContentBlock {...item.properties} key={index} className='text-block'>
         {content}
       </ContentBlock>
     );
