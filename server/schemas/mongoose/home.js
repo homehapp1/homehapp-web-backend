@@ -66,7 +66,10 @@ exports.loadSchemas = function (mongoose, next) {
           default: ''
         }
       },
-      coordinates: [],
+      coordinates: {
+        type: [],
+        default: null
+      },
       neighborhood: {
         type: ObjectId,
         ref: 'Neighborhood',
@@ -80,28 +83,11 @@ exports.loadSchemas = function (mongoose, next) {
         enum: ['EUR', 'GBP', 'USD'],
         default: 'GBP'
       },
-      deptFreePrice: {
-        type: Number
-      },
       sellingPrice: {
         type: Number
       },
-      squarePrice: {
+      councilTax: {
         type: Number
-      },
-      realEstateTaxPerYear: {
-        type: Number
-      },
-      electricChargePerMonth: {
-        type: Number
-      },
-      waterChargePerMonth: {
-        type: Number
-      },
-      waterChargePerType: {
-        type: String,
-        enum: ['person', 'household'],
-        default: 'person'
       }
     },
     attributes: [schemas.HomeAttribute],
