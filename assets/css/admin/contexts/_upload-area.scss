@@ -8,8 +8,8 @@
     overflow: hidden;
 
     @include vendors(transition-property, all);
-    @include vendors(transition-duration, 500ms);
-    @include vendors(transition-delay, 500ms);
+    @include vendors(transition-duration, 800ms);
+    // @include vendors(transition-delay, 500ms);
 
     &.finished {
       height: 0;
