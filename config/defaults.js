@@ -156,8 +156,8 @@ module.exports = (projectRoot) => {
           },
           half: {
             mode: 'fill',
-            width: 600,
-            height: 800
+            width: 800,
+            height: 600
           },
 
           // Full-sized preview
