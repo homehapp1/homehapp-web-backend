@@ -16,9 +16,6 @@ exports.registerRoutes = (app) => {
   };
 
   app.get('/api/homes', function(req, res, next) {
-    debug('API fetch homes');
-    debug('req.user', req.user);
-
     QB
     .forModel('Home')
     .parseRequestArguments(req)
@@ -26,8 +23,6 @@ exports.registerRoutes = (app) => {
     .findAll()
     .fetch()
     .then((result) => {
-      debug('/api/homes');
-      debug(result.models);
       res.json({
         status: 'ok',
         homes: result.models.map((home) => {
@@ -91,8 +86,6 @@ exports.registerRoutes = (app) => {
 
   app.get('/api/homes/:uuid', function(req, res, next) {
     debug('API fetch home with uuid', req.params.uuid);
-    debug('req.query', req.query);
-
     QB
     .forModel('Home')
     .populate(populate)
