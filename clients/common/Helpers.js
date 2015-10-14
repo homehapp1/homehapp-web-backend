@@ -347,6 +347,11 @@ exports.setLastMod = function setLastMod(objects, res) {
 };
 
 exports.createNotification = function createNotification(d) {
+  if (typeof document === 'undefined') {
+    console.error('document is not defined');
+    return null;
+  }
+
   let container = document.getElementById('notifications');
   let data = {
     type: d.type || 'info',
