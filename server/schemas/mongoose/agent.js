@@ -50,7 +50,11 @@ exports.loadSchemas = function (mongoose, next) {
     ];
   };
   schemas.Agent.virtual('mainImage').get(function() {
-    return getMainImage(this);
+    return getMainImage(this, {
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1444858227/site/images/content/person-placeholder.png',
+      width: 800,
+      height: 800
+    });
   });
   schemas.Agent.virtual('rname').get(function () {
     let name = [];
