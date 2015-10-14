@@ -26,19 +26,10 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       required: true
     },
-    company: {
-      title: {
-        type: String,
-        default: null
-      },
-      phone: {
-        type: String,
-        default: null
-      },
-      email: {
-        type: String,
-        default: null
-      }
+    agency: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Agency',
+      default: null
     },
     phone: {
       type: String,
