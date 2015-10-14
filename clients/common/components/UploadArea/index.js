@@ -145,7 +145,6 @@ class UploadArea extends React.Component {
         }
       }
     };
-    debug('Dropzone config', dropzoneConfig);
 
     if (this.props.dropzoneConfig) {
       dropzoneConfig = Helpers.merge(dropzoneConfig, this.props.dropzoneConfig);
@@ -168,7 +167,6 @@ class UploadArea extends React.Component {
 
     this.dropzone.on('uploadprogress', (file, progress) => {
       debug('dropzone.uploadprogress', file, progress);
-      debug('this.uploads', this.uploads);
       this.uploads[file.id].progress = progress;
       this.setState({
         uploading: true,
