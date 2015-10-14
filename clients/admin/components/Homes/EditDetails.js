@@ -130,13 +130,8 @@ export default class HomesEditDetails extends EditDetails {
       },
       costs: {
         currency: this.refs.costsCurrency.getValue(),
-        deptFreePrice: this.refs.costsDeptFreePrice.getValue(),
         sellingPrice: this.refs.costsSellingPrice.getValue(),
-        squarePrice: this.refs.costsSquarePrice.getValue(),
-        realEstateTaxPerYear: this.refs.costsReTaxPerYear.getValue(),
-        electricChargePerMonth: this.refs.costsEcPerMonth.getValue(),
-        waterChargePerMonth: this.refs.costsWcPerMonth.getValue(),
-        waterChargePerType: this.refs.costsWcPerType.getValue()
+        councilTax: this.refs.costsCouncilTax.getValue()
       },
       amenities: this.refs.amenities.getValue().split('\n'),
       facilities: this.refs.facilities.getValue().split('\n'),
@@ -438,46 +433,12 @@ export default class HomesEditDetails extends EditDetails {
               />
               <Input
                 type='text'
-                ref='costsSquarePrice'
-                label='Price per square foot'
+                ref='costsCouncilTax'
+                label='Council tax'
                 placeholder='(optional)'
-                defaultValue={home.costs.squarePrice}
+                defaultValue={home.costs.councilTax}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
-                type='text'
-                ref='costsReTaxPerYear'
-                label='Council tax (per year)'
-                placeholder='(optional)'
-                defaultValue={home.costs.realEstateTaxPerYear}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsEcPerMonth'
-                label='Charge on electicity (per month)'
-                placeholder='(optional)'
-                defaultValue={home.costs.electricChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsWcPerMonth'
-                label='Water charge (per month)'
-                placeholder='(optional)'
-                defaultValue={home.costs.waterChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='select'
-                ref='costsWcPerType'
-                label='Water charge type'
-                placeholder='Water charge type'
-                defaultValue={home.costs.waterChargePerType}
-                onChange={this.onFormChange.bind(this)}>
-                <option value='person'>Per Person</option>
-                <option value='household'>Per Household</option>
-              </Input>
             </Panel>
             <Panel header='Amenities'>
               <Input
