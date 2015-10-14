@@ -7,6 +7,8 @@ import Modal from './Modal';
 import Pager from './Pager';
 import Image from './Image';
 
+// let debug = require('../../../common/debugger')('Gallery');
+
 export default class Gallery extends React.Component {
   static propTypes = {
     images: React.PropTypes.array.isRequired,
