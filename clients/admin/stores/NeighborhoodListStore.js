@@ -46,13 +46,13 @@ class NeighborhoodListStore {
   }
 
   handleUpdateNeighborhoods(neighborhoods) {
-    debug('handleUpdateNeighborhoods', neighborhoods);
+    // debug('handleUpdateNeighborhoods', neighborhoods);
     this.neighborhoods = neighborhoods;
     this.error = null;
   }
 
   handleFetchNeighborhoods() {
-    debug('handleFetchNeighborhoods');
+    // debug('handleFetchNeighborhoods');
     this.neighborhoods = [];
     this.error = null;
   }
