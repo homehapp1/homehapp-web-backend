@@ -48,7 +48,7 @@ export default class AgentsDelete extends React.Component {
 
   onAgentStoreChange(state) {
     debug('onAgentStoreChange', state);
-    if (!state.error && state.deleted) {
+    if (!state.error && !state.agent) {
       debug('Redirect to agent listing');
       let href = this.context.router.makeHref('agents');
       window.location.href = href;
@@ -94,14 +94,14 @@ export default class AgentsDelete extends React.Component {
           </NavItemLink>
         </Nav>
         <Row>
-          <h1><i className='fa fa-agent'></i> Edit {this.props.agent.agentTitle}</h1>
+          <h1><i className='fa fa-agent'></i> Delete agent {this.props.agent.name}</h1>
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Delete'>
               <Row>
                 <form name='agentDetails' ref='agentDetailsForm' method='POST'>
                   <Col md={10} sm={10}>
                     <Panel header='Common'>
-                      Please confirm the deletion of this agent
+                      Are you sure the agent {this.props.agent.name} will not be missed? Please confirm the deletion!
                     </Panel>
                     <Well>
                       <Row>
