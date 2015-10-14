@@ -1,0 +1,27 @@
+#agentSelector {
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      width: 140px;
+      height: 150px;
+      display: block;
+      float: left;
+      margin: 10px;
+      border: solid 1px #dddddd;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+
+      input[type="checkbox"] {
+        position: absolute;
+        z-index: -1;
+      }
+
+      &.selected {
+        border-color: black;
+      }
+    }
+  }
+}
