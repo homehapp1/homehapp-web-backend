@@ -52,6 +52,11 @@ export default class BigVideo extends React.Component {
       classes.push('fixed');
     }
 
+    if (!this.props.video || !this.props.video.url) {
+      console.warn('Tried to create a BigVideo block without a video', this.props.video);
+      return null;
+    }
+
     let video = {
       src: this.props.video.url,
       autoPlay: true,
