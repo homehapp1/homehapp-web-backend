@@ -12,6 +12,11 @@ export default class EditDetails extends React.Component {
     images: []
   }
 
+  constructor(props) {
+    super(props);
+    this.saving = null;
+  }
+
   imageExists(url) {
     debug('Check if image exists', this.state.images);
     let found = false;
@@ -124,7 +129,8 @@ export default class EditDetails extends React.Component {
   }
 
   handlePendingState() {
-    createNotification({
+    debug('handlePendingState');
+    this.saving = createNotification({
       message: 'Saving the data...'
     });
   }
@@ -138,5 +144,12 @@ export default class EditDetails extends React.Component {
       label: 'Error saving the object',
       message: this.state.error.message
     });
+  }
+
+  handleRenderState() {
+    if (this.saving) {
+      this.saving.close();
+      this.saving = false;
+    }
   }
 }
