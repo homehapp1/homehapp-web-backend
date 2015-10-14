@@ -20,6 +20,10 @@
       a {
         color: white;
         text-shadow: $textShadow;
+
+        &.active {
+          color: $turquoise;
+        }
       }
     }
   }
