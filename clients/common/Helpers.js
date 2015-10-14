@@ -423,4 +423,10 @@ exports.createNotification = function createNotification(d) {
   notification.addEventListener('mouseout', () => {
     notification.hover = false;
   });
+  // Close with a slight delay to give user time to see the notification
+  // at least once
+  notification.close = function() {
+    setTimeout(forceCloseNotification, 500);
+  };
+  return notification;
 };
