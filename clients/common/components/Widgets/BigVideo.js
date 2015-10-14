@@ -4,6 +4,7 @@ import React from 'react';
 import { setFullHeight } from '../../Helpers';
 import classNames from 'classnames';
 import Video from './Video';
+import Separator from './Separator';
 
 export default class BigVideo extends React.Component {
   static propTypes = {
@@ -80,14 +81,17 @@ export default class BigVideo extends React.Component {
     }
 
     return (
-      <div {...props}>
-        <div className='image-content'>
-          <Video {...video} className='big-video' />
+      <div className='bigvideo-wrapper'>
+        <div {...props}>
+          <div className='image-content'>
+            <Video {...video} className='big-video' />
+          </div>
+          {author}
+          <div className='image-text full-height' {...textProps}>
+            {this.props.children}
+          </div>
         </div>
-        {author}
-        <div className='image-text full-height' {...textProps}>
-          {this.props.children}
-        </div>
+        <Separator />
       </div>
     );
   }
