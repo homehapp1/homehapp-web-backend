@@ -20,6 +20,7 @@ body {
   position: relative;
   @include vendors(transition-property, transform);
   @include vendors(transition-duration, $transitionDuration);
+  overflow-y: scroll;
 
   &.no-scroll {
     overflow-y: hidden;
