@@ -88,14 +88,9 @@ export default class AgentsEditDetails extends EditDetails {
       lastname: this.refs.lastname.getValue(),
       phone: this.refs.phone.getValue(),
       email: this.refs.email.getValue(),
-      company: {
-        title: this.refs.companyTitle.getValue(),
-        phone: this.refs.companyPhone.getValue(),
-        email: this.refs.companyEmail.getValue()
-      },
+      // @TODO: agency selector
       images: images
     };
-
     this.saveAgent(agentProps);
   }
 
@@ -159,25 +154,8 @@ export default class AgentsEditDetails extends EditDetails {
                 required
               />
             </Panel>
-            <Panel header='Company'>
-              <Input type='text'
-                ref='companyTitle'
-                label='Company name'
-                placeholder='Company Name Ltd'
-                defaultValue={this.props.agent.company.title}
-              />
-              <Input type='email'
-                ref='companyEmail'
-                label='Company email'
-                placeholder='email@company.co.uk'
-                defaultValue={this.props.agent.company.email}
-              />
-            <Input type='tel'
-                ref='companyPhone'
-                label='Company phone'
-                placeholder='+44 123 00 11 22'
-                defaultValue={this.props.agent.company.title}
-              />
+            <Panel header='Agency'>
+              <p>TODO: add a selector for agency</p>
             </Panel>
             <Panel header='Images'>
               <Row>

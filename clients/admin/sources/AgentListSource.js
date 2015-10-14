@@ -7,12 +7,13 @@ let debug = require('../../common/debugger')('AgentListSource');
 
 let AgentListSource = {
   fetchAgents: () => {
+    debug('Fetch agents initiated');
     return {
       remote(/*storeState*/) {
         debug('fetchAgents:remote', arguments);
         return request.get(`/api/agents`)
           .then((response) => {
-            debug('got response', response);
+            debug('Got response', response);
             if (!response.data || !response.data.agents) {
               let err = new Error('Invalid response');
               return Promise.reject(err);
@@ -33,6 +34,7 @@ let AgentListSource = {
           });
       },
       local(/*storeState, slug*/) {
+        debug('fetchAgents:local', arguments);
         return null;
       },
       success: AgentListActions.updateAgents,
