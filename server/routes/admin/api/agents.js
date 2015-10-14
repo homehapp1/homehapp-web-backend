@@ -32,12 +32,13 @@ exports.registerRoutes = (app) => {
     if (!data.lastname) {
       throw new Error('Missing lastname');
     }
-    if (!data.email) {
-      throw new Error('Missing email address');
-    }
-    if (!data.phone) {
-      throw new Error('Missing phone number');
-    }
+    // if (!data.email) {
+    //   throw new Error('Missing email address');
+    // }
+    // if (!data.phone) {
+    //   throw new Error('Missing phone number');
+    // }
+    return true;
   };
 
   app.post('/api/agents', function(req, res, next) {
