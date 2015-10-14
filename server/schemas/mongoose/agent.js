@@ -1,6 +1,6 @@
 'use strict';
 
-import { loadCommonPlugins, commonJsonTransform, getImageSchema, populateMetadata } from './common';
+import { loadCommonPlugins, commonJsonTransform, getMainImage, getImageSchema, populateMetadata } from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -12,11 +12,6 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       index: true,
       unique: true
-    },
-    slug: {
-      type: String,
-      index: true,
-      required: true
     },
     firstname: {
       type: String,
@@ -33,11 +28,11 @@ exports.loadSchemas = function (mongoose, next) {
     },
     phone: {
       type: String,
-      required: true
+      default: null
     },
     email: {
       type: String,
-      required: true
+      default: null
     },
     images: [schemas.AgentImage],
     // Flags
@@ -54,6 +49,9 @@ exports.loadSchemas = function (mongoose, next) {
       'image'
     ];
   };
+  schemas.Agent.virtual('mainImage').get(function() {
+    return getMainImage(this);
+  });
   schemas.Agent.virtual('rname').get(function () {
     let name = [];
     if (this.lastname) {
