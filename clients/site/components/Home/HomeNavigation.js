@@ -66,9 +66,23 @@ export default class HomeNavigation extends React.Component {
       console.info('Implement phone calling');
     };
 
+    let story = null;
+
+    if (this.props.home.story.enabled) {
+      story = (
+        <li>
+          <Link to='homeStory' params={{slug: this.props.home.slug}}><i className='fa fa-home'></i></Link>
+        </li>
+      );
+    }
+
     return (
       <ContentNavigation>
         <ul>
+          {story}
+          <li>
+            <Link to='homeDetails' params={{slug: this.props.home.slug}}><i className='fa fa-info-circle'></i></Link>
+          </li>
           <li>
             <a href='#' onClick={todo}><i className='fa fa-phone'></i></a>
           </li>
