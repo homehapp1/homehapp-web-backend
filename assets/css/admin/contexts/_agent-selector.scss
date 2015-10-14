@@ -9,18 +9,30 @@
       display: block;
       float: left;
       margin: 10px;
-      border: solid 1px #dddddd;
+      border: solid 1px black;
       padding: 10px;
       text-align: center;
-      cursor: pointer;
+      opacity: 0.5;
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, $transitionDuration);
+
+      &, * {
+        cursor: pointer;
+      }
 
       input[type="checkbox"] {
         position: absolute;
         z-index: -1;
+        opacity: 0.01;
+        visibility: hidden;
+      }
+
+      &.selected, &:hover {
+        opacity: 1;
       }
 
       &.selected {
-        border-color: black;
+        background-color: #dff0d8;
       }
     }
   }
