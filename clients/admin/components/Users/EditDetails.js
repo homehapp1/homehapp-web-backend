@@ -125,7 +125,9 @@ export default class UsersEditDetails extends EditDetails {
     this.handleErrorState();
     if (UserStore.isLoading()) {
       this.handlePendingState();
+      return null;
     }
+    this.handleRenderState();
     let user = merge({
       firstname: null,
       lastname: null,

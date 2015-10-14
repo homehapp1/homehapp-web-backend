@@ -113,7 +113,9 @@ export default class AgentsEditDetails extends EditDetails {
     this.handleErrorState();
     if (AgentStore.isLoading()) {
       this.handlePendingState();
+      return null;
     }
+    this.handleRenderState();
 
     return (
       <Row>

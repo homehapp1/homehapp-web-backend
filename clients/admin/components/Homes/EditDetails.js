@@ -259,7 +259,9 @@ export default class HomesEditDetails extends EditDetails {
     this.handleErrorState();
     if (HomeStore.isLoading()) {
       this.handlePendingState();
+      return null;
     }
+    this.handleRenderState();
     let home = merge({
       costs: {},
       amenities: [],

@@ -103,7 +103,9 @@ class NeighborhoodsEditDetails extends EditDetails {
     this.handleErrorState();
     if (NeighborhoodStore.isLoading()) {
       this.handlePendingState();
+      return null;
     }
+    this.handleRenderState();
 
     let lat, lon = '';
     if (this.props.neighborhood.location.coordinates.length) {
