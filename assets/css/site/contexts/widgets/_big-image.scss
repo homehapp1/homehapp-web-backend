@@ -152,14 +152,14 @@
     font-size: $fontSizeHeading3;
     color: white;
 
-    .mute {
+    .mute, .invisible {
       opacity: 0;
     }
 
     .fa {
       display: inline-block;
       cursor: pointer;
-      @include vendors(transition-property, color);
+      @include vendors(transition-property, all);
       @include vendors(transition-duration, $transitionDuration);
       width: 1em;
       overflow: hidden;
