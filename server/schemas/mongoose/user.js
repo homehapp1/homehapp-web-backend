@@ -118,7 +118,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.User.virtual('email').set(function (email) {
     email = email.toLowerCase();
     if (!schemas.User.methods.isValidEmail(email)) {
-      throw new Exception('Invalid email given');
+      throw new Error('Invalid email given');
     }
     this._email = email;
   });

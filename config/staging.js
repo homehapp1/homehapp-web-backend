@@ -27,6 +27,9 @@ module.exports = function (projectRoot) {
     },
     google: {
       enabled: true
+    },
+    clientConfig: {
+      siteHost: 'http://130.211.77.56:8080'
     }
   };
   return config;

@@ -12,37 +12,37 @@ class UserQueryBuilder extends BaseQueryBuilder {
   initialize() {
   }
 
-  findAll() {
-    this._queries.push((callback) => {
-      let cursor = this.Model.find({
-        deletedAt: null
-      });
-
-      if (this._opts.limit) {
-        cursor.limit(this._opts.limit);
-      }
-      if (this._opts.sort) {
-        cursor.sort(this._opts.sort);
-      }
-      if (this._opts.skip) {
-        cursor.skip(this._opts.skip);
-      }
-      this._configurePopulationForCursor(cursor);
-
-      cursor.exec((err, users) => {
-        if (err) {
-          return callback(err);
-        }
-        this.result.users = users;
-        this.result.usersJson = users.map(user => {
-          return user.toJSON();
-        });
-        callback();
-      });
-    });
-
-    return this;
-  }
+  // findAll() {
+  //   this._queries.push((callback) => {
+  //     let cursor = this.Model.find({
+  //       deletedAt: null
+  //     });
+  //
+  //     if (this._opts.limit) {
+  //       cursor.limit(this._opts.limit);
+  //     }
+  //     if (this._opts.sort) {
+  //       cursor.sort(this._opts.sort);
+  //     }
+  //     if (this._opts.skip) {
+  //       cursor.skip(this._opts.skip);
+  //     }
+  //     this._configurePopulationForCursor(cursor);
+  //
+  //     cursor.exec((err, users) => {
+  //       if (err) {
+  //         return callback(err);
+  //       }
+  //       this.result.users = users;
+  //       this.result.usersJson = users.map(user => {
+  //         return user.toJSON();
+  //       });
+  //       callback();
+  //     });
+  //   });
+  //
+  //   return this;
+  // }
 
   findById(id) {
     this._queries.push((callback) => {

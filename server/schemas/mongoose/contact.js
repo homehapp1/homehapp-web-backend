@@ -22,6 +22,11 @@ exports.loadSchemas = function (mongoose, next) {
     },
     type: {
       type: String,
+      default: 'email',
+      enum: ['email', 'phone']
+    },
+    subType: {
+      type: String,
       default: null
     },
     sender: {
@@ -49,10 +54,6 @@ exports.loadSchemas = function (mongoose, next) {
         ref: 'Agent'
       },
       name: {
-        type: String,
-        default: null
-      },
-      company: {
         type: String,
         default: null
       },

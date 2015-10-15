@@ -394,11 +394,11 @@ exports.createNotification = function createNotification(d) {
     }
     notification.className += ' away';
     // Remove the DOM node after a delay, allowing the animations to finish
-    setTimeout(function() {
-      if (notification.parentNode) {
-        // notification.parentNode.removeChild(notification);
-      }
-    }, 2000);
+    // setTimeout(function() {
+    //   if (notification.parentNode) {
+    //     // notification.parentNode.removeChild(notification);
+    //   }
+    // }, 2000);
   };
 
   let forceCloseNotification = function forceCloseNotification() {
