@@ -52,7 +52,8 @@ export default class HomeContact extends React.Component {
         name: React.findDOMNode(this.refs.name).value,
         email: React.findDOMNode(this.refs.email).value
       },
-      type: contactType,
+      type: 'email',
+      subType: contactType,
       message: React.findDOMNode(this.refs.message).value,
       agent: agent,
       home: this.props.home.id,
@@ -119,9 +120,6 @@ export default class HomeContact extends React.Component {
         <form method='post' onSubmit={this.sendRequest}>
           <div className='form'>
             <label className='control'>
-              <span className='label'>
-                Name
-              </span>
               <input
                 type='text'
                 name='name'
@@ -132,9 +130,6 @@ export default class HomeContact extends React.Component {
             </label>
 
             <label className='control'>
-              <span className='label'>
-                Email
-              </span>
               <input
                 type='email'
                 name='email'
@@ -144,31 +139,22 @@ export default class HomeContact extends React.Component {
               />
             </label>
 
-            <span className='label'>
-              Type of enquiry
-            </span>
             <Columns cols={2} className='control-group'>
               <label className='control radio'>
-                <input type='radio' name='type' value='Details requested' ref='typeDetails' defaultChecked /> Request details
+                <input type='radio' name='subType' value='Details requested' ref='subTypeDetails' defaultChecked /> Request details
               </label>
               <label className='control radio'>
-                <input type='radio' name='type' value='Arrange viewing' ref='typeViewing' /> Arrange viewing
+                <input type='radio' name='subType' value='Arrange viewing' ref='subTypeViewing' /> Arrange viewing
               </label>
             </Columns>
 
             <label className='control'>
-              <span className='label'>
-                Message
-              </span>
-              <textarea name='message' ref='message'></textarea>
+              <textarea name='message' ref='message' placeholder='Type your message here'></textarea>
             </label>
           </div>
           <div className='buttons'>
             <input type='submit' className='button' value='Send message' />
           </div>
-          <p className='fineprint'>
-            By submitting this form you accept our <a href={terms}>Terms of use</a>
-          </p>
         </form>
       </ContentBlock>
     );
