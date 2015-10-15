@@ -1,7 +1,7 @@
 'use strict';
 
 import QueryBuilder from '../../../lib/QueryBuilder';
-import {/*NotImplemented,*/ BadRequest} from '../../../lib/Errors';
+import {BadRequest} from '../../../lib/Errors';
 let debug = require('debug')('/api/agents');
 
 exports.registerRoutes = (app) => {
@@ -19,6 +19,7 @@ exports.registerRoutes = (app) => {
   let prepareAgentModelForReturn = function prepareAgentModelForReturn(model) {
     let agent = model.toJSON();
     agent.realPhoneNumber = model._realPhoneNumber;
+    agent.realPhoneNumberType = model._realPhoneNumberType;
     return agent;
   };
 
@@ -80,7 +81,8 @@ exports.registerRoutes = (app) => {
         app.twilio.registerNumberForAgent(model)
         .then((results) => {
           let updateData = {
-            contactNumber: results.phoneNumber
+            contactNumber: results.phoneNumber,
+            _contactNumberSid: results.sid
           };
           updateAgent(model.uuid, updateData)
           .then((updModel) => {
@@ -150,7 +152,8 @@ exports.registerRoutes = (app) => {
         app.twilio.registerNumberForAgent(model)
         .then((results) => {
           let updateData = {
-            contactNumber: results.phoneNumber
+            contactNumber: results.phoneNumber,
+            _contactNumberSid: results.sid
           };
           updateAgent(model.uuid, updateData)
           .then((updModel) => {
@@ -193,6 +196,34 @@ exports.registerRoutes = (app) => {
       res.json({
         status: 'ok'
       });
+    })
+    .catch(next);
+  });
+
+  app.delete('/api/agents/:uuid/contactnumber', app.authenticatedRoute, function(req, res, next) {
+    QB
+    .forModel('Agent')
+    .findByUuid(req.params.uuid)
+    .fetch()
+    .then((result) => {
+      app.twilio.unregisterNumberForAgent(result.model)
+      .then((removeResults) => {
+        debug('removeResults', removeResults);
+        QB
+        .forModel('Agent')
+        .findByUuid(req.params.uuid)
+        .updateNoMultiset({
+          contactNumber: '',
+          _contactNumberSid: null
+        })
+        .then((model) => {
+          res.json({
+            status: 'ok', agent: prepareAgentModelForReturn(model)
+          });
+        })
+        .catch(next);
+      })
+      .catch(next);
     })
     .catch(next);
   });

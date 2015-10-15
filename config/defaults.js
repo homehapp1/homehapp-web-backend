@@ -120,7 +120,10 @@ module.exports = (projectRoot) => {
         sid: 'ACfe13687d3f1fc9f6217a3c5af02e1d76',
         token: '184d32f9b009255e676cc15b87636331',
         phoneNumbers: {
-          country: 'FI'
+          country: 'FI',
+          options: {
+            VoiceEnabled: true
+          }
         }
       }
     },

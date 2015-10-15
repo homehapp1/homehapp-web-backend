@@ -30,8 +30,16 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: null
     },
+    _contactNumberSid: {
+      type: String
+    },
     _realPhoneNumber: {
       type: String
+    },
+    _realPhoneNumberType: {
+      type: String,
+      default: 'mobile',
+      enum: ['mobile', 'local']
     },
     email: {
       type: String,

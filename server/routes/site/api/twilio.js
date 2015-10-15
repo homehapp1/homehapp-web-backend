@@ -2,6 +2,7 @@
 
 import twilio from 'twilio';
 import QueryBuilder from '../../../lib/QueryBuilder';
+import {BadRequest} from '../../../lib/Errors';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -18,7 +19,10 @@ exports.registerRoutes = (app) => {
         agent: agent._id,
         name: agent.name,
         phone: agent._realPhoneNumber
-      }
+      },
+      tags: [
+        `CallSid:${req.body.CallSid}`
+      ]
     };
     app.log.debug(`Creating Contact from call`, data);
     QB
@@ -33,7 +37,14 @@ exports.registerRoutes = (app) => {
   };
 
   app.post('/api/twilio/request/:agentId/voice', function(req, res, next) {
+    // if (!req.headers['x-twilio-signature']) {
+    //   app.log.error('twilio api access without header');
+    //   return next(new BadRequest('invalid request'));
+    // }
+
     app.log.debug(`Call started for agent ${req.params.agentId}`, req.body);
+
+    let callBackBaseUrl = `${app.config.clientConfig.siteHost}/api/twilio/request`;
 
     QB
     .forModel('Agent')
@@ -43,13 +54,23 @@ exports.registerRoutes = (app) => {
       let resp = new twilio.TwimlResponse();
 
       if (!result.model._realPhoneNumber) {
-        resp.say('Unfortunately the call has failed for the Agent.', {
+        resp.say('Unfortunately the call has failed for the agent.', {
           voice: 'woman',
           language: 'en-gb'
         });
       } else {
-        resp.dial(result.model._realPhoneNumber);
-        resp.say('Unfortunately the call has failed or the Agent Hung up. Goodbye', {
+        resp.say('Connecting you to the agent, please hold.', {
+          voice: 'woman',
+          language: 'en-gb'
+        });
+
+        resp.dial({
+          record: true,
+          timeout: 60,
+          action: `${callBackBaseUrl}/${result.model.uuid}/voice/completed`
+        }, result.model._realPhoneNumber);
+
+        resp.say('Unfortunately the call has failed or the agent hung up. Goodbye', {
           voice: 'woman',
           language: 'en-gb'
         });
@@ -62,7 +83,11 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  app.post('/api/twilio/request/:agentId/completed', function(req, res, next) {
+  app.post('/api/twilio/request/:agentId/voice/completed', function(req, res, next) {
+    if (!req.headers['x-twilio-signature']) {
+      app.log.error('twilio api access without header');
+      return next(new BadRequest('invalid request'));
+    }
     app.log.debug(`Call complete callback for ${req.params.agentId}`, req.body);
 
     QB

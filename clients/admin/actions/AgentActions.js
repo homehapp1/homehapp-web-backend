@@ -31,6 +31,10 @@ class AgentActions {
     debug('fetchItem', id);
     this.dispatch(id);
   }
+  releaseNumber(id) {
+    debug('releaseNumber', id);
+    this.dispatch(id);
+  }
   requestFailed(error) {
     debug('requestFailed', error);
     this.dispatch(error);

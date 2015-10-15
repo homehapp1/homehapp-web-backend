@@ -18,10 +18,11 @@ class AgentStore {
       handleCreateItem: AgentActions.CREATE_ITEM,
       handleUpdateItem: AgentActions.UPDATE_ITEM,
       handleDeleteItem: AgentActions.DELETE_ITEM,
-      handleRequestFailed: AgentActions.REQUEST_FAILED,
+      handleReleaseNumber: AgentActions.RELEASE_NUMBER,
       handleCreateSuccess: AgentActions.CREATE_SUCCESS,
       handleUpdateSuccess: AgentActions.UPDATE_SUCCESS,
-      handleDeleteSuccess: AgentActions.DELETE_SUCCESS
+      handleDeleteSuccess: AgentActions.DELETE_SUCCESS,
+      handleRequestFailed: AgentActions.REQUEST_FAILED
     });
 
     this.error = null;
@@ -73,6 +74,16 @@ class AgentStore {
     debug('handleDeleteSuccess', agent);
     this.error = null;
     this.agent = null;
+  }
+
+  handleReleaseNumber(id) {
+    this.error = null;
+    if (!this.getInstance().isLoading()) {
+      setTimeout(() => {
+        debug('instance', this.getInstance());
+        this.getInstance().releaseNumber(id);
+      });
+    }
   }
 
   handleRequestFailed(error) {

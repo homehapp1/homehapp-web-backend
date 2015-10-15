@@ -88,6 +88,7 @@ export default class AgentsEditDetails extends EditDetails {
       lastname: this.refs.lastname.getValue(),
       contactNumber: this.refs.contactNumber.getValue(),
       _realPhoneNumber: this.refs.realPhoneNumber.getValue(),
+      _realPhoneNumberType: this.refs.realPhoneNumberType.getValue(),
       email: this.refs.email.getValue(),
       location: {
         address: {
@@ -102,6 +103,7 @@ export default class AgentsEditDetails extends EditDetails {
 
   onReleaseNumber() {
     debug('onReleaseNumber');
+    AgentActions.releaseNumber(this.props.agent.id);
   }
 
   saveAgent(agentProps) {
@@ -123,6 +125,7 @@ export default class AgentsEditDetails extends EditDetails {
     this.handleRenderState();
 
     let agent = merge({
+      realPhoneNumberType: 'mobile'
     }, this.props.agent || {});
     let location = merge({
       address: {
@@ -131,8 +134,7 @@ export default class AgentsEditDetails extends EditDetails {
     }, agent.location || {});
 
     let releaseNumberColumn = (
-      <Col xs={2}>
-        <br />
+      <Col xs={6}>
         <Button
           bsStyle='danger'
           onClick={this.onReleaseNumber.bind(this)}
@@ -179,16 +181,7 @@ export default class AgentsEditDetails extends EditDetails {
                 onChange={this.onFormChange.bind(this)}
                 required
               />
-              <Input
-                type='tel'
-                ref='realPhoneNumber'
-                label='Real Phone number'
-                placeholder='+44 123 00 11 22'
-                defaultValue={agent.realPhoneNumber}
-                onChange={this.onFormChange.bind(this)}
-                required
-              />
-              <Input wrapperClassName="wrapper">
+              <Input label='Real Contact Number' wrapperClassName="wrapper">
                 <Row>
                   <Col xs={5}>
                     <Input
@@ -202,11 +195,37 @@ export default class AgentsEditDetails extends EditDetails {
                       {countrySelections}
                     </Input>
                   </Col>
-                  <Col xs={5}>
+                  <Col xs={3}>
+                    <Input
+                      type='select'
+                      ref='realPhoneNumberType'
+                      label='Type'
+                      placeholder='Type'
+                      defaultValue={agent.realPhoneNumberType}
+                      onChange={this.onFormChange.bind(this)}>
+                      <option value='mobile'>Mobile</option>
+                      <option value='local'>Landline</option>
+                    </Input>
+                  </Col>
+                  <Col xs={4}>
+                    <Input
+                      type='tel'
+                      ref='realPhoneNumber'
+                      label='Number'
+                      placeholder='+44 123 00 11 22'
+                      defaultValue={agent.realPhoneNumber}
+                      onChange={this.onFormChange.bind(this)}
+                      required
+                    />
+                  </Col>
+                </Row>
+              </Input>
+              <Input label='Twilio Phone number (auto-generated if empty)' wrapperClassName="wrapper">
+                <Row>
+                  <Col xs={6}>
                     <Input
                       type='tel'
                       ref='contactNumber'
-                      label='Twilio Phone number (auto-generated if empty)'
                       placeholder='+44 123 00 11 22'
                       defaultValue={agent.contactNumber}
                       onChange={this.onFormChange.bind(this)}

@@ -29,7 +29,7 @@ module.exports = function (projectRoot) {
       enabled: true
     },
     clientConfig: {
-      siteHost: 'http://130.211.77.56:8080'
+      siteHost: 'http://homehapp:londonhomestory2015@130.211.77.56:8080'
     }
   };
   return config;

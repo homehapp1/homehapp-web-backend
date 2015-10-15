@@ -17,18 +17,21 @@ export function register(app, config) {
   app.twilio = {
     client: twilioClient,
     registerNumberForAgent: (agent) => {
-      debug('registerNumberForAgent', agent);
+      //debug('registerNumberForAgent', agent);
 
       return new Promise((resolve, reject) => {
         let searchOpts = config.phoneNumbers.options || {};
+        let numberType = 'local';
+        // if (agent._realPhoneNumberType) {
+        //   numberType = agent._realPhoneNumberType;
+        // }
         let numberCountry = config.phoneNumbers.country;
         if (agent.location && agent.location.address.country) {
           numberCountry = agent.location.address.country;
         }
-        twilioClient.availablePhoneNumbers(numberCountry).local
-        .get(searchOpts)
+        twilioClient.availablePhoneNumbers(numberCountry)[numberType].get(searchOpts)
         .then((searchResults) => {
-          debug('got search results', searchResults);
+          //debug('got search results', searchResults);
           if (searchResults.availablePhoneNumbers.length < 1) {
             return reject(new Error('No numbers found with given options'));
           }
@@ -42,7 +45,7 @@ export function register(app, config) {
             SmsUrl: smsCallBackUrl,
             FriendlyName: agent.name
           };
-          console.log('createDetails', createDetails);
+          app.log.debug('Purchasing number with details', createDetails);
           return twilioClient.incomingPhoneNumbers.create(createDetails);
         })
         .then((number) => {
@@ -56,18 +59,16 @@ export function register(app, config) {
       });
     },
     unregisterNumberForAgent: (agent) => {
-      debug('unregisterNumberForAgent', agent);
-
+      //debug('unregisterNumberForAgent', agent);
       return new Promise((resolve, reject) => {
-        twilioClient.incomingPhoneNumbers.delete({
-          PhoneNumber: agent.contactNumber
-        })
+        twilioClient.incomingPhoneNumbers(agent._contactNumberSid)
+        .delete()
         .then(() => {
           debug('removed number');
           resolve();
         })
         .catch((err) => {
-          debug('got error', err);
+          app.log.error('got error while removing number', err);
           reject(err);
         });
       });

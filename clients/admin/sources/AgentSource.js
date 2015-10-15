@@ -138,6 +138,40 @@ let AgentSource = {
       error: AgentActions.requestFailed,
       loading: AgentActions.deleteItem
     };
+  },
+  releaseNumber: function () {
+    return {
+      remote(storeState, id) {
+        debug('releaseNumber:remote', arguments, id);
+        return request.delete(`/api/agents/${id}/contactnumber`)
+          .then((response) => {
+            debug('releaseNumber:response', response);
+            if (!response.data || response.data.status !== 'ok') {
+              let err = new Error(response.data.error || 'Invalid response');
+              return Promise.reject(err);
+            }
+            return Promise.resolve(response.data.agent);
+          })
+          .catch((response) => {
+            if (response instanceof Error) {
+              return Promise.reject(response);
+            } else {
+              let msg = 'unexpected error';
+              if (response.data && response.data.error) {
+                msg = response.data.error;
+              }
+              return Promise.reject(new Error(msg));
+            }
+            return Promise.reject(response);
+          });
+      },
+      local(storeState, data) {
+        return null;
+      },
+      success: AgentActions.updateSuccess,
+      error: AgentActions.requestFailed,
+      loading: AgentActions.releaseNumber
+    };
   }
 };
 
