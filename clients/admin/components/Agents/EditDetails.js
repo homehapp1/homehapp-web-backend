@@ -12,7 +12,7 @@ import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import { randomNumericId } from '../../../common/Helpers';
+import { randomNumericId, merge } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import EditDetails from '../Shared/EditDetails';
 
@@ -86,12 +86,17 @@ export default class AgentsEditDetails extends EditDetails {
       uuid: this.props.agent.id,
       firstname: this.refs.firstname.getValue(),
       lastname: this.refs.lastname.getValue(),
-      phone: this.refs.phone.getValue(),
+      contactNumber: this.refs.contactNumber.getValue(),
+      _realPhoneNumber: this.refs.realPhoneNumber.getValue(),
       email: this.refs.email.getValue(),
       // @TODO: agency selector
       images: images
     };
     this.saveAgent(agentProps);
+  }
+
+  onReleaseNumber() {
+    debug('onReleaseNumber');
   }
 
   saveAgent(agentProps) {
@@ -112,6 +117,31 @@ export default class AgentsEditDetails extends EditDetails {
     }
     this.handleRenderState();
 
+    let agent = merge({
+    }, this.props.agent || {});
+    let location = merge({
+      address: {
+        country: 'GB'
+      }
+    }, agent.location || {});
+
+    let releaseNumberColumn = (
+      <Col xs={2}>
+        <br />
+        <Button
+          bsStyle='danger'
+          onClick={this.onReleaseNumber.bind(this)}
+        >
+          Release number
+        </Button>
+      </Col>
+    );
+    if (!agent.contactNumber) {
+      releaseNumberColumn = null;
+    }
+
+    let countrySelections = this.getCountryOptions();
+
     return (
       <Row>
         <form name='agentDetails' ref='agentDetailsForm' method='POST'>
@@ -122,7 +152,7 @@ export default class AgentsEditDetails extends EditDetails {
                 ref='firstname'
                 label='First name'
                 placeholder='First name'
-                defaultValue={this.props.agent.firstname}
+                defaultValue={agent.firstname}
                 onChange={this.onFormChange.bind(this)}
                 required
               />
@@ -131,7 +161,7 @@ export default class AgentsEditDetails extends EditDetails {
                 ref='lastname'
                 label='Last name'
                 placeholder='Last name'
-                defaultValue={this.props.agent.lastname}
+                defaultValue={agent.lastname}
                 onChange={this.onFormChange.bind(this)}
                 required
               />
@@ -140,19 +170,46 @@ export default class AgentsEditDetails extends EditDetails {
                 ref='email'
                 label='Email'
                 placeholder='firstname.lastname@company.co.uk'
-                defaultValue={this.props.agent.email}
+                defaultValue={agent.email}
                 onChange={this.onFormChange.bind(this)}
                 required
               />
               <Input
                 type='tel'
-                ref='phone'
-                label='Phone number'
+                ref='realPhoneNumber'
+                label='Real Phone number'
                 placeholder='+44 123 00 11 22'
-                defaultValue={this.props.agent.phone}
+                defaultValue={agent.realPhoneNumber}
                 onChange={this.onFormChange.bind(this)}
                 required
               />
+              <Input wrapperClassName="wrapper">
+                <Row>
+                  <Col xs={5}>
+                    <Input
+                      type='select'
+                      ref='addressCountry'
+                      label='Country'
+                      placeholder='Select Country'
+                      defaultValue={location.address.country}
+                      onChange={this.onFormChange.bind(this)}>
+                      <option value=''>Select country</option>
+                      {countrySelections}
+                    </Input>
+                  </Col>
+                  <Col xs={5}>
+                    <Input
+                      type='tel'
+                      ref='contactNumber'
+                      label='Twilio Phone number (auto-generated if empty)'
+                      placeholder='+44 123 00 11 22'
+                      defaultValue={agent.contactNumber}
+                      onChange={this.onFormChange.bind(this)}
+                    />
+                  </Col>
+                  {releaseNumberColumn}
+                </Row>
+              </Input>
             </Panel>
             <Panel header='Agency'>
               <p>TODO: add a selector for agency</p>
