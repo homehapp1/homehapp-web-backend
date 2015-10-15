@@ -5,7 +5,7 @@ import QueryBuilder from '../../../lib/QueryBuilder';
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  app.get('/api/auth/user', function(req, res, next) {
+  app.get('/api/auth/user', app.authenticatedRoute, function(req, res, next) {
     QB
     .forModel('User')
     .findById(req.user.id)

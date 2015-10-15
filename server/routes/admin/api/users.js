@@ -12,7 +12,7 @@ exports.registerRoutes = (app) => {
     updatedBy: {}
   };
 
-  app.get('/api/users', function(req, res, next) {
+  app.get('/api/users', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch users');
     debug('req.user', req.user);
 
@@ -35,7 +35,7 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  app.post('/api/users', function(req, res, next) {
+  app.post('/api/users', app.authenticatedRoute, function(req, res, next) {
     debug('API update user with uuid', req.params.uuid);
     //debug('req.body', req.body);
 
@@ -67,7 +67,7 @@ exports.registerRoutes = (app) => {
   });
 
 
-  app.get('/api/users/:uuid', function(req, res, next) {
+  app.get('/api/users/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch user with uuid', req.params.uuid);
     debug('req.query', req.query);
 
@@ -102,7 +102,7 @@ exports.registerRoutes = (app) => {
     });
   };
 
-  app.put('/api/users/:uuid', function(req, res, next) {
+  app.put('/api/users/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API update user with uuid', req.params.uuid);
     //debug('req.body', req.body);
 
@@ -137,7 +137,7 @@ exports.registerRoutes = (app) => {
   //   .catch(next);
   // });
 
-  app.delete('/api/users/:uuid', function(req, res, next) {
+  app.delete('/api/users/:uuid', app.authenticatedRoute, function(req, res, next) {
     QB
     .forModel('User')
     .findByUuid(req.params.uuid)

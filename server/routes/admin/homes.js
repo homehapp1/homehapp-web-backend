@@ -6,11 +6,11 @@ let debug = require('debug')('/homes');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  app.get('/homes', function(req, res, next) {
+  app.get('/homes', app.authenticatedRoute, function(req, res, next) {
     return next();
   });
 
-  app.get('/homes/create', function(req, res, next) {
+  app.get('/homes/create', app.authenticatedRoute, function(req, res, next) {
     return next();
   });
 
@@ -34,10 +34,10 @@ exports.registerRoutes = (app) => {
     });
   };
 
-  app.get('/homes/:slug', function(req, res, next) {
+  app.get('/homes/:slug', app.authenticatedRoute, function(req, res, next) {
     redirectBySlug(req, res, next);
   });
-  app.get('/homes/:slug/:action', function(req, res, next) {
+  app.get('/homes/:slug/:action', app.authenticatedRoute, function(req, res, next) {
     redirectBySlug(req, res, next);
   });
 
