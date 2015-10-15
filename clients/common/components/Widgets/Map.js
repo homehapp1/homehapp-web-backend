@@ -83,11 +83,15 @@ export default class Map extends React.Component {
     };
 
     this.map = new google.maps.Map(this.mapContainer.node, options);
+    this.setInitialMarkers();
+  }
+
+  setInitialMarkers() {
     this.setMarkers(this.props.markers);
   }
 
   setMarkers(markers) {
-    if (!markers.length) {
+    if (!markers || !markers.length) {
       return null;
     }
 
@@ -171,6 +175,7 @@ export default class Map extends React.Component {
   getCenter() {
     let defaultCenter = [51.5072, 0.1275];
     if (this.props.center && this.props.center[0] && this.props.center[1]) {
+      debug('Use defined center', this.props.center);
       return this.props.center;
     }
 
@@ -179,6 +184,7 @@ export default class Map extends React.Component {
 
     // Show London if nothing else is available
     if (!this.props.markers || !this.props.markers.length) {
+      debug('Use default center', defaultCenter);
       return defaultCenter;
     }
 
@@ -199,10 +205,10 @@ export default class Map extends React.Component {
     }
 
     if (!lat || !lng || !count) {
-      debug('use defaultCenter', defaultCenter, lat, lng);
+      debug('Use defaultCenter', defaultCenter, lat, lng);
       return defaultCenter;
     }
-    debug('use calculated center', lat / count, lng / count);
+    debug('Use calculated center', lat / count, lng / count);
     return [lat / count, lng / count];
   }
 

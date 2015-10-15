@@ -79,6 +79,9 @@ export default class EditDetails extends React.Component {
   }
 
   getCoordinates() {
+    if (this.state.lat && this.state.lng) {
+      return [Number(this.state.lat), Number(this.state.lng)];
+    }
     if (!this.refs.locationLatitude || !this.refs.locationLongitude) {
       return null;
     }
@@ -94,6 +97,22 @@ export default class EditDetails extends React.Component {
       Number(lat),
       Number(lng)
     ];
+  }
+
+  setCoordinates(lat, lng) {
+    debug('setCoordinates', lat, lng);
+    for (let prop of this.props) {
+      if (!prop || typeof prop.location === 'undefined' || typeof prop.location.coordinates === 'undefined') {
+        continue;
+      }
+
+      debug('set to', prop);
+      if (lat && lng) {
+        prop.location.coordinates = [lat, lng];
+      } else {
+        prop.location.coordinates = null;
+      }
+    }
   }
 
   getSlug(object) {
