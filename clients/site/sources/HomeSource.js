@@ -43,9 +43,9 @@ let HomeSource = {
           });
       },
       local(storeState, slug) {
-        if (Cache.has('homesBySlug', slug)) {
-          return Cache.get('homesBySlug', slug);
-        }
+        // if (Cache.has('homesBySlug', slug)) {
+        //   return Cache.get('homesBySlug', slug);
+        // }
         return null;
       },
       success: HomeActions.updateHome,
