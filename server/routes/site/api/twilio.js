@@ -62,6 +62,8 @@ exports.registerRoutes = (app) => {
           language: 'en-gb'
         });
       } else {
+        logCallContact(req, result.model, 'start');
+
         resp.say('Connecting you to the agent, please hold.', {
           voice: 'woman',
           language: 'en-gb'
@@ -77,7 +79,6 @@ exports.registerRoutes = (app) => {
           voice: 'woman',
           language: 'en-gb'
         });
-        logCallContact(req, result.model, 'start');
       }
 
       res.writeHead(200, {'Content-Type': 'text/xml'});
