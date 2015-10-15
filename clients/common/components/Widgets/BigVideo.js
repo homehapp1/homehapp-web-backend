@@ -1,12 +1,15 @@
 'use strict';
 
 import React from 'react';
-import { setFullHeight } from '../../Helpers';
 import classNames from 'classnames';
 import Video from './Video';
 import Separator from './Separator';
+import BigBlock from './BigBlock';
+import DOMManipulator from '../../DOMManipulator';
 
-export default class BigVideo extends React.Component {
+let debug = require('debug')('BigVideo');
+
+export default class BigVideo extends BigBlock {
   static propTypes = {
     video: React.PropTypes.object.isRequired,
     className: React.PropTypes.string,
@@ -32,8 +35,138 @@ export default class BigVideo extends React.Component {
     valign: 'middle'
   };
 
+  constructor() {
+    super();
+    this.togglePlay = this.togglePlay.bind(this);
+    this.playVideo = this.playVideo.bind(this);
+    this.pauseVideo = this.pauseVideo.bind(this);
+    this.muteVideo = this.muteVideo.bind(this);
+    this.unmuteVideo = this.unmuteVideo.bind(this);
+    this.containerTolerance = -150;
+  }
+
   componentDidMount() {
-    setFullHeight();
+    this.onMounted();
+    this.video = React.findDOMNode(this.refs.video);
+
+    // Play button
+    this.play = new DOMManipulator(this.refs.play);
+    this.play.addClass('hidden');
+    this.play.addEvent('mousedown', this.playVideo, true);
+    this.play.addEvent('touchstart', this.playVideo, true);
+
+    // Pause button
+    this.pause = new DOMManipulator(this.refs.pause);
+    this.pause.addEvent('mousedown', this.pauseVideo, true);
+    this.pause.addEvent('touchstart', this.pauseVideo, true);
+
+    // Mute button
+    this.mute = new DOMManipulator(this.refs.mute);
+    this.mute.addEvent('mousedown', this.muteVideo, true);
+    this.mute.addEvent('touchstart', this.muteVideo, true);
+
+    // Unmute button
+    this.unmute = new DOMManipulator(this.refs.unmute);
+    this.unmute.addClass('invisible');
+    this.unmute.addEvent('mousedown', this.unmuteVideo, true);
+    this.unmute.addEvent('touchstart', this.unmuteVideo, true);
+
+    // Fullscreen button
+    this.fullscreen = new DOMManipulator(this.refs.fullscreen);
+
+    this.video.onplay = () => {
+      this.play.addClass('hidden');
+      this.pause.removeClass('hidden');
+    };
+    this.video.onpause = () => {
+      this.play.removeClass('hidden');
+      this.pause.addClass('hidden');
+    };
+    this.video.onvolumechange = () => {
+      debug('onvolumechange', this.video.muted, this.video.playing);
+      if (this.video.muted) {
+        this.mute.addClass('invisible');
+        this.unmute.removeClass('invisible');
+      } else if (!this.video.paused) {
+        this.mute.removeClass('invisible');
+        this.unmute.addClass('invisible');
+      }
+    };
+
+    if (this.container) {
+      this.container.addEvent('mousedown', this.togglePlay.bind(this), false);
+    }
+    debug('Video', this.refs.video, this.video);
+  }
+
+  componentWillUnmount() {
+    this.onUnmount();
+    if (this.container) {
+      this.container.removeEvent('mousedown', this.togglePlay.bind(this), false);
+    }
+  }
+
+  onDisplayContainer() {
+    if (!this.video) {
+      return null;
+    }
+    debug('Video playing');
+    this.video.muted = true;
+    this.video.play();
+  }
+
+  onHideContainer() {
+    if (!this.video) {
+      return null;
+    }
+    debug('Video paused');
+    this.video.pause();
+  }
+
+  togglePlay(event) {
+    debug('togglePlay', event);
+    if (event.target.parentNode.className.match(/controls/)) {
+      return true;
+    }
+    event.preventDefault();
+    if (!this.video) {
+      return null;
+    }
+    if (this.video.paused) {
+      this.video.play();
+    } else {
+      this.video.pause();
+    }
+  }
+
+  playVideo(event) {
+    debug('playVideo');
+    event.stopPropagation();
+    event.preventDefault();
+    this.video.muted = false;
+    this.video.play();
+  }
+
+  pauseVideo(event) {
+    debug('pauseVideo');
+    event.stopPropagation();
+    event.preventDefault();
+    this.video.muted = true;
+    this.video.pause();
+  }
+
+  muteVideo(event) {
+    debug('muteVideo');
+    event.stopPropagation();
+    event.preventDefault();
+    this.video.muted = true;
+  }
+
+  unmuteVideo(event) {
+    debug('unmuteVideo');
+    event.stopPropagation();
+    event.preventDefault();
+    this.video.muted = false;
   }
 
   render() {
@@ -59,7 +192,6 @@ export default class BigVideo extends React.Component {
 
     let video = {
       src: this.props.video.url,
-      autoPlay: true,
       loop: true,
       controls: false,
       mode: 'html5',
@@ -86,14 +218,21 @@ export default class BigVideo extends React.Component {
     }
 
     return (
-      <div className='bigvideo-wrapper'>
+      <div className='bigvideo-wrapper' ref='container'>
         <div {...props}>
           <div className='image-content'>
-            <Video {...video} className='big-video' />
+            <Video {...video} className='big-video' ref='video' />
           </div>
           {author}
           <div className='image-text full-height' {...textProps}>
             {this.props.children}
+          </div>
+          <div className='controls'>
+            <i className='fa fa-volume-up mute hidden' ref='mute'></i>
+            <i className='fa fa-volume-off unmute' ref='unmute'></i>
+            <i className='fa fa-play play' ref='play'></i>
+            <i className='fa fa-pause pause' ref='pause'></i>
+            <i className='fa fa-arrows-alt fullscreen' ref='fullscreen'></i>
           </div>
         </div>
         <Separator type='white' />
