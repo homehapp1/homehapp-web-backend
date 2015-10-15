@@ -5,6 +5,19 @@ let debug = require('debug')('/');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
+  // Remove the trailing slash as React
+  app.get('*/', function(req, res, next) {
+    debug('GET *', req.url);
+    if (!req.url.match(/^\/($|\?)/) && req.url.match(/\/($|\?)/)) {
+      let url = req.url.replace(/\/($|\?)/, '$1');
+      res.writeHead(301, {
+        Location: url
+      });
+      res.end();
+    }
+    next();
+  });
+
   app.get('/', function(req, res, next) {
     debug('GET /');
     QB
@@ -63,5 +76,4 @@ exports.registerRoutes = (app) => {
     };
     next();
   });
-
 };
