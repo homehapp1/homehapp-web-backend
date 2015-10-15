@@ -499,7 +499,7 @@ exports.run = function(projectName, afterRun) {
       debug('Application initialization flow done!');
 
       app.log.info(`Current project revision: ${PROJECT_REVISION}`);
-      app.log.debug('Using configuration', app.config);
+      //app.log.debug('Using configuration', app.config);
 
       if (app.config.env !== 'test') {
         app.server.listen(app.config.port, function() {
