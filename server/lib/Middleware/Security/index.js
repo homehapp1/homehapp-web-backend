@@ -12,7 +12,22 @@ exports.configure = function(app, config) {
         });
         app.use(require('cookie-parser')());
       }
-      app.use(csrfProtection);
+      if (config.csrfSkipRoutes && config.csrfSkipRoutes.length) {
+        app.use((req, res, next) => {
+          let matched = false;
+          config.csrfSkipRoutes.forEach((skipPath) => {
+            if (req.path.match(skipPath)) {
+              matched = true;
+            }
+          });
+          if (matched) {
+            return next();
+          }
+          csrfProtection(req, res, next);
+        });
+      } else {
+        app.use(csrfProtection);
+      }
     }
 
     if (config.xframe && config.xframe.length) {
