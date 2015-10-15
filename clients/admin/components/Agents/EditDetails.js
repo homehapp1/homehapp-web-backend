@@ -89,6 +89,11 @@ export default class AgentsEditDetails extends EditDetails {
       contactNumber: this.refs.contactNumber.getValue(),
       _realPhoneNumber: this.refs.realPhoneNumber.getValue(),
       email: this.refs.email.getValue(),
+      location: {
+        address: {
+          country: this.refs.addressCountry.getValue()
+        }
+      },
       // @TODO: agency selector
       images: images
     };
