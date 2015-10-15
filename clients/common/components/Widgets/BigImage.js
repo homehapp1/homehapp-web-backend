@@ -1,11 +1,12 @@
 'use strict';
 
 import React from 'react';
-import { setFullHeight, merge } from '../../Helpers';
+import { merge } from '../../Helpers';
 import classNames from 'classnames';
 import Image from './Image';
+import BigBlock from './BigBlock';
 
-export default class BigImage extends React.Component {
+export default class BigImage extends BigBlock {
   static propTypes = {
     image: React.PropTypes.object.isRequired,
     fixed: React.PropTypes.bool,
@@ -22,10 +23,6 @@ export default class BigImage extends React.Component {
     align: 'center',
     valign: 'middle'
   };
-
-  componentDidMount() {
-    setFullHeight();
-  }
 
   render() {
     let classes = [
@@ -62,7 +59,7 @@ export default class BigImage extends React.Component {
 
     return (
       <div {...props}>
-        <div className='image-content' ref='images'>
+        <div className='image-content' ref='container'>
           <Image {...image} className='show-for-large' width={1920} height={800} />
           <Image {...image} className='show-for-medium' width={1000} height={800} />
           <Image {...image} className='show-for-small' width={600} height={600} />

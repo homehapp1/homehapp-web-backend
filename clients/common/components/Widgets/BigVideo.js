@@ -1,12 +1,14 @@
 'use strict';
 
 import React from 'react';
-import { setFullHeight } from '../../Helpers';
 import classNames from 'classnames';
 import Video from './Video';
 import Separator from './Separator';
+import BigBlock from './BigBlock';
 
-export default class BigVideo extends React.Component {
+let debug = require('debug')('BigVideo');
+
+export default class BigVideo extends BigBlock {
   static propTypes = {
     video: React.PropTypes.object.isRequired,
     className: React.PropTypes.string,
@@ -32,8 +34,37 @@ export default class BigVideo extends React.Component {
     valign: 'middle'
   };
 
+  constructor() {
+    super();
+    this.togglePlay = this.togglePlay.bind(this);
+  }
+
   componentDidMount() {
-    setFullHeight();
+    this.onMounted();
+    this.video = React.findDOMNode(this.refs.video);
+    if (this.container) {
+      this.container.addEvent('mousedown', this.togglePlay.bind(this), true);
+    }
+    debug('Video', this.refs.video, this.video);
+  }
+
+  componentWillUnmount() {
+    this.onUnmount();
+    if (this.container) {
+      this.container.removeEvent('mousedown', this.togglePlay.bind(this), true);
+    }
+  }
+
+  togglePlay(event) {
+    event.preventDefault();
+    if (!this.video) {
+      return null;
+    }
+    if (this.video.paused) {
+      this.video.play();
+    } else {
+      this.video.pause();
+    }
   }
 
   render() {
@@ -59,7 +90,6 @@ export default class BigVideo extends React.Component {
 
     let video = {
       src: this.props.video.url,
-      autoPlay: true,
       loop: true,
       controls: false,
       mode: 'html5',
@@ -86,10 +116,10 @@ export default class BigVideo extends React.Component {
     }
 
     return (
-      <div className='bigvideo-wrapper'>
+      <div className='bigvideo-wrapper' ref='container'>
         <div {...props}>
           <div className='image-content'>
-            <Video {...video} className='big-video' />
+            <Video {...video} className='big-video' ref='video' />
           </div>
           {author}
           <div className='image-text full-height' {...textProps}>
