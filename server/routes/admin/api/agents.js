@@ -7,6 +7,21 @@ let debug = require('debug')('/api/agents');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
+  let updateAgent = function updateAgent(uuid, data) {
+    debug('Data', data);
+
+    return QB
+    .forModel('Agent')
+    .findByUuid(uuid)
+    .updateNoMultiset(data);
+  };
+
+  let prepareAgentModelForReturn = function prepareAgentModelForReturn(model) {
+    let agent = model.toJSON();
+    agent.realPhoneNumber = model._realPhoneNumber;
+    return agent;
+  };
+
   app.get('/api/agents', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch agents');
     debug('req.query', req.query);
@@ -17,9 +32,12 @@ exports.registerRoutes = (app) => {
     .findAll()
     .fetch()
     .then((result) => {
+      let agents = result.models.map((model) => {
+        return prepareAgentModelForReturn(model);
+      });
       res.json({
         status: 'ok',
-        agents: result.models
+        agents: agents
       });
     })
     .catch(next);
@@ -46,6 +64,7 @@ exports.registerRoutes = (app) => {
     //debug('req.body', req.body);
 
     let data = req.body.agent;
+
     try {
       validateInput(data);
     } catch (error) {
@@ -57,10 +76,26 @@ exports.registerRoutes = (app) => {
     .forModel('Agent')
     .createNoMultiset(data)
     .then((model) => {
-      res.json({
-        status: 'ok',
-        agent: model
-      });
+      if (model._realPhoneNumber && !model.contactNumber) {
+        app.twilio.registerNumberForAgent(model)
+        .then((results) => {
+          let updateData = {
+            contactNumber: results.phoneNumber
+          };
+          updateAgent(model.uuid, updateData)
+          .then((updModel) => {
+            res.json({
+              status: 'ok', agent: prepareAgentModelForReturn(updModel)
+            });
+          })
+          .catch(next);
+        })
+        .catch(next);
+      } else {
+        res.json({
+          status: 'ok', agent: model
+        });
+      }
     })
     .catch((error) => {
       debug('Create failed', error);
@@ -90,25 +125,16 @@ exports.registerRoutes = (app) => {
     .fetch()
     .then((result) => {
       res.json({
-        status: 'ok', agent: result.agent
+        status: 'ok', agent: prepareAgentModelForReturn(result.model)
       });
     })
     .catch(next);
 
   });
 
-  let updateAgent = function updateAgent(uuid, data) {
-    debug('Data', data);
-
-    return QB
-    .forModel('Agent')
-    .findByUuid(uuid)
-    .updateNoMultiset(data);
-  };
-
   app.put('/api/agents/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API update agent with uuid', req.params.uuid);
-    //debug('req.body', req.body);
+    debug('req.body', req.body);
 
     let data = req.body.agent;
 
@@ -120,9 +146,26 @@ exports.registerRoutes = (app) => {
 
     updateAgent(req.params.uuid, data)
     .then((model) => {
-      res.json({
-        status: 'ok', agent: model
-      });
+      if (model._realPhoneNumber && !model.contactNumber) {
+        app.twilio.registerNumberForAgent(model)
+        .then((results) => {
+          let updateData = {
+            contactNumber: results.phoneNumber
+          };
+          updateAgent(model.uuid, updateData)
+          .then((updModel) => {
+            res.json({
+              status: 'ok', agent: prepareAgentModelForReturn(updModel)
+            });
+          })
+          .catch(next);
+        })
+        .catch(next);
+      } else {
+        res.json({
+          status: 'ok', agent: model
+        });
+      }
     })
     .catch(next);
   });
@@ -148,8 +191,7 @@ exports.registerRoutes = (app) => {
     .remove()
     .then((result) => {
       res.json({
-        status: 'deleted',
-        agent: result.model
+        status: 'ok'
       });
     })
     .catch(next);
