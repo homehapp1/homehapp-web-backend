@@ -16,7 +16,7 @@ exports.registerRoutes = (app) => {
     updatedBy: {}
   };
 
-  app.get('/api/homes', function(req, res, next) {
+  app.get('/api/homes', app.authenticatedRoute, function(req, res, next) {
     QB
     .forModel('Home')
     .parseRequestArguments(req)
@@ -34,7 +34,7 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  app.post('/api/homes', function(req, res, next) {
+  app.post('/api/homes', app.authenticatedRoute, function(req, res, next) {
     debug('API update home with uuid', req.params.uuid);
     //debug('req.body', req.body);
 
@@ -85,7 +85,7 @@ exports.registerRoutes = (app) => {
   });
 
 
-  app.get('/api/homes/:uuid', function(req, res, next) {
+  app.get('/api/homes/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch home with uuid', req.params.uuid);
     QB
     .forModel('Home')
@@ -189,7 +189,7 @@ exports.registerRoutes = (app) => {
     .updateNoMultiset(data);
   };
 
-  app.put('/api/homes/:uuid', function(req, res, next) {
+  app.put('/api/homes/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API update home with uuid', req.params.uuid);
     //debug('req.body', req.body);
 
@@ -224,7 +224,7 @@ exports.registerRoutes = (app) => {
   //   .catch(next);
   // });
 
-  app.delete('/api/homes/:uuid', function(req, res, next) {
+  app.delete('/api/homes/:uuid', app.authenticatedRoute, function(req, res, next) {
     QB
     .forModel('Home')
     .findByUuid(req.params.uuid)

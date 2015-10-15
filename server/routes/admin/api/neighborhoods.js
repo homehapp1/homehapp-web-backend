@@ -7,7 +7,7 @@ let debug = require('debug')('/api/neighborhoods');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  app.get('/api/neighborhoods', function(req, res, next) {
+  app.get('/api/neighborhoods', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch neighborhoods');
     debug('req.query', req.query);
     let neighborhoods = [];
@@ -59,7 +59,7 @@ exports.registerRoutes = (app) => {
 
   });
 
-  app.get('/api/neighborhoods/:uuid', function(req, res, next) {
+  app.get('/api/neighborhoods/:uuid', app.authenticatedRoute, function(req, res, next) {
     console.log('API fetch neighborhood with uuid', req.params.uuid);
     console.log('req.query', req.query);
 
@@ -77,7 +77,7 @@ exports.registerRoutes = (app) => {
 
   });
 
-  app.put('/api/neighborhoods/:uuid', function(req, res, next) {
+  app.put('/api/neighborhoods/:uuid', app.authenticatedRoute, function(req, res, next) {
     console.log('API update neighborhood with uuid', req.params.uuid);
     //console.log('req.body', req.body);
 

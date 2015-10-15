@@ -7,7 +7,7 @@ let debug = require('debug')('/api/agents');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  app.get('/api/agents', function(req, res, next) {
+  app.get('/api/agents', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch agents');
     debug('req.query', req.query);
 
@@ -41,7 +41,7 @@ exports.registerRoutes = (app) => {
     return true;
   };
 
-  app.post('/api/agents', function(req, res, next) {
+  app.post('/api/agents', app.authenticatedRoute, function(req, res, next) {
     debug('API update agent with uuid', req.params.uuid);
     //debug('req.body', req.body);
 
@@ -69,7 +69,7 @@ exports.registerRoutes = (app) => {
   });
 
 
-  app.get('/api/agents/:uuid', function(req, res, next) {
+  app.get('/api/agents/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch agent with uuid', req.params.uuid);
     debug('req.query', req.query);
 
@@ -106,7 +106,7 @@ exports.registerRoutes = (app) => {
     .updateNoMultiset(data);
   };
 
-  app.put('/api/agents/:uuid', function(req, res, next) {
+  app.put('/api/agents/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API update agent with uuid', req.params.uuid);
     //debug('req.body', req.body);
 
@@ -127,7 +127,7 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  // app.patch('/api/agents/:uuid', function(req, res, next) {
+  // app.patch('/api/agents/:uuid', app.authenticatedRoute, function(req, res, next) {
   //   debug('API update agent with uuid', req.params.uuid);
   //   //debug('req.body', req.body);
   //
@@ -141,7 +141,7 @@ exports.registerRoutes = (app) => {
   //   })
   //   .catch(next);
   // });
-  app.delete('/api/agents/:uuid', function(req, res, next) {
+  app.delete('/api/agents/:uuid', app.authenticatedRoute, function(req, res, next) {
     QB
     .forModel('Agent')
     .findByUuid(req.params.uuid)

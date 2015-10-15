@@ -12,7 +12,7 @@ exports.registerRoutes = (app) => {
     }
   };
 
-  app.get('/api/contacts', function(req, res, next) {
+  app.get('/api/contacts', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch contacts');
     debug('req.query', req.query);
 
@@ -49,7 +49,7 @@ exports.registerRoutes = (app) => {
     }
   };
 
-  app.post('/api/contacts', function(req, res, next) {
+  app.post('/api/contacts', app.authenticatedRoute, function(req, res, next) {
     debug('API update contact with uuid', req.params.uuid);
     //debug('req.body', req.body);
 
@@ -77,7 +77,7 @@ exports.registerRoutes = (app) => {
   });
 
 
-  app.get('/api/contacts/:uuid', function(req, res, next) {
+  app.get('/api/contacts/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch contact with uuid', req.params.uuid);
     debug('req.query', req.query);
 
@@ -115,7 +115,7 @@ exports.registerRoutes = (app) => {
     .updateNoMultiset(data);
   };
 
-  app.put('/api/contacts/:uuid', function(req, res, next) {
+  app.put('/api/contacts/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API update contact with uuid', req.params.uuid);
     //debug('req.body', req.body);
 
@@ -136,7 +136,7 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  // app.patch('/api/contacts/:uuid', function(req, res, next) {
+  // app.patch('/api/contacts/:uuid', app.authenticatedRoute, function(req, res, next) {
   //   debug('API update contact with uuid', req.params.uuid);
   //   //debug('req.body', req.body);
   //
@@ -150,7 +150,7 @@ exports.registerRoutes = (app) => {
   //   })
   //   .catch(next);
   // });
-  app.delete('/api/contacts/:uuid', function(req, res, next) {
+  app.delete('/api/contacts/:uuid', app.authenticatedRoute, function(req, res, next) {
     QB
     .forModel('Contact')
     .findByUuid(req.params.uuid)
