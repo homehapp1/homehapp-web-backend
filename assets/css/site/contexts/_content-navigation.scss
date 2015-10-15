@@ -20,6 +20,34 @@
       a {
         color: white;
         text-shadow: $textShadow;
+
+        &.active {
+          color: $turquoise;
+          text-shadow: $textShadowWhite;
+        }
+      }
+    }
+
+    &.init {
+      $max: 6;
+      $duration: $transitionDurationSlow;
+      $w: 26px;
+
+      li {
+        display: block;
+        position: absolute;
+        text-align: center;
+        right: -1 * $navigationIconSize;
+        @include vendors(transition-duration, $duration);
+        @include vendors(transition-property, all);
+      }
+
+      &.animate {
+         @for $i from 0 through $max {
+           li[data-index="#{$i}"] {
+             right: $i * ($w + 10px);
+           }
+         }
       }
     }
   }

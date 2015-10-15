@@ -1,0 +1,39 @@
+#agentSelector {
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      width: 140px;
+      height: 150px;
+      display: block;
+      float: left;
+      margin: 10px;
+      border: solid 1px black;
+      padding: 10px;
+      text-align: center;
+      opacity: 0.5;
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, $transitionDuration);
+
+      &, * {
+        cursor: pointer;
+      }
+
+      input[type="checkbox"] {
+        position: absolute;
+        z-index: -1;
+        opacity: 0.01;
+        visibility: hidden;
+      }
+
+      &.selected, &:hover {
+        opacity: 1;
+      }
+
+      &.selected {
+        background-color: #dff0d8;
+      }
+    }
+  }
+}

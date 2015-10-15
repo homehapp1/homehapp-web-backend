@@ -12,6 +12,7 @@ import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
 import EditStory from './EditStory';
 import EditModel from '../Shared/EditModel';
+import ChooseAgents from './ChooseAgents';
 import ViewMetadata from '../Shared/ViewMetadata';
 
 // let debug = require('debug')('HomesEdit');
@@ -27,6 +28,7 @@ export default class HomesEdit extends EditModel {
 
   constructor(props) {
     super(props);
+    this.tabs.agents = 4;
   }
 
   render() {
@@ -50,6 +52,9 @@ export default class HomesEdit extends EditModel {
             </TabPane>
             <TabPane eventKey={3} tab='Metadata'>
               <ViewMetadata object={this.props.home} />
+            </TabPane>
+            <TabPane eventKey={4} tab='Agents'>
+              <ChooseAgents home={this.props.home} />
             </TabPane>
           </TabbedArea>
         </Row>

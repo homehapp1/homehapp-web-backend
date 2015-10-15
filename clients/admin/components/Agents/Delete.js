@@ -6,7 +6,6 @@ import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-// import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import Nav from 'react-bootstrap/lib/Nav';
@@ -14,10 +13,8 @@ import TabbedArea from 'react-bootstrap/lib/TabbedArea';
 import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
-// import EditDetails from './EditDetails';
 import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
-// import AgentListActions from '../../actions/AgentListActions';
 import { createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('AgentsDelete');
@@ -51,7 +48,7 @@ export default class AgentsDelete extends React.Component {
 
   onAgentStoreChange(state) {
     debug('onAgentStoreChange', state);
-    if (!state.error && state.deleted) {
+    if (!state.error && !state.agent) {
       debug('Redirect to agent listing');
       let href = this.context.router.makeHref('agents');
       window.location.href = href;
@@ -67,13 +64,14 @@ export default class AgentsDelete extends React.Component {
 
   handlePendingState() {
     createNotification({
-      message: 'Deleting the agent...'
+      message: 'Deleting agent...'
     });
+    return null;
   }
 
   handleErrorState() {
     createNotification({
-      label: 'Error deleting the agent',
+      label: 'Error deleting agent',
       message: this.state.error.message
     });
   }
@@ -96,16 +94,14 @@ export default class AgentsDelete extends React.Component {
           </NavItemLink>
         </Nav>
         <Row>
-          <h1><i className='fa fa-user'></i> Delete {this.props.agent.rname}</h1>
+          <h1><i className='fa fa-agent'></i> Delete agent {this.props.agent.name}</h1>
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Delete'>
               <Row>
-                {error}
-                {savingLoader}
                 <form name='agentDetails' ref='agentDetailsForm' method='POST'>
                   <Col md={10} sm={10}>
                     <Panel header='Common'>
-                      Please confirm the deletion of this agent
+                      Are you sure the agent {this.props.agent.name} will not be missed? Please confirm the deletion!
                     </Panel>
                     <Well>
                       <Row>

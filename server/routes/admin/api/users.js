@@ -13,9 +13,6 @@ exports.registerRoutes = (app) => {
   };
 
   app.get('/api/users', app.authenticatedRoute, function(req, res, next) {
-    debug('API fetch users');
-    debug('req.user', req.user);
-
     QB
     .forModel('User')
     .parseRequestArguments(req)

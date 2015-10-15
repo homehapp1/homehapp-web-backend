@@ -43,6 +43,12 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: ''
     },
+    details: {
+      area: {
+        type: Number,
+        default: null
+      }
+    },
     location: {
       address: {
         street: {

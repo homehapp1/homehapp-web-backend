@@ -3,16 +3,16 @@
 import request from '../../common/request';
 import NeighborhoodListActions from '../actions/NeighborhoodListActions';
 
-let debug = require('../../common/debugger')('NeighborhoodListSource');
+// let debug = require('../../common/debugger')('NeighborhoodListSource');
 
 let NeighborhoodListSource = {
   fetchNeighborhoods: () => {
     return {
       remote(/*storeState*/) {
-        debug('fetchNeighborhoods:remote', arguments);
+        // debug('fetchNeighborhoods:remote', arguments);
         return request.get(`/api/neighborhoods`)
           .then((response) => {
-            debug('got response', response);
+            // debug('got response', response);
             if (!response.data || !response.data.neighborhoods) {
               let err = new Error('Invalid response');
               return Promise.reject(err);

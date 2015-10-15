@@ -24,7 +24,8 @@ class AgentListStore {
     this.error = null;
 
     this.exportPublicMethods({
-      getAgent: this.getAgent
+      getAgent: this.getAgent,
+      getAgents: this.getAgents
     });
 
     this.exportAsync(AgentListSource);
@@ -43,6 +44,11 @@ class AgentListStore {
     }
     debug('No matching id found in agents');
     this.error = 'No matching id found in agents';
+  }
+
+  getAgents() {
+    debug('getAgents', this.getState().agents);
+    return this.getState().agents;
   }
 
   handleUpdateAgents(agents) {

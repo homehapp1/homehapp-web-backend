@@ -19,9 +19,10 @@ let AgentSource = {
             delete data[key];
           }
         }
+        debug('Sanitized model', data);
         return request.post(`/api/agents`, postData)
           .then((response) => {
-            debug('got response', response);
+            debug('Got response', response);
             if (!response.data || response.data.status !== 'ok') {
               let err = new Error(response.data.error || 'Invalid response');
               return Promise.reject(err);

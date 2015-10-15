@@ -17,6 +17,7 @@ import ImageList from '../Widgets/ImageList';
 import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 import EditDetails from '../Shared/EditDetails';
+import PlacePicker from '../../../common/components/Widgets/PlacePicker';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
 
@@ -36,8 +37,11 @@ export default class HomesEditDetails extends EditDetails {
     this.uploadListener = this.onUploadChange.bind(this);
     this.imageUploaderInstanceId = randomNumericId();
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
+    this.setCoordinates = this.setCoordinates.bind(this);
 
     if (props.home) {
+      this.setInitialLocation(props.home.location);
+
       this.state.currentAttributes = props.home.attributes || [
         {
           name: '', value: '', valueType: 'string'
@@ -45,15 +49,14 @@ export default class HomesEditDetails extends EditDetails {
       ];
       this.state.images = props.home.images || [];
     }
-
-    debug('Constructor', this);
   }
 
   state = {
     error: null,
     uploads: UploadAreaUtils.UploadStore.getState().uploads,
     currentAttributes: [],
-    images: []
+    images: [],
+    coordinates: []
   }
 
   componentDidMount() {
@@ -130,13 +133,8 @@ export default class HomesEditDetails extends EditDetails {
       },
       costs: {
         currency: this.refs.costsCurrency.getValue(),
-        deptFreePrice: this.refs.costsDeptFreePrice.getValue(),
         sellingPrice: this.refs.costsSellingPrice.getValue(),
-        squarePrice: this.refs.costsSquarePrice.getValue(),
-        realEstateTaxPerYear: this.refs.costsReTaxPerYear.getValue(),
-        electricChargePerMonth: this.refs.costsEcPerMonth.getValue(),
-        waterChargePerMonth: this.refs.costsWcPerMonth.getValue(),
-        waterChargePerType: this.refs.costsWcPerType.getValue()
+        councilTax: this.refs.costsCouncilTax.getValue()
       },
       amenities: this.refs.amenities.getValue().split('\n'),
       facilities: this.refs.facilities.getValue().split('\n'),
@@ -263,7 +261,12 @@ export default class HomesEditDetails extends EditDetails {
     }
     this.handleRenderState();
     let home = merge({
-      costs: {},
+      costs: {
+        currency: 'GBP'
+      },
+      details: {
+        area: null
+      },
       amenities: [],
       facilities: []
     }, this.props.home || {});
@@ -275,17 +278,15 @@ export default class HomesEditDetails extends EditDetails {
         city: null,
         country: 'GB'
       },
-      coordinates: [],
+      coordinates: [this.state.lat, this.state.lng],
       neighborhood: null
     }, home.location || {});
 
     let countrySelections = this.getCountryOptions();
 
-    let lat, lon = '';
-    if (home && homeLocation.coordinates.length) {
-      lat = homeLocation.coordinates[0];
-      lon = homeLocation.coordinates[1];
-    }
+    let lat = this.state.lat || 0;
+    let lng = this.state.lng || 0;
+    debug('lat', lat, 'lng', lng);
 
     let deleteLink = null;
     let previewLink = null;
@@ -385,6 +386,8 @@ export default class HomesEditDetails extends EditDetails {
                 {countrySelections}
               </Input>
 
+              <PlacePicker lat={this.state.lat} lng={this.state.lng} onChange={this.setCoordinates} />
+
               <Input
                 label='Coordinates'
                 help='Optional coordinates for the home' wrapperClassName='wrapper'>
@@ -394,7 +397,7 @@ export default class HomesEditDetails extends EditDetails {
                       type='text'
                       ref='locationLatitude'
                       addonBefore='Latitude:'
-                      defaultValue={lat}
+                      value={this.state.lat}
                     />
                   </Col>
                   <Col xs={6}>
@@ -402,11 +405,21 @@ export default class HomesEditDetails extends EditDetails {
                       type='text'
                       ref='locationLongitude'
                       addonBefore='Longitude:'
-                      defaultValue={lon}
+                      value={this.state.lng}
                     />
                   </Col>
                 </Row>
               </Input>
+            </Panel>
+            <Panel header='General specifications'>
+              <Input
+                type='number'
+                ref='detailsArea'
+                label='Living area (square feet)'
+                placeholder='1000'
+                defaultValue={home.details.area}
+                onChange={this.onFormChange.bind(this)}
+              />
             </Panel>
             <Panel header='Pricing information'>
               <Input
@@ -422,14 +435,6 @@ export default class HomesEditDetails extends EditDetails {
               </Input>
               <Input
                 type='text'
-                ref='costsDeptFreePrice'
-                label='Dept free selling price'
-                placeholder='(optional)'
-                defaultValue={home.costs.deptFreePrice}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
                 ref='costsSellingPrice'
                 label='Selling price'
                 placeholder='(optional)'
@@ -438,46 +443,12 @@ export default class HomesEditDetails extends EditDetails {
               />
               <Input
                 type='text'
-                ref='costsSquarePrice'
-                label='Price per square foot'
+                ref='costsCouncilTax'
+                label='Council tax'
                 placeholder='(optional)'
-                defaultValue={home.costs.squarePrice}
+                defaultValue={home.costs.councilTax}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
-                type='text'
-                ref='costsReTaxPerYear'
-                label='Council tax (per year)'
-                placeholder='(optional)'
-                defaultValue={home.costs.realEstateTaxPerYear}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsEcPerMonth'
-                label='Charge on electicity (per month)'
-                placeholder='(optional)'
-                defaultValue={home.costs.electricChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='text'
-                ref='costsWcPerMonth'
-                label='Water charge (per month)'
-                placeholder='(optional)'
-                defaultValue={home.costs.waterChargePerMonth}
-                onChange={this.onFormChange.bind(this)}
-              />
-              <Input
-                type='select'
-                ref='costsWcPerType'
-                label='Water charge type'
-                placeholder='Water charge type'
-                defaultValue={home.costs.waterChargePerType}
-                onChange={this.onFormChange.bind(this)}>
-                <option value='person'>Per Person</option>
-                <option value='household'>Per Household</option>
-              </Input>
             </Panel>
             <Panel header='Amenities'>
               <Input

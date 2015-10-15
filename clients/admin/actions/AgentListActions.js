@@ -10,6 +10,7 @@ class AgentListActions {
     this.dispatch(agents);
   }
   fetchAgents(skipCache) {
+    skipCache = true;
     debug('fetchAgents', skipCache);
     this.dispatch(skipCache);
   }

@@ -9,7 +9,8 @@ const countries = require('../../../common/lib/Countries').forSelect();
 
 export default class EditDetails extends React.Component {
   state = {
-    images: []
+    images: [],
+    coordinates: []
   }
 
   constructor(props) {
@@ -79,6 +80,9 @@ export default class EditDetails extends React.Component {
   }
 
   getCoordinates() {
+    if (this.state.lat && this.state.lng) {
+      return [Number(this.state.lat), Number(this.state.lng)];
+    }
     if (!this.refs.locationLatitude || !this.refs.locationLongitude) {
       return null;
     }
@@ -94,6 +98,22 @@ export default class EditDetails extends React.Component {
       Number(lat),
       Number(lng)
     ];
+  }
+
+  setCoordinates(lat, lng) {
+    debug('setCoordinates', lat, lng);
+    for (let prop of this.props) {
+      if (!prop || typeof prop.location === 'undefined' || typeof prop.location.coordinates === 'undefined') {
+        continue;
+      }
+
+      debug('set to', prop);
+      if (lat && lng) {
+        prop.location.coordinates = [lat, lng];
+      } else {
+        prop.location.coordinates = null;
+      }
+    }
   }
 
   getSlug(object) {
@@ -126,6 +146,28 @@ export default class EditDetails extends React.Component {
         </option>
       );
     });
+  }
+
+  setCoordinates(lat, lng) {
+    debug('Callback:setCoordinates', lat, lng);
+    this.setState({
+      lat: lat,
+      lng: lng
+    });
+  }
+
+  setInitialLocation(location) {
+    if (!location) {
+      return debug('No location provided for the model');
+    }
+    if (!location.coordinates) {
+      return debug('No coordinates were found from the location', location);
+    }
+    if (location.coordinates.length < 2) {
+      return debug('Coordinate system failed the sanity check for location', location);
+    }
+    this.state.lat = location.coordinates[0];
+    this.state.lng = location.coordinates[1];
   }
 
   handlePendingState() {

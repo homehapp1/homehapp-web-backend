@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import ContentNavigation from '../Header/ContentNavigation';
 import HomeContact from './HomeContact';
 import Modal from '../../../common/components/Widgets/Modal';
+import DOMManipulator from '../../../common/DOMManipulator';
 
 export default class HomeNavigation extends React.Component {
   static propTypes = {
@@ -30,6 +31,17 @@ export default class HomeNavigation extends React.Component {
     tw.href = this.twitterShareUrl();
 
     em.addEventListener('click', this.displayForm, true);
+
+    let navi = new DOMManipulator(this.refs.navi);
+    navi.addClass('init');
+    let items = navi.getByTagName('li');
+    for (let i = 0; i < items.length; i++) {
+      items[i].attr('data-index', items.length - i - 1);
+    }
+
+    setTimeout(function() {
+      navi.addClass('animate');
+    });
   }
 
   createModal() {
@@ -66,9 +78,23 @@ export default class HomeNavigation extends React.Component {
       console.info('Implement phone calling');
     };
 
+    let story = null;
+
+    if (this.props.home.story.enabled) {
+      story = (
+        <li>
+          <Link to='homeStory' params={{slug: this.props.home.slug}}><i className='fa fa-home'></i></Link>
+        </li>
+      );
+    }
+
     return (
       <ContentNavigation>
-        <ul>
+        <ul ref='navi'>
+          {story}
+          <li>
+            <Link to='homeDetails' params={{slug: this.props.home.slug}}><i className='fa fa-info-circle'></i></Link>
+          </li>
           <li>
             <a href='#' onClick={todo}><i className='fa fa-phone'></i></a>
           </li>
