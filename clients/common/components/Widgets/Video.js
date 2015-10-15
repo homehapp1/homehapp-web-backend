@@ -105,7 +105,7 @@ export default class Video extends React.Component {
     if (this.props.mode === 'html5') {
       let regexp = new RegExp(`\.(mov|avi|mpe?g|${this.props.formats.join('|')})$`, 'i');
       let baseUrl = this.props.src.replace(regexp, '');
-      let poster = this.props.poster || `${baseUrl}.jpg`;
+      let poster = this.props.poster || `${baseUrl}.png`;
 
       let video = {
         poster: poster,
