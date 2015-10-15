@@ -10,6 +10,7 @@ export default class BigBlock extends React.Component {
   constructor() {
     super();
     this.onScroll = this.onScroll.bind(this);
+    this.containerTolerance = 0;
   }
 
   componentDidMount() {
@@ -44,20 +45,18 @@ export default class BigBlock extends React.Component {
   }
 
   onScroll() {
-    debug('Scrolling', this.container);
     if (!this.container) {
-      debug('No container :(');
       return;
     }
-    if (this.container.visible()) {
-      debug(this.container, 'is visible');
+    if (this.container.visible(this.containerTolerance)) {
       if (this.container.attr('data-viewport') !== 'visible') {
+        debug('Reveal container');
         this.container.attr('data-viewport', 'visible');
         this.onDisplayContainer();
       }
     } else {
-      debug(this.container, 'is NOT visible');
       if (this.container.attr('data-viewport') !== 'outside') {
+        debug('Hide container');
         this.container.attr('data-viewport', 'outside');
         this.onHideContainer();
       }

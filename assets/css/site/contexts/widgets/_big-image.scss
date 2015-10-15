@@ -157,13 +157,12 @@
       cursor: pointer;
       @include vendors(transition-property, color);
       @include vendors(transition-duration, $transitionDuration);
+      width: 1em;
+      overflow: hidden;
+      margin: 0 0.2em;
 
       &:hover {
         color: $turquoise;
-      }
-      
-      & + * {
-        margin-left: 0.5em;
       }
     }
   }
