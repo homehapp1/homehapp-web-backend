@@ -25,7 +25,7 @@ export function register(app, config) {
         if (agent.location && agent.location.address.country) {
           numberCountry = agent.location.address.country;
         }
-        twilioClient.availablePhoneNumbers(numberCountry).mobile
+        twilioClient.availablePhoneNumbers(numberCountry).local
         .get(searchOpts)
         .then((searchResults) => {
           debug('got search results', searchResults);
