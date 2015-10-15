@@ -179,6 +179,10 @@ export default class Map extends React.Component {
       return this.props.center;
     }
 
+    if (this.props.lat && this.props.lng) {
+      return [this.props.lat, this.props.lng];
+    }
+
     let lat = 0;
     let lng = 0;
 
