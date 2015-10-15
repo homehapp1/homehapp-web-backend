@@ -16,7 +16,9 @@ export default class Map extends React.Component {
       React.PropTypes.object,
       React.PropTypes.array
     ]),
-    context: React.PropTypes.object
+    context: React.PropTypes.object,
+    lat: React.PropTypes.number,
+    lng: React.PropTypes.number
   };
 
   static contextTypes = {

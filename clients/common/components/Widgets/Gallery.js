@@ -435,8 +435,17 @@ export default class Gallery extends React.Component {
     if (this.props.images.length < 4) {
       subclasses.push('width-wrapper');
     }
+    let title = null;
+    if (this.props.title) {
+      title = (
+        <div className='center'>
+          <h2>{this.props.title}</h2>
+        </div>
+      );
+    }
     return (
       <div className={classes.join(' ')}>
+        {title}
         <div className={subclasses.join(' ')} ref='gallery'>
         {
           this.props.images.map((item, index) => {
