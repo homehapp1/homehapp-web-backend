@@ -10,9 +10,7 @@ exports.registerRoutes = (app) => {
     debug('GET *', req.url);
     if (!req.url.match(/^\/($|\?)/) && req.url.match(/\/($|\?)/)) {
       let url = req.url.replace(/\/($|\?)/, '$1');
-      res.writeHead(301, {
-        Location: url
-      });
+      res.redirect(301, url);
       res.end();
     }
     next();
