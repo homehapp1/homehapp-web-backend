@@ -86,17 +86,10 @@ exports.registerRoutes = (app) => {
   let updateUser = function updateUser(uuid, data) {
     debug('Data', data);
 
-    QB
-    .forModel('User')
-    .findByUuid(uuid)
-    .updateNoMultiset(data)
-    .then((model) => {
-      debug('Updated', model);
-      resolve(model);
-    })
-    .catch((err) => {
-      debug('Failed', err);
-    });
+    return QB
+      .forModel('User')
+      .findByUuid(uuid)
+      .updateNoMultiset(data);
   };
 
   app.put('/api/users/:uuid', app.authenticatedRoute, function(req, res, next) {
