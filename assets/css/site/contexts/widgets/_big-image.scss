@@ -152,6 +152,10 @@
     font-size: $fontSizeHeading3;
     color: white;
 
+    .mute {
+      opacity: 0;
+    }
+
     .fa {
       display: inline-block;
       cursor: pointer;

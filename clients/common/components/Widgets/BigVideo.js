@@ -83,7 +83,7 @@ export default class BigVideo extends BigBlock {
       this.pause.addClass('hidden');
     };
     this.video.onvolumechange = () => {
-      if (this.video.muted) {
+      if (this.video.muted && this.video.playing) {
         this.mute.addClass('hidden');
         this.unmute.removeClass('hidden');
       } else {
@@ -166,7 +166,6 @@ export default class BigVideo extends BigBlock {
     event.stopPropagation();
     event.preventDefault();
     this.video.muted = false;
-    this.mute.addClass('hidden')
   }
 
   render() {
@@ -228,11 +227,11 @@ export default class BigVideo extends BigBlock {
             {this.props.children}
           </div>
           <div className='controls'>
-            <i className='fa fa-play' ref='play'></i>
-            <i className='fa fa-pause' ref='pause'></i>
-            <i className='fa fa-volume-off' ref='mute'></i>
-            <i className='fa fa-volume-up' ref='unmute'></i>
-            <i className='fa fa-arrows-alt' ref='fullscreen'></i>
+            <i className='fa fa-volume-off mute' ref='mute'></i>
+            <i className='fa fa-volume-up unmute' ref='unmute'></i>
+            <i className='fa fa-play play' ref='play'></i>
+            <i className='fa fa-pause pause' ref='pause'></i>
+            <i className='fa fa-arrows-alt fullscreen' ref='fullscreen'></i>
           </div>
         </div>
         <Separator type='white' />
