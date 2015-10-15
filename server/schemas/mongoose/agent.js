@@ -26,15 +26,26 @@ exports.loadSchemas = function (mongoose, next) {
       ref: 'Agency',
       default: null
     },
-    phone: {
+    contactNumber: {
       type: String,
       default: null
+    },
+    _realPhoneNumber: {
+      type: String
     },
     email: {
       type: String,
       default: null
     },
     images: [schemas.AgentImage],
+    location: {
+      address: {
+        country: {
+          type: String,
+          default: 'GB'
+        }
+      }
+    },
     // Flags
     visible: {
       type: Boolean,
