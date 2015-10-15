@@ -9,6 +9,11 @@ module.exports = (projectRoot) => {
   let host = `http://${hostname}:${port}`;
 
   let config = {
+    security: {
+      csrfSkipRoutes: [
+        /api\/twilio/
+      ]
+    },
     clientConfig: {
       cloudinary: {
         transformations: {

@@ -23,6 +23,9 @@ module.exports = function (projectRoot) {
     },
     google: {
       enabled: true
+    },
+    clientConfig: {
+      siteHost: 'https://www.homehapp.com'
     }
   };
   return config;
