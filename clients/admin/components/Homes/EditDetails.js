@@ -40,16 +40,7 @@ export default class HomesEditDetails extends EditDetails {
     this.setCoordinates = this.setCoordinates.bind(this);
 
     if (props.home) {
-      debug('props.home.location', props.home.location);
-      if (props.home.location && props.home.location.coordinates) {
-        debug('Set location');
-        this.state.lat = props.home.location.coordinates[0];
-        this.state.lng = props.home.location.coordinates[1];
-        this.setCoordinates({
-          lat: props.home.location.coordinates[0],
-          lng: props.home.location.coordinates[1]
-        });
-      }
+      this.setInitialLocation(props.home.location);
 
       this.state.currentAttributes = props.home.attributes || [
         {
@@ -58,14 +49,6 @@ export default class HomesEditDetails extends EditDetails {
       ];
       this.state.images = props.home.images || [];
     }
-  }
-
-  setCoordinates(lat, lng) {
-    debug('Callback:setCoordinates', lat, lng);
-    this.setState({
-      lat: lat,
-      lng: lng
-    });
   }
 
   state = {

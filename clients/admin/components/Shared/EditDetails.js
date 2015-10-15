@@ -9,7 +9,8 @@ const countries = require('../../../common/lib/Countries').forSelect();
 
 export default class EditDetails extends React.Component {
   state = {
-    images: []
+    images: [],
+    coordinates: []
   }
 
   constructor(props) {
@@ -145,6 +146,28 @@ export default class EditDetails extends React.Component {
         </option>
       );
     });
+  }
+
+  setCoordinates(lat, lng) {
+    debug('Callback:setCoordinates', lat, lng);
+    this.setState({
+      lat: lat,
+      lng: lng
+    });
+  }
+
+  setInitialLocation(location) {
+    if (!location) {
+      return debug('No location provided for the model');
+    }
+    if (!location.coordinates) {
+      return debug('No coordinates were found from the location', location);
+    }
+    if (location.coordinates.length < 2) {
+      return debug('Coordinate system failed the sanity check for location', location);
+    }
+    this.state.lat = location.coordinates[0];
+    this.state.lng = location.coordinates[1];
   }
 
   handlePendingState() {
