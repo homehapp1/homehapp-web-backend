@@ -13,7 +13,7 @@ exports.registerRoutes = (app) => {
       type: 'phone',
       subType: state,
       sender: {
-        phone: req.body.From
+        phone: req.body.Caller
       },
       recipient: {
         agent: agent._id,
@@ -24,6 +24,9 @@ exports.registerRoutes = (app) => {
         `CallSid:${req.body.CallSid}`
       ]
     };
+    if (state === 'finished') {
+      data.tags.push(`DialCallStatus:${req.body.DialCallStatus}`);
+    }
     app.log.debug(`Creating Contact from call`, data);
     QB
     .forModel('Contact')
