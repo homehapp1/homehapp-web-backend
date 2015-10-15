@@ -142,4 +142,29 @@
       }
     }
   }
+
+  .controls {
+    position: absolute;
+    bottom: $contentPadding;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: $fontSizeHeading3;
+    color: white;
+
+    .fa {
+      display: inline-block;
+      cursor: pointer;
+      @include vendors(transition-property, color);
+      @include vendors(transition-duration, $transitionDuration);
+
+      &:hover {
+        color: $turquoise;
+      }
+      
+      & + * {
+        margin-left: 0.5em;
+      }
+    }
+  }
 }
