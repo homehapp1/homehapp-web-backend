@@ -45,7 +45,7 @@ let AgentListSource = {
   removeItem: function () {
     return {
       remote(storeState, id) {
-        debug('remove:remote', arguments, id);
+        //debug('remove:remote', arguments, id);
         return request.delete(`/api/agents/${id}`)
           .then((response) => {
             debug('got response', response);
