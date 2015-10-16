@@ -3,25 +3,18 @@
 import alt from '../../common/alt';
 import AgentActions from '../actions/AgentActions';
 import AgentSource from '../sources/AgentSource';
-// import Cache from '../../common/Cache';
 
 let debug = require('../../common/debugger')('AgentStore');
 
 @alt.createStore
 class AgentStore {
   constructor() {
-    this.on('bootstrap', () => {
-      debug('bootstrapping', this.agent);
-    });
-
     this.bindListeners({
       handleCreateItem: AgentActions.CREATE_ITEM,
-      handleUpdateItem: AgentActions.UPDATE_ITEM,
-      handleDeleteItem: AgentActions.DELETE_ITEM,
-      handleReleaseNumber: AgentActions.RELEASE_NUMBER,
       handleCreateSuccess: AgentActions.CREATE_SUCCESS,
+      handleUpdateItem: AgentActions.UPDATE_ITEM,
       handleUpdateSuccess: AgentActions.UPDATE_SUCCESS,
-      handleDeleteSuccess: AgentActions.DELETE_SUCCESS,
+      handleReleaseNumber: AgentActions.RELEASE_NUMBER,
       handleRequestFailed: AgentActions.REQUEST_FAILED
     });
 
@@ -59,21 +52,6 @@ class AgentStore {
     debug('handleUpdateSuccess', agent);
     this.error = null;
     this.agent = agent;
-  }
-  handleDeleteItem(item) {
-    debug('handleDeleteItem', item);
-    this.error = null;
-    if (!this.getInstance().isLoading()) {
-      setTimeout(() => {
-        debug('instance', this.getInstance());
-        this.getInstance().deleteItem(item);
-      });
-    }
-  }
-  handleDeleteSuccess(agent) {
-    debug('handleDeleteSuccess', agent);
-    this.error = null;
-    this.agent = null;
   }
 
   handleReleaseNumber(id) {

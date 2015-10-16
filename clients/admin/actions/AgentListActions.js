@@ -6,16 +6,22 @@ let debug = require('../../common/debugger')('AgentListActions');
 
 @alt.createActions
 class AgentListActions {
-  updateAgents(agents) {
-    this.dispatch(agents);
+  updateItems(items) {
+    this.dispatch(items);
   }
-  fetchAgents(skipCache) {
-    skipCache = true;
-    debug('fetchAgents', skipCache);
-    this.dispatch(skipCache);
+  fetchItems(query) {
+    debug('fetchItems', query);
+    this.dispatch(query);
   }
-  fetchFailed(error) {
-    debug('fetchFailed', error);
+  removeItem(id) {
+    debug('removeItem', id);
+    this.dispatch(id);
+  }
+  removeSuccess(id) {
+    this.dispatch(id);
+  }
+  requestFailed(error) {
+    debug('requestFailed', error);
     this.dispatch(error);
   }
 }

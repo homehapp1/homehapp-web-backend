@@ -339,7 +339,7 @@ exports.run = function(projectName, afterRun) {
               res.locals.data.ApplicationStore = {};
             }
 
-            if (app.config.security.csrf) {
+            if (app.config.security.csrf && req.csrfToken) {
               res.locals.data.ApplicationStore.csrf = req.csrfToken();
             }
 

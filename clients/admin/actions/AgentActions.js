@@ -6,30 +6,19 @@ let debug = require('../../common/debugger')('AgentActions');
 
 @alt.createActions
 class AgentActions {
-  createItem(item) {
-    debug('createItem', item);
-    this.dispatch(item);
+  createItem(data) {
+    debug('createItem', data);
+    this.dispatch(data);
   }
-  createSuccess(count) {
-    this.dispatch(count);
+  createSuccess(model) {
+    this.dispatch(model);
   }
-  updateItem(item) {
-    debug('updateItem', item);
-    this.dispatch(item);
+  updateItem(data) {
+    debug('updateItem', data);
+    this.dispatch(data);
   }
-  updateSuccess(count) {
-    this.dispatch(count);
-  }
-  deleteItem(item) {
-    debug('deleteItem', item);
-    this.dispatch(item);
-  }
-  deleteSuccess(count) {
-    this.dispatch(count);
-  }
-  fetchItem(id) {
-    debug('fetchItem', id);
-    this.dispatch(id);
+  updateSuccess(model) {
+    this.dispatch(model);
   }
   releaseNumber(id) {
     debug('releaseNumber', id);

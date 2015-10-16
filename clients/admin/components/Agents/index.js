@@ -5,11 +5,15 @@ import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Nav from 'react-bootstrap/lib/Nav';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
-// import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
+import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
+import TabbedArea from 'react-bootstrap/lib/TabbedArea';
+import TabPane from 'react-bootstrap/lib/TabPane';
+import List from './List';
+import CreateEdit from './CreateEdit';
 
 class AgentsIndex extends React.Component {
   static propTypes = {
-    agents: React.PropTypes.array.isRequired
+    items: React.PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -23,28 +27,17 @@ class AgentsIndex extends React.Component {
           <h2 className="navigation-title">
             Agents
           </h2>
-          <p>There are {this.props.agents.length} agents in the system currently.</p>
-          <ul>
-            <li><Link to='agentCreate'><i className='fa fa-user'></i> Create a new agent</Link></li>
-          </ul>
+          <p>There are {this.props.items.length} agents in the system currently.</p>
         </Nav>
         <Row>
-          <h1><i className='fa fa-user'></i> {this.props.agents.length} agents</h1>
-
-          <ul>
-            {this.props.agents.map((agent, i) => {
-              return (
-                <li key={i}>
-                  <Link
-                    to="agentEdit"
-                    params={{id: agent.id}}>
-                    {agent.rname}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-
+          <TabbedArea defaultActiveKey={1}>
+            <TabPane eventKey={1} tab='Current Agents'>
+              <List items={this.props.items} />
+            </TabPane>
+            <TabPane eventKey={2} tab='Add new'>
+              <CreateEdit />
+            </TabPane>
+          </TabbedArea>
         </Row>
       </SubNavigationWrapper>
     );
