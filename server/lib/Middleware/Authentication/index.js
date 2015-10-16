@@ -42,7 +42,7 @@ class AuthenticationMiddleware {
     });
     this.authentication.deserializeUser((id, done) => {
       QB
-      .query('User')
+      .forModel('User')
       .findById(id)
       .fetch()
       .then((result) => {
