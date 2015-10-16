@@ -38,7 +38,7 @@ exports.registerRoutes = (app) => {
       });
       res.json({
         status: 'ok',
-        agents: agents
+        items: agents
       });
     })
     .catch(next);

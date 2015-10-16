@@ -1,59 +1,67 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Panel from 'react-bootstrap/lib/Panel';
-import Input from 'react-bootstrap/lib/Input';
-import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
+import Panel from 'react-bootstrap/lib/Panel';
+import Button from 'react-bootstrap/lib/Button';
+import Input from 'react-bootstrap/lib/Input';
 import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
+import AgentListActions from '../../actions/AgentListActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import { randomNumericId, merge } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
-import EditDetails from '../Shared/EditDetails';
+import { randomNumericId, merge } from '../../../common/Helpers';
 
-let debug = require('../../../common/debugger')('AgentsEditDetails');
+const countries = require('../../../common/lib/Countries').forSelect();
+let debug = require('../../../common/debugger')('AgentsCreateEdit');
 
-export default class AgentsEditDetails extends EditDetails {
+export default class AgentsCreateEdit extends React.Component {
   static propTypes = {
-    agent: React.PropTypes.object.isRequired,
-    context: React.PropTypes.object
+    model: React.PropTypes.object,
+    onSave: React.PropTypes.func,
+    onCancel: React.PropTypes.func
   }
-
-  static contextTypes = {
-    router: React.PropTypes.func
+  static defaultProps = {
+    model: null,
+    onSave: null,
+    onCancel: null
   }
 
   constructor(props) {
+    debug('constructor', props);
     super(props);
-    this.storeListener = this.onAgentStoreChange.bind(this);
+    if (props.model) {
+      this.state.model = props.model;
+      this.state.images = props.model.images;
+    }
+    this.storeListener = this.onChange.bind(this);
+
     this.uploadListener = this.onUploadChange.bind(this);
     this.imageUploaderInstanceId = randomNumericId();
-    this.state.images = props.agent.images;
-    this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
-    debug('Constructor', this);
-  }
-
-  state = {
-    error: null,
-    uploads: UploadAreaUtils.UploadStore.getState().uploads,
-    images: []
   }
 
   componentDidMount() {
+    debug('componentDidMount');
     AgentStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
+    debug('componentWillUnmount');
     AgentStore.unlisten(this.storeListener);
   }
 
-  onAgentStoreChange(state) {
-    debug('onAgentStoreChange', state);
+  state = {
+    error: null,
+    model: null,
+    images: [],
+    uploads: UploadAreaUtils.UploadStore.getState().uploads
+  }
+
+  onChange(state) {
+    debug('onChange', state);
     this.setState(state);
   }
 
@@ -64,15 +72,8 @@ export default class AgentsEditDetails extends EditDetails {
     });
   }
 
-  onFormChange(/*event*/) {
-    // let {type, target} = event;
-    // TODO: Validation could be done here
-    //debug('onFormChange', event, type, target);
-    //this.props.agent.facilities = this.refs.facilities.getValue().split("\n");
-  }
-
   onSave() {
-    debug('save');
+    debug('onSave');
 
     let images = [];
     // Clean broken images
@@ -82,8 +83,7 @@ export default class AgentsEditDetails extends EditDetails {
       }
     });
 
-    let agentProps = {
-      uuid: this.props.agent.id,
+    let data = {
       firstname: this.refs.firstname.getValue(),
       lastname: this.refs.lastname.getValue(),
       contactNumber: this.refs.contactNumber.getValue(),
@@ -98,35 +98,168 @@ export default class AgentsEditDetails extends EditDetails {
       // @TODO: agency selector
       images: images
     };
-    this.saveAgent(agentProps);
-  }
 
-  onReleaseNumber() {
-    debug('onReleaseNumber');
-    AgentActions.releaseNumber(this.props.agent.id);
-  }
+    if (this.state.model) {
+      data.id = this.state.model.id;
+    }
 
-  saveAgent(agentProps) {
-    debug('Update agentProps', agentProps);
-    AgentActions.updateItem(agentProps);
+    if (this.state.uploads) {
+      if (this.state.uploads[this.logoUploaderInstanceId]) {
+        let uploads = this.state.uploads[this.logoUploaderInstanceId];
+        let key = Object.keys(uploads)[0];
+        data.logo = {
+          url: uploads[key].url,
+          width: uploads[key].width,
+          height: uploads[key].height
+        };
+      }
+    }
+
+    if (data.id) {
+      AgentActions.updateItem(data);
+    } else {
+      AgentActions.createItem(data);
+    }
+
+    if (this.props.onSave) {
+      this.props.onSave();
+    }
   }
 
   onCancel() {
-    React.findDOMNode(this.refs.agentDetailsForm).reset();
+    if (this.props.onCancel) {
+      this.props.onCancel();
+    }
+  }
+
+  onReleaseNumber() {
+    AgentActions.releaseNumber(this.props.model.id);
+  }
+
+  imageExists(url) {
+    debug('Check if image exists', this.state.images);
+    let found = false;
+    this.state.images.forEach((img) => {
+      if (img.url === url) {
+        debug('Image exists');
+        found = true;
+      }
+    });
+    debug('Image does not exist');
+    return found;
+  }
+
+  addImage(imageData) {
+    debug('Add image', imageData);
+    let isMaster = false;
+    let image = {
+      url: imageData.url,
+      width: imageData.width,
+      height: imageData.height,
+      isMaster: isMaster
+    };
+
+    if (!this.imageExists(image.url, this.state.images)) {
+      debug('Add', image);
+      this.state.images.push(image);
+    }
+  }
+
+  addImages() {
+    debug('addImages', this.state.uploads);
+    if (this.state.uploads) {
+      if (this.state.uploads[this.imageUploaderInstanceId]) {
+        let uploads = this.state.uploads[this.imageUploaderInstanceId];
+        debug('uploads str', uploads, typeof uploads);
+        for (let i in uploads) {
+          this.addImage(uploads[i]);
+        }
+      }
+    }
+  }
+
+  onImageUpload(data) {
+    debug('onImageUpload', data);
+    this.addImages();
+
+    this.setState({
+      images: this.state.images
+    });
+  }
+
+  onRemoveImageClicked(index) {
+    let newImages = [];
+    this.state.images.forEach((item, idx) => {
+      if (idx !== index) {
+        newImages.push(item);
+      }
+    });
+    this.setState({images: newImages});
+  }
+
+  handlePendingState() {
+    return (
+      <div className='model-saving'>
+        <h3>Saving model...</h3>
+      </div>
+    );
+  }
+
+  handleErrorState() {
+    return (
+      <div className='model-error'>
+        <h3>Error saving model!</h3>
+        <p>{this.state.error.message}</p>
+      </div>
+    );
+  }
+
+  getCountryOptions() {
+    return countries.map((country) => {
+      return (
+        <option
+          value={country.value}
+          key={'locCountry-' + country.value}>
+          {country.label}
+        </option>
+      );
+    });
   }
 
   render() {
-    debug('Render');
-    this.handleErrorState();
-    if (AgentStore.isLoading()) {
-      this.handlePendingState();
-      return null;
+    let error = null;
+    let savingLoader = null;
+    let statusMessage = null;
+    let saveButtonDisabled = null;
+    let formTitle = 'Create model';
+
+    if (this.state.model) {
+      formTitle = null;
     }
-    this.handleRenderState();
+
+    if (this.state.error) {
+      error = this.handleErrorState();
+    }
+
+    if (AgentStore.isLoading()) {
+      savingLoader = this.handlePendingState();
+      saveButtonDisabled = 'disabled';
+    }
+
+    if (this.state.saved) {
+      statusMessage = (
+        <p className='bg-success'>
+          Model saved successfully!
+        </p>
+      );
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
+    }
 
     let agent = merge({
       realPhoneNumberType: 'mobile'
-    }, this.props.agent || {});
+    }, this.props.model || {});
     let location = merge({
       address: {
         country: 'GB'
@@ -150,7 +283,15 @@ export default class AgentsEditDetails extends EditDetails {
     let countrySelections = this.getCountryOptions();
 
     return (
-      <Row>
+      <Row className="center-block">
+        <h1>{formTitle}</h1>
+
+        <p>
+          {error}
+          {savingLoader}
+          {statusMessage}
+        </p>
+
         <form name='agentDetails' ref='agentDetailsForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>
@@ -160,7 +301,6 @@ export default class AgentsEditDetails extends EditDetails {
                 label='First name'
                 placeholder='First name'
                 defaultValue={agent.firstname}
-                onChange={this.onFormChange.bind(this)}
                 required
               />
               <Input
@@ -169,7 +309,6 @@ export default class AgentsEditDetails extends EditDetails {
                 label='Last name'
                 placeholder='Last name'
                 defaultValue={agent.lastname}
-                onChange={this.onFormChange.bind(this)}
                 required
               />
               <Input
@@ -178,7 +317,6 @@ export default class AgentsEditDetails extends EditDetails {
                 label='Email'
                 placeholder='firstname.lastname@company.co.uk'
                 defaultValue={agent.email}
-                onChange={this.onFormChange.bind(this)}
                 required
               />
               <Input label='Real Contact Number' wrapperClassName="wrapper">
@@ -189,8 +327,7 @@ export default class AgentsEditDetails extends EditDetails {
                       ref='addressCountry'
                       label='Country'
                       placeholder='Select Country'
-                      defaultValue={location.address.country}
-                      onChange={this.onFormChange.bind(this)}>
+                      defaultValue={location.address.country}>
                       <option value=''>Select country</option>
                       {countrySelections}
                     </Input>
@@ -201,8 +338,7 @@ export default class AgentsEditDetails extends EditDetails {
                       ref='realPhoneNumberType'
                       label='Type'
                       placeholder='Type'
-                      defaultValue={agent.realPhoneNumberType}
-                      onChange={this.onFormChange.bind(this)}>
+                      defaultValue={agent.realPhoneNumberType}>
                       <option value='mobile'>Mobile</option>
                       <option value='local'>Landline</option>
                     </Input>
@@ -214,7 +350,6 @@ export default class AgentsEditDetails extends EditDetails {
                       label='Number'
                       placeholder='+44 123 00 11 22'
                       defaultValue={agent.realPhoneNumber}
-                      onChange={this.onFormChange.bind(this)}
                       required
                     />
                   </Col>
@@ -228,7 +363,6 @@ export default class AgentsEditDetails extends EditDetails {
                       ref='contactNumber'
                       placeholder='+44 123 00 11 22'
                       defaultValue={agent.contactNumber}
-                      onChange={this.onFormChange.bind(this)}
                     />
                   </Col>
                   {releaseNumberColumn}
@@ -242,7 +376,7 @@ export default class AgentsEditDetails extends EditDetails {
               <Row>
                 <Col md={6}>
                   <h2>Image</h2>
-                  <ImageList images={this.state.images} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} max={1} />
+                  <ImageList images={this.state.images} onRemove={this.onRemoveImageClicked.bind(this)} max={1} />
                 </Col>
                 <Col md={6}>
                   <UploadArea
@@ -263,12 +397,18 @@ export default class AgentsEditDetails extends EditDetails {
             <Well>
               <Row>
                 <Col md={6}>
-                  <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
+                  <Button
+                    ref='saveButton'
+                    bsStyle='success'
+                    accessKey='s'
+                    onClick={this.onSave.bind(this)}>Save</Button>
                 </Col>
                 <Col md={6} pullRight>
-                  <Link to='agentDelete' params={{id: this.props.agent.id}} className='btn btn-danger pull-right'>
-                    Delete
-                  </Link>
+                  <Button
+                    ref='cancelButton'
+                    bsStyle='danger'
+                    className='pull-right'
+                    onClick={this.onCancel.bind(this)}>Cancel</Button>
                 </Col>
               </Row>
             </Well>
