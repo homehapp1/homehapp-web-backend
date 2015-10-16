@@ -61,6 +61,10 @@ export function register(app, config) {
     unregisterNumberForAgent: (agent) => {
       //debug('unregisterNumberForAgent', agent);
       return new Promise((resolve, reject) => {
+        if (!agent._contactNumberSid) {
+          return resolve();
+        }
+
         twilioClient.incomingPhoneNumbers(agent._contactNumberSid)
         .delete()
         .then(() => {
