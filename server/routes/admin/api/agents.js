@@ -38,7 +38,8 @@ exports.registerRoutes = (app) => {
       });
       res.json({
         status: 'ok',
-        items: agents
+        items: agents,
+        agents: agents // TODO: Remove me once the clients stops behaving weirdly
       });
     })
     .catch(next);
