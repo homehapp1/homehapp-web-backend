@@ -20,17 +20,28 @@
       text-align: left;
     }
 
-    .fa {
+    .controller {
       display: inline-block;
       cursor: pointer;
       @include vendors(transition-property, all);
       @include vendors(transition-duration, $transitionDuration);
       width: 1em;
-      overflow: hidden;
-      margin: 0 0.2em;
+      margin: 0 0.3em;
 
       &:hover {
         color: $turquoise;
+      }
+
+      &.fullscreen {
+        & > .exit {
+          display: none;
+        }
+        &.in-fullscreen > .exit {
+          display: inline;
+        }
+        &.in-fullscreen > .enter {
+          display: none;
+        }
       }
     }
 
@@ -40,7 +51,7 @@
       border: solid 1px white;
       width: 5em;
       height: 0.3em;
-      margin: -0.4em 0.2em 0;
+      margin: -0.15em 0.3em 0;
       vertical-align: middle;
       position: relative;
 
@@ -51,10 +62,11 @@
         top: 0;
         bottom: 0;
         @include vendors(transition-property, width);
-        @include vendors(transition-duration, $transitionDurationFast);
+        @include vendors(transition-duration, $transitionDuration);
 
         &.no-transitions {
           @include vendors(transition-property, none);
+          @include vendors(transition-duration, 0);
         }
       }
     }
