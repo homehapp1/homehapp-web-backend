@@ -53,9 +53,6 @@ export default class HomesEdit extends EditModel {
             <TabPane eventKey={3} tab='Metadata'>
               <ViewMetadata object={this.props.home} />
             </TabPane>
-            <TabPane eventKey={4} tab='Agents'>
-              <ChooseAgents home={this.props.home} />
-            </TabPane>
           </TabbedArea>
         </Row>
       </SubNavigationWrapper>
