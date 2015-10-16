@@ -4,8 +4,6 @@ import alt from '../alt';
 import _debugger from '../debugger';
 import {merge, enumerate} from '../Helpers';
 
-//let
-
 export default {
   generate: function generate(storeName, structure = {}) {
     let debug = _debugger(storeName);
@@ -54,6 +52,12 @@ export default {
         let publicMethods = {
           getItem: this.getItem
         };
+
+        if (structure.publicMethods) {
+          for (let [name, method] of enumerate(structure.publicMethods)) {
+            publicMethods[name] = method.bind(this);
+          }
+        }
 
         this.exportPublicMethods(publicMethods);
 
