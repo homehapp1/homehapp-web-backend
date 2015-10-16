@@ -1,81 +1,44 @@
 'use strict';
 
-import request from '../../common/request';
+import SourceBuilder from '../../common/sources/Builder';
 import AgentListActions from '../actions/AgentListActions';
 
-let debug = require('../../common/debugger')('AgentListSource');
-
-let AgentListSource = {
-  fetchItems: () => {
-    return {
-      remote(_, query = {}) {
-        // debug('fetchItems:remote', query);
-        return request.get(`/api/agents`, {
-          params: query
-        })
-        .then((response) => {
-          debug('Got response', response);
-          if (!response.data || !response.data.items) {
-            let err = new Error('Invalid response');
-            return Promise.reject(err);
-          }
-          return Promise.resolve(response.data.items);
-        })
-        .catch((response) => {
-          if (response instanceof Error) {
-            return Promise.reject(response);
-          } else {
-            let msg = 'unexpected error';
-            if (response.data.error) {
-              msg = response.data.error;
-            }
-            return Promise.reject(new Error(msg));
-          }
-          return Promise.reject(response);
-        });
-      },
-      local() {
-        return null;
-      },
-      success: AgentListActions.updateItems,
-      error: AgentListActions.requestFailed,
-      loading: AgentListActions.fetchItems
-    };
+export default SourceBuilder.build({
+  name: 'AgentListSource',
+  actions: {
+    base: AgentListActions,
+    error: AgentListActions.requestFailed
   },
-  removeItem: function () {
-    return {
-      remote(storeState, id) {
-        //debug('remove:remote', arguments, id);
-        return request.delete(`/api/agents/${id}`)
-          .then((response) => {
-            debug('got response', response);
-            if (!response.data || response.data.status !== 'ok') {
-              let err = new Error(response.data.error || 'Invalid response');
-              return Promise.reject(err);
-            }
-            return Promise.resolve(id);
-          })
-          .catch((response) => {
-            if (response instanceof Error) {
-              return Promise.reject(response);
-            } else {
-              let msg = 'unexpected error';
-              if (response.data && response.data.error) {
-                msg = response.data.error;
-              }
-              return Promise.reject(new Error(msg));
-            }
-            return Promise.reject(response);
-          });
+  methods: {
+    fetchItems: {
+      remote: {
+        method: 'get',
+        uri: '/api/agents',
+        params: null,
+        response: {
+          key: 'items'
+        }
       },
-      local() {
-        return null;
+      local: null,
+      actions: {
+        success: AgentListActions.updateItems
+      }
+    },
+    removeItem: {
+      remote: {
+        method: 'delete',
+        uri: (state, args) => {
+          return `/api/agents/${args[0]}`;
+        },
+        params: null,
+        response: (state, response, args) => {
+          return Promise.resolve(args[0]);
+        }
       },
-      success: AgentListActions.removeSuccess,
-      error: AgentListActions.requestFailed,
-      loading: AgentListActions.removeItem
-    };
+      local: null,
+      actions: {
+        success: AgentListActions.removeSuccess
+      }
+    }
   }
-};
-
-export default AgentListSource;
+});
