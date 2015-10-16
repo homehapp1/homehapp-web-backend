@@ -2,6 +2,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
+import Image from './Image';
 import Video from './Video';
 import Separator from './Separator';
 import BigBlock from './BigBlock';
@@ -344,6 +345,13 @@ export default class BigVideo extends BigBlock {
       height: null
     };
 
+    let image = {
+      src: video.src.replace(/\.[a-z0-9]{2,4}$/i, '.jpg'),
+      alt: '',
+      mode: 'fill',
+      gravity: 'center'
+    };
+
     let props = {
       className: classNames(classes),
       'data-gradient': this.props.gradient,
@@ -364,8 +372,10 @@ export default class BigVideo extends BigBlock {
     return (
       <div className='bigvideo-wrapper' ref='container'>
         <div {...props} ref='wrapper'>
+          <i className='fa fa-play play-icon show-for-small' ref='mobilePlay'></i>
           <div className='image-content'>
-            <Video {...video} className='big-video' ref='video' />
+            <Image {...image} className='show-for-small' width={600} height={600} />
+            <Video {...video} className='big-video hide-for-small' ref='video' />
           </div>
           {author}
           <div className='image-text full-height' {...textProps}>

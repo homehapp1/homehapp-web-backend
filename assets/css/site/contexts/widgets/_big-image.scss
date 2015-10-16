@@ -11,11 +11,7 @@
 
   & > .image-content {
     @include imageFill();
-    z-index: -1;
-
-    & > video + img {
-      display: none;
-    }
+    z-index: -2;
   }
 
   & > .image-author {
@@ -84,7 +80,6 @@
 
       @include small() {
         @include vendors(transition-property, none);
-        z-index: 0;
       }
     }
 
@@ -105,10 +100,6 @@
     & > .image-content {
       position: absolute;
       z-index: -4;
-      
-      @incclude small() {
-        z-index: 0;
-      }
     }
   }
 
