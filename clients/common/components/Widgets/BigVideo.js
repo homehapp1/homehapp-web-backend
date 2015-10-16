@@ -82,7 +82,7 @@ export default class BigVideo extends BigBlock {
     }, false);
 
     // Reset the previous event so that moves do not count
-    this.container.addEvent('touchmove', (event) => {
+    this.container.addEvent('touchmove', () => {
       prev = null;
     }, false);
 

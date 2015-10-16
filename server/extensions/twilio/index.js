@@ -1,7 +1,6 @@
 'use strict';
 
 import twilio from 'twilio';
-import {NotImplemented} from '../../lib/Errors';
 
 let debug = require('debug')('Extension:twilio');
 

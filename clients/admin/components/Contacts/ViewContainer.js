@@ -16,11 +16,6 @@ export default class ContactsEditContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
-  state = {
-    error: null,
-    contact: ContactListStore.getContact(this.props.params.id)
-  }
-
   componentDidMount() {
     ContactListStore.listen(this.storeListener);
     if (!ContactListStore.getContact(this.props.params.id)) {
@@ -30,6 +25,11 @@ export default class ContactsEditContainer extends React.Component {
 
   componentWillUnmount() {
     ContactListStore.unlisten(this.storeListener);
+  }
+
+  state = {
+    error: null,
+    contact: ContactListStore.getContact(this.props.params.id)
   }
 
   onChange(state) {

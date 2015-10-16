@@ -9,7 +9,6 @@ import Button from 'react-bootstrap/lib/Button';
 import Input from 'react-bootstrap/lib/Input';
 import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
-import AgentListActions from '../../actions/AgentListActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ImageList from '../Widgets/ImageList';

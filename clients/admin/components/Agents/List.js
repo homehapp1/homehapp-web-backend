@@ -1,9 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
 import Table from 'react-bootstrap/lib/Table';
 import ListItem from './ListItem';
@@ -14,12 +12,12 @@ export default class AgentsList extends React.Component {
     items: React.PropTypes.array.isRequired
   }
 
-  state = {
-    underEdit: null
-  }
-
   constructor(props) {
     super(props);
+  }
+
+  state = {
+    underEdit: null
   }
 
   onItemSelected(item) {
@@ -63,7 +61,7 @@ export default class AgentsList extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.items.map((item, i) => {
+            {this.props.items.map((item) => {
               return (
                 <ListItem
                   key={item.id}

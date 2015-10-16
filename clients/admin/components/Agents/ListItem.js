@@ -1,8 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
-import Row from 'react-bootstrap/lib/Row';
 import Button from 'react-bootstrap/lib/Button';
 import AgentListActions from '../../actions/AgentListActions';
 

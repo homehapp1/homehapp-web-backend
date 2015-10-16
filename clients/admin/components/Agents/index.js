@@ -1,11 +1,9 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Nav from 'react-bootstrap/lib/Nav';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
-import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import TabbedArea from 'react-bootstrap/lib/TabbedArea';
 import TabPane from 'react-bootstrap/lib/TabPane';
 import List from './List';

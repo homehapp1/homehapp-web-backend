@@ -2,7 +2,7 @@
 
 import alt from '../alt';
 import _debugger from '../debugger';
-import {merge, enumerate} from '../Helpers';
+import {enumerate} from '../Helpers';
 
 export default {
   generate: function generate(storeName, structure = {}) {
