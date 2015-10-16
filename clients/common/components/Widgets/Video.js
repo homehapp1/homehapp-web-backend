@@ -98,11 +98,18 @@ export default class Video extends React.Component {
   }
 
   getVideo() {
+    let classes = ['video'];
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
+
     if (this.props.mode === 'iframe') {
-      return (<iframe src={this.props.src} width='100%' height='100%' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen></iframe>);
+      classes.push('iframe');
+      return (<iframe src={this.props.src} width='100%' height='100%' frameBorder='0' webkitallowfullscreen mozallowfullscreen allowFullScreen className={classes.join(' ')}></iframe>);
     }
 
     if (this.props.mode === 'html5') {
+      classes.push('inline');
       let regexp = new RegExp(`\.(mov|avi|mpe?g|${this.props.formats.join('|')})$`, 'i');
       let baseUrl = this.props.src.replace(regexp, '');
       let poster = this.props.poster || `${baseUrl}.png`;
@@ -113,7 +120,8 @@ export default class Video extends React.Component {
         autoPlay: this.props.autoPlay,
         loop: this.props.loop,
         width: this.props.width,
-        height: this.props.height
+        height: this.props.height,
+        className: classes.join(' ')
       };
 
       return (
