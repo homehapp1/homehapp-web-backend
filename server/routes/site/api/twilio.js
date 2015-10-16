@@ -101,9 +101,9 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       app.log.debug(`Call completed for agent ${result.model.name}`);
       logCallContact(req, result.model, 'finished');
-      res.json({
-        status: 'ok'
-      });
+      let resp = new twilio.TwimlResponse();
+      res.writeHead(200, {'Content-Type': 'text/xml'});
+      res.end(resp.toString());
     })
     .catch(next);
   });
