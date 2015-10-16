@@ -40,10 +40,10 @@ exports.registerRoutes = (app) => {
   };
 
   app.post('/api/twilio/request/:agentId/voice', function(req, res, next) {
-    // if (!req.headers['x-twilio-signature']) {
-    //   app.log.error('twilio api access without header');
-    //   return next(new BadRequest('invalid request'));
-    // }
+    if (!req.headers['x-twilio-signature']) {
+      app.log.error('twilio api access without header');
+      return next(new BadRequest('invalid request'));
+    }
 
     app.log.debug(`Call started for agent ${req.params.agentId}`, req.body);
 
@@ -64,7 +64,7 @@ exports.registerRoutes = (app) => {
       } else {
         logCallContact(req, result.model, 'start');
 
-        resp.say('Connecting you to the agent, please hold.', {
+        resp.say('Connecting you to the agent, please hold. All calls are recorded.', {
           voice: 'woman',
           language: 'en-gb'
         });
@@ -73,7 +73,9 @@ exports.registerRoutes = (app) => {
           record: true,
           timeout: 60,
           action: `${callBackBaseUrl}/${result.model.uuid}/voice/completed`
-        }, result.model._realPhoneNumber);
+        }, (node) => {
+          node.number(result.model._realPhoneNumber);
+        });
 
         resp.say('Unfortunately the call has failed or the agent hung up. Goodbye', {
           voice: 'woman',
@@ -101,7 +103,14 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       app.log.debug(`Call completed for agent ${result.model.name}`);
       logCallContact(req, result.model, 'finished');
+
       let resp = new twilio.TwimlResponse();
+      resp.say('Thank you for calling, goodbye!', {
+        voice: 'woman',
+        language: 'en-gb'
+      });
+      resp.hangup();
+
       res.writeHead(200, {'Content-Type': 'text/xml'});
       res.end(resp.toString());
     })
