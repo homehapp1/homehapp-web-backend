@@ -1,3 +1,62 @@
 &.big-video {
+  .controls {
+    $h: 1.5em;
+    position: absolute;
+    bottom: $contentPadding;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: $fontSizeHeading3;
+    height: $h;
+    line-height: $h;
+    color: white;
+    text-shadow: $textShadow;
 
+    .invisible {
+      opacity: 0;
+    }
+
+    & > * {
+      text-align: left;
+    }
+
+    .fa {
+      display: inline-block;
+      cursor: pointer;
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, $transitionDuration);
+      width: 1em;
+      overflow: hidden;
+      margin: 0 0.2em;
+
+      &:hover {
+        color: $turquoise;
+      }
+    }
+
+    .position {
+      display: inline-block;
+      box-shadow: $textShadow;
+      border: solid 1px white;
+      width: 5em;
+      height: 0.3em;
+      margin: -0.4em 0.2em 0;
+      vertical-align: middle;
+      position: relative;
+
+      & > .bar {
+        background-color: white;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        @include vendors(transition-property, width);
+        @include vendors(transition-duration, $transitionDurationFast);
+
+        &.no-transitions {
+          @include vendors(transition-property, none);
+        }
+      }
+    }
+  }
 }

@@ -43,12 +43,34 @@ export default class BigVideo extends BigBlock {
     this.muteVideo = this.muteVideo.bind(this);
     this.unmuteVideo = this.unmuteVideo.bind(this);
     this.containerTolerance = -150;
+    this.position = null;
   }
 
   componentDidMount() {
+    debug('Video player mounted');
     this.onMounted();
     this.video = React.findDOMNode(this.refs.video);
 
+    this.playbackControls();
+    this.volumeControls();
+    this.positionControls();
+
+    // Fullscreen button
+    this.fullscreen = new DOMManipulator(this.refs.fullscreen);
+
+    if (this.container) {
+      this.container.addEvent('mousedown', this.togglePlay.bind(this), false);
+    }
+  }
+
+  componentWillUnmount() {
+    this.onUnmount();
+    if (this.container) {
+      this.container.removeEvent('mousedown', this.togglePlay.bind(this), false);
+    }
+  }
+
+  playbackControls() {
     // Play button
     this.play = new DOMManipulator(this.refs.play);
     this.play.addClass('hidden');
@@ -60,6 +82,28 @@ export default class BigVideo extends BigBlock {
     this.pause.addEvent('mousedown', this.pauseVideo, true);
     this.pause.addEvent('touchstart', this.pauseVideo, true);
 
+    this.video.addEventListener('play', () => {
+      this.play.addClass('hidden');
+      this.pause.removeClass('hidden');
+    });
+    this.video.addEventListener('pause', () => {
+      this.play.removeClass('hidden');
+      this.pause.addClass('hidden');
+    });
+    this.video.addEventListener('ended', () => {
+      this.video.pause();
+      this.video.currentTime = 0;
+      if (this.bar) {
+        this.bar.addClass('no-transitions');
+        this.bar.width(0);
+        setTimeout(() => {
+          this.bar.removeClass('no-transitions');
+        });
+      }
+    });
+  }
+
+  volumeControls() {
     // Mute button
     this.mute = new DOMManipulator(this.refs.mute);
     this.mute.addEvent('mousedown', this.muteVideo, true);
@@ -67,51 +111,43 @@ export default class BigVideo extends BigBlock {
 
     // Unmute button
     this.unmute = new DOMManipulator(this.refs.unmute);
-    this.unmute.addClass('invisible');
+    this.unmute.addClass('hidden');
     this.unmute.addEvent('mousedown', this.unmuteVideo, true);
     this.unmute.addEvent('touchstart', this.unmuteVideo, true);
 
-    // Fullscreen button
-    this.fullscreen = new DOMManipulator(this.refs.fullscreen);
-
-    this.video.onplay = () => {
-      this.play.addClass('hidden');
-      this.pause.removeClass('hidden');
-    };
-    this.video.onpause = () => {
-      this.play.removeClass('hidden');
-      this.pause.addClass('hidden');
-    };
-    this.video.onvolumechange = () => {
-      debug('onvolumechange', this.video.muted, this.video.playing);
+    this.video.addEventListener('volumechange', () => {
       if (this.video.muted) {
-        this.mute.addClass('invisible');
-        this.unmute.removeClass('invisible');
+        this.mute.addClass('hidden');
+        this.unmute.removeClass('hidden');
       } else if (!this.video.paused) {
-        this.mute.removeClass('invisible');
-        this.unmute.addClass('invisible');
+        this.mute.removeClass('hidden');
+        this.unmute.addClass('hidden');
       }
-    };
-
-    if (this.container) {
-      this.container.addEvent('mousedown', this.togglePlay.bind(this), false);
-    }
-    debug('Video', this.refs.video, this.video);
+    });
   }
 
-  componentWillUnmount() {
-    this.onUnmount();
-    if (this.container) {
-      this.container.removeEvent('mousedown', this.togglePlay.bind(this), false);
-    }
+  positionControls() {
+    this.position = new DOMManipulator(this.refs.position);
+    this.bar = this.position.getByClass('bar')[0];
+    this.video.addEventListener('timeupdate', (event) => {
+      if (this.video.paused) {
+        return null;
+      }
+
+      if (!this.bar) {
+        return null;
+      }
+      this.position = this.video.currentTime / this.video.duration;
+      this.bar.css('width', `${this.position * 100}%`);
+    });
   }
 
   onDisplayContainer() {
     if (!this.video) {
       return null;
     }
-    debug('Video playing');
     this.video.muted = true;
+    this.video.currentTime = 0;
     this.video.play();
   }
 
@@ -119,12 +155,10 @@ export default class BigVideo extends BigBlock {
     if (!this.video) {
       return null;
     }
-    debug('Video paused');
     this.video.pause();
   }
 
   togglePlay(event) {
-    debug('togglePlay', event);
     if (event.target.parentNode.className.match(/controls/)) {
       return true;
     }
@@ -140,7 +174,6 @@ export default class BigVideo extends BigBlock {
   }
 
   playVideo(event) {
-    debug('playVideo');
     event.stopPropagation();
     event.preventDefault();
     this.video.muted = false;
@@ -148,7 +181,6 @@ export default class BigVideo extends BigBlock {
   }
 
   pauseVideo(event) {
-    debug('pauseVideo');
     event.stopPropagation();
     event.preventDefault();
     this.video.muted = true;
@@ -156,14 +188,12 @@ export default class BigVideo extends BigBlock {
   }
 
   muteVideo(event) {
-    debug('muteVideo');
     event.stopPropagation();
     event.preventDefault();
     this.video.muted = true;
   }
 
   unmuteVideo(event) {
-    debug('unmuteVideo');
     event.stopPropagation();
     event.preventDefault();
     this.video.muted = false;
@@ -192,7 +222,7 @@ export default class BigVideo extends BigBlock {
 
     let video = {
       src: this.props.video.url,
-      loop: true,
+      loop: false,
       controls: false,
       mode: 'html5',
       standalone: true,
@@ -227,11 +257,14 @@ export default class BigVideo extends BigBlock {
           <div className='image-text full-height' {...textProps}>
             {this.props.children}
           </div>
-          <div className='controls'>
-            <i className='fa fa-volume-up mute hidden' ref='mute'></i>
-            <i className='fa fa-volume-off unmute' ref='unmute'></i>
+          <div className='controls hide-for-small'>
+            <div className='position' ref='position'>
+              <div className='bar'></div>
+            </div>
             <i className='fa fa-play play' ref='play'></i>
             <i className='fa fa-pause pause' ref='pause'></i>
+            <i className='fa fa-volume-up volume mute hidden' ref='mute'></i>
+            <i className='fa fa-volume-off volume unmute' ref='unmute'></i>
             <i className='fa fa-arrows-alt fullscreen' ref='fullscreen'></i>
           </div>
         </div>
