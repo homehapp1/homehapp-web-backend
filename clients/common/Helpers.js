@@ -107,6 +107,11 @@ exports.scrollTop = function scrollTop(offset = null, speed = 500) {
     return null;
   }
 
+  if (speed < 10) {
+    window.scrollTo(0, init + dy * i);
+    return null;
+  }
+
   let dy = (offset - init) / c;
   let nextHop = function() {
     i++;
