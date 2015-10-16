@@ -26,11 +26,6 @@ export default class NeighborhoodList extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
-  state = {
-    error: null,
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
-  };
-
   componentDidMount() {
     setPageTitle(`Neighbourhoods of ${this.city.substr(0, 1).toUpperCase()}${this.city.substr(1)}`);
     NeighborhoodListStore.listen(this.storeListener);
@@ -40,6 +35,11 @@ export default class NeighborhoodList extends React.Component {
   componentWillUnmount() {
     setPageTitle();
     NeighborhoodListStore.unlisten(this.storeListener);
+  }
+
+  state = {
+    error: null,
+    neighborhoods: NeighborhoodListStore.getState().neighborhoods
   }
 
   onChange(state) {

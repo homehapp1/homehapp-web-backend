@@ -1,7 +1,6 @@
 'use strict';
 
 import twilio from 'twilio';
-import {NotImplemented} from '../../lib/Errors';
 
 let debug = require('debug')('Extension:twilio');
 
@@ -61,6 +60,10 @@ export function register(app, config) {
     unregisterNumberForAgent: (agent) => {
       //debug('unregisterNumberForAgent', agent);
       return new Promise((resolve, reject) => {
+        if (!agent._contactNumberSid) {
+          return resolve();
+        }
+
         twilioClient.incomingPhoneNumbers(agent._contactNumberSid)
         .delete()
         .then(() => {

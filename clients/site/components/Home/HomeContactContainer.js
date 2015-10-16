@@ -18,11 +18,6 @@ export default class HomeContactContainer extends HomeContainer {
     this.homeStoreListener = this.homeStoreOnChange.bind(this);
   }
 
-  state = {
-    error: null,
-    home: HomeStore.getState().home
-  };
-
   componentDidMount() {
     HomeStore.listen(this.homeStoreListener);
     HomeStore.fetchHomeBySlug(this.props.params.slug, true);
@@ -30,6 +25,11 @@ export default class HomeContactContainer extends HomeContainer {
 
   componentWillUnmount() {
     HomeStore.unlisten(this.homeStoreListener);
+  }
+
+  state = {
+    error: null,
+    home: HomeStore.getState().home
   }
 
   homeStoreOnChange(state) {

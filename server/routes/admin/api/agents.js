@@ -194,9 +194,24 @@ exports.registerRoutes = (app) => {
     .findByUuid(req.params.uuid)
     .remove()
     .then((result) => {
-      res.json({
-        status: 'ok'
-      });
+      app.twilio.unregisterNumberForAgent(result.model)
+      .then((removeResults) => {
+        debug('removeResults', removeResults);
+        QB
+        .forModel('Agent')
+        .findById(result.model._id)
+        .updateNoMultiset({
+          contactNumber: '',
+          _contactNumberSid: null
+        })
+        .then((model) => {
+          res.json({
+            status: 'ok', agent: prepareAgentModelForReturn(model)
+          });
+        })
+        .catch(next);
+      })
+      .catch(next);
     })
     .catch(next);
   });

@@ -26,13 +26,13 @@ export default class HomeContact extends React.Component {
     this.sent = false;
   }
 
+  componentDidMount() {
+    ContactStore.listen(this.storeListener);
+  }
+
   state = {
     error: null,
     contact: null
-  }
-
-  componentDidMount() {
-    ContactStore.listen(this.storeListener);
   }
 
   onContactStoreChange(state) {
@@ -89,15 +89,15 @@ export default class HomeContact extends React.Component {
   }
 
   render() {
-    let terms = '/404';
+    //let terms = '/404';
 
     if (this.props.context) {
       this.context = this.props.context;
     }
 
-    if (this.context && this.context.router) {
-      terms = this.context.router.makeHref('contentTerms');
-    }
+    // if (this.context && this.context.router) {
+    //   terms = this.context.router.makeHref('contentTerms');
+    // }
 
     let error = this.handleErrorState();
 

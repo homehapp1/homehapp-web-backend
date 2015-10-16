@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Input from 'react-bootstrap/lib/Input';
-import { enumerate, createNotification } from '../../../common/Helpers';
+import { createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('EditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();

@@ -31,7 +31,7 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Contact')
     .createNoMultiset(data)
-    .then((model) => {
+    .then(() => {
       app.log.debug(`Successfully saved Contact row`);
     })
     .catch((err) => {

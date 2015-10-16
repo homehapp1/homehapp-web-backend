@@ -8,7 +8,6 @@ let debug = require('debug')('ChooseAgents');
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeActions from '../../actions/HomeActions';
@@ -25,11 +24,6 @@ export default class ChooseAgents extends React.Component {
     super(props);
     this.storeListener = this.onChange.bind(this);
     this.agents = {};
-  }
-
-  state = {
-    error: null,
-    agents: AgentListStore.getAgents()
   }
 
   componentDidMount() {
@@ -49,6 +43,11 @@ export default class ChooseAgents extends React.Component {
 
   componentWillUnmount() {
     AgentListStore.unlisten(this.storeListener);
+  }
+
+  state = {
+    error: null,
+    agents: AgentListStore.getAgents()
   }
 
   onChange(state) {

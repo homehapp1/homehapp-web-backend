@@ -18,17 +18,17 @@ export default class NeighborhoodSelect extends React.Component {
     this.selected = null;
   }
 
-  state = {
-    error: null,
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
-  };
-
   componentDidMount() {
     NeighborhoodListStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     NeighborhoodListStore.unlisten(this.storeListener);
+  }
+
+  state = {
+    error: null,
+    neighborhoods: NeighborhoodListStore.getState().neighborhoods
   }
 
   onChange() {

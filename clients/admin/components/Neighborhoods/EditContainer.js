@@ -15,11 +15,6 @@ class NeighborhoodsEditContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
-  state = {
-    error: null,
-    neighborhood: NeighborhoodListStore.getNeighborhood(this.props.params.id)
-  }
-
   componentDidMount() {
     NeighborhoodListStore.listen(this.storeListener);
     if (!NeighborhoodListStore.getNeighborhood(this.props.params.id)) {
@@ -29,6 +24,11 @@ class NeighborhoodsEditContainer extends React.Component {
 
   componentWillUnmount() {
     NeighborhoodListStore.unlisten(this.storeListener);
+  }
+
+  state = {
+    error: null,
+    neighborhood: NeighborhoodListStore.getNeighborhood(this.props.params.id)
   }
 
   onChange(/*state*/) {

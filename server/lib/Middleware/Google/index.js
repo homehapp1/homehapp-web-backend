@@ -5,7 +5,7 @@ import expressWinston from 'express-winston';
 import {getEnvironmentValue} from '../../Helpers';
 import path from 'path';
 
-exports.configure = function(app, config = {}) {
+exports.configure = function(app/*, config = {}*/) {
 
   app.googleCallbacks = app.googleCallbacks || {
     onStop: null,

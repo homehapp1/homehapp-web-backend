@@ -12,17 +12,17 @@ export default class UsersCreateContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
-  state = {
-    error: null,
-    user: null
-  }
-
   componentDidMount() {
     UserStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     UserStore.unlisten(this.storeListener);
+  }
+
+  state = {
+    error: null,
+    user: null
   }
 
   onChange(/*state*/) {

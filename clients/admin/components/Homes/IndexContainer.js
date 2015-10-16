@@ -18,11 +18,6 @@ class HomesIndexContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
-  state = {
-    error: null,
-    homes: HomeListStore.getState().homes
-  }
-
   componentDidMount() {
     debug('componentDidMount');
     HomeListStore.listen(this.storeListener);
@@ -31,6 +26,11 @@ class HomesIndexContainer extends React.Component {
 
   componentWillUnmount() {
     HomeListStore.unlisten(this.storeListener);
+  }
+
+  state = {
+    error: null,
+    homes: HomeListStore.getState().homes
   }
 
   onChange(state) {

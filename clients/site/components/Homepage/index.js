@@ -26,11 +26,6 @@ export default class Homepage extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
-  state = {
-    error: null,
-    homes: HomeListStore.getState().homes
-  };
-
   componentDidMount() {
     // Trigger the resize events defined in layout
     window.dispatchEvent(new Event('resize'));
@@ -45,6 +40,11 @@ export default class Homepage extends React.Component {
     document.getElementsByTagName('body')[0].removeAttribute('data-handler');
     HomeListStore.unlisten(this.storeListener);
     setPageTitle();
+  }
+
+  state = {
+    error: null,
+    homes: HomeListStore.getState().homes
   }
 
   onChange(state) {

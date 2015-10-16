@@ -67,12 +67,6 @@ class UploadArea extends React.Component {
     //this.state.signatureData = this.props.signatureData;
   }
 
-  state = {
-    //signatureData: null,
-    uploading: false,
-    uploads: {}
-  }
-
   componentDidMount() {
     this._buildDropzone();
   }
@@ -82,6 +76,12 @@ class UploadArea extends React.Component {
       this.dropzone.destroy();
     }
     this.dropzone = null;
+  }
+
+  state = {
+    //signatureData: null,
+    uploading: false,
+    uploads: {}
   }
 
   static fetchCloudinarySignature(folder) {
