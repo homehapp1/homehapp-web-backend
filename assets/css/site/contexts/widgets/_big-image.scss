@@ -58,6 +58,10 @@
       width: 100%;
       z-index: -5;
       background-color: white;
+
+      @include small() {
+        display: none;
+      }
     }
 
     &:before {
@@ -80,6 +84,7 @@
 
       @include small() {
         @include vendors(transition-property, none);
+        z-index: 0;
       }
     }
 
@@ -100,6 +105,10 @@
     & > .image-content {
       position: absolute;
       z-index: -4;
+      
+      @incclude small() {
+        z-index: 0;
+      }
     }
   }
 

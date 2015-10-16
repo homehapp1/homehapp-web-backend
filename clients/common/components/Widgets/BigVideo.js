@@ -53,6 +53,7 @@ export default class BigVideo extends BigBlock {
     this.onMounted();
     this.video = React.findDOMNode(this.refs.video);
 
+    this.containerControls();
     this.playbackControls();
     this.volumeControls();
     this.positionControls();
@@ -61,9 +62,48 @@ export default class BigVideo extends BigBlock {
 
   componentWillUnmount() {
     this.onUnmount();
-    if (this.container) {
-      this.container.removeEvent('mousedown', this.togglePlay.bind(this), false);
-    }
+  }
+
+  containerControls() {
+    debug('containerControls');
+    this.container = new DOMManipulator(this.refs.container);
+    let prev = null;
+    let ts = null;
+
+    // Start watching the touches
+    this.container.addEvent('touchstart', (event) => {
+      debug('Touch', event);
+      if (!event.target.className.match(/\bcontent\b/)) {
+        return null;
+      }
+      prev = event;
+      ts = (new Date()).getTime();
+    }, false);
+
+    // Reset the previous event so that moves do not count
+    this.container.addEvent('touchmove', (event) => {
+      prev = null;
+    }, false);
+
+    this.container.addEvent('touchend', (event) => {
+      if (!prev) {
+        debug('No previous found');
+        return null;
+      }
+      if (!event.target.className.match(/\bcontent\b/)) {
+        debug('Not in the content');
+        return null;
+      }
+      if (Math.abs(prev.pageX - event.pageX) > 10 || Math.abs(prev.pageY - event.pageY) > 10) {
+        debug('Touch moved');
+        return null;
+      }
+      if ((new Date()).getTime() - ts > 500) {
+        debug('Touch lasted too long');
+      }
+      this.video.play();
+    });
+    debug(this.container);
   }
 
   playbackControls() {
@@ -157,7 +197,7 @@ export default class BigVideo extends BigBlock {
       event.stopPropagation();
       event.preventDefault();
     }
-    let x = event.offsetX || 0;
+    let x = event.offsetX || event.layerX || 0;
     let pos = x / this.positionController.width();
     this.video.currentTime = pos * this.video.duration;
     this.bar.skipAnimation();
