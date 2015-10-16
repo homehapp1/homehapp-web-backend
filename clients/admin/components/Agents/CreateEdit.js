@@ -62,6 +62,11 @@ export default class AgentsCreateEdit extends React.Component {
 
   onChange(state) {
     debug('onChange', state);
+
+    if (state.created) {
+      return window.location.reload();
+    }
+
     this.setState(state);
   }
 
