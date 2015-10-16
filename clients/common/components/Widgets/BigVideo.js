@@ -6,6 +6,7 @@ import Video from './Video';
 import Separator from './Separator';
 import BigBlock from './BigBlock';
 import DOMManipulator from '../../DOMManipulator';
+import { scrollTop } from '../../Helpers';
 
 let debug = require('debug')('BigVideo');
 
@@ -134,7 +135,8 @@ export default class BigVideo extends BigBlock {
       }, 1000);
     };
 
-    this.video.addEventListener('timeupdate', (event) => {
+    // Set the progress indicator when the time is updated
+    this.video.addEventListener('timeupdate', () => {
       if (this.video.paused) {
         return null;
       }
@@ -145,6 +147,7 @@ export default class BigVideo extends BigBlock {
       this.position = this.video.currentTime / this.video.duration;
       this.bar.css('width', `${this.position * 100}%`);
     });
+
     this.positionController.addEvent('mousedown', this.onPositionChange.bind(this), true);
     this.positionController.addEvent('touchstart', this.onPositionChange.bind(this), true);
   }
@@ -163,8 +166,15 @@ export default class BigVideo extends BigBlock {
   fullscreenControls() {
     this.fullscreen = new DOMManipulator(this.refs.fullscreen);
     this.wrapper = new DOMManipulator(this.refs.wrapper);
+    let prevScroll = 0;
+
     let toggleFullscreen = (event) => {
       this.inFullscreen = true;
+      // Store the scroll top
+      if (!prevScroll) {
+        prevScroll = scrollTop();
+      }
+
       this.container.toggleFullscreen(
         () => {
           this.fullscreen.addClass('in-fullscreen');
@@ -175,6 +185,14 @@ export default class BigVideo extends BigBlock {
           this.fullscreen.removeClass('in-fullscreen');
           this.wrapper.removeClass('fullscreen');
           this.inFullscreen = false;
+
+          setTimeout(() => {
+            // Use the previous scroll top to return to the original location
+            if (prevScroll) {
+              scrollTop(prevScroll, 10);
+              prevScroll = 0;
+            }
+          }, 200);
         }
       );
       event.preventDefault();
@@ -185,30 +203,30 @@ export default class BigVideo extends BigBlock {
     this.fullscreen.addEvent('touchstart', toggleFullscreen, true);
   }
 
+  // Invoked when the container is visible on the screen (note: this.threshold)
   onDisplayContainer() {
     if (!this.video || this.inFullscreen) {
       return null;
     }
-    debug('onDisplayContainer');
+    // debug('onDisplayContainer');
     this.bar.skipAnimation();
     this.video.muted = true;
     this.video.currentTime = 0;
     this.video.play();
   }
 
+  // Invoked when the container is invisible on the screen (note: this.threshold)
   onHideContainer() {
     if (!this.video || this.inFullscreen) {
       return null;
     }
-    debug('onHideContainer');
+    // debug('onHideContainer');
     this.video.pause();
   }
 
+  // Toggle the play state of the video
   togglePlay(event) {
     if (event) {
-      if (event.target.parentNode.className.match(/controls/)) {
-        return true;
-      }
       event.stopPropagation();
       event.preventDefault();
     }
