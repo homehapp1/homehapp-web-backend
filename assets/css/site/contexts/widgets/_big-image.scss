@@ -58,6 +58,10 @@
       width: 100%;
       z-index: -5;
       background-color: white;
+
+      @include small() {
+        display: none;
+      }
     }
 
     &:before {
@@ -80,6 +84,7 @@
 
       @include small() {
         @include vendors(transition-property, none);
+        z-index: 0;
       }
     }
 
@@ -100,6 +105,10 @@
     & > .image-content {
       position: absolute;
       z-index: -4;
+      
+      @incclude small() {
+        z-index: 0;
+      }
     }
   }
 
@@ -143,30 +152,42 @@
     }
   }
 
-  .controls {
+  &.fullscreen {
     position: absolute;
-    bottom: $contentPadding;
     left: 0;
     right: 0;
-    text-align: center;
-    font-size: $fontSizeHeading3;
-    color: white;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: black;
 
-    .mute, .invisible {
-      opacity: 0;
+    .image-author, .image-text {
+      display: none !important;
     }
 
-    .fa {
-      display: inline-block;
-      cursor: pointer;
-      @include vendors(transition-property, all);
-      @include vendors(transition-duration, $transitionDuration);
-      width: 1em;
-      overflow: hidden;
-      margin: 0 0.2em;
+    &.fixed {
+      position: absolute;
 
-      &:hover {
-        color: $turquoise;
+      &:before, &:after {
+        display: none;
+      }
+    }
+
+    .image-content {
+      z-index: 0;
+      background-color: transparent;
+
+      & > * {
+        min-width: 0;
+        min-height: 0;
+        max-width: 100%;
+        max-height: 100%;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
       }
     }
   }

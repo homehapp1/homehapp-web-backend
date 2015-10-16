@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+let debug = require('debug')('DOMManipulator');
 
 class DOMManipulator {
   constructor(node) {
@@ -184,6 +185,74 @@ class DOMManipulator {
       top - tolerance < (window.pageYOffset + window.innerHeight) &&
       (top + height + tolerance) > window.pageYOffset
     );
+  }
+
+  isFullscreen() {
+    return !(!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement);
+  }
+
+  enterFullscreen() {
+    debug('Enter fullscreen');
+    if (this.node.requestFullscreen) {
+      return this.node.requestFullscreen();
+    } else if (this.node.msRequestFullscreen) {
+      return this.node.msRequestFullscreen();
+    } else if (this.node.mozRequestFullScreen) {
+      return this.node.mozRequestFullScreen();
+    } else if (this.node.webkitRequestFullscreen) {
+      return this.node.webkitRequestFullscreen();
+    }
+    return false;
+  }
+
+  exitFullscreen() {
+    debug('Exit fullscreen');
+    if (document.exitFullscreen) {
+      return document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      return document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      return document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      return document.webkitExitFullscreen();
+    }
+
+    return false;
+  }
+
+  toggleFullscreen(onEnter = null, onExit = null) {
+    if (document.fullscreenEnabled) {
+      debug('Fullscreen not enabled');
+    }
+    let events = ['webkitfullscreenchange', 'mozfullscreenchange', 'fullscreenchange', 'MSFullscreenChange'];
+    let fsChange = function() {
+      debug('fsChange', this.isFullscreen());
+      if (this.isFullscreen()) {
+        if (typeof onEnter === 'function') {
+          onEnter();
+        }
+      } else {
+        if (typeof onExit === 'function') {
+          onExit();
+        }
+        for (let event of events) {
+          debug('removeEventListener', event);
+          document.removeEventListener(event, fsChange);
+        }
+      }
+    };
+    fsChange = fsChange.bind(this);
+
+    for (let event of events) {
+      debug('addEventListener', event);
+      document.addEventListener(event, fsChange);
+    }
+
+    if (this.isFullscreen()) {
+      this.exitFullscreen();
+    } else {
+      this.enterFullscreen();
+    }
   }
 }
 

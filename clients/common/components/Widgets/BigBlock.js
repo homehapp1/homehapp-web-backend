@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { setFullHeight, scrollTop } from '../../Helpers';
+import { setFullHeight } from '../../Helpers';
 import DOMManipulator from '../../DOMManipulator';
 
 let debug = require('debug')('BigBlock');
