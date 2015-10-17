@@ -110,8 +110,9 @@ export default class Map extends React.Component {
       // Type cast
       let lat = Number(markerData.location[0]);
       let lng = Number(markerData.location[1]);
+      debug('lat', lat, 'lng', lng);
 
-      if (isNaN(lat) || !isNaN(lng) || !lat || !lng) {
+      if (isNaN(lat) || isNaN(lng) || !lat || !lng) {
         debug('markerData.location failed type check, skip', markerData);
         return null;
       }
