@@ -47,6 +47,7 @@ export default class BigVideo extends BigBlock {
     this.containerTolerance = -150;
     this.position = null;
     this.inFullscreen = false;
+    this.muteChanged = false;
   }
 
   componentDidMount() {
@@ -54,7 +55,7 @@ export default class BigVideo extends BigBlock {
     this.onMounted();
     this.video = React.findDOMNode(this.refs.video);
 
-    this.containerControls();
+    // this.containerControls();
     this.playbackControls();
     this.volumeControls();
     this.positionControls();
@@ -113,6 +114,11 @@ export default class BigVideo extends BigBlock {
     this.play.addClass('hidden');
     this.play.addEvent('mousedown', this.playVideo, true);
     this.play.addEvent('touchstart', this.playVideo, true);
+
+    // Mobile play button
+    this.mobilePlay = new DOMManipulator(this.refs.mobilePlay);
+    this.mobilePlay.addEvent('mousedown', this.playVideo, true);
+    this.mobilePlay.addEvent('touchstart', this.playVideo, true);
 
     // Pause button
     this.pause = new DOMManipulator(this.refs.pause);
@@ -251,7 +257,10 @@ export default class BigVideo extends BigBlock {
     }
     // debug('onDisplayContainer');
     this.bar.skipAnimation();
-    this.video.muted = true;
+
+    if (!this.muteChanged) {
+      this.video.muted = true;
+    }
     this.video.currentTime = 0;
     this.video.play();
   }
@@ -303,6 +312,7 @@ export default class BigVideo extends BigBlock {
       event.stopPropagation();
       event.preventDefault();
     }
+    this.muteChanged = true;
     this.video.muted = true;
   }
 
@@ -311,6 +321,7 @@ export default class BigVideo extends BigBlock {
       event.stopPropagation();
       event.preventDefault();
     }
+    this.muteChanged = true;
     this.video.muted = false;
   }
 
@@ -372,7 +383,7 @@ export default class BigVideo extends BigBlock {
     return (
       <div className='bigvideo-wrapper' ref='container'>
         <div {...props} ref='wrapper'>
-          <i className='fa fa-play play-icon show-for-small' ref='mobilePlay'></i>
+          <i className='fa fa-play play-icon' ref='mobilePlay'></i>
           <div className='image-content'>
             <Image {...image} className='show-for-small' width={600} height={600} />
             <Video {...video} className='big-video hide-for-small' ref='video' />
@@ -387,7 +398,7 @@ export default class BigVideo extends BigBlock {
             </div>
             <i className='controller fa fa-play play' ref='play'></i>
             <i className='controller fa fa-pause pause' ref='pause'></i>
-            <i className='controller fa fa-volume-up volume mute hidden' ref='mute'></i>
+            <i className='controller fa fa-volume-up volume mute' ref='mute'></i>
             <i className='controller fa fa-volume-off volume unmute' ref='unmute'></i>
             <i className='controller fullscreen' ref='fullscreen'>
               <i className='fa enter fa-arrows-alt'></i>
