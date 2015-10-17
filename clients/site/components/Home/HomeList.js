@@ -5,6 +5,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Hoverable from '../../../common/components/Widgets/Hoverable';
+import DOMManipulator from '../../../common/DOMManipulator';
 
 let debug = require('../../../common/debugger')('HomeList');
 
@@ -25,6 +26,57 @@ export default class HomeList extends React.Component {
     className: null,
     page: 1
   };
+
+  constructor() {
+    super();
+    this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.container = new DOMManipulator(this.refs.container);
+    this.updateEvents();
+  }
+
+  componentDidUpdate(props, state) {
+    this.updateEvents();
+  }
+
+  updateEvents() {
+    if (!this.container) {
+      return false;
+    }
+
+    let cards = this.container.getByClass('preview');
+    for (let card of cards) {
+      card.removeEvent('click', this.onClick, true);
+      card.addEvent('click', this.onClick, true);
+      card.removeEvent('touch', this.onClick, true);
+      card.addEvent('touch', this.onClick, true);
+    }
+  }
+
+  onClick(event) {
+    let target = event.target;
+    do {
+      if (target.tagName.toLowerCase() === 'a') {
+        return true;
+      }
+
+      if (target === this.container) {
+        break;
+      }
+      target = target.parentNode;
+    } while (target.parentNode);
+
+    let links = this.container.getByTagName('a');
+    for (let link of links) {
+      let e = new Event('click', {
+        target: link
+      });
+      link.node.dispatchEvent(e);
+      break;
+    }
+  }
 
   getStreet(home) {
     if (home.location.address.street) {
@@ -53,7 +105,6 @@ export default class HomeList extends React.Component {
     if (this.props.className) {
       containerClass.push(this.props.className);
     }
-    debug('Draw homes', this.props.items, this.props.max);
     let homes = this.props.items;
     let limit = this.props.max;
     let page = Number(this.props.page) - 1;
@@ -63,17 +114,15 @@ export default class HomeList extends React.Component {
     }
 
     if (homes.length > limit) {
-      debug('Trim array');
       homes = homes.splice(page * limit, this.props.max);
     }
 
     return (
-      <div className={containerClass.join(' ')} ref='homeList'>
+      <div className={containerClass.join(' ')} ref='container'>
         {this.props.children}
         <div className='clearfix'>
           {
             homes.map((home, index) => {
-              debug('Home', home.title);
               let classes = ['preview'];
 
               if (index === this.props.max) {
@@ -113,7 +162,7 @@ export default class HomeList extends React.Component {
               };
 
               return (
-                <div className={classes.join(' ')} key={`homeListItem${index}`}>
+                <div className={classes.join(' ')} key={`containerItem${index}`}>
                   <Link {...link} className='thumbnail'>
                     <Hoverable {...mainImage} width={464} height={556} mode='fill' applySize>
                       <span className='title'>{home.homeTitle}</span>
