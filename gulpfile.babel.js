@@ -294,10 +294,19 @@ gulp.task('dist-clients', ['minify-clients'], (callback) => {
   });
 });
 
+gulp.task('apidoc', function(done) {
+  g.apidoc({
+    src: "server/routes",
+    dest: "docs/api"
+  }, done);
+});
+
 gulp.task('watch', function(){
-  livereload.listen({
-    quiet: true
-  });
+  if (paths.clients[PROJECT_NAME]) {
+    livereload.listen({
+      quiet: true
+    });
+  }
 
   gulp.watch(paths.server.views, ['copy-server-views']);
   gulp.watch(paths.server.sources, ['lint']).on('error', function(err) {
@@ -305,12 +314,17 @@ gulp.task('watch', function(){
     this.emit('end');
   });
 
-  gulp.watch(paths.clients[PROJECT_NAME].sources, ['build-clients', 'restart-dev']).on('error', gutil.log);
-  gulp.watch(paths.clients[PROJECT_NAME].styles, ['build-clients']).on('error', gutil.log);
+  if (paths.clients[PROJECT_NAME]) {
+    gulp.watch(paths.clients[PROJECT_NAME].sources, ['build-clients', 'restart-dev']).on('error', gutil.log);
+    gulp.watch(paths.clients[PROJECT_NAME].styles, ['build-clients']).on('error', gutil.log);
+  }
 
   gulp.watch('./server/**', g.batch(function(events, done) {
     //console.log('server changed', events);
     gulp.start('restart-dev', done);
+    if (PROJECT_NAME === 'api') {
+      gulp.start('apidoc', done);
+    }
   })).on('error', gutil.log);
 
   gulp.watch('./configs/**', g.batch(function(events, done) {
@@ -318,22 +332,30 @@ gulp.task('watch', function(){
     gulp.start('restart-dev', done);
   })).on('error', gutil.log);
 
-  gulp.watch('./build/**', function(changed) {
-    livereload.changed(changed);
-  }).on('error', gutil.log);
+  if (paths.clients[PROJECT_NAME]) {
+    gulp.watch('./build/**', function(changed) {
+      livereload.changed(changed);
+    }).on('error', gutil.log);
+  }
 });
 
 gulp.task('restart-dev', () => {
   if (nodemonInstance) {
     nodemonInstance.once('restart', () => {
-      livereload.changed();
+      if (paths.clients[PROJECT_NAME]) {
+        livereload.changed();
+      }
     });
     nodemonInstance.emit('restart');
   }
 });
 
-//, 'build-server'
-gulp.task('dev', ['lint', 'build-clients', 'watch'], () => {
+let devSubTasks = ['lint', 'build-clients', 'watch'];
+if (PROJECT_NAME === 'api') {
+  devSubTasks = ['lint', 'apidoc', 'watch'];
+}
+
+gulp.task('dev', devSubTasks, () => {
   nodemonInstance = nodemon({
     execMap: {
       js: 'node'

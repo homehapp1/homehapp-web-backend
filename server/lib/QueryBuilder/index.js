@@ -18,7 +18,7 @@ class QueryBuilder {
     return new Klass(this.app);
   }
   query(modelName) {
-    console.warn('QueryBuilder.query has been depracated. Use .forModel');
+    console.warn(`QueryBuilder.query(${modelName}) has been depracated. Use .forModel(${modelName})`);
     return this.forModel(modelName);
   }
 }

@@ -75,10 +75,10 @@ echo ""
 buildContainer "stg"
 tagContainer "stg"
 
-# echo "Building and tagging production container"
-# echo ""
-# buildContainer "prod"
-# tagContainer "prod"
+echo "Building and tagging production container"
+echo ""
+buildContainer "prod"
+tagContainer "prod"
 
 if [ "$CLEAN" = "1" ]; then
   echo "Cleaning old Docker containers"

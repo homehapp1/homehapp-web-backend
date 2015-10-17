@@ -5,6 +5,8 @@ gcloud compute instances create hh-management \
 --image debian-7-backports \
 --tags homehapp,management
 
+# Connect to instance
+
 gcloud compute ssh --project $PROJECT_ID --ssh-flag="-A" homehapp@hh-management
 
 
