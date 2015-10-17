@@ -72,6 +72,7 @@ export default class HomesEditDetails extends EditDetails {
   state = {
     error: null,
     uploads: UploadAreaUtils.UploadStore.getState().uploads,
+    home: null,
     currentAttributes: [],
     images: [],
     coordinates: []
@@ -269,7 +270,7 @@ export default class HomesEditDetails extends EditDetails {
       },
       amenities: [],
       facilities: []
-    }, this.props.home || {});
+    }, this.state.home || this.props.home || {});
     let homeLocation = merge({
       address: {
         street: null,
@@ -429,8 +430,8 @@ export default class HomesEditDetails extends EditDetails {
                 placeholder='Select Applied Currency'
                 defaultValue={home.costs.currency}
                 onChange={this.onFormChange.bind(this)}>
-                <option value='EUR'>Euro</option>
                 <option value='GBP'>British Pounds</option>
+                <option value='EUR'>Euro</option>
                 <option value='SUD'>US Dollars</option>
               </Input>
               <Input
