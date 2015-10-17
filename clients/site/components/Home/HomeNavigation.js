@@ -8,14 +8,17 @@ import HomeContact from './HomeContact';
 import Modal from '../../../common/components/Widgets/Modal';
 import DOMManipulator from '../../../common/DOMManipulator';
 
+let debug = require('debug')('HomeNavigation');
+
 export default class HomeNavigation extends React.Component {
   static propTypes = {
-    home: React.PropTypes.object.isRequired
+    home: React.PropTypes.object.isRequired,
+    router: React.PropTypes.object
   };
 
   static contextTypes = {
     router: React.PropTypes.func
-  };
+  }
 
   constructor() {
     super();
@@ -87,6 +90,7 @@ export default class HomeNavigation extends React.Component {
         </li>
       );
     }
+    debug('this.props.router', this.props.router);
 
     return (
       <ContentNavigation>

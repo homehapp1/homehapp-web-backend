@@ -16,6 +16,11 @@ class NeighborhoodsIndexContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    neighborhoods: NeighborhoodListStore.getState().neighborhoods
+  }
+
   componentDidMount() {
     NeighborhoodListStore.listen(this.storeListener);
     NeighborhoodListStore.fetchNeighborhoods();
@@ -23,11 +28,6 @@ class NeighborhoodsIndexContainer extends React.Component {
 
   componentWillUnmount() {
     NeighborhoodListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
   }
 
   onChange(state) {

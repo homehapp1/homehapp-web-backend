@@ -51,6 +51,15 @@ export default class HomesEditDetails extends EditDetails {
     }
   }
 
+  state = {
+    error: null,
+    uploads: UploadAreaUtils.UploadStore.getState().uploads,
+    home: null,
+    currentAttributes: [],
+    images: [],
+    coordinates: []
+  }
+
   componentDidMount() {
     HomeStore.listen(this.storeListener);
   }
@@ -67,15 +76,6 @@ export default class HomesEditDetails extends EditDetails {
 
   componentWillUnmount() {
     HomeStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    uploads: UploadAreaUtils.UploadStore.getState().uploads,
-    home: null,
-    currentAttributes: [],
-    images: [],
-    coordinates: []
   }
 
   onHomeStoreChange(state) {

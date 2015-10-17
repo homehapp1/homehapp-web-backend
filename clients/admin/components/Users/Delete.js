@@ -34,16 +34,16 @@ export default class UsersDelete extends React.Component {
     this.storeListener = this.onUserStoreChange.bind(this);
   }
 
+  state = {
+    error: null
+  }
+
   componentDidMount() {
     UserStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     UserStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null
   }
 
   onUserStoreChange(state) {

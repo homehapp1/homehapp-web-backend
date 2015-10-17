@@ -12,17 +12,17 @@ export default class HomesCreateContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    home: null
+  }
+
   componentDidMount() {
     HomeStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     HomeStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    home: null
   }
 
   onChange(/*state*/) {

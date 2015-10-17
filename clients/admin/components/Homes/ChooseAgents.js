@@ -26,6 +26,11 @@ export default class ChooseAgents extends React.Component {
     this.agents = {};
   }
 
+  state = {
+    error: null,
+    agents: AgentListStore.getState().items
+  }
+
   componentDidMount() {
     AgentListStore.listen(this.storeListener);
     // See that the dispatcher is called only when the previous
@@ -43,11 +48,6 @@ export default class ChooseAgents extends React.Component {
 
   componentWillUnmount() {
     AgentListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    agents: AgentListStore.getState().items
   }
 
   onChange(state) {

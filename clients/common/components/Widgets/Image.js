@@ -34,7 +34,7 @@ export default class Image extends React.Component {
     gravity: React.PropTypes.string,
     className: React.PropTypes.string,
     applySize: React.PropTypes.bool
-  };
+  }
 
   static defaultProps = {
     width: null,
@@ -47,12 +47,16 @@ export default class Image extends React.Component {
     applySize: false,
     gravity: 'center',
     linked: ''
-  };
+  }
 
   constructor() {
     super();
     this.storeListener = this.onStateChange.bind(this);
     this.attributes = {};
+  }
+
+  state = {
+    config: ApplicationStore.getState().config
   }
 
   componentDidMount() {
@@ -79,10 +83,6 @@ export default class Image extends React.Component {
 
   componentWillUnmount() {
     ApplicationStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    config: ApplicationStore.getState().config
   }
 
   onStateChange() {

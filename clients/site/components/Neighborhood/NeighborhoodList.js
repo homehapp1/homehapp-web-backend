@@ -19,11 +19,16 @@ import { setPageTitle } from '../../../common/Helpers';
 export default class NeighborhoodList extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
-  };
+  }
 
   constructor() {
     super();
     this.storeListener = this.onChange.bind(this);
+  }
+
+  state = {
+    error: null,
+    neighborhoods: NeighborhoodListStore.getState().neighborhoods
   }
 
   componentDidMount() {
@@ -35,11 +40,6 @@ export default class NeighborhoodList extends React.Component {
   componentWillUnmount() {
     setPageTitle();
     NeighborhoodListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
   }
 
   onChange(state) {

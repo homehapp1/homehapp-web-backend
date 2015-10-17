@@ -16,6 +16,11 @@ export default class UsersDeleteContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    user: UserListStore.getUser(this.props.params.id)
+  }
+
   componentDidMount() {
     UserListStore.listen(this.storeListener);
     if (!UserListStore.getUser(this.props.params.id)) {
@@ -25,11 +30,6 @@ export default class UsersDeleteContainer extends React.Component {
 
   componentWillUnmount() {
     UserListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    user: UserListStore.getUser(this.props.params.id)
   }
 
   onChange(state) {

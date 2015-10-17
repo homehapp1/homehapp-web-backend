@@ -19,11 +19,16 @@ import { setPageTitle } from '../../../common/Helpers';
 export default class HomeSearch extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
-  };
+  }
 
   constructor() {
     super();
     this.storeListener = this.onChange.bind(this);
+  }
+
+  state = {
+    error: null,
+    homes: HomeListStore.getState().homes
   }
 
   componentDidMount() {
@@ -33,11 +38,6 @@ export default class HomeSearch extends React.Component {
 
   componentWillUnmount() {
     HomeListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    homes: HomeListStore.getState().homes
   }
 
   onChange(state) {

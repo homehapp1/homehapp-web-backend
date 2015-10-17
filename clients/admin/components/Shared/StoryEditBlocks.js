@@ -31,13 +31,6 @@ export default class StoryEditBlocks extends React.Component {
     //console.log('StoryEditBlocks', props);
   }
 
-  componentDidMount() {
-    //console.log('StoryEditBlocks:componentDidMount');
-  }
-
-  componentWillUnmount() {
-  }
-
   state = {
     blocks: []
   }

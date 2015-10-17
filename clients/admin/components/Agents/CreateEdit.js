@@ -23,6 +23,7 @@ export default class AgentsCreateEdit extends React.Component {
     onSave: React.PropTypes.func,
     onCancel: React.PropTypes.func
   }
+
   static defaultProps = {
     model: null,
     onSave: null,
@@ -42,6 +43,13 @@ export default class AgentsCreateEdit extends React.Component {
     this.imageUploaderInstanceId = randomNumericId();
   }
 
+  state = {
+    error: null,
+    model: null,
+    images: [],
+    uploads: UploadAreaUtils.UploadStore.getState().uploads
+  }
+
   componentDidMount() {
     debug('componentDidMount');
     AgentStore.listen(this.storeListener);
@@ -50,13 +58,6 @@ export default class AgentsCreateEdit extends React.Component {
   componentWillUnmount() {
     debug('componentWillUnmount');
     AgentStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    model: null,
-    images: [],
-    uploads: UploadAreaUtils.UploadStore.getState().uploads
   }
 
   onChange(state) {

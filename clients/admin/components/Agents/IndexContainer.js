@@ -16,6 +16,11 @@ class AgentsIndexContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    items: AgentListStore.getState().items
+  }
+
   componentDidMount() {
     AgentListStore.listen(this.storeListener);
     AgentListStore.fetchItems();
@@ -23,11 +28,6 @@ class AgentsIndexContainer extends React.Component {
 
   componentWillUnmount() {
     AgentListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    items: AgentListStore.getState().items
   }
 
   onChange(state) {

@@ -18,6 +18,11 @@ class UsersIndexContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    users: UserListStore.getState().users
+  }
+
   componentDidMount() {
     debug('componentDidMount');
     UserListStore.listen(this.storeListener);
@@ -26,11 +31,6 @@ class UsersIndexContainer extends React.Component {
 
   componentWillUnmount() {
     UserListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    users: UserListStore.getState().users
   }
 
   onChange(state) {
