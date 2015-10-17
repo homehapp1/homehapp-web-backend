@@ -295,7 +295,9 @@ export default class BigVideo extends BigBlock {
       event.stopPropagation();
       event.preventDefault();
     }
-    this.video.muted = false;
+    if (!this.muteChanged) {
+      this.video.muted = false;
+    }
     this.video.play();
   }
 
