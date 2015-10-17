@@ -81,7 +81,7 @@
   },
   "scripts": {
     "lint": "gulp lint",
-    "dev": "DEBUG=*,-babel,-express:*,-mquery,-pool2,-knex:client,-eslint:*,-tinylr:*,-send,-body-parser:* gulp dev",
+    "dev": "DEBUG=*,-minilr,-minilr:*,-nodemon,-babel,-express:*,-mquery,-pool2,-knex:client,-eslint:*,-tinylr:*,-send,-body-parser:* gulp dev",
     "dev-admin": "PROJECT_NAME=admin npm run dev",
     "dev-api": "PROJECT_NAME=api npm run dev",
     "build-site": "PROJECT_NAME=site NODE_ENV=production gulp build-clients",
