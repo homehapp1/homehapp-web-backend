@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import ApplicationStore from '../../stores/ApplicationStore';
@@ -55,6 +55,10 @@ export default class Image extends React.Component {
     this.attributes = {};
   }
 
+  state = {
+    config: ApplicationStore.getState().config
+  }
+
   componentDidMount() {
     ApplicationStore.listen(this.storeListener);
 
@@ -79,10 +83,6 @@ export default class Image extends React.Component {
 
   componentWillUnmount() {
     ApplicationStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    config: ApplicationStore.getState().config
   }
 
   onStateChange() {

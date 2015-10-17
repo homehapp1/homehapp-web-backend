@@ -1,4 +1,4 @@
-'use strict';
+
 
 import twilio from 'twilio';
 import QueryBuilder from '../../../lib/QueryBuilder';

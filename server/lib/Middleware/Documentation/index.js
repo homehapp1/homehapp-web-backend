@@ -1,4 +1,4 @@
-'use strict';
+
 
 import basicAuth from 'basic-auth-connect';
 import express from 'express';

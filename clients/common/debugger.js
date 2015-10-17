@@ -1,4 +1,4 @@
-'use strict';
+
 
 import debug from 'debug';
 let ExecutionEnvironment = require('react/lib/ExecutionEnvironment');

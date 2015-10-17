@@ -1,4 +1,4 @@
-'use strict';
+
 
 exports.extendSchema = function (schema) {
   require('util')._extend((schema.methods || {}), {

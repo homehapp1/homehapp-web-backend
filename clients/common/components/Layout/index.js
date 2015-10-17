@@ -1,5 +1,5 @@
 /* global window */
-'use strict';
+
 
 import React from 'react';
 import { scrollTop, setFullHeight, itemViews } from '../../Helpers';

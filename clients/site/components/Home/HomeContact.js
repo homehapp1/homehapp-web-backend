@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 
@@ -26,13 +26,13 @@ export default class HomeContact extends React.Component {
     this.sent = false;
   }
 
-  componentDidMount() {
-    ContactStore.listen(this.storeListener);
-  }
-
   state = {
     error: null,
     contact: null
+  }
+
+  componentDidMount() {
+    ContactStore.listen(this.storeListener);
   }
 
   onContactStoreChange(state) {

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {Strategy} from 'passport-strategy';
 import jwt from 'jsonwebtoken';

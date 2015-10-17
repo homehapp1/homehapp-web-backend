@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import NeighborhoodStore from '../../stores/NeighborhoodStore';
@@ -20,6 +20,11 @@ export default class NeighborhoodContainer extends React.Component {
     this.neighborhoodStoreListener = this.neighborhoodStoreOnChange.bind(this);
   }
 
+  state = {
+    error: null,
+    neighborhood: NeighborhoodStore.getState().neighborhood
+  }
+
   componentDidMount() {
     NeighborhoodStore.listen(this.neighborhoodStoreListener);
     NeighborhoodStore.fetchNeighborhoodBySlug(this.props.params.city, this.props.params.neighborhood, true);
@@ -27,11 +32,6 @@ export default class NeighborhoodContainer extends React.Component {
 
   componentWillUnmount() {
     NeighborhoodStore.unlisten(this.neighborhoodStoreListener);
-  }
-
-  state = {
-    error: null,
-    neighborhood: NeighborhoodStore.getState().neighborhood
   }
 
   neighborhoodStoreOnChange(state) {

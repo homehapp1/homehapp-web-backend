@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import UserListStore from '../../stores/UserListStore';
@@ -16,6 +16,11 @@ export default class UsersEditContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    user: UserListStore.getUser(this.props.params.id)
+  }
+
   componentDidMount() {
     UserListStore.listen(this.storeListener);
     if (!UserListStore.getUser(this.props.params.id)) {
@@ -25,11 +30,6 @@ export default class UsersEditContainer extends React.Component {
 
   componentWillUnmount() {
     UserListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    user: UserListStore.getUser(this.props.params.id)
   }
 
   onChange(state) {

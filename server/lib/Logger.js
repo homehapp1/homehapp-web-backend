@@ -1,4 +1,4 @@
-'use strict';
+
 
 import winston from 'winston';
 import {merge} from './Helpers';

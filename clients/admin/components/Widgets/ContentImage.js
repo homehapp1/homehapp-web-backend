@@ -1,4 +1,4 @@
-'use strict';
+
 
 import BaseBlock from '../Widgets/BaseBlock';
 

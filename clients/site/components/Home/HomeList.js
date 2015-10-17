@@ -1,5 +1,5 @@
 /* global window */
-'use strict';
+
 
 import React from 'react';
 import { Link } from 'react-router';
@@ -37,7 +37,7 @@ export default class HomeList extends React.Component {
     this.updateEvents();
   }
 
-  componentDidUpdate(props, state) {
+  componentDidUpdate(/*props, state*/) {
     this.updateEvents();
   }
 

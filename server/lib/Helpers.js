@@ -1,4 +1,4 @@
-'use strict';
+
 
 import fs from 'fs';
 import path from 'path';
@@ -29,8 +29,8 @@ exports.toTitleCase = function toTitleCase(str) {
 
 exports.clone = function clone(input) {
   let output = input,
-  type = typeOf(input),
-  index, size;
+    type = typeOf(input),
+    index, size;
 
   if (type === 'array') {
     output = [];

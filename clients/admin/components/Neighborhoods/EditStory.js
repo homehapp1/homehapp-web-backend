@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 // import { Link } from 'react-router';
@@ -25,16 +25,16 @@ export default class NeighborhoodsEditStory extends React.Component {
     this.storeListener = this.onNeighborhoodStoreChange.bind(this);
   }
 
+  state = {
+    error: null
+  }
+
   componentDidMount() {
     NeighborhoodStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     NeighborhoodStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null
   }
 
   onNeighborhoodStoreChange(state) {

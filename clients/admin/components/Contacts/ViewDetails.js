@@ -1,5 +1,5 @@
 /*global window */
-'use strict';
+
 
 import React from 'react';
 import Row from 'react-bootstrap/lib/Row';

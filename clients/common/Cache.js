@@ -1,5 +1,5 @@
 /*global window, process */
-'use strict';
+
 
 let debug = require('./debugger')('Cache');
 

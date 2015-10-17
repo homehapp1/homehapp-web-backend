@@ -1,4 +1,4 @@
-'use strict';
+
 
 import { loadCommonPlugins, commonJsonTransform, getMainImage, getImageSchema, populateMetadata } from './common';
 

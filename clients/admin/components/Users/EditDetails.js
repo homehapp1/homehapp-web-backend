@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import { Link } from 'react-router';
@@ -31,16 +31,16 @@ export default class UsersEditDetails extends EditDetails {
     debug('Constructor', this);
   }
 
+  state = {
+    error: null
+  }
+
   componentDidMount() {
     UserStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     UserStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null
   }
 
   onUserStoreChange(state) {

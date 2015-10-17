@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import { Link } from 'react-router';
@@ -25,7 +25,7 @@ export default class ContactsIndex extends React.Component {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <h2 className="navigation-title">
+          <h2 className='navigation-title'>
             Contacts
           </h2>
           <p>There are {this.props.contacts.length} contacts in the system currently.</p>
@@ -108,7 +108,7 @@ export default class ContactsIndex extends React.Component {
                 //     <td>{recipient.join(' ')}</td>
                 //     <td>
                 //       <Link
-                //         to="contactView"
+                //         to='contactView'
                 //         params={{id: contact.id}}>
                 //         {contact.contactTitle}
                 //       </Link>

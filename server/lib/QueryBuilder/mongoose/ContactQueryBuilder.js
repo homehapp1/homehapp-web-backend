@@ -1,4 +1,4 @@
-'use strict';
+
 
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';

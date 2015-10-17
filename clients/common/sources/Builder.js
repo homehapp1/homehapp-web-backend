@@ -1,4 +1,4 @@
-'use strict';
+
 
 import request from '../request';
 import _debugger from '../debugger';

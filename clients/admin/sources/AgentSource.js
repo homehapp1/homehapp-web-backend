@@ -1,4 +1,4 @@
-'use strict';
+
 
 import request from '../../common/request';
 import AgentActions from '../actions/AgentActions';
@@ -110,7 +110,7 @@ let AgentSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState, data) {
+      local(/*storeState, data*/) {
         return null;
       },
       success: AgentActions.updateSuccess,

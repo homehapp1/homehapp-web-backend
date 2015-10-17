@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
@@ -32,19 +32,19 @@ class NeighborhoodsEditDetails extends EditDetails {
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
   }
 
+  state = {
+    error: null,
+    uploads: UploadAreaUtils.UploadStore.getState().uploads,
+    currentAttributes: this.props.neighborhood.attributes,
+    images: []
+  }
+
   componentDidMount() {
     NeighborhoodStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     NeighborhoodStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    uploads: UploadAreaUtils.UploadStore.getState().uploads,
-    currentAttributes: this.props.neighborhood.attributes,
-    images: []
   }
 
   onNeighborhoodStoreChange(state) {

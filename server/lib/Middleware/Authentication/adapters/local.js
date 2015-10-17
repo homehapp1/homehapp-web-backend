@@ -1,4 +1,4 @@
-'use strict';
+
 
 //import moment from 'moment';
 
@@ -34,10 +34,10 @@ exports.register = function (parent, app, config) {
     }
 
     let sessionConfig = {
-        name: config.session.name,
-        secret: config.session.secret,
-        resave: true,
-        saveUninitialized: false
+      name: config.session.name,
+      secret: config.session.secret,
+      resave: true,
+      saveUninitialized: false
     };
 
     if (config.cookie) {
@@ -93,7 +93,8 @@ exports.register = function (parent, app, config) {
         username: username,
         password: password
       }
-    }, res = {};
+    };
+    let res = {};
 
     parent.authentication.authenticate('local', (authErr, user) => {
       if (authErr) {

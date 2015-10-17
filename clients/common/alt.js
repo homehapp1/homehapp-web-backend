@@ -1,4 +1,4 @@
-'use strict';
+
 
 import Alt from 'alt';
 //import chromeDebug from 'alt/utils/chromeDebug';

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import ContactListStore from '../../stores/ContactListStore';
@@ -18,6 +18,11 @@ class ContactsIndexContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    contacts: ContactListStore.getState().contacts
+  }
+
   componentDidMount() {
     debug('componentDidMount');
     ContactListStore.listen(this.storeListener);
@@ -26,11 +31,6 @@ class ContactsIndexContainer extends React.Component {
 
   componentWillUnmount() {
     ContactListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    contacts: ContactListStore.getState().contacts
   }
 
   onChange(state) {

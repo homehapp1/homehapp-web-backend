@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 // import { Link } from 'react-router';
@@ -27,16 +27,16 @@ export default class HomesEditStory extends React.Component {
     this.onSave = this.onSave.bind(this);
   }
 
+  state = {
+    error: null
+  }
+
   componentDidMount() {
     HomeStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     HomeStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null
   }
 
   onHomeStoreChange(state) {

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import HomeStore from '../../stores/HomeStore';
@@ -24,6 +24,11 @@ export default class HomeContainer extends React.Component {
     this.homeStoreListener = this.homeStoreOnChange.bind(this);
   }
 
+  state = {
+    error: null,
+    home: HomeStore.getState().home
+  }
+
   componentDidMount() {
     HomeStore.listen(this.homeStoreListener);
     HomeStore.fetchHomeBySlug(this.props.params.slug, true);
@@ -31,11 +36,6 @@ export default class HomeContainer extends React.Component {
 
   componentWillUnmount() {
     HomeStore.unlisten(this.homeStoreListener);
-  }
-
-  state = {
-    error: null,
-    home: HomeStore.getState().home
   }
 
   homeStoreOnChange(state) {

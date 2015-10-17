@@ -1,5 +1,5 @@
 /*global window */
-'use strict';
+
 
 import React from 'react';
 // import { Link } from 'react-router';
@@ -34,16 +34,16 @@ export default class HomesDelete extends React.Component {
     this.storeListener = this.onHomeStoreChange.bind(this);
   }
 
+  state = {
+    error: null
+  }
+
   componentDidMount() {
     HomeStore.listen(this.storeListener);
   }
 
   componentWillUnmount() {
     HomeStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null
   }
 
   onHomeStoreChange(state) {

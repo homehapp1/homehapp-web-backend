@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
@@ -42,6 +42,13 @@ export default class AgentsCreateEdit extends React.Component {
     this.imageUploaderInstanceId = randomNumericId();
   }
 
+  state = {
+    error: null,
+    model: null,
+    images: [],
+    uploads: UploadAreaUtils.UploadStore.getState().uploads
+  }
+
   componentDidMount() {
     debug('componentDidMount');
     AgentStore.listen(this.storeListener);
@@ -50,13 +57,6 @@ export default class AgentsCreateEdit extends React.Component {
   componentWillUnmount() {
     debug('componentWillUnmount');
     AgentStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    model: null,
-    images: [],
-    uploads: UploadAreaUtils.UploadStore.getState().uploads
   }
 
   onChange(state) {
@@ -234,7 +234,7 @@ export default class AgentsCreateEdit extends React.Component {
     let error = null;
     let savingLoader = null;
     let statusMessage = null;
-    let saveButtonDisabled = null;
+    //let saveButtonDisabled = null;
     let formTitle = 'Create model';
 
     if (this.state.model) {
@@ -247,7 +247,7 @@ export default class AgentsCreateEdit extends React.Component {
 
     if (AgentStore.isLoading()) {
       savingLoader = this.handlePendingState();
-      saveButtonDisabled = 'disabled';
+      //saveButtonDisabled = 'disabled';
     }
 
     if (this.state.saved) {
@@ -287,7 +287,7 @@ export default class AgentsCreateEdit extends React.Component {
     let countrySelections = this.getCountryOptions();
 
     return (
-      <Row className="center-block">
+      <Row className='center-block'>
         <h1>{formTitle}</h1>
 
         <p>
@@ -323,7 +323,7 @@ export default class AgentsCreateEdit extends React.Component {
                 defaultValue={agent.email}
                 required
               />
-              <Input label='Real Contact Number' wrapperClassName="wrapper">
+              <Input label='Real Contact Number' wrapperClassName='wrapper'>
                 <Row>
                   <Col xs={5}>
                     <Input
@@ -359,7 +359,7 @@ export default class AgentsCreateEdit extends React.Component {
                   </Col>
                 </Row>
               </Input>
-              <Input label='Twilio Phone number (auto-generated if empty)' wrapperClassName="wrapper">
+              <Input label='Twilio Phone number (auto-generated if empty)' wrapperClassName='wrapper'>
                 <Row>
                   <Col xs={6}>
                     <Input

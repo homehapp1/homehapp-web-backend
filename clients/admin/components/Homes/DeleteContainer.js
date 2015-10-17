@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
@@ -16,6 +16,11 @@ export default class HomesDeleteContainer extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
+  state = {
+    error: null,
+    home: HomeListStore.getHome(this.props.params.id)
+  }
+
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
     if (!HomeListStore.getHome(this.props.params.id)) {
@@ -25,11 +30,6 @@ export default class HomesDeleteContainer extends React.Component {
 
   componentWillUnmount() {
     HomeListStore.unlisten(this.storeListener);
-  }
-
-  state = {
-    error: null,
-    home: HomeListStore.getHome(this.props.params.id)
   }
 
   onChange(state) {
