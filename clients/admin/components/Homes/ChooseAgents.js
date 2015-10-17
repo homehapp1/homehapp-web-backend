@@ -31,9 +31,9 @@ export default class ChooseAgents extends React.Component {
     // See that the dispatcher is called only when the previous
     // dispatcher has had the time to finish
     setTimeout(() => {
-      if (!AgentListStore.getAgents().length) {
+      if (!AgentListStore.getState().items.length) {
         try {
-          AgentListStore.fetchAgents();
+          AgentListStore.fetchItems();
         } catch (error) {
           console.error('Failed to get the agents list', error.message);
         }
@@ -47,14 +47,14 @@ export default class ChooseAgents extends React.Component {
 
   state = {
     error: null,
-    agents: AgentListStore.getAgents()
+    agents: AgentListStore.getState().items
   }
 
   onChange(state) {
     debug('onChange', state);
     this.setState({
       error: AgentListStore.getState().error,
-      agents: AgentListStore.getAgents()
+      agents: AgentListStore.getState().items
     });
   }
 
