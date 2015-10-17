@@ -62,10 +62,25 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: 'user'
     },
+    // JWT Authentication related
+    _checkId: {
+      type: String,
+      default: ''
+    },
     active: {
       type: Boolean,
       index: true,
       default: true
+    },
+    // Client device related
+    deviceId: {
+      ios: String,
+      android: String
+    },
+    // Push notification related
+    pushToken: {
+      ios: String,
+      android: String
     }
   }));
 
@@ -138,15 +153,16 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.User.statics.editableFields = function () {
     return [
-      'firstname', 'lastname', 'email', 'username',
-      'password'
+      'firstname', 'lastname', 'email'
     ];
   };
 
   Object.keys(schemas).forEach((name) => {
     loadCommonPlugins(schemas[name], name, mongoose);
     schemas[name].options.toJSON.transform = (doc, ret) => {
-      return commonJsonTransform(ret);
+      ret = commonJsonTransform(ret);
+      delete ret.password;
+      return ret;
     };
   });
 

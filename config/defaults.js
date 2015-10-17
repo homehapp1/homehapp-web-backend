@@ -81,10 +81,16 @@ module.exports = (projectRoot) => {
           }
         },
         jwt: {
-          secretOrKey: 'really-secret-string-here-for-fwt',
-          issuer: 'qvik.fi',
-          audience: 'qvik.fi',
-          lifetimeSeconds: 86000
+          tokenField: 'X-Homehapp-Auth-Token',
+          secret: null,
+          checkIdField: '_checkId',
+          keys: {
+            public: path.join(projectRoot, 'auth-public.pem'),
+            private: path.join(projectRoot, 'auth-private.pem')
+          },
+          issuer: 'homehapp.com',
+          audience: 'homehapp.com',
+          lifetimeSeconds: 0 // 0 = Unexpiring
         },
         facebook: {
           appId: null,
@@ -114,6 +120,12 @@ module.exports = (projectRoot) => {
     },
     google: {
       enabled: false
+    },
+    versioning: {
+      enabled: false
+    },
+    docs: {
+      expose: false
     },
     extensions: {
       twilio: {

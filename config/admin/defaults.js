@@ -23,6 +23,14 @@ module.exports = (projectRoot) => {
         }
       }
     },
+    firstRun: {
+      admin: {
+        enabled: true,
+        path: '/firstrun',
+        username: 'qvik-admin',
+        password: 'qvik-admin-firstrun'
+      }
+    },
     clientConfig: {
       siteHost: 'http://localhost:3001',
       cloudinary: {

@@ -82,13 +82,16 @@ cd ../../../
 
 ./support/createContainers.sh site
 ./support/createContainers.sh admin
+./support/createContainers.sh api
 
 # These are run only when creating the clusters, not when updating them
 ./support/createCluster.sh site stg
 ./support/createCluster.sh admin stg
+./support/createCluster.sh api stg
 
 ./support/updateCluster.sh site stg
 ./support/updateCluster.sh admin stg
+./support/updateCluster.sh api stg
 ```
 
 # Updating site assets
@@ -114,3 +117,35 @@ npm run distribute-admin
     to create local content
 2. For running the site use `npm run dev`
 3. For running the admin interface use `npm run dev-admin`
+
+# Production infrastructure
+
+### Create
+
+```sh
+export PROJECT_ID=homehappweb
+gcloud config set project $PROJECT_ID
+```
+
+```sh
+cd support/dockers/nginx-proxy
+make build push
+cd ../../../
+```
+
+```sh
+./support/production/createCluster.sh site certs/homehapp_com/star_nytinappi_fi
+./support/production/createCluster.sh admin certs/homehapp_com/star_nytinappi_fi
+./support/production/createCluster.sh api certs/homehapp_com/star_nytinappi_fi
+```
+
+Administration first run:
+admin@homehapp.com / ekb7iLMGQsHYL2nr5OMnf88+IuHn5jDg
+
+### Update
+
+```sh
+./support/production/updateCluster.sh site
+./support/production/updateCluster.sh admin
+./support/production/updateCluster.sh api
+```

@@ -158,6 +158,39 @@ class UserQueryBuilder extends BaseQueryBuilder {
 
     return this;
   }
+
+  findByDeviceId(deviceId) {
+    this.queries.push((callback) => {
+      let findQuery = {
+        $or: [
+          {'deviceId.ios': deviceId},
+          {'deviceId.android': deviceId}
+        ],
+        deletedAt: null
+      };
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
+      }
+
+      this.Model.findOne(findQuery).exec((err, user) => {
+        if (err) {
+          return callback(err);
+        }
+
+        if (!user) {
+          return callback(new NotFound('user not found'));
+        }
+
+        this.result.user = user;
+        this.result.userJson = user.toJSON();
+        this._loadedModel = user;
+
+        callback();
+      });
+    });
+
+    return this;
+  }
 }
 
 module.exports = UserQueryBuilder;

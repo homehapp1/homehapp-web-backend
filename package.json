@@ -57,6 +57,7 @@
     "eslint": "^0.24.1",
     "eslint-plugin-react": "^3.1.0",
     "gulp": "^3.9.0",
+    "gulp-apidoc": "^0.2.0",
     "gulp-babel": "^5.1.0",
     "gulp-batch": "^1.0.5",
     "gulp-concat": "^2.6.0",
@@ -82,6 +83,7 @@
     "lint": "gulp lint",
     "dev": "DEBUG=*,-babel,-express:*,-mquery,-pool2,-knex:client,-eslint:*,-tinylr:*,-send,-body-parser:* gulp dev",
     "dev-admin": "PROJECT_NAME=admin npm run dev",
+    "dev-api": "PROJECT_NAME=api npm run dev",
     "build-site": "PROJECT_NAME=site NODE_ENV=production gulp build-clients",
     "build-admin": "PROJECT_NAME=admin NODE_ENV=production gulp build-clients",
     "clean-dist": "gulp clean-dist",
@@ -89,6 +91,7 @@
     "distribute-admin": "PROJECT_NAME=admin NODE_ENV=production gulp dist-clients",
     "migrate": "DEBUG=*,-babel node init.js migrate",
     "test": "NODE_ENV=test mocha --compilers js:babel/register --timeout 50000 --reporter dot test/**/**",
+    "apidoc": "gulp apidoc",
     "server": "node init.js"
   },
   "eslintConfig": {
@@ -186,6 +189,18 @@
       "react/self-closing-comp": 1,
       "react/sort-comp": 1,
       "react/wrap-multilines": 1
+    }
+  },
+  "apidoc": {
+    "name": "Homehapp Mobile Backend",
+    "title": "Homehapp Mobile Backend",
+    "description": "Homehapp Mobile Backend documentation",
+    "version": "0.1.0",
+    "order": [
+      "Authentication"
+    ],
+    "template": {
+      "withGenerator": false
     }
   }
 }
