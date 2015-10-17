@@ -357,6 +357,7 @@ export default class BigVideo extends BigBlock {
       width: null,
       height: null
     };
+    debug('video', video);
 
     let image = {
       src: video.src.replace(/\.[a-z0-9]{2,4}$/i, '.jpg'),
