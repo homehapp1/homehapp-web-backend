@@ -57,6 +57,7 @@ export default class BigVideo extends BigBlock {
 
     // this.containerControls();
     this.playbackControls();
+    this.loaderControls();
     this.volumeControls();
     this.positionControls();
     this.fullscreenControls();
@@ -146,6 +147,13 @@ export default class BigVideo extends BigBlock {
           this.bar.removeClass('no-transitions');
         });
       }
+    });
+  }
+
+  loaderControls() {
+    this.loader = new DOMManipulator(this.refs.loader);
+    this.video.addEventListener('progress', (event) => {
+      debug('progress', event);
     });
   }
 
@@ -394,6 +402,9 @@ export default class BigVideo extends BigBlock {
           {author}
           <div className='image-text full-height' {...textProps}>
             {this.props.children}
+          </div>
+          <div className='loader hide-for-small' ref='loader'>
+            <div className='bar'></div>
           </div>
           <div className='controls hide-for-small'>
             <div className='position' ref='position'>
