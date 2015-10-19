@@ -1,7 +1,7 @@
 
 
 import QueryBuilder from '../../lib/QueryBuilder';
-let debug = require('debug')('/api/homes');
+//let debug = require('debug')('/api/homes');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);

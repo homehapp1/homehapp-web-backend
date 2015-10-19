@@ -20,6 +20,9 @@ exports.configure = function(app, config) {
 
     let docsDir = path.join(app.PROJECT_ROOT, 'docs', 'api');
     if (fs.existsSync(docsDir)) {
+      app.log.debug(
+        `Exposing api docs to /api-docs from file path ${docsDir}.`
+      );
       app.use('/api-docs', basicAuthedRoute, express.static(docsDir));
     }
 

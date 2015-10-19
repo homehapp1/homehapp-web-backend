@@ -65,7 +65,7 @@ function removeCluster() {
   if [ "$1" = "-d" ]; then
     echo "Execute: 'gcloud beta container clusters delete $CLUSTER_NAME --project $PROJECT_ID'"
   else
-    gcloud beta container clusters delete $CLUSTER_NAME --project $PROJECT_ID
+    gcloud beta container clusters delete --quiet $CLUSTER_NAME --project $PROJECT_ID
   fi
 }
 
