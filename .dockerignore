@@ -1,12 +1,14 @@
 .git
 node_modules
+bower_components
 build
 *.md
 support
-!support/gce
 dist
 Dockerfile.*
 tmp
 logs
 deploy*.sh
-
+assets/*
+gulpfile.babel.js
+certs/*
