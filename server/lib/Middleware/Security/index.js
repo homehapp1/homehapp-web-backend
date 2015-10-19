@@ -1,6 +1,6 @@
-
-
 import csrf from 'csurf';
+import {Forbidden} from '../../Errors';
+import {enumerate} from '../../Helpers';
 
 exports.configure = function(app, config) {
   return new Promise((resolve) => {
@@ -50,6 +50,11 @@ exports.configure = function(app, config) {
       app.use(function requiredHeaders(req, res, next) {
         let reason = null;
 
+        // Skip favicon requests
+        if (req.path.substr(1).match(/^favicon/)) {
+          return next();
+        }
+
         if (config.requiredHeaders.allowRoutes) {
           let skipCheck = false;
           let requestPath = req.path.substr(1);
@@ -58,6 +63,7 @@ exports.configure = function(app, config) {
               skipCheck = true;
             }
           });
+
           if (skipCheck) {
             return next();
           }
