@@ -408,12 +408,15 @@ exports.run = function(projectName, afterRun) {
 
         app.use(function errorHandler(err, req, res, next) {
           debug('errorHandler', err);
-          app.log.error(`Error handler received: ${err.message}`, err);
 
           var code = err.statusCode || 422;
           var msg = err.message || 'Unexpected error has occurred!';
           var payload = msg;
           var isJSONRequest = (req.xhr || req.headers['content-type'] === 'application/json');
+
+          app.log.error(
+            `Error handler received: ${err.message} (${err.code})`, err
+          );
 
           if (err.code === 'EBADCSRFTOKEN') {
             code = 403;
