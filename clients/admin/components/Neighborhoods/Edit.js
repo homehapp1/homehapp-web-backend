@@ -13,6 +13,8 @@ import EditDetails from './EditDetails';
 import EditModel from '../Shared/EditModel';
 import ViewMetadata from '../Shared/ViewMetadata';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 // let debug = require('debug')('NeighborhoodsEdit');
 
 export default class NeighborhoodsEdit extends EditModel {
@@ -28,6 +30,10 @@ export default class NeighborhoodsEdit extends EditModel {
     super(props);
   }
 
+  componentDidMount() {
+    setPageTitle([`Edit ${this.props.neighborhood.title}`, 'Neighborhoods']);
+  }
+
   render() {
     let openTab = this.resolveOpenTab();
     return (
@@ -39,7 +45,7 @@ export default class NeighborhoodsEdit extends EditModel {
           </NavItemLink>
         </Nav>
         <Row>
-          <h1>Edit {this.props.neighborhood.neighborhoodTitle}</h1>
+          <h1>Edit {this.props.neighborhood.title}</h1>
           <TabbedArea defaultActiveKey={openTab}>
             <TabPane eventKey={1} tab='Details'>
               <EditDetails neighborhood={this.props.neighborhood} />

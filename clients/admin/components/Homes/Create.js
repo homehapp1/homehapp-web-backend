@@ -11,6 +11,8 @@ import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import CreateDetails from './CreateDetails';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 export default class HomesCreate extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired
@@ -18,6 +20,10 @@ export default class HomesCreate extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    setPageTitle(['Create', 'Homes']);
   }
 
   render() {

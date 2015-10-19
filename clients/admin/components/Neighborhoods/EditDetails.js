@@ -194,9 +194,6 @@ class NeighborhoodsEditDetails extends EditDetails {
                 <Col md={6}>
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
                 </Col>
-                <Col md={6} pullRight>
-                  <Button bsStyle='danger' className='pull-right'>Delete</Button>
-                </Col>
               </Row>
             </Well>
           </Col>

@@ -8,18 +8,12 @@ exports.registerRoutes = (app) => {
 
   app.get('/api/home', function(req, res) {
     debug('Redirecting the API call to deprecated /api/home');
-    res.writeHead(301, {
-      Location: `/api/homes`
-    });
-    res.end();
+    return res.redirect(301, '/api/homes');
   });
 
   app.get('/api/home/:slug', function(req, res) {
     debug('Redirecting the API call to deprecated /api/home/:slug');
-    res.writeHead(301, {
-      Location: `/api/homes/${req.params.slug}`
-    });
-    res.end();
+    return res.redirect(301, `/api/homes/${req.params.slug}`);
   });
 
   app.get('/api/homes/:slug', function(req, res, next) {

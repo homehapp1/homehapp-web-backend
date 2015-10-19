@@ -23,10 +23,7 @@ exports.registerRoutes = (app) => {
       let regexp = new RegExp(req.params.slug.replace(/\-/, '\\-'));
       let href = req.url.replace(regexp, result.model.uuid);
       debug('Redirecting the slug based call to UUID based URL', href);
-      res.writeHead(301, {
-        Location: href
-      });
-      res.end();
+      return res.redirect(301, href);
     })
     .catch(() => {
       // Home not found by slug, do not redirect
