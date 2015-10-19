@@ -9,18 +9,12 @@ exports.registerRoutes = (app) => {
 
   app.get('/home', function(req, res) {
     debug('Redirecting the GUI call to deprecated /home');
-    res.writeHead(301, {
-      Location: `/homes`
-    });
-    res.end();
+    return res.redirect(301, '/homes');
   });
 
   app.get('/home/:slug', function(req, res) {
     debug('Redirecting the GUI call to deprecated /home/:slug');
-    res.writeHead(301, {
-      Location: `/homes/${req.params.slug}`
-    });
-    res.end();
+    return res.redirect(301, `/homes/${req.params.slug}`);
   });
 
   let returnHomeBySlug = (req, res, next) => {
@@ -82,10 +76,7 @@ exports.registerRoutes = (app) => {
         let regexp = new RegExp(req.params.slug.replace(/\-/, '\\-'));
         let href = req.url.replace(regexp, result.model.slug);
         debug('Redirecting the UUID based call to slug based URL', href);
-        res.writeHead(301, {
-          Location: href
-        });
-        res.end();
+        return res.redirect(301, href);
       })
       .catch(next);
     });
