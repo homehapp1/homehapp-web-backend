@@ -1,4 +1,4 @@
-'use strict';
+
 
 import Helpers from './Helpers';
 import fs from 'fs';

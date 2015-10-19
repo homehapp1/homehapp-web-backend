@@ -1,4 +1,4 @@
-'use strict';
+
 
 exports.configure = function(app, config = {}) {
   app.use((req, res, next) => {

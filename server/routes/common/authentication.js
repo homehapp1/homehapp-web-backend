@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {Forbidden} from '../../lib/Errors';
 

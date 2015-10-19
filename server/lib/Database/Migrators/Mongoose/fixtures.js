@@ -1,4 +1,4 @@
-'use strict';
+
 
 let populate = function populate(migrator) {
   return migrator.getFixtureData().execute(migrator);

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import Plugins from './Plugins';
 import moment from 'moment';

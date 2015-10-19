@@ -1,4 +1,4 @@
-'use strict';
+
 
 import request from '../../common/request';
 import ContactListActions from '../actions/ContactListActions';

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import cloudinary from 'cloudinary';
 import {merge} from '../../../Helpers';

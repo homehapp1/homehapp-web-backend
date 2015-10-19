@@ -1,9 +1,9 @@
-'use strict';
+
 
 import basicAuth from 'basic-auth-connect';
 import fs from 'fs';
 import path from 'path';
-let debug = require('debug')('FirstRunMiddleware');
+//let debug = require('debug')('FirstRunMiddleware');
 
 exports.configure = function(app, config = {}) {
   if (!config.enabled) {

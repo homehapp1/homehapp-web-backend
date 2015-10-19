@@ -1,4 +1,4 @@
-'use strict';
+
 
 import async from 'async';
 import moment from 'moment';

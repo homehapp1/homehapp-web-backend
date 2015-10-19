@@ -1,4 +1,4 @@
-'use strict';
+
 
 import path from 'path';
 import fs from 'fs';
@@ -83,7 +83,7 @@ exports.run = function(projectName, afterRun) {
     }
 
     function resolveCurrentRevision() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         PROJECT_REVISION = require('moment')().format('YYYYMMDD');
         app.PROJECT_REVISION = PROJECT_REVISION;
         let revPath = path.join(PROJECT_ROOT, 'BUILD_REVISION');

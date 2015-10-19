@@ -1,4 +1,4 @@
-'use strict';
+
 
 import csrf from 'csurf';
 

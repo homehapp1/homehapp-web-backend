@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
@@ -22,7 +22,7 @@ class AgentsIndex extends React.Component {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <h2 className="navigation-title">
+          <h2 className='navigation-title'>
             Agents
           </h2>
           <p>There are {this.props.items.length} agents in the system currently.</p>

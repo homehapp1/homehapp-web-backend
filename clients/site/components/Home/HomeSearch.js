@@ -1,5 +1,5 @@
 /*eslint-env es6 */
-'use strict';
+
 
 import React from 'react';
 

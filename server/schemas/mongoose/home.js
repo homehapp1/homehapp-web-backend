@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, getMainImage, populateMetadata} from './common';
 

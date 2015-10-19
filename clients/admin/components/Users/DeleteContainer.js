@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import UserListStore from '../../stores/UserListStore';

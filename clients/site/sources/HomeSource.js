@@ -1,4 +1,4 @@
-'use strict';
+
 
 import request from '../../common/request';
 import HomeActions from '../actions/HomeActions';
@@ -42,7 +42,7 @@ let HomeSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState, slug) {
+      local(/*storeState, slug*/) {
         // if (Cache.has('homesBySlug', slug)) {
         //   return Cache.get('homesBySlug', slug);
         // }

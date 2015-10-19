@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import { Link } from 'react-router';
@@ -35,9 +35,9 @@ class Navigation extends React.Component {
           </Nav>
           <Nav navbar right>
             <DropdownButton eventKey={1} title={userName}>
-              <MenuItemLink eventKey="1" to="app">Profile</MenuItemLink>
+              <MenuItemLink eventKey='1' to='app'>Profile</MenuItemLink>
               <MenuItem divider />
-              <MenuItem eventKey='2' href="/auth/logout">Logout</MenuItem>
+              <MenuItem eventKey='2' href='/auth/logout'>Logout</MenuItem>
             </DropdownButton>
           </Nav>
         </CollapsibleNav>

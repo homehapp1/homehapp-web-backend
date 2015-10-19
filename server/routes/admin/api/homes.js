@@ -1,4 +1,4 @@
-'use strict';
+
 
 import QueryBuilder from '../../../lib/QueryBuilder';
 import {/*NotImplemented, */BadRequest} from '../../../lib/Errors';
@@ -106,7 +106,7 @@ exports.registerRoutes = (app) => {
     debug('Update home with data', data);
 
     if (data.agents) {
-      let agents = [];
+      //let agents = [];
       debug('Get agents');
       let ids = [];
       let uuids = [];

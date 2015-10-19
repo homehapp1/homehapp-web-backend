@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
@@ -48,7 +48,7 @@ export default class WidgetsBaseBlock extends React.Component {
 
   state = {
     uploads: UploadAreaUtils.UploadStore.getState().uploads
-  };
+  }
 
   blockProperties = {};
 

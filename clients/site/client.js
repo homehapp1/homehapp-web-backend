@@ -1,6 +1,6 @@
 /*eslint-env es6, browser */
 /*global window, process */
-'use strict';
+
 
 let debug = require('../common/debugger')('site');
 

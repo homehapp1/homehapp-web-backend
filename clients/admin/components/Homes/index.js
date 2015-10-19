@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import { Link } from 'react-router';
@@ -20,7 +20,7 @@ class HomesIndex extends React.Component {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <h2 className="navigation-title">
+          <h2 className='navigation-title'>
             Homes
           </h2>
           <p>There are {this.props.homes.length} homes in the system currently.</p>
@@ -36,7 +36,7 @@ class HomesIndex extends React.Component {
               return (
                 <li key={i}>
                   <Link
-                    to="homeEdit"
+                    to='homeEdit'
                     params={{id: home.id}}>
                     {home.homeTitle}
                   </Link>

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import passport from 'passport';
 import http from 'http';
