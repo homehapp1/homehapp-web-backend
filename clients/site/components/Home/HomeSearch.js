@@ -19,7 +19,7 @@ import { setPageTitle } from '../../../common/Helpers';
 export default class HomeSearch extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
-  };
+  }
 
   constructor() {
     super();

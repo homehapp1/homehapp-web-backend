@@ -19,7 +19,7 @@ import { setPageTitle } from '../../../common/Helpers';
 export default class NeighborhoodList extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
-  };
+  }
 
   constructor() {
     super();

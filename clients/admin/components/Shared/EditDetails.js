@@ -8,14 +8,14 @@ let debug = require('../../../common/debugger')('EditDetails');
 const countries = require('../../../common/lib/Countries').forSelect();
 
 export default class EditDetails extends React.Component {
-  state = {
-    images: [],
-    coordinates: []
-  }
-
   constructor(props) {
     super(props);
     this.saving = null;
+  }
+
+  state = {
+    images: [],
+    coordinates: []
   }
 
   imageExists(url) {

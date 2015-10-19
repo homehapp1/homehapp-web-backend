@@ -37,7 +37,7 @@ export default class HomeList extends React.Component {
     this.updateEvents();
   }
 
-  componentDidUpdate(/*props, state*/) {
+  componentDidUpdate() {
     this.updateEvents();
   }
 

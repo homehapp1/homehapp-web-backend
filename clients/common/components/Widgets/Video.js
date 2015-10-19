@@ -1,6 +1,7 @@
 
 import React from 'react';
 import DOMManipulator from '../../DOMManipulator';
+import { merge } from '../../Helpers';
 
 export default class Video extends React.Component {
   static propTypes = {
@@ -97,6 +98,22 @@ export default class Video extends React.Component {
     this.aspectRatio = Math.min(10, Math.max(aspectRatio, 1 / 10));
   }
 
+  getBaseUrl() {
+    let regexp = new RegExp(`\.(mov|avi|mpe?g|${this.props.formats.join('|')})$`, 'i');
+    return this.props.src.replace(regexp, '');
+  }
+
+  getPoster(params) {
+    params = merge({
+      width: 100,
+      height: 100,
+      mode: 'fit',
+      gravity: 'center'
+    }, params || {});
+    let poster = this.props.poster || `${this.getBaseUrl()}.png`;
+    return poster.replace(/upload\//, `upload/w_${params.width},h_${params.height},c_${params.mode},g_${params.gravity}/`);
+  }
+
   getVideo() {
     let classes = ['video'];
     if (this.props.className) {
@@ -110,12 +127,9 @@ export default class Video extends React.Component {
 
     if (this.props.mode === 'html5') {
       classes.push('inline');
-      let regexp = new RegExp(`\.(mov|avi|mpe?g|${this.props.formats.join('|')})$`, 'i');
-      let baseUrl = this.props.src.replace(regexp, '');
-      let poster = this.props.poster || `${baseUrl}.png`;
-
+      let baseUrl = this.getBaseUrl();
       let video = {
-        poster: poster,
+        poster: this.getPoster(),
         controls: this.props.controls,
         autoPlay: this.props.autoPlay,
         loop: this.props.loop,

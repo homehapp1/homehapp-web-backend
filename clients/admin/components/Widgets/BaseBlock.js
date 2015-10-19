@@ -247,8 +247,18 @@ export default class WidgetsBaseBlock extends React.Component {
       height: '80px'
     }, prop.config || {});
 
+    let caption = null;
+
+    if (prop.label) {
+      caption = (
+        <caption><strong>{prop.label}</strong></caption>
+      );
+    }
+    debug('image input props', prop);
+
     return (
       <Table>
+        {caption}
         <thead>
           <tr>
             <th>Current</th>

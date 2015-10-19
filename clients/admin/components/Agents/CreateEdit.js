@@ -23,6 +23,7 @@ export default class AgentsCreateEdit extends React.Component {
     onSave: React.PropTypes.func,
     onCancel: React.PropTypes.func
   }
+
   static defaultProps = {
     model: null,
     onSave: null,

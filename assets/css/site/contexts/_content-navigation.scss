@@ -5,6 +5,10 @@
   right: $contentPadding * 1.5 + $navigationIconSize;
   z-index: $zNavigation - 1;
 
+  @include small() {
+    display: none;
+  }
+
   ul {
     margin: 0;
     padding: 0;
@@ -16,6 +20,12 @@
       font-size: $iconSize * 0.8;
       margin-right: $contentPadding;
       vertical-align: middle;
+
+      @include small() {
+        font-size: $iconSize * 0.7;
+        margin-top: 2px;
+        display: block;
+      }
 
       a {
         color: white;
@@ -40,12 +50,20 @@
         right: -1 * $navigationIconSize;
         @include vendors(transition-duration, $duration);
         @include vendors(transition-property, all);
+
+        @include small() {
+          position: static;
+        }
       }
 
       &.animate {
          @for $i from 0 through $max {
            li[data-index="#{$i}"] {
              right: $i * ($w + 10px);
+
+             @include small() {
+               right: 0;
+             }
            }
          }
       }

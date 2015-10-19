@@ -36,6 +36,10 @@
             float: none;
             padding-left: 0;
             padding-right: 0;
+
+            & + * {
+              padding-top: $contentPadding * 2;
+            }
           }
 
           img {

@@ -7,13 +7,19 @@ import Header from '../Header';
 import Navigation from '../Navigation';
 import Footer from '../Footer';
 import Layout from '../../../common/components/Layout';
+import GoogleAnalytics from '../../../common/components/Analytics/GoogleAnalytics';
+
+let debug = require('debug')('Application');
 
 export default class Application extends React.Component {
   static propTypes = {
-    // autoPlay: React.PropTypes.bool.isRequired,
-    // maxLoops: React.PropTypes.number.isRequired,
-    // posterFrameSrc: React.PropTypes.string.isRequired,
+    context: React.PropTypes.object
   }
+
+  static contextTypes = {
+    router: React.PropTypes.func
+  }
+
   static defaultProps = {
   }
 
@@ -27,6 +33,7 @@ export default class Application extends React.Component {
   }
 
   render() {
+    debug(this.context.router);
     return (
       <Layout>
         <Navigation {...this.props} />
@@ -35,6 +42,7 @@ export default class Application extends React.Component {
           <RouteHandler />
         </div>
         <Footer {...this.props} />
+        <GoogleAnalytics router={this.context.router} />
       </Layout>
     );
   }

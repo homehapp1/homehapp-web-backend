@@ -11,6 +11,8 @@ export default class Map extends React.Component {
     center: React.PropTypes.array,
     label: React.PropTypes.string,
     zoom: React.PropTypes.number,
+    minZoom: React.PropTypes.number,
+    maxZoom: React.PropTypes.number,
     markers: React.PropTypes.array,
     children: React.PropTypes.oneOfType([
       React.PropTypes.object,
@@ -27,6 +29,8 @@ export default class Map extends React.Component {
 
   static defaultProps = {
     zoom: 10,
+    minZoom: 6,
+    maxZoom: 20,
     markers: []
   };
 
@@ -81,6 +85,8 @@ export default class Map extends React.Component {
         lng: center[1]
       },
       zoom: this.props.zoom,
+      minZoom: this.props.minZoom,
+      maxZoom: this.props.maxZoom,
       scrollWheel: false
     };
 

@@ -34,7 +34,7 @@ export default class Image extends React.Component {
     gravity: React.PropTypes.string,
     className: React.PropTypes.string,
     applySize: React.PropTypes.bool
-  };
+  }
 
   static defaultProps = {
     width: null,
@@ -47,7 +47,7 @@ export default class Image extends React.Component {
     applySize: false,
     gravity: 'center',
     linked: ''
-  };
+  }
 
   constructor() {
     super();
