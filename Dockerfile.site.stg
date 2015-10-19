@@ -6,7 +6,7 @@ LABEL Description="Homehapp web proto container"
 # Disable prompts from apt
 env DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update -y && apt-get install -y curl git make g++ python python-software-properties build-essential
+RUN apt-get update -y && apt-get install -y curl git make g++ python python-software-properties build-essential libkrb5-dev
 RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash
 RUN apt-get install -y nodejs
 
