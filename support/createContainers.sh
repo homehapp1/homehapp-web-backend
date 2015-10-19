@@ -5,7 +5,8 @@ REV=`git rev-parse --short HEAD`
 CWD=`pwd`
 CONTAINER_REGISTRY_HOST=eu.gcr.io
 PNAME=$1
-CLEAN=$2
+ENV=$2
+CLEAN=$3
 BUILD_REVISION_FILE="$CWD/BUILD_REVISION";
 
 function printUsage() {
@@ -70,15 +71,17 @@ function pushContainers() {
 
 checkAndUpdateBuildRevision
 
-echo "Building and tagging staging container"
-echo ""
-buildContainer "stg"
-tagContainer "stg"
-
-echo "Building and tagging production container"
-echo ""
-buildContainer "prod"
-tagContainer "prod"
+if [ "$ENV" = "prod" ]; then
+  echo "Building and tagging production container"
+  echo ""
+  buildContainer "prod"
+  tagContainer "prod"
+else
+  echo "Building and tagging staging container"
+  echo ""
+  buildContainer "stg"
+  tagContainer "stg"
+fi
 
 if [ "$CLEAN" = "1" ]; then
   echo "Cleaning old Docker containers"
