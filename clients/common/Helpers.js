@@ -296,11 +296,15 @@ exports.setPageTitle = function setPageTitle(title = '') {
     return null;
   }
 
-  // Always append with the site title
-  if (title) {
-    title = String(title).replace(/ \| Homehapp$/, '') + ' | ';
+  if (!Array.isArray(title)) {
+    title = [title];
   }
-  document.title = title + 'Homehapp';
+
+  // Always append with the site title
+  if (title.indexOf('Homehapp') === -1) {
+    title.push('Homehapp');
+  }
+  document.title = title.join(' | ');
 };
 
 exports.initMetadata = function initMetadata(res) {
