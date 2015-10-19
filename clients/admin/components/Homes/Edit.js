@@ -15,6 +15,8 @@ import EditModel from '../Shared/EditModel';
 import ChooseAgents from './ChooseAgents';
 import ViewMetadata from '../Shared/ViewMetadata';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 // let debug = require('debug')('HomesEdit');
 
 export default class HomesEdit extends EditModel {
@@ -29,6 +31,10 @@ export default class HomesEdit extends EditModel {
   constructor(props) {
     super(props);
     this.tabs.agents = 4;
+  }
+
+  componentDidMount() {
+    setPageTitle([`Edit ${this.props.home.homeTitle}`, 'Homes']);
   }
 
   render() {

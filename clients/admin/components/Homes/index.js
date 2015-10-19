@@ -5,6 +5,8 @@ import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Nav from 'react-bootstrap/lib/Nav';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
+
+import { setPageTitle } from '../../../common/Helpers';
 // import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 
 class HomesIndex extends React.Component {
@@ -14,6 +16,10 @@ class HomesIndex extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    setPageTitle('Homes');
   }
 
   render() {
@@ -30,7 +36,6 @@ class HomesIndex extends React.Component {
         </Nav>
         <Row>
           <h1><i className='fa fa-home'></i> {this.props.homes.length} homes</h1>
-
           <ul>
             {this.props.homes.map((home, i) => {
               return (

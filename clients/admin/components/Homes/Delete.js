@@ -2,7 +2,7 @@
 
 
 import React from 'react';
-// import { Link } from 'react-router';
+import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
@@ -15,7 +15,7 @@ import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
-import { createNotification } from '../../../common/Helpers';
+import { createNotification, setPageTitle } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('HomesDelete');
 
@@ -40,6 +40,7 @@ export default class HomesDelete extends React.Component {
 
   componentDidMount() {
     HomeStore.listen(this.storeListener);
+    setPageTitle([`Delete ${this.props.home.homeTitle}`, 'Homes']);
   }
 
   componentWillUnmount() {
@@ -94,7 +95,7 @@ export default class HomesDelete extends React.Component {
           </NavItemLink>
         </Nav>
         <Row>
-          <h1><i className='fa fa-home'></i> Edit {this.props.home.homeTitle}</h1>
+          <h1><i className='fa fa-home'></i> Delete {this.props.home.homeTitle}</h1>
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Delete'>
               <Row>
@@ -105,8 +106,9 @@ export default class HomesDelete extends React.Component {
                     </Panel>
                     <Well>
                       <Row>
-                        <Col md={6}>
+                        <Col md={12}>
                           <Button bsStyle='danger' accessKey='d' onClick={this.onDelete.bind(this)}>Delete</Button>
+                          <Link to='homeEdit' params={{id: this.props.home.id}} className='btn btn-default'>Cancel</Link>
                         </Col>
                       </Row>
                     </Well>
