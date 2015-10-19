@@ -1,4 +1,4 @@
-'use strict';
+
 
 export function testDecorator() {
   console.log('testDecorator', arguments);

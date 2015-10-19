@@ -1,4 +1,4 @@
-'use strict';
+
 
 import path from 'path';
 import fs from 'fs';
@@ -83,7 +83,7 @@ exports.run = function(projectName, afterRun) {
     }
 
     function resolveCurrentRevision() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         PROJECT_REVISION = require('moment')().format('YYYYMMDD');
         app.PROJECT_REVISION = PROJECT_REVISION;
         let revPath = path.join(PROJECT_ROOT, 'BUILD_REVISION');
@@ -408,12 +408,15 @@ exports.run = function(projectName, afterRun) {
 
         app.use(function errorHandler(err, req, res, next) {
           debug('errorHandler', err);
-          app.log.error(`Error handler received: ${err.message}`, err);
 
           var code = err.statusCode || 422;
           var msg = err.message || 'Unexpected error has occurred!';
           var payload = msg;
           var isJSONRequest = (req.xhr || req.headers['content-type'] === 'application/json');
+
+          app.log.error(
+            `Error handler received: ${err.message} (${err.code})`, err
+          );
 
           if (err.code === 'EBADCSRFTOKEN') {
             code = 403;

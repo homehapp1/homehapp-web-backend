@@ -132,7 +132,7 @@ const siteWebpackConfig = extend(webpackCommonConfig, {
   entry: {
     client: paths.clients.site.entry,
     vendor: [
-      'react', 'react-router', 'superagent', 'alt', 'iso', 'jquery'
+      'react', 'react-router', 'axios', 'alt', 'iso', 'jquery'
     ]
   },
   output: {
@@ -151,7 +151,7 @@ const adminWebpackConfig = extend(webpackCommonConfig, {
   },
   entry: {
     client: paths.clients.admin.entry,
-    vendor: ['react', 'react-router', 'superagent', 'alt', 'iso', 'react-bootstrap']
+    vendor: ['react', 'react-router', 'axios', 'alt', 'iso', 'react-bootstrap']
   },
   output: {
     path: paths.clients.admin.statics + '/js',
@@ -302,28 +302,30 @@ gulp.task('apidoc', function(done) {
 });
 
 gulp.task('watch', function(){
-  if (paths.clients[PROJECT_NAME]) {
-    livereload.listen({
-      quiet: true
-    });
-  }
+  // if (paths.clients[PROJECT_NAME]) {
+  //   livereload.listen({
+  //     quiet: true
+  //   });
+  // }
 
-  gulp.watch(paths.server.views, ['copy-server-views']);
-  gulp.watch(paths.server.sources, ['lint']).on('error', function(err) {
-    new gutil.PluginError('Watch', err, {showStack: true});
-    this.emit('end');
-  });
+  // gulp.watch(paths.server.views, ['copy-server-views']);
+  // gulp.watch(paths.server.sources, ['lint']).on('error', function(err) {
+  //   new gutil.PluginError('Watch', err, {showStack: true});
+  //   this.emit('end');
+  // });
 
   if (paths.clients[PROJECT_NAME]) {
-    gulp.watch(paths.clients[PROJECT_NAME].sources, ['build-clients', 'restart-dev']).on('error', gutil.log);
+    // gulp.watch(paths.clients[PROJECT_NAME].sources, ['build-clients', 'restart-dev']).on('error', gutil.log);
+    gulp.watch(paths.clients[PROJECT_NAME].sources, ['build-clients', 'lint']).on('error', gutil.log);
     gulp.watch(paths.clients[PROJECT_NAME].styles, ['build-clients']).on('error', gutil.log);
   }
 
   gulp.watch('./server/**', g.batch(function(events, done) {
     //console.log('server changed', events);
+    gulp.start('lint');
     gulp.start('restart-dev', done);
     if (PROJECT_NAME === 'api') {
-      gulp.start('apidoc', done);
+      gulp.start('apidoc');
     }
   })).on('error', gutil.log);
 
@@ -332,20 +334,20 @@ gulp.task('watch', function(){
     gulp.start('restart-dev', done);
   })).on('error', gutil.log);
 
-  if (paths.clients[PROJECT_NAME]) {
-    gulp.watch('./build/**', function(changed) {
-      livereload.changed(changed);
-    }).on('error', gutil.log);
-  }
+  // if (paths.clients[PROJECT_NAME]) {
+  //   gulp.watch('./build/**', function(changed) {
+  //     livereload.changed(changed);
+  //   }).on('error', gutil.log);
+  // }
 });
 
 gulp.task('restart-dev', () => {
   if (nodemonInstance) {
-    nodemonInstance.once('restart', () => {
-      if (paths.clients[PROJECT_NAME]) {
-        livereload.changed();
-      }
-    });
+    // nodemonInstance.once('restart', () => {
+    //   if (paths.clients[PROJECT_NAME]) {
+    //     livereload.changed();
+    //   }
+    // });
     nodemonInstance.emit('restart');
   }
 });

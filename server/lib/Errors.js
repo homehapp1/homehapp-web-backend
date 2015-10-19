@@ -1,4 +1,4 @@
-'use strict';
+
 
 var BaseError = exports.BaseError = class BaseError extends Error {
   constructor(message, data = null) {

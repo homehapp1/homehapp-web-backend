@@ -1,4 +1,4 @@
-'use strict';
+
 
 exports.extendSchema = function (schema) {
   // Generate slug

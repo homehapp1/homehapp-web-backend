@@ -1,4 +1,4 @@
-'use strict';
+
 import React from 'react';
 import DOMManipulator from '../../DOMManipulator';
 import { merge } from '../../Helpers';

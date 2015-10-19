@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 let debug = require('debug')('DOMManipulator');
@@ -117,7 +117,7 @@ class DOMManipulator {
    * @params number height   Either the height to be set or null to return the current height
    * @return mixed           Current height when getting, self when setting
    */
-   height(height = null) {
+  height(height = null) {
     if (height === null) {
       return this.node.offsetHeight;
     }

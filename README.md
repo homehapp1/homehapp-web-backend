@@ -18,6 +18,13 @@ To load fixtures to database run:
 npm run migrate init applyFixtures
 ```
 
+# Private and Public Keys for token Authentication
+
+```sh
+openssl genrsa -out auth-private.pem 2048
+openssl rsa -in auth-private.pem -outform PEM -pubout -out auth-public.pem
+```
+
 # Docker
 
 If you are using Kitematic, open it first and click the "Docker CLI" -button. Then navigate to the project checkout folder.
@@ -134,9 +141,9 @@ cd ../../../
 ```
 
 ```sh
-./support/production/createCluster.sh site certs/homehapp_com/star_nytinappi_fi
-./support/production/createCluster.sh admin certs/homehapp_com/star_nytinappi_fi
-./support/production/createCluster.sh api certs/homehapp_com/star_nytinappi_fi
+./support/production/createCluster.sh site certs/homehapp_com/star_homehapp_com
+./support/production/createCluster.sh admin certs/homehapp_com/star_homehapp_com
+./support/production/createCluster.sh api certs/homehapp_com/star_homehapp_com
 ```
 
 Administration first run:

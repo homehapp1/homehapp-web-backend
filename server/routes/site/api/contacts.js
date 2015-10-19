@@ -1,4 +1,4 @@
-'use strict';
+
 
 import QueryBuilder from '../../../lib/QueryBuilder';
 // import {NotImplemented, BadRequest} from '../../../lib/Errors';
@@ -39,7 +39,8 @@ exports.registerRoutes = (app) => {
         data.home = result.model;
         debug('Link the contact request to home', result.model.homeTitle);
         createContact(res, data);
-      });
+      })
+      .catch(next);
     } else {
       createContact(res, data);
     }

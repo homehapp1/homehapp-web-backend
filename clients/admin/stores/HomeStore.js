@@ -1,4 +1,4 @@
-'use strict';
+
 
 import alt from '../../common/alt';
 import HomeActions from '../actions/HomeActions';

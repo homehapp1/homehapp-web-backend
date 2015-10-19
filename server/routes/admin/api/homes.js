@@ -1,4 +1,4 @@
-'use strict';
+
 
 import QueryBuilder from '../../../lib/QueryBuilder';
 import {/*NotImplemented, */BadRequest} from '../../../lib/Errors';
@@ -40,9 +40,9 @@ exports.registerRoutes = (app) => {
 
     let data = req.body.home;
 
-    if (!data.description) {
-      return next(new BadRequest('invalid request body'));
-    }
+    // if (!data.description) {
+    //   return next(new BadRequest('invalid request body'));
+    // }
 
     if (req.user) {
       data.createdBy = req.user.id;
@@ -106,7 +106,7 @@ exports.registerRoutes = (app) => {
     debug('Update home with data', data);
 
     if (data.agents) {
-      let agents = [];
+      //let agents = [];
       debug('Get agents');
       let ids = [];
       let uuids = [];

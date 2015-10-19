@@ -1,4 +1,4 @@
-'use strict';
+
 
 import AgentListActions from '../actions/AgentListActions';
 import AgentListSource from '../sources/AgentListSource';

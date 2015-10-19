@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {randomString} from '../../lib/Helpers';
 

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import { Link } from 'react-router';
@@ -23,7 +23,7 @@ export default class NeighborhoodsIndex extends React.Component {
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
-          <h2 className="navigation-title">
+          <h2 className='navigation-title'>
             Neighborhoods
           </h2>
         </Nav>
@@ -35,7 +35,7 @@ export default class NeighborhoodsIndex extends React.Component {
               return (
                 <li key={i}>
                   <Link
-                    to="neighborhoodEdit"
+                    to='neighborhoodEdit'
                     params={{id: neighborhood.id}}>
                     {neighborhood.title}
                   </Link>

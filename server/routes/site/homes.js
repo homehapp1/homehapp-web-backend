@@ -1,4 +1,4 @@
-'use strict';
+
 
 import QueryBuilder from '../../lib/QueryBuilder';
 import { setLastMod, initMetadata } from '../../../clients/common/Helpers';

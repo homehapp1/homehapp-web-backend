@@ -1,4 +1,4 @@
-'use strict';
+
 
 import passport from 'passport';
 import http from 'http';
@@ -61,7 +61,9 @@ class AuthenticationMiddleware {
       try {
         adapter = require(adapterPath);
       } catch (err) {
-        console.error(`Adapter ${adapterName} not found from path ${adapterPath}!`);
+        this.app.log.error(
+          `Adapter ${adapterName} not found from path ${adapterPath}!`, err
+        );
       }
       if (adapter) {
         adapter.register(this, this.app, this.config.adapterConfigs[adapterName] || {});

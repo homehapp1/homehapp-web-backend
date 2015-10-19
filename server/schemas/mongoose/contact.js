@@ -1,4 +1,4 @@
-'use strict';
+
 
 import { loadCommonPlugins, commonJsonTransform, populateMetadata } from './common';
 

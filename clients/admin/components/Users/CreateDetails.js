@@ -1,4 +1,4 @@
-'use strict';
+
 
 import UsersEditDetails from './EditDetails';
 import UserStore from '../../stores/UserStore';

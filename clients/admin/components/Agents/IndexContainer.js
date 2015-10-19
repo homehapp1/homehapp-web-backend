@@ -1,4 +1,4 @@
-'use strict';
+
 
 import React from 'react';
 import AgentListStore from '../../stores/AgentListStore';
@@ -31,12 +31,12 @@ class AgentsIndexContainer extends React.Component {
   }
 
   onChange(state) {
-      console.log('AgentsIndexContainer:onChange', state);
-      if (state.removed) {
-        window.location.reload();
-      }
-      this.setState(state);
+    console.log('AgentsIndexContainer:onChange', state);
+    if (state.removed) {
+      window.location.reload();
     }
+    this.setState(state);
+  }
 
   handlePendingState() {
     return (

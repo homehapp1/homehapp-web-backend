@@ -1,4 +1,4 @@
-'use strict';
+
 
 let debug = require('debug')('MongooseMigrator');
 

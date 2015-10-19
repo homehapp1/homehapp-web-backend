@@ -1,4 +1,4 @@
-'use strict';
+
 
 import {merge} from '../Helpers';
 
