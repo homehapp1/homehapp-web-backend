@@ -23,6 +23,7 @@ ADD . /app
 
 RUN useradd -ms /bin/bash node
 RUN chown -R node:node /app
+RUN chown -R node:node /mnt/log
 
 USER node
 
