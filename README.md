@@ -82,20 +82,31 @@ Remember to run Kitematic before trying to create the containers
 ```sh
 export PROJECT_ID=homehappweb
 gcloud config set project $PROJECT_ID
+```
 
+```sh
 cd support/docker/fluentd-sidecar-gcp
 make build push
 cd ../../../
+```
 
-./support/createContainers.sh site
-./support/createContainers.sh admin
-./support/createContainers.sh api
+Creating Staging containers (add 1 as last argument to clear old containers)
 
-# These are run only when creating the clusters, not when updating them
+```sh
+./support/createContainers.sh site stg
+./support/createContainers.sh admin stg
+./support/createContainers.sh api stg
+```
+
+These are run only when creating the clusters, not when updating them
+
+```sh
 ./support/createCluster.sh site stg
 ./support/createCluster.sh admin stg
 ./support/createCluster.sh api stg
+```
 
+```sh
 ./support/updateCluster.sh site stg
 ./support/updateCluster.sh admin stg
 ./support/updateCluster.sh api stg
@@ -126,6 +137,14 @@ npm run distribute-admin
 3. For running the admin interface use `npm run dev-admin`
 
 # Production infrastructure
+
+Creating Production containers (add 1 as last argument to clear old containers)
+
+```sh
+./support/createContainers.sh site prod
+./support/createContainers.sh admin prod
+./support/createContainers.sh api prod
+```
 
 ### Create
 
