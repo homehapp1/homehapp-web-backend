@@ -28,12 +28,14 @@
     "express-winston": "0.4.1",
     "html-entities": "1.2.0",
     "iso": "4.2.0",
+    "jsonwebtoken": "5.4.0",
     "linear-partition": "0.0.2",
     "moment": "2.10.6",
     "moment-timezone": "0.4.1",
     "mongoose": "4.1.11",
     "passport": "0.3.0",
     "passport-local": "1.0.0",
+    "passport-strategy": "1.0.0",
     "react": "0.13.3",
     "react-bootstrap": "0.24.5",
     "react-google-maps": "2.2.0",
@@ -196,7 +198,8 @@
     "description": "Homehapp Mobile Backend documentation",
     "version": "0.1.0",
     "order": [
-      "Authentication"
+      "Authentication",
+      "Homes"
     ],
     "template": {
       "withGenerator": false
