@@ -134,9 +134,9 @@ cd ../../../
 ```
 
 ```sh
-./support/production/createCluster.sh site certs/homehapp_com/star_nytinappi_fi
-./support/production/createCluster.sh admin certs/homehapp_com/star_nytinappi_fi
-./support/production/createCluster.sh api certs/homehapp_com/star_nytinappi_fi
+./support/production/createCluster.sh site certs/homehapp_com/star_homehapp_com
+./support/production/createCluster.sh admin certs/homehapp_com/star_homehapp_com
+./support/production/createCluster.sh api certs/homehapp_com/star_homehapp_com
 ```
 
 Administration first run:
