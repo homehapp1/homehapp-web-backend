@@ -9,6 +9,8 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import List from './List';
 import CreateEdit from './CreateEdit';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 class AgentsIndex extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired
@@ -16,6 +18,10 @@ class AgentsIndex extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    setPageTitle('Agents');
   }
 
   render() {

@@ -7,6 +7,8 @@ import Nav from 'react-bootstrap/lib/Nav';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 // import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 export default class NeighborhoodsIndex extends React.Component {
   static propTypes = {
     neighborhoods: React.PropTypes.array
@@ -17,6 +19,10 @@ export default class NeighborhoodsIndex extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    setPageTitle('Neighborhoods');
   }
 
   render() {
