@@ -2,7 +2,7 @@
 
 
 import React from 'react';
-// import { Link } from 'react-router';
+import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
@@ -15,7 +15,7 @@ import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import UserStore from '../../stores/UserStore';
 import UserActions from '../../actions/UserActions';
-import { createNotification } from '../../../common/Helpers';
+import { setPageTitle, createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('UsersDelete');
 
@@ -40,6 +40,7 @@ export default class UsersDelete extends React.Component {
 
   componentDidMount() {
     UserStore.listen(this.storeListener);
+    setPageTitle([this.props.user.rname, 'delete']);
   }
 
   componentWillUnmount() {
@@ -105,8 +106,9 @@ export default class UsersDelete extends React.Component {
                     </Panel>
                     <Well>
                       <Row>
-                        <Col md={6}>
+                        <Col md={12}>
                           <Button bsStyle='danger' accessKey='d' onClick={this.onDelete.bind(this)}>Delete</Button>
+                          <Link to='userEdit' params={{id: this.props.user.id}} className='btn btn-default'>Cancel</Link>
                         </Col>
                       </Row>
                     </Well>

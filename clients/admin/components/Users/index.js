@@ -7,6 +7,8 @@ import Nav from 'react-bootstrap/lib/Nav';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 // import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 class UsersIndex extends React.Component {
   static propTypes = {
     users: React.PropTypes.array.isRequired
@@ -14,6 +16,10 @@ class UsersIndex extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    setPageTitle('User management');
   }
 
   render() {

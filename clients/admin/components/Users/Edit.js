@@ -13,6 +13,8 @@ import EditDetails from './EditDetails';
 import EditModel from '../Shared/EditModel';
 import ViewMetadata from '../Shared/ViewMetadata';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 // let debug = require('debug')('UsersEdit');
 
 export default class UsersEdit extends EditModel {
@@ -26,6 +28,10 @@ export default class UsersEdit extends EditModel {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    setPageTitle([this.props.user.rname, 'Users']);
   }
 
   render() {

@@ -9,6 +9,8 @@ import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 // import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import TimeAgo from '../../../common/components/TimeAgo';
 
+import { setPageTitle } from '../../../common/Helpers';
+
 let debug = require('debug')('ContactsIndex');
 
 export default class ContactsIndex extends React.Component {
@@ -18,6 +20,10 @@ export default class ContactsIndex extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    setPageTitle('Contact requests');
   }
 
   render() {
