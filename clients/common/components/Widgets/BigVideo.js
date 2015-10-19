@@ -44,10 +44,12 @@ export default class BigVideo extends BigBlock {
     this.pauseVideo = this.pauseVideo.bind(this);
     this.muteVideo = this.muteVideo.bind(this);
     this.unmuteVideo = this.unmuteVideo.bind(this);
+    this.onCanPlay = this.onCanPlay.bind(this);
     this.containerTolerance = -150;
     this.position = null;
     this.inFullscreen = false;
     this.muteChanged = false;
+    this.canPlay = false;
   }
 
   componentDidMount() {
@@ -148,12 +150,47 @@ export default class BigVideo extends BigBlock {
         });
       }
     });
+
+    this.video.addEventListener('canplay', this.onCanPlay);
+    this.video.addEventListener('playing', () => {
+      this.loader.addClass('hidden');
+    });
+  }
+
+  onCanPlay() {
+    this.canPlay = true;
+    debug('canplay');
+    if (this.container.attr('data-viewport') === 'visible') {
+      this.playVideo();
+      this.video.removeEventListener('canplay', this.onCanPlay);
+    }
   }
 
   loaderControls() {
     this.loader = new DOMManipulator(this.refs.loader);
-    this.video.addEventListener('progress', (event) => {
-      debug('progress', event);
+    let bar = this.loader.getByClass('bar')[0];
+
+    this.video.addEventListener('progress', () => {
+      if (!this.video.paused) {
+        return null;
+      }
+
+      let range = 0;
+      let bf = this.video.buffered;
+      let time = this.video.currentTime;
+      try {
+        while(!(bf.start(range) <= time && time <= bf.end(range))) {
+          range += 1;
+        }
+        let loadStartPercentage = bf.start(range) / this.video.duration;
+        let loadEndPercentage = bf.end(range) / this.video.duration;
+        let loadPercentage = 100 * (loadEndPercentage - loadStartPercentage);
+        bar.css({
+          width: `${loadPercentage}%`
+        });
+      } catch (error) {
+        debug('Error', error);
+      }
     });
   }
 
@@ -215,6 +252,7 @@ export default class BigVideo extends BigBlock {
     let x = event.offsetX || event.layerX || 0;
     let pos = x / this.positionController.width();
     this.video.currentTime = pos * this.video.duration;
+    this.loader.addClass('hidden');
     this.bar.skipAnimation();
   }
 
@@ -269,8 +307,10 @@ export default class BigVideo extends BigBlock {
     if (!this.muteChanged) {
       this.video.muted = true;
     }
-    this.video.currentTime = 0;
-    this.video.play();
+    if (this.canPlay) {
+      this.video.currentTime = 0;
+      this.video.play();
+    }
   }
 
   // Invoked when the container is invisible on the screen (note: this.threshold)

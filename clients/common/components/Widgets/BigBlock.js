@@ -29,7 +29,9 @@ export default class BigBlock extends React.Component {
       this.container = null;
     }
     window.addEventListener('scroll', this.onScroll, false);
-    this.onScroll();
+    setTimeout(() => {
+      this.onScroll();
+    });
   }
 
   onUnmount() {
