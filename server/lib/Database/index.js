@@ -1,4 +1,3 @@
-
 import {toTitleCase} from '../Helpers';
 
 exports.configure = function(app, config) {

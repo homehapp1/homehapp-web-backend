@@ -1,4 +1,3 @@
-
 import QueryBuilder from '../../lib/QueryBuilder';
 let debug = require('debug')('/');
 

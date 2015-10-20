@@ -1,5 +1,3 @@
-
-
 import {Forbidden} from '../../lib/Errors';
 
 exports.registerRoutes = (app) => {

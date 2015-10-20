@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import Image from './Image';
 // import classNames from 'classnames';

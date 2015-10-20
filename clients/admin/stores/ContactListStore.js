@@ -1,5 +1,3 @@
-
-
 import alt from '../../common/alt';
 import ContactListActions from '../actions/ContactListActions';
 import ContactListSource from '../sources/ContactListSource';

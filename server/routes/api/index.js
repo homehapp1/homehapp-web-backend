@@ -1,5 +1,3 @@
-
-
 exports.registerRoutes = (app) => {
   /**
    * @apiDefine MobileRequestHeaders

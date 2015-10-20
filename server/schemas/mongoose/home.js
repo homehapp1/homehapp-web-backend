@@ -1,5 +1,3 @@
-
-
 import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, getMainImage, populateMetadata} from './common';
 
 exports.loadSchemas = function (mongoose, next) {

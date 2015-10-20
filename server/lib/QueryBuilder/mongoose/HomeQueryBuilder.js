@@ -1,5 +1,3 @@
-
-
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
 let debug = require('debug')('HomeQueryBuilder');

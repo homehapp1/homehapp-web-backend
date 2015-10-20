@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import BigImage from '../Widgets/BigImage';
 import LargeText from '../Widgets/LargeText';

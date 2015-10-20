@@ -1,5 +1,3 @@
-
-
 import alt from '../../common/alt';
 import HomeActions from '../actions/HomeActions';
 import HomeSource from '../sources/HomeSource';

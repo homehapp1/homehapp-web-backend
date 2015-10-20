@@ -1,5 +1,3 @@
-
-
 import path from 'path';
 
 import Configuration from './lib/Configuration';

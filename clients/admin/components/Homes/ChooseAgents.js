@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import AgentListStore from '../../stores/AgentListStore';
 import Loading from '../../../common/components/Widgets/Loading';

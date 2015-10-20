@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Link } from 'react-router';
 import Image from '../../../common/components/Widgets/Image';

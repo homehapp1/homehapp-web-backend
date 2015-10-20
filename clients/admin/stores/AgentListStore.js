@@ -1,5 +1,3 @@
-
-
 import AgentListActions from '../actions/AgentListActions';
 import AgentListSource from '../sources/AgentListSource';
 import ListStore from '../../common/stores/BaseListStore';

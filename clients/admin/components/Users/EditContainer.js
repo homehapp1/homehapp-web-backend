@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import UserListStore from '../../stores/UserListStore';
 import UsersEdit from './Edit';

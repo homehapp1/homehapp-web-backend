@@ -1,5 +1,3 @@
-
-
 import alt from '../../common/alt';
 import UserActions from '../actions/UserActions';
 import UserSource from '../sources/UserSource';

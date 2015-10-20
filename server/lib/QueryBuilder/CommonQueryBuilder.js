@@ -1,5 +1,3 @@
-
-
 import async from 'async';
 
 /**

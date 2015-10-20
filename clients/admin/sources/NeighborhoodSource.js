@@ -1,5 +1,3 @@
-
-
 import request from '../../common/request';
 import NeighborhoodActions from '../actions/NeighborhoodActions';
 

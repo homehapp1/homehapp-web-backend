@@ -1,5 +1,3 @@
-
-
 exports.registerRoutes = (app) => {
 
   app.get('/auth/login', function(req, res) {

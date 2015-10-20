@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import HomeStore from '../../stores/HomeStore';
 import HomeStory from './HomeStory';

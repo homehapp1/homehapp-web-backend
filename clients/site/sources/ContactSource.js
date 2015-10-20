@@ -1,5 +1,3 @@
-
-
 import request from '../../common/request';
 import ContactActions from '../actions/ContactActions';
 

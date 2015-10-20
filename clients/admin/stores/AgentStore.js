@@ -1,5 +1,3 @@
-
-
 import AgentActions from '../actions/AgentActions';
 import AgentSource from '../sources/AgentSource';
 import ModelStore from '../../common/stores/BaseModelStore';

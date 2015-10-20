@@ -1,5 +1,3 @@
-
-
 import QueryBuilder from '../../../lib/QueryBuilder';
 import {/*NotImplemented,*/ BadRequest} from '../../../lib/Errors';
 let debug = require('debug')('/api/neighborhoods');

@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 
 export default class ContentNavigation extends React.Component {

@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import linearPartition from 'linear-partition';
 import DOMManipulator from '../../DOMManipulator';

@@ -1,5 +1,3 @@
-
-
 import ReactUpdates from 'react/lib/ReactUpdates';
 import DOMManipulator from './DOMManipulator';
 let debug = require('debug')('Helpers');

@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import NeighborhoodContainer from './NeighborhoodContainer';
 import NeighborhoodStore from '../../stores/NeighborhoodStore';

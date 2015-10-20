@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 let debug = require('debug')('DOMManipulator');
 

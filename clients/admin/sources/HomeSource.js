@@ -1,5 +1,3 @@
-
-
 import request from '../../common/request';
 import HomeActions from '../actions/HomeActions';
 

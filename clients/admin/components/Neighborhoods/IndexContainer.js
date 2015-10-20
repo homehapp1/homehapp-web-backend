@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 import NeighborhoodsIndex from './index';

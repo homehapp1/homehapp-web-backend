@@ -1,5 +1,3 @@
-
-
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
 import async from 'async';

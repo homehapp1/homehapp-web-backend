@@ -1,5 +1,3 @@
-
-
 import {merge} from '../Helpers';
 
 class BaseAdapter {

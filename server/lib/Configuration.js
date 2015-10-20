@@ -1,5 +1,3 @@
-
-
 import Helpers from './Helpers';
 import fs from 'fs';
 import path from 'path';

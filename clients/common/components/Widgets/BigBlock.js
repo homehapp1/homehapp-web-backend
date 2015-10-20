@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { setFullHeight } from '../../Helpers';
 import DOMManipulator from '../../DOMManipulator';

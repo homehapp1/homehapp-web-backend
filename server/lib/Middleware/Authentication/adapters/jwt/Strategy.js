@@ -1,5 +1,3 @@
-
-
 import {Strategy} from 'passport-strategy';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';

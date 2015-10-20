@@ -1,5 +1,3 @@
-
-
 let debug = require('debug')('MongooseMigrator');
 
 class MongooseMigrator {

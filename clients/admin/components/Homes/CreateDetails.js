@@ -1,5 +1,3 @@
-
-
 import HomesEditDetails from './EditDetails';
 import HomeStore from '../../stores/HomeStore';
 

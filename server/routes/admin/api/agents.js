@@ -1,5 +1,3 @@
-
-
 import QueryBuilder from '../../../lib/QueryBuilder';
 import {BadRequest} from '../../../lib/Errors';
 let debug = require('debug')('/api/agents');

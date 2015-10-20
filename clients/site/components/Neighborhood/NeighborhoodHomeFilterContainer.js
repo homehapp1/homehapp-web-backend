@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import NeighborhoodContainer from './NeighborhoodContainer';
 import NeighborhoodHomeFilter from './NeighborhoodHomeFilter';

@@ -1,5 +1,3 @@
-
-
 import Helpers from '../../Helpers';
 import alt from '../../alt';
 

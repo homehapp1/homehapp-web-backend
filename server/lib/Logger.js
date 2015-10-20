@@ -1,5 +1,3 @@
-
-
 import winston from 'winston';
 import {merge} from './Helpers';
 

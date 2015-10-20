@@ -1,4 +1,3 @@
-
 import { generateUniqueSlug } from './common';
 
 exports.extendSchema = function (schema) {

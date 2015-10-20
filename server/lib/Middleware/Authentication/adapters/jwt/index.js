@@ -1,6 +1,3 @@
-
-
-
 import QueryBuilder from '../../../../QueryBuilder';
 import {generateUUID} from '../../../../Helpers';
 import JWTStrategy from './Strategy';

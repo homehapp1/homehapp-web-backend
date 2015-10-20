@@ -1,5 +1,3 @@
-
-
 import request from '../request';
 import AuthActions from '../actions/AuthActions';
 

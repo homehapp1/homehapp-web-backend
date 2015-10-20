@@ -1,5 +1,3 @@
-
-
 import axios from 'axios';
 import ApplicationStore from './stores/ApplicationStore';
 

@@ -1,5 +1,3 @@
-
-
 import winston from 'winston';
 import expressWinston from 'express-winston';
 import {getEnvironmentValue} from '../../Helpers';

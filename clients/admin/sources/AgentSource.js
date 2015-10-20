@@ -1,5 +1,3 @@
-
-
 import request from '../../common/request';
 import AgentActions from '../actions/AgentActions';
 

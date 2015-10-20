@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import Columns from './Columns';
 import ContentBlock from './ContentBlock';

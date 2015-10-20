@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import ExecutionEnvironment from 'react/lib/ExecutionEnvironment';
 import request from '../../request';

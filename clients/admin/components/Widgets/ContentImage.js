@@ -1,5 +1,3 @@
-
-
 import BaseBlock from '../Widgets/BaseBlock';
 
 export default class AdminContentImage extends BaseBlock {

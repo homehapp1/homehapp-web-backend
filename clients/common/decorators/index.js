@@ -1,5 +1,3 @@
-
-
 export function testDecorator() {
   console.log('testDecorator', arguments);
   return function(/*Component*/) {

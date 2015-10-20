@@ -1,5 +1,3 @@
-
-
 exports.extendSchema = function (schema) {
   // Generate slug
   schema.pre('validate', function (next) {

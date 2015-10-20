@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import Input from '../Widgets/Input';
 import Panel from 'react-bootstrap/lib/Panel';

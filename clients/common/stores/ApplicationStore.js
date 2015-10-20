@@ -1,5 +1,3 @@
-
-
 import alt from '../alt';
 
 let debug = require('../debugger')('ApplicationStore');

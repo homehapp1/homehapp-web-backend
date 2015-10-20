@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import Map from './Map';
 let debug = require('debug')('PlacePicker');

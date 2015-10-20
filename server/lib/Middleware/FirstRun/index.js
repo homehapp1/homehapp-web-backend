@@ -1,5 +1,3 @@
-
-
 import basicAuth from 'basic-auth-connect';
 import fs from 'fs';
 import path from 'path';

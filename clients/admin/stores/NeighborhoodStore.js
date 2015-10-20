@@ -1,5 +1,3 @@
-
-
 import alt from '../../common/alt';
 import NeighborhoodActions from '../actions/NeighborhoodActions';
 import NeighborhoodSource from '../sources/NeighborhoodSource';

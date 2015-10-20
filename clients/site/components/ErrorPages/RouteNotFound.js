@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 

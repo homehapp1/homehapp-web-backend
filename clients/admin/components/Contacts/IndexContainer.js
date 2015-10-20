@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import ContactListStore from '../../stores/ContactListStore';
 import ContactsIndex from './index';

@@ -1,5 +1,3 @@
-
-
 import alt from '../../common/alt';
 import AuthActions from '../actions/AuthActions';
 import AuthSource from '../sources/AuthSource';

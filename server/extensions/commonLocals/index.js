@@ -1,5 +1,3 @@
-
-
 import {merge} from '../../lib/Helpers';
 
 //let debug = require('debug')('Extension:commonLocals');

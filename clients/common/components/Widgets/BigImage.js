@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { merge } from '../../Helpers';
 import classNames from 'classnames';

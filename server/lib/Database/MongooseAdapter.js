@@ -1,5 +1,3 @@
-
-
 import Bluebird from 'bluebird';
 import BaseAdapter from './BaseAdapter';
 import Helpers from '../Helpers';

@@ -1,5 +1,3 @@
-
-
 exports.configure = function(app, config = {}) {
   app.use((req, res, next) => {
     req.originalUrl = req.url;

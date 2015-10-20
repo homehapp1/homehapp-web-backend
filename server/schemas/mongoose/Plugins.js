@@ -1,5 +1,3 @@
-
-
 import moment from 'moment';
 import Errors from '../../lib/Errors';
 import {generateUUID} from '../../lib/Helpers';

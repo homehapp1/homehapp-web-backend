@@ -1,5 +1,3 @@
-
-
 import twilio from 'twilio';
 import QueryBuilder from '../../../lib/QueryBuilder';
 import {BadRequest} from '../../../lib/Errors';

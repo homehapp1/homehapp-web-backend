@@ -1,5 +1,3 @@
-
-
 import { loadCommonPlugins, commonJsonTransform, populateMetadata } from './common';
 
 exports.loadSchemas = function (mongoose, next) {

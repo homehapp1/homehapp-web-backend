@@ -1,5 +1,3 @@
-
-
 import Fixtures from './fixtures';
 
 let debug = require('debug')('MongooseMigrator.Action.Init');

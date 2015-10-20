@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import HomeListStore from '../../stores/HomeListStore';
 import HomesDelete from './Delete';

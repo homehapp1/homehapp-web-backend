@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 // import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';

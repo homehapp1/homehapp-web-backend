@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
 import Nav from 'react-bootstrap/lib/Nav';

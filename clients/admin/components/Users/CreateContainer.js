@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 //import UserListStore from '../../stores/UserListStore';
 import UserStore from '../../stores/UserStore';

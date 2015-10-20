@@ -1,5 +1,3 @@
-
-
 import {toTitleCase} from '../Helpers';
 
 class QueryBuilder {

@@ -1,5 +1,3 @@
-
-
 import BaseModelActions from '../../common/actions/BaseModelActions';
 let debug = require('../../common/debugger')('AgentActions');
 

@@ -1,5 +1,3 @@
-
-
 import SourceBuilder from '../../common/sources/Builder';
 import AgentListActions from '../actions/AgentListActions';
 

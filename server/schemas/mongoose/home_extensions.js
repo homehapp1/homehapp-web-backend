@@ -1,5 +1,3 @@
-
-
 import {randomString} from '../../lib/Helpers';
 
 var generateUniqueSlug = function (home, cb, iteration) {

@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 
 import StoryLayout from '../../../common/components/Layout/StoryLayout';

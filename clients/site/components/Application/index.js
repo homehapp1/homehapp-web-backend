@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 let {RouteHandler} = require('react-router');
 

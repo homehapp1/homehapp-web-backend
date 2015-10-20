@@ -1,5 +1,3 @@
-
-
 import alt from '../../common/alt';
 import ContactActions from '../actions/ContactActions';
 import ContactSource from '../sources/ContactSource';

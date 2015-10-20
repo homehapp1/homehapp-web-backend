@@ -1,5 +1,3 @@
-
-
 import moment from 'moment';
 import bcrypt from 'bcrypt';
 import { loadCommonPlugins, commonJsonTransform, populateMetadata } from './common';

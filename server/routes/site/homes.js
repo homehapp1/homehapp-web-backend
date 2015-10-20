@@ -1,5 +1,3 @@
-
-
 import QueryBuilder from '../../lib/QueryBuilder';
 import { setLastMod, initMetadata } from '../../../clients/common/Helpers';
 let debug = require('debug')('/homes');

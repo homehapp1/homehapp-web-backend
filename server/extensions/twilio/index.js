@@ -1,5 +1,3 @@
-
-
 import twilio from 'twilio';
 
 let debug = require('debug')('Extension:twilio');

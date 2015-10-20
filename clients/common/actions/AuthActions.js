@@ -1,5 +1,3 @@
-
-
 import alt from '../../common/alt';
 
 let debug = require('../../common/debugger')('AuthActions');

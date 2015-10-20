@@ -1,5 +1,3 @@
-
-
 import basicAuth from 'basic-auth-connect';
 import express from 'express';
 import fs from 'fs';

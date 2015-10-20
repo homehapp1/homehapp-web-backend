@@ -1,5 +1,3 @@
-
-
 import passport from 'passport';
 import http from 'http';
 //import moment from 'moment';
