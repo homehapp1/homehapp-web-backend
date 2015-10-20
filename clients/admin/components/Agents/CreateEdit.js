@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
 import UploadArea from '../../../common/components/UploadArea';
@@ -298,7 +298,7 @@ export default class AgentsCreateEdit extends React.Component {
         <form name='agentDetails' ref='agentDetailsForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>
-              <Input
+              <InputWidget
                 type='text'
                 ref='firstname'
                 label='First name'
@@ -306,7 +306,7 @@ export default class AgentsCreateEdit extends React.Component {
                 defaultValue={agent.firstname}
                 required
               />
-              <Input
+              <InputWidget
                 type='text'
                 ref='lastname'
                 label='Last name'
@@ -314,7 +314,7 @@ export default class AgentsCreateEdit extends React.Component {
                 defaultValue={agent.lastname}
                 required
               />
-              <Input
+              <InputWidget
                 type='email'
                 ref='email'
                 label='Email'
@@ -322,10 +322,10 @@ export default class AgentsCreateEdit extends React.Component {
                 defaultValue={agent.email}
                 required
               />
-              <Input label='Real Contact Number' wrapperClassName='wrapper'>
+              <InputWidget label='Real Contact Number' wrapperClassName='wrapper'>
                 <Row>
                   <Col xs={5}>
-                    <Input
+                    <InputWidget
                       type='select'
                       ref='addressCountry'
                       label='Country'
@@ -333,10 +333,10 @@ export default class AgentsCreateEdit extends React.Component {
                       defaultValue={location.address.country}>
                       <option value=''>Select country</option>
                       {countrySelections}
-                    </Input>
+                    </InputWidget>
                   </Col>
                   <Col xs={3}>
-                    <Input
+                    <InputWidget
                       type='select'
                       ref='realPhoneNumberType'
                       label='Type'
@@ -344,10 +344,10 @@ export default class AgentsCreateEdit extends React.Component {
                       defaultValue={agent.realPhoneNumberType}>
                       <option value='mobile'>Mobile</option>
                       <option value='local'>Landline</option>
-                    </Input>
+                    </InputWidget>
                   </Col>
                   <Col xs={4}>
-                    <Input
+                    <InputWidget
                       type='tel'
                       ref='realPhoneNumber'
                       label='Number'
@@ -357,11 +357,11 @@ export default class AgentsCreateEdit extends React.Component {
                     />
                   </Col>
                 </Row>
-              </Input>
-              <Input label='Twilio Phone number (auto-generated if empty)' wrapperClassName='wrapper'>
+              </InputWidget>
+              <InputWidget label='Twilio Phone number (auto-generated if empty)' wrapperClassName='wrapper'>
                 <Row>
                   <Col xs={6}>
-                    <Input
+                    <InputWidget
                       type='tel'
                       ref='contactNumber'
                       placeholder='+44 123 00 11 22'
@@ -370,7 +370,7 @@ export default class AgentsCreateEdit extends React.Component {
                   </Col>
                   {releaseNumberColumn}
                 </Row>
-              </Input>
+              </InputWidget>
             </Panel>
             <Panel header='Agency'>
               <p>TODO: add a selector for agency</p>

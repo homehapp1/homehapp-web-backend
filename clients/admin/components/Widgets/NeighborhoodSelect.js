@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 
 // let debug = require('../../../common/debugger')('NeighborhoodSelect');
@@ -79,7 +79,7 @@ export default class NeighborhoodSelect extends React.Component {
     }
 
     return (
-      <Input
+      <InputWidget
         type='select'
         ref='neighborhoodSelect'
         label='Neighborhood'
@@ -93,7 +93,7 @@ export default class NeighborhoodSelect extends React.Component {
             <option {...opts} key={'nhs-' + index}>{neighborhood.title}</option>
           );
         })}
-      </Input>
+      </InputWidget>
     );
   }
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
@@ -247,7 +247,7 @@ export default class HomesEditDetails extends EditDetails {
     return (
       <Row key={'attribute-' + index + '-' + attr.name}>
         <Col md={4}>
-          <Input
+          <InputWidget
             type='select'
             addonBefore='Name'
             placeholder='Select Attribute'
@@ -259,10 +259,10 @@ export default class HomesEditDetails extends EditDetails {
             <option value='floor'>Floor</option>
             <option value='rooms'>Rooms</option>
             <option value='elevator'>Elevator</option>
-          </Input>
+          </InputWidget>
         </Col>
         <Col md={4}>
-          <Input
+          <InputWidget
             type='text'
             addonBefore='Value'
             name={'attributes[' + index + '][value]'}
@@ -338,7 +338,7 @@ export default class HomesEditDetails extends EditDetails {
         <form name='homeDetails' ref='homeDetailsForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>
-              <Input
+              <InputWidget
                 type='text'
                 ref='title'
                 label='Title'
@@ -347,7 +347,7 @@ export default class HomesEditDetails extends EditDetails {
                 onChange={this.onFormChange.bind(this)}
               />
               {this.getSlug(home)}
-              <Input
+              <InputWidget
                 type='select'
                 ref='announcementType'
                 label='Announcement type'
@@ -357,8 +357,8 @@ export default class HomesEditDetails extends EditDetails {
               >
                 <option value='buy'>This home is for sale</option>
                 <option value='rent'>This home is for rent</option>
-              </Input>
-              <Input
+              </InputWidget>
+              <InputWidget
                 type='textarea'
                 ref='description'
                 label='Description'
@@ -369,7 +369,7 @@ export default class HomesEditDetails extends EditDetails {
               />
             </Panel>
             <Panel header='Location'>
-              <Input
+              <InputWidget
                 type='text'
                 ref='addressStreet'
                 label='Street Address'
@@ -377,7 +377,7 @@ export default class HomesEditDetails extends EditDetails {
                 defaultValue={homeLocation.address.street}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
+              <InputWidget
                 type='text'
                 ref='addressApartment'
                 label='Apartment'
@@ -389,7 +389,7 @@ export default class HomesEditDetails extends EditDetails {
                 ref='addressNeighborhood'
                 selected={homeLocation.neighborhood}
               />
-              <Input
+              <InputWidget
                 type='text'
                 ref='addressCity'
                 label='City'
@@ -397,7 +397,7 @@ export default class HomesEditDetails extends EditDetails {
                 defaultValue={homeLocation.address.city}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
+              <InputWidget
                 type='text'
                 ref='addressZipcode'
                 label='Post code'
@@ -405,7 +405,7 @@ export default class HomesEditDetails extends EditDetails {
                 defaultValue={homeLocation.address.zipcode}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
+              <InputWidget
                 type='select'
                 ref='addressCountry'
                 label='Country'
@@ -414,16 +414,16 @@ export default class HomesEditDetails extends EditDetails {
                 onChange={this.onFormChange.bind(this)}>
                 <option value=''>Select country</option>
                 {countrySelections}
-              </Input>
+              </InputWidget>
 
               <PlacePicker lat={this.state.lat} lng={this.state.lng} onChange={this.setCoordinates} />
 
-              <Input
+              <InputWidget
                 label='Coordinates'
                 help='Optional coordinates for the home' wrapperClassName='wrapper'>
                 <Row>
                   <Col xs={6}>
-                    <Input
+                    <InputWidget
                       type='text'
                       ref='locationLatitude'
                       addonBefore='Latitude:'
@@ -432,7 +432,7 @@ export default class HomesEditDetails extends EditDetails {
                     />
                   </Col>
                   <Col xs={6}>
-                    <Input
+                    <InputWidget
                       type='text'
                       ref='locationLongitude'
                       addonBefore='Longitude:'
@@ -441,10 +441,10 @@ export default class HomesEditDetails extends EditDetails {
                     />
                   </Col>
                 </Row>
-              </Input>
+              </InputWidget>
             </Panel>
             <Panel header='General specifications'>
-              <Input
+              <InputWidget
                 type='text'
                 ref='detailsArea'
                 label='Living area (square feet)'
@@ -456,7 +456,7 @@ export default class HomesEditDetails extends EditDetails {
               />
             </Panel>
             <Panel header='Pricing information'>
-              <Input
+              <InputWidget
                 type='select'
                 ref='costsCurrency'
                 label='Used currency'
@@ -466,8 +466,8 @@ export default class HomesEditDetails extends EditDetails {
                 <option value='GBP'>British Pounds</option>
                 <option value='EUR'>Euro</option>
                 <option value='SUD'>US Dollars</option>
-              </Input>
-              <Input
+              </InputWidget>
+              <InputWidget
                 type='text'
                 ref='costsSellingPrice'
                 label='Selling price'
@@ -477,7 +477,7 @@ export default class HomesEditDetails extends EditDetails {
                 pattern='([0-9]*)(\.[0-9]+)?'
                 patternError='Please enter a valid number (e.g. 123.45) without any units'
               />
-              <Input
+              <InputWidget
                 type='text'
                 ref='costsCouncilTax'
                 label='Council tax'
@@ -489,7 +489,7 @@ export default class HomesEditDetails extends EditDetails {
               />
             </Panel>
             <Panel header='Amenities'>
-              <Input
+              <InputWidget
                 type='textarea'
                 ref='amenities'
                 label='Input Amenities (one per line)'
@@ -499,7 +499,7 @@ export default class HomesEditDetails extends EditDetails {
               />
             </Panel>
             <Panel header='Facilities'>
-              <Input
+              <InputWidget
                 type='textarea'
                 ref='facilities'
                 label='Input Facilities (one per line)'

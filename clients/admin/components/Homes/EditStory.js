@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
 // import Table from 'react-bootstrap/lib/Table';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
@@ -95,7 +95,7 @@ export default class HomesEditStory extends React.Component {
         <form name='homeStory' ref='homeStoryForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Visibility settings'>
-              <Input
+              <InputWidget
                 type='checkbox'
                 ref='enabled'
                 label='Show story on the public site'

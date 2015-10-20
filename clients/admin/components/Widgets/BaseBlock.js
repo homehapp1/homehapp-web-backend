@@ -2,7 +2,7 @@ import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Table from 'react-bootstrap/lib/Table';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
@@ -190,7 +190,7 @@ export default class WidgetsBaseBlock extends React.Component {
         }
 
         input = (
-          <Input
+          <InputWidget
             type={prop.type}
             name={key}
             label={prop.label}
@@ -206,7 +206,7 @@ export default class WidgetsBaseBlock extends React.Component {
             {...inputProps}
           >
             {options}
-          </Input>
+          </InputWidget>
         );
         break;
       case 'video':
@@ -392,7 +392,7 @@ export default class WidgetsBaseBlock extends React.Component {
     copyParentImages = copyParentImages.bind(this);
 
     return (
-      <Input
+      <InputWidget
         type='checkbox'
         label={`Copy all the images from the main object (${images.length})`}
         onChange={copyParentImages}

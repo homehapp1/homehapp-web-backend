@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import { createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('EditDetails');
@@ -120,7 +120,7 @@ export default class EditDetails extends React.Component {
     }
 
     return (
-        <Input
+        <InputWidget
         type='text'
         label='URL address'
         placeholder='URL address (will be generated)'
