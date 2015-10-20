@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import Input from 'react-bootstrap/lib/Input';
+import Input from '../Widgets/Input';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';

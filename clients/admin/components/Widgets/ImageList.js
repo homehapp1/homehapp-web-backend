@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Table from 'react-bootstrap/lib/Table';
-import Input from 'react-bootstrap/lib/Input';
+import Input from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 

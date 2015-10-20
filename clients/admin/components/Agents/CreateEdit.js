@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
-import Input from 'react-bootstrap/lib/Input';
+import Input from '../Widgets/Input';
 import AgentStore from '../../stores/AgentStore';
 import AgentActions from '../../actions/AgentActions';
 import UploadArea from '../../../common/components/UploadArea';

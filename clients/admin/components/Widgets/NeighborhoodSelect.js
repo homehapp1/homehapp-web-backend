@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from 'react-bootstrap/lib/Input';
+import Input from '../Widgets/Input';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 
 // let debug = require('../../../common/debugger')('NeighborhoodSelect');
