@@ -25,7 +25,9 @@ export default class InputWidget extends Input {
       React.PropTypes.string,
       React.PropTypes.array,
       React.PropTypes.object
-    ])
+    ]),
+    pattern: React.PropTypes.string,
+    patternError: React.PropTypes.string
   }
 
   constructor(props) {
@@ -92,28 +94,38 @@ export default class InputWidget extends Input {
 
   // Validate email address
   validateEmailInput(value) {
-    return false;
+    if (value.match(/^[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i)) {
+      return true;
+    }
+    throw new Error('Not a valid email address');
+  }
+
+  validateNumberInput(value) {
+    let number = Number(value);
+    if (isNaN(number)) {
+      throw new Error('Not a valid number');
+    }
+    return true;
   }
 
   checkByType(inputs, value) {
-    let valid = true;
-
     let type = this.props.type.toString();
     let method = `validate${type.substr(0, 1).toUpperCase()}${type.substr(1)}Input`;
-    debug('checkByType', method);
 
     // Check if there is a validator for the used input type
     if (typeof this[method] !== 'function') {
-      debug('Method does not exist', method, this);
       return true;
     }
 
-    if (!this[method](value)) {
+    try {
+      this[method](value);
+    } catch (error) {
       this.setAsInvalid(inputs);
-      this.setState({error: 'Invalid value'});
+      this.setState({error: error.toString()});
+      return false;
     }
 
-    return valid;
+    return true;
   }
 
   checkRequired(inputs, value) {
@@ -146,7 +158,7 @@ export default class InputWidget extends Input {
     // Mark each input (there should be only one, but...)
     if (!valid) {
       this.setAsInvalid(inputs);
-      this.message = 'Pattern match failed';
+      this.message = this.props.patternError || 'Pattern match failed';
       this.setState({error: this.message});
     }
 
@@ -246,7 +258,7 @@ export default class InputWidget extends Input {
     if (!this.checkPattern(inputs, value)) {
       return false;
     }
-    debug('go to checkByType');
+
     if (!this.checkByType(inputs, value)) {
       return false;
     }
