@@ -67,6 +67,11 @@ export default class ImageList extends React.Component {
                 c: 'fill'
               });
 
+              let altChange = (event) => {
+                image.alt = event.target.value;
+                this.props.onChange(event);
+              };
+
               return (
                 <tr key={`homeImage-${idx}`}>
                   <td>
@@ -81,7 +86,7 @@ export default class ImageList extends React.Component {
                       label='Description'
                       placeholder='(optional)'
                       defaultValue={image.alt}
-                      onChange={this.props.onChange.bind(this)}
+                      onChange={altChange}
                     />
                   </td>
                   <td>
