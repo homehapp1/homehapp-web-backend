@@ -1,18 +1,16 @@
-
-
 import React from 'react';
 import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Input from 'react-bootstrap/lib/Input';
+import Input from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import HomeStore from '../../stores/HomeStore';
 import HomeActions from '../../actions/HomeActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import { randomNumericId, merge } from '../../../common/Helpers';
+import { randomNumericId, merge, createNotification } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import NeighborhoodSelect from '../Widgets/NeighborhoodSelect';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
@@ -98,7 +96,28 @@ export default class HomesEditDetails extends EditDetails {
   }
 
   onSave() {
-    debug('save');
+    debug('save', this.refs);
+
+    for (let key in this.refs) {
+      let ref = this.refs[key];
+      if (typeof ref.isValid !== 'function') {
+        continue;
+      }
+
+      if (!ref.isValid()) {
+        debug('Validation failed', ref);
+        let label = ref.props.label || 'Validation error';
+        let message = ref.message || 'Field failed the validation';
+
+        createNotification({
+          type: 'danger',
+          duration: 10,
+          label: label,
+          message: message
+        });
+        return false;
+      }
+    }
 
     let images = [];
     // Clean broken images
@@ -114,7 +133,6 @@ export default class HomesEditDetails extends EditDetails {
     }
 
     debug('Coordinates', this.getCoordinates());
-    debug('refs', this.refs, this);
 
     let homeProps = {
       id: id,
@@ -283,6 +301,14 @@ export default class HomesEditDetails extends EditDetails {
       neighborhood: null
     }, home.location || {});
 
+    if (this.props.home) {
+      home.title = this.props.home.homeTitle;
+    }
+
+    if (this.state.home) {
+      home.title = this.state.home.homeTitle;
+    }
+
     let countrySelections = this.getCountryOptions();
 
     let lat = this.state.lat || 0;
@@ -441,6 +467,7 @@ export default class HomesEditDetails extends EditDetails {
                 placeholder='(optional)'
                 defaultValue={home.costs.sellingPrice}
                 onChange={this.onFormChange.bind(this)}
+                pattern='[0-9]*'
               />
               <Input
                 type='text'
