@@ -8,8 +8,24 @@ export default class InputWidget extends Input {
     ...Input.propTypes,
     validate: React.PropTypes.func,
     type: React.PropTypes.string,
-    hasFeedback: React.PropTypes.boolean,
-    required: React.PropTypes.boolean
+    hasFeedback: React.PropTypes.bool,
+    required: React.PropTypes.bool,
+    defaultValue: React.PropTypes.oneOfType([
+      React.PropTypes.null,
+      React.PropTypes.bool,
+      React.PropTypes.number,
+      React.PropTypes.string,
+      React.PropTypes.array,
+      React.PropTypes.object
+    ]),
+    value: React.PropTypes.oneOfType([
+      React.PropTypes.null,
+      React.PropTypes.bool,
+      React.PropTypes.number,
+      React.PropTypes.string,
+      React.PropTypes.array,
+      React.PropTypes.object
+    ])
   }
 
   constructor(props) {
@@ -18,6 +34,7 @@ export default class InputWidget extends Input {
     this.valid = true;
     this.inputChanged = this.inputChanged.bind(this);
     this.message = null;
+    this.initialValue = null;
   }
 
   state = {
@@ -28,7 +45,13 @@ export default class InputWidget extends Input {
     if (super.componentDidMount) {
       super.componentDidMount();
     }
-
+    if (typeof this.props.defaultValue !== 'undefined') {
+      this.initialValue = this.props.defaultValue;
+    } else if (typeof this.props.value !== 'undefined') {
+      this.initialValue = this.props.value;
+    } else {
+      this.initialValue = null;
+    }
     this.bindEvents();
   }
 
@@ -48,6 +71,13 @@ export default class InputWidget extends Input {
     this.inputs = this.bindEvents();
   }
 
+  getValue() {
+    let value = super.getValue();
+    // @TODO: act as a nice little middleware and format the returned type
+    // with a preformatter
+    return value;
+  }
+
   setAsInvalid(inputs) {
     for (let input of inputs) {
       input.className += ' invalid';
@@ -58,6 +88,32 @@ export default class InputWidget extends Input {
     for (let input of inputs) {
       input.className += ' valid';
     }
+  }
+
+  // Validate email address
+  validateEmailInput(value) {
+    return false;
+  }
+
+  checkByType(inputs, value) {
+    let valid = true;
+
+    let type = this.props.type.toString();
+    let method = `validate${type.substr(0, 1).toUpperCase()}${type.substr(1)}Input`;
+    debug('checkByType', method);
+
+    // Check if there is a validator for the used input type
+    if (typeof this[method] !== 'function') {
+      debug('Method does not exist', method, this);
+      return true;
+    }
+
+    if (!this[method](value)) {
+      this.setAsInvalid(inputs);
+      this.setState({error: 'Invalid value'});
+    }
+
+    return valid;
   }
 
   checkRequired(inputs, value) {
@@ -120,7 +176,10 @@ export default class InputWidget extends Input {
   }
 
   inputChanged() {
-    // debug('Input changed');
+    if (this.initialValue === this.getValue()) {
+      return null;
+    }
+
     // Mark the input as touched
     let inputs = this.getInputs();
     this.pristine = false;
@@ -185,6 +244,10 @@ export default class InputWidget extends Input {
     }
 
     if (!this.checkPattern(inputs, value)) {
+      return false;
+    }
+    debug('go to checkByType');
+    if (!this.checkByType(inputs, value)) {
       return false;
     }
 
