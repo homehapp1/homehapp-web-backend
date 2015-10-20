@@ -3,8 +3,6 @@ import { Link } from 'react-router';
 // import Tabs from 'react-simpletabs';
 
 import HomeListStore from '../../stores/HomeListStore';
-import ErrorPage from '../../../common/components/Layout/ErrorPage';
-
 import HomeList from '../Home/HomeList';
 
 import BigImage from '../../../common/components/Widgets/BigImage';
@@ -57,33 +55,80 @@ export default class Homepage extends React.Component {
     );
   }
 
-  handleErrorState() {
-    let error = {
-      title: 'Error loading homes!',
-      message: this.state.error.message
-    };
+  renderHomeList(homes) {
+    if (!homes || !homes.length) {
+      return null;
+    }
 
     return (
-      <ErrorPage {...error} />
+      <div className='mainpage-list clearfix'>
+        <HomeList items={homes} max={12} className='mainpage-list short-list'>
+          <h2>Exclusively for Homehapp</h2>
+        </HomeList>
+        <p className='call-to-action'>
+          <Link to='search' className='button'>Find more</Link>
+        </p>
+      </div>
+    );
+  }
+
+  renderNeighborhoods(neighborhoods) {
+    if (!neighborhoods || !neighborhoods.length) {
+      return null;
+    }
+    return (
+      <div className='mainpage-list clearfix with-gradient widget'>
+        <div className='neighborhood-list preview-list short-list' ref='neighborhoodList'>
+          <h2>Where is your home</h2>
+          {
+            neighborhoods.map((neighborhood, index) => {
+              if (index >= 6) {
+                return null;
+              }
+
+              return (
+                <div className='preview' key={index}>
+                  <Hoverable {...neighborhood.mainImage} width={464} height={556} mode='fill' applySize>
+                    <div className='neighborhood-title'>
+                      <div className='wrapper'>
+                        <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                          <span className='title'>{neighborhood.title}</span>
+                        </Link>
+                      </div>
+                    </div>
+
+                    <div className='actions'>
+                      <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                        Read About
+                      </Link>
+                      <Link to='neighborhoodViewHomes' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                        Show Homes
+                      </Link>
+                    </div>
+                  </Hoverable>
+                </div>
+              );
+            })
+          }
+
+          <p className='call-to-action'>
+            <Link to='search' className='button'>Find more</Link>
+          </p>
+        </div>
+      </div>
     );
   }
 
   render() {
-    if (this.state.error) {
-      return this.handleErrorState();
-    }
-
-    // if (HomeListStore.isLoading() || !this.state.homes.length) {
-    //   return this.handlePendingState();
-    // }
-
     let placeholder = {
       url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
       alt: ''
     };
 
+    let homes = this.state.homes || [];
+
     let neighborhoods = [];
-    for (let home of this.state.homes) {
+    for (let home of homes) {
       let neighborhood = home.location.neighborhood;
       if (!neighborhood) {
         continue;
@@ -94,7 +139,7 @@ export default class Homepage extends React.Component {
       }
     }
 
-    debug('Neighborhoods', neighborhoods);
+    debug('Neighborhoods', neighborhoods, 'Homes', homes);
 
     let partnerImage = {
       src: 'https://res.cloudinary.com/homehapp/image/upload/v1442998167/site/images/content/tablelamp.jpg',
@@ -112,14 +157,7 @@ export default class Homepage extends React.Component {
             </div>
           </LargeText>
         </BigImage>
-        <div className='mainpage-list clearfix'>
-          <HomeList items={this.state.homes} max={12} className='mainpage-list short-list'>
-            <h2>Exclusively for Homehapp</h2>
-          </HomeList>
-          <p className='call-to-action'>
-            <Link to='search' className='button'>Find more</Link>
-          </p>
-        </div>
+        {this.renderHomeList(homes)}
         <ContentBlock className='with-gradient'>
           <div className='center'>
             <hr className='spacer' />
@@ -143,45 +181,7 @@ export default class Homepage extends React.Component {
             <div className='span1'></div>
           </Columns>
         </ContentBlock>
-        <div className='mainpage-list clearfix with-gradient widget'>
-          <div className='neighborhood-list preview-list short-list' ref='neighborhoodList'>
-            <h2>Where is your home</h2>
-            {
-              neighborhoods.map((neighborhood, index) => {
-                if (index >= 6) {
-                  return null;
-                }
-
-                return (
-                  <div className='preview' key={index}>
-                    <Hoverable {...neighborhood.mainImage} width={464} height={556} mode='fill' applySize>
-                      <div className='neighborhood-title'>
-                        <div className='wrapper'>
-                          <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
-                            <span className='title'>{neighborhood.title}</span>
-                          </Link>
-                        </div>
-                      </div>
-
-                      <div className='actions'>
-                        <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
-                          Read About
-                        </Link>
-                        <Link to='neighborhoodViewHomes' params={{city: 'london', neighborhood: neighborhood.slug}}>
-                          Show Homes
-                        </Link>
-                      </div>
-                    </Hoverable>
-                  </div>
-                );
-              })
-            }
-
-            <p className='call-to-action'>
-              <Link to='search' className='button'>Find more</Link>
-            </p>
-          </div>
-        </div>
+        {this.renderNeighborhoods(neighborhoods)}
       </div>
     );
   }
