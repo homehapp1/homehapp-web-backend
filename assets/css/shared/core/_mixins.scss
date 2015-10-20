@@ -108,7 +108,7 @@
   font-size: 150%;
   background-color: #ffffff;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
-  opacity: 0.2;
+  opacity: 0.4;
   font-size: 0.8 * $s;
   @include vendors(transition-property, all);
   @include vendors(transition-duration, $transitionDurationFast);
@@ -118,10 +118,10 @@
   }
 
   &:hover {
-    opacity: 0.8;
+    opacity: 1;
 
     @include small() {
-      opacity: 0.2;
+      opacity: 0.4;
     }
   }
 }
