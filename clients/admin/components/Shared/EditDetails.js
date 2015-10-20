@@ -1,7 +1,5 @@
-
-
 import React from 'react';
-import Input from 'react-bootstrap/lib/Input';
+import Input from '../Widgets/Input';
 import { createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('EditDetails');
@@ -184,7 +182,8 @@ export default class EditDetails extends React.Component {
     }
     createNotification({
       label: 'Error saving the object',
-      message: this.state.error.message
+      message: this.state.error.message,
+      type: 'danger'
     });
   }
 
