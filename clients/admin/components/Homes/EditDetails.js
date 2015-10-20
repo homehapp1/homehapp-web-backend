@@ -152,8 +152,11 @@ export default class HomesEditDetails extends EditDetails {
       },
       costs: {
         currency: this.refs.costsCurrency.getValue(),
-        sellingPrice: this.refs.costsSellingPrice.getValue(),
-        councilTax: this.refs.costsCouncilTax.getValue()
+        sellingPrice: Number(this.refs.costsSellingPrice.getValue()),
+        councilTax: Number(this.refs.costsCouncilTax.getValue())
+      },
+      details: {
+        area: Number(this.refs.detailsArea.getValue())
       },
       amenities: this.refs.amenities.getValue().split('\n'),
       facilities: this.refs.facilities.getValue().split('\n'),
@@ -425,6 +428,7 @@ export default class HomesEditDetails extends EditDetails {
                       ref='locationLatitude'
                       addonBefore='Latitude:'
                       value={this.state.lat}
+                      readOnly
                     />
                   </Col>
                   <Col xs={6}>
@@ -433,6 +437,7 @@ export default class HomesEditDetails extends EditDetails {
                       ref='locationLongitude'
                       addonBefore='Longitude:'
                       value={this.state.lng}
+                      readOnly
                     />
                   </Col>
                 </Row>
@@ -440,12 +445,14 @@ export default class HomesEditDetails extends EditDetails {
             </Panel>
             <Panel header='General specifications'>
               <Input
-                type='number'
+                type='text'
                 ref='detailsArea'
                 label='Living area (square feet)'
                 placeholder='1000'
                 defaultValue={home.details.area}
                 onChange={this.onFormChange.bind(this)}
+                pattern='([0-9]*)(\.[0-9]+)?'
+                patternError='Please enter a valid number (e.g. 123.45) without any units'
               />
             </Panel>
             <Panel header='Pricing information'>
@@ -467,7 +474,8 @@ export default class HomesEditDetails extends EditDetails {
                 placeholder='(optional)'
                 defaultValue={home.costs.sellingPrice}
                 onChange={this.onFormChange.bind(this)}
-                pattern='[0-9]*'
+                pattern='([0-9]*)(\.[0-9]+)?'
+                patternError='Please enter a valid number (e.g. 123.45) without any units'
               />
               <Input
                 type='text'
@@ -476,6 +484,8 @@ export default class HomesEditDetails extends EditDetails {
                 placeholder='(optional)'
                 defaultValue={home.costs.councilTax}
                 onChange={this.onFormChange.bind(this)}
+                pattern='([0-9]*)(\.[0-9]+)?'
+                patternError='Please enter a valid number (e.g. 123.45) without any units'
               />
             </Panel>
             <Panel header='Amenities'>
