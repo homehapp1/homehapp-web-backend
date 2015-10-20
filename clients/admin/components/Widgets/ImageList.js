@@ -83,8 +83,8 @@ export default class ImageList extends React.Component {
                     <Input
                       type='text'
                       ref='alt'
-                      label='Description'
-                      placeholder='(optional)'
+                      label='Short human-readable description'
+                      placeholder='(optional, but strongly recommended)'
                       defaultValue={image.alt}
                       onChange={altChange}
                     />
