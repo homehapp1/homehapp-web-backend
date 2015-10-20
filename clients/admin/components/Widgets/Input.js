@@ -26,8 +26,7 @@ export default class InputWidget extends Input {
       super.componentDidMount();
     }
 
-    debug('componentDidMount');
-    this.inputs = this.bindEvents();
+    this.bindEvents();
   }
 
   componentWillReceiveProps() {
@@ -35,7 +34,6 @@ export default class InputWidget extends Input {
       super.componentWillReceiveProps();
     }
 
-    debug('componentWillReceiveProps');
     this.inputs = this.bindEvents();
   }
 
@@ -44,7 +42,6 @@ export default class InputWidget extends Input {
       super.componentWillUpdate();
     }
 
-    debug('componentWillUpdate');
     this.inputs = this.bindEvents();
   }
 
@@ -120,7 +117,7 @@ export default class InputWidget extends Input {
   }
 
   inputChanged() {
-    debug('Input changed');
+    // debug('Input changed');
     // Mark the input as touched
     let inputs = this.getInputs();
     this.pristine = false;
@@ -140,7 +137,7 @@ export default class InputWidget extends Input {
   getInputs() {
     // Skip wrappers
     if (!this.props.type) {
-      return null;
+      return [];
     }
 
     let container = React.findDOMNode(this.refs.container);
