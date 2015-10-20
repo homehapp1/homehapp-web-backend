@@ -6,7 +6,10 @@ let debug = require('debug')('InputWidget');
 export default class InputWidget extends Input {
   static propTypes = {
     ...Input.propTypes,
-    validate: React.PropTypes.func
+    validate: React.PropTypes.func,
+    type: React.PropTypes.string,
+    hasFeedback: React.PropTypes.boolean,
+    required: React.PropTypes.boolean
   }
 
   constructor(props) {
@@ -128,8 +131,7 @@ export default class InputWidget extends Input {
       input.className = input.className.replace(/ ?\b(in)?valid\b/g, '');
     }
 
-    // Get the input value given by the react-bootstrap Input
-    let value = this.getValue();
+    // Validate
     this.isValid();
     this.forceUpdate();
   }
