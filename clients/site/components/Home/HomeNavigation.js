@@ -83,7 +83,7 @@ export default class HomeNavigation extends React.Component {
 
     if (this.props.home.story.enabled) {
       story = (
-        <li>
+        <li className='story'>
           <Link to='homeStory' params={{slug: this.props.home.slug}}><i className='fa fa-home'></i></Link>
         </li>
       );
@@ -94,19 +94,19 @@ export default class HomeNavigation extends React.Component {
       <ContentNavigation>
         <ul ref='navi'>
           {story}
-          <li>
+          <li className='details'>
             <Link to='homeDetails' params={{slug: this.props.home.slug}}><i className='fa fa-info-circle'></i></Link>
           </li>
-          <li>
+          <li className='phone'>
             <a href='#' onClick={todo}><i className='fa fa-phone'></i></a>
           </li>
-          <li>
+          <li className='contact'>
             <Link ref='contact' to='homeForm' params={{slug: this.props.home.slug}}><i className='fa fa-envelope-o'></i></Link>
           </li>
-          <li>
+          <li className='facebook'>
             <a ref='facebook' target='_blank'><i className='fa fa-facebook-square'></i></a>
           </li>
-          <li>
+          <li className='twitter'>
             <a ref='twitter' target='_blank'><i className='fa fa-twitter'></i></a>
           </li>
         </ul>
