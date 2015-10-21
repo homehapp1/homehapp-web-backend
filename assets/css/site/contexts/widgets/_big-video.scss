@@ -24,6 +24,18 @@
     }
   }
 
+  &.is-playing {
+    .image-content {
+      img {
+        display: none !important;
+      }
+
+      video {
+        display: block !important;
+      }
+    }
+  }
+
   .loader {
     $w: 180px;
     $h: 20px;
