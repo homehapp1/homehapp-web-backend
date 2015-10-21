@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Table from 'react-bootstrap/lib/Table';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 
@@ -80,11 +80,11 @@ export default class ImageList extends React.Component {
                     </a>
                   </td>
                   <td>
-                    <Input
+                    <InputWidget
                       type='text'
                       ref='alt'
-                      label='Description'
-                      placeholder='(optional)'
+                      label='Short human-readable description'
+                      placeholder='(optional, but strongly recommended)'
                       defaultValue={image.alt}
                       onChange={altChange}
                     />

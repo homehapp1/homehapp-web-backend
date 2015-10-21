@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
@@ -218,7 +218,7 @@ export default class StoryEditBlocks extends React.Component {
         }
         <hr />
         <Panel header='Add a new block'>
-          <Input
+          <InputWidget
             type='select'
             name='blockTemplate'
             ref='blockTemplate'
@@ -230,7 +230,7 @@ export default class StoryEditBlocks extends React.Component {
             <option value='ContentBlock'>Content Block</option>
             <option value='ContentImage'>Content Image</option>
             <option value='Gallery'>Gallery</option>
-          </Input>
+          </InputWidget>
         </Panel>
       </div>
     );

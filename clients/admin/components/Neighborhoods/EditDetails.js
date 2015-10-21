@@ -2,7 +2,7 @@ import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import NeighborhoodStore from '../../stores/NeighborhoodStore';
@@ -116,7 +116,7 @@ class NeighborhoodsEditDetails extends EditDetails {
         <form name='neighborhoodDetails' ref='neighborhoodDetailsForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>
-              <Input
+              <InputWidget
                 type='text'
                 ref='title'
                 label='Title'
@@ -124,7 +124,7 @@ class NeighborhoodsEditDetails extends EditDetails {
                 defaultValue={this.props.neighborhood.title}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
+              <InputWidget
                 type='text'
                 ref='slug'
                 label='Slug'
@@ -132,7 +132,7 @@ class NeighborhoodsEditDetails extends EditDetails {
                 readOnly
                 defaultValue={this.props.neighborhood.slug}
               />
-              <Input
+              <InputWidget
                 type='textarea'
                 ref='description'
                 label='Description'
@@ -142,12 +142,12 @@ class NeighborhoodsEditDetails extends EditDetails {
               />
             </Panel>
             <Panel header='Location'>
-              <Input
+              <InputWidget
                 label='Coordinates'
                 help='Coordinates for the neighborhood' wrapperClassName='wrapper'>
                 <Row>
                   <Col xs={6}>
-                    <Input
+                    <InputWidget
                       type='text'
                       ref='locationLatitude'
                       addonBefore='Latitude:'
@@ -155,7 +155,7 @@ class NeighborhoodsEditDetails extends EditDetails {
                     />
                   </Col>
                   <Col xs={6}>
-                    <Input
+                    <InputWidget
                       type='text'
                       ref='locationLongitude'
                       addonBefore='Longitude:'
@@ -163,7 +163,7 @@ class NeighborhoodsEditDetails extends EditDetails {
                     />
                   </Col>
                 </Row>
-              </Input>
+              </InputWidget>
             </Panel>
             <Panel header='Images'>
               <Row>

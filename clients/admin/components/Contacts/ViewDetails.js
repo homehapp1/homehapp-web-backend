@@ -5,7 +5,7 @@ import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 
 let debug = require('../../../common/debugger')('ContactsViewDetails');
 
@@ -20,13 +20,13 @@ export default class ContactsViewDetails extends React.Component {
       <Row>
         <Col md={10} sm={10}>
           <Panel header='Sender'>
-            <Input
+            <InputWidget
               type='text'
               label='Sender name'
               readOnly
               defaultValue={this.props.contact.sender.name}
             />
-            <Input
+            <InputWidget
               type='email'
               label='Sender email'
               readOnly
@@ -34,7 +34,7 @@ export default class ContactsViewDetails extends React.Component {
             />
           </Panel>
           <Panel header='Message'>
-            <Input
+            <InputWidget
               type='textarea'
               readOnly
               defaultValue={this.props.contact.message}

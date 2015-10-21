@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
 // import Table from 'react-bootstrap/lib/Table';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import NeighborhoodStore from '../../stores/NeighborhoodStore';
@@ -88,7 +88,7 @@ export default class NeighborhoodsEditStory extends React.Component {
         <form name='neighborhoodStory' ref='neighborhoodStoryForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>
-              <Input
+              <InputWidget
                 type='checkbox'
                 label='Enabled'
                 {...enabledStatus}

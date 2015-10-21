@@ -168,6 +168,10 @@ exports.populateMetadata = function populateMetadata(schema) {
     description: {
       type: String,
       default: null
+    },
+    score: {
+      type: Number,
+      default: 0
     }
   };
   return schema;

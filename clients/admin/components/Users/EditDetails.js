@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Input from '../Widgets/Input';
+import InputWidget from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import UserStore from '../../stores/UserStore';
@@ -146,7 +146,7 @@ export default class UsersEditDetails extends EditDetails {
         <form name='userDetails' ref='userDetailsForm' method='POST'>
           <Col md={10} sm={10}>
             <Panel header='Common'>
-              <Input
+              <InputWidget
                 type='text'
                 ref='firstname'
                 label='Firstname'
@@ -155,7 +155,7 @@ export default class UsersEditDetails extends EditDetails {
                 defaultValue={user.firstname}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
+              <InputWidget
                 type='text'
                 ref='lastname'
                 label='Lastname'
@@ -164,7 +164,7 @@ export default class UsersEditDetails extends EditDetails {
                 defaultValue={user.lastname}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
+              <InputWidget
                 type='email'
                 ref='email'
                 label='Email'
@@ -175,7 +175,7 @@ export default class UsersEditDetails extends EditDetails {
               />
             </Panel>
             <Panel header='Login credentials'>
-              <Input
+              <InputWidget
                 type='email'
                 ref='username'
                 label='Username'
@@ -183,14 +183,14 @@ export default class UsersEditDetails extends EditDetails {
                 defaultValue={user.username}
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
+              <InputWidget
                 type='password'
                 ref='password'
                 label='Password'
                 placeholder='My very strong and secret password'
                 onChange={this.onFormChange.bind(this)}
               />
-              <Input
+              <InputWidget
                 type='password'
                 ref='password2'
                 label='Retype the password'

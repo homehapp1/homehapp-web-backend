@@ -39,7 +39,7 @@ exports.registerRoutes = (app) => {
         for (let i = 0; i < home.images.length; i++) {
           let src = home.images[i].url || home.images[i].src;
           if (src) {
-            images.push(src.replace(/upload\//, 'upload/c_fill,h_526,w_1000/g_south_west,l_homehapp-logo-horizontal-with-shadow,x_20,y_20/v1441911573/'));
+            images.push(src.replace(/upload\//, 'upload/c_fill,h_526,w_1000/g_south_west,l_homehapp-logo-horizontal-with-shadow,x_20,y_20/'));
           }
         }
       }
