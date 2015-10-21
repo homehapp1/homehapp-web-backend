@@ -9,6 +9,7 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import PagesDetails from './Details';
+import ViewMetadata from '../Shared/ViewMetadata';
 
 import PageStore from '../../stores/PageStore';
 import PageListStore from '../../stores/PageListStore';
@@ -103,6 +104,9 @@ export default class PagesEdit extends React.Component {
           <TabbedArea defaultActiveKey={1}>
             <TabPane eventKey={1} tab='Details'>
               <PagesDetails page={this.state.page} />
+            </TabPane>
+            <TabPane eventKey={3} tab='Metadata'>
+              <ViewMetadata object={this.state.page} />
             </TabPane>
           </TabbedArea>
         </Row>
