@@ -20,6 +20,11 @@ function printUsageAndExit() {
   exit
 }
 
+function exitWithError() {
+    echo "$1" 1>&2
+    exit 1
+}
+
 if [ "$PROJECT_ID" = "" ]; then
   echo "No Google Project ID defined!"
   printUsageAndExit
@@ -50,16 +55,15 @@ function checkAndUpdateBuildRevision() {
 # Arguments:
 # envName: Enum(prod, stg)
 function buildContainer() {
-  dockerFile="$CWD/Dockerfile.$PNAME.$1"
-  docker build -t $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME -f $dockerFile $CWD
-  # docker build -t $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME -f $dockerFile --no-cache $CWD
+  local DOCKER_FILE="$CWD/Dockerfile.$PNAME.$1"
+  docker build -t $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME -f $DOCKER_FILE $CWD || exitWithError "Error building container from $DOCKER_FILE"
 }
 
 # Arguments:
 # envName: Enum(prod, stg)
 function tagContainer() {
-  revString="$REV-$1"
-  docker tag -f $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME:$revString
+  local REV_STRING="$REV-$1"
+  docker tag -f $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME:$REV_STRING || exitWithError "Error tagging container"
 }
 
 function cleanOldImages() {
@@ -67,7 +71,7 @@ function cleanOldImages() {
 }
 
 function pushContainers() {
-  gcloud docker push $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME
+  gcloud docker push $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME || exitWithError "Error pushing container to google registry"
 }
 
 checkAndUpdateBuildRevision
