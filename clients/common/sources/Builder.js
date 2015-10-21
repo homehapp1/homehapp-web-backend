@@ -26,8 +26,12 @@ function generateMethod(name, definition, sourceBase) {
       key: 'items'
     }
   }, definition.remote || {});
-
+  remoteDefinition.method = String(remoteDefinition.method).toLowerCase();
   remoteDefinition.response = definition.remote.response;
+
+  if (['put', 'post', 'patch', 'get', 'delete', 'trace', 'options', 'connect', 'head'].indexOf(remoteDefinition.method) === -1) {
+    throw new Error(`Invalid method "${remoteDefinition.method}"`);
+  }
 
   if (typeof definition.remote.response === 'function') {
     remoteDefinition.response = definition.remote.response;
@@ -51,7 +55,7 @@ function generateMethod(name, definition, sourceBase) {
         params = params(state, args);
       }
     }
-
+    console.log('remoteDefinition', remoteDefinition);
     return request[remoteDefinition.method](uri, params)
     .then((response) => {
       this.debug(`${name} success response:`, response);
@@ -71,6 +75,8 @@ function generateMethod(name, definition, sourceBase) {
       }
 
       if (!resolveData) {
+        this.debug('Invalid response, no data found for response key', responseKey);
+        this.debug('Received data', response.data);
         return Promise.reject(new Error('invalid response'));
       }
 
