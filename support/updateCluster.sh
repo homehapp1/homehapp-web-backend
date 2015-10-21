@@ -18,6 +18,11 @@ function printUsageAndExit() {
   exit
 }
 
+function exitWithError() {
+    echo "$1" 1>&2
+    exit 1
+}
+
 if [ "$PROJECT_ID" = "" ]; then
   echo "No Google Project ID defined!"
   printUsageAndExit
@@ -56,7 +61,7 @@ function updateCluster() {
   sed "s/:ENV/$ENV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
 
   echo "Executing: 'kubectl rolling-update $CURRENT_CONTROLLER -f $CWD/tmp/$PNAME-controller.json' --update-period='2m0s'"
-  kubectl rolling-update $CURRENT_CONTROLLER -f "$CWD/tmp/$PNAME-controller.json"
+  kubectl rolling-update $CURRENT_CONTROLLER -f "$CWD/tmp/$PNAME-controller.json" || exitWithError "Error running rolling-update"
   # --update-period="2m0s"
   rm $TARGET_CONFIG
 }
