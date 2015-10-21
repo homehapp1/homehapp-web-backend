@@ -21,12 +21,12 @@ ADD package.json /app/package.json
 RUN cd /app && npm install
 ADD . /app
 
-RUN useradd -ms /bin/bash node
-RUN chown -R node:node /app
-RUN mkdir -p /mnt/log
-RUN chown -R node:node /mnt/log
+#RUN useradd -ms /bin/bash node
+#RUN chown -R node:node /app
+#RUN mkdir -p /mnt/log
+#RUN chown -R node:node /mnt/log
 
-USER node
+#USER node
 
 EXPOSE 8080
 ENTRYPOINT cd /app && npm run server
