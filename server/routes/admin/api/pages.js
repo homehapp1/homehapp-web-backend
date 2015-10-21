@@ -64,7 +64,7 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       res.json({
         status: 'ok',
-        page: result.page
+        page: result.model
       });
     })
     .catch(next);

@@ -15,7 +15,7 @@ export default SourceBuilder.build({
         uri: '/api/pages',
         params: null,
         response: {
-          key: 'items'
+          key: 'pages'
         }
       },
       local: null,
@@ -35,7 +35,7 @@ export default SourceBuilder.build({
           };
         },
         response: {
-          key: 'items'
+          key: 'pages'
         }
       },
       local: null,

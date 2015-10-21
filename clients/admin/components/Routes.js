@@ -32,6 +32,12 @@ import UsersCreateContainer from './Users/CreateContainer';
 import UsersEditContainer from './Users/EditContainer';
 import UsersDeleteContainer from './Users/DeleteContainer';
 
+// Pages
+import PagesIndex from './Pages';
+import PagesCreate from './Pages/Create';
+import PagesEdit from './Pages/Edit';
+import PagesDelete from './Pages/Delete';
+
 let routes = (
   <Route name='app' path='/' handler={Application}>
     <DefaultRoute handler={Homepage}/>
@@ -52,6 +58,12 @@ let routes = (
       <Route name='neighborhoodEdit' path=':id' handler={NeighborhoodsEditContainer}>
         <Route name='neighborhoodEditTab' path=':tab' handler={NeighborhoodsEditContainer} />
       </Route>
+    </Route>
+    <Route name='pages' path='/pages'>
+      <DefaultRoute handler={PagesIndex} />
+      <Route name='pageCreate' path='create' handler={PagesCreate} />
+      <Route name='pageEdit' path=':id' handler={PagesEdit} />
+      <Route name='pageDelete' path=':id/delete' handler={PagesDelete} />
     </Route>
     <Route name='contacts' path='/contacts'>
       <DefaultRoute handler={ContactsIndexContainer}/>

@@ -9,12 +9,30 @@ export default SourceBuilder.build({
     error: PageActions.requestFailed
   },
   methods: {
+    createItem: {
+      remote: {
+        method: 'post',
+        uri: '/api/pages',
+        params: (state, args) => {
+          return {
+            page: args[0]
+          };
+        },
+        response: {
+          key: 'page'
+        }
+      },
+      local: null,
+      actions: {
+        success: PageActions.updateSuccess
+      }
+    },
     updateItem: {
       remote: {
         method: 'put',
         uri: (state, args) => {
           let id = args[0].uuid || args[0].id;
-          return `/api/page/${id}`;
+          return `/api/pages/${id}`;
         },
         params: (state, args) => {
           return {
@@ -22,7 +40,7 @@ export default SourceBuilder.build({
           };
         },
         response: {
-          key: 'item'
+          key: 'page'
         }
       },
       local: null,
