@@ -4,6 +4,9 @@ let debug = require('debug')('/api/neighborhoods');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+  let populate = {
+    'location.city': {}
+  };
 
   app.get('/api/neighborhoods', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch neighborhoods');
@@ -50,7 +53,7 @@ exports.registerRoutes = (app) => {
       }
       res.json({
         status: 'ok',
-        neighborhoods: neighborhoods
+        items: neighborhoods
       });
     })
     .catch(next);
@@ -63,12 +66,12 @@ exports.registerRoutes = (app) => {
 
     QB
     .forModel('Neighborhood')
-    .findByUUID(req.params.uuid)
+    .findByUuid(req.params.uuid)
     .fetch()
     .then((result) => {
       res.json({
         status: 'ok',
-        neighborhood: result.neighborhood
+        item: result.neighborhood
       });
     })
     .catch(next);
@@ -76,14 +79,11 @@ exports.registerRoutes = (app) => {
   });
 
   app.put('/api/neighborhoods/:uuid', app.authenticatedRoute, function(req, res, next) {
-    console.log('API update neighborhood with uuid', req.params.uuid);
+    debug('API update neighborhood with uuid', req.params.uuid);
     //console.log('req.body', req.body);
 
     let data = req.body.neighborhood;
-
-    if (!data.title) {
-      return next(new BadRequest('invalid request body'));
-    }
+    debug('data', data);
 
     QB
     .forModel('Neighborhood')
@@ -92,7 +92,7 @@ exports.registerRoutes = (app) => {
     .then((model) => {
       res.json({
         status: 'ok',
-        neighborhood: model
+        item: model
       });
     })
     .catch(next);
