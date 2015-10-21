@@ -16,7 +16,7 @@ export default class Navigation extends React.Component {
     this.icon.addEvent('mousedown', this.click, true);
 
     this.container = new DOMManipulator(this.refs.container);
-    this.container.addEvent('touchstart', this.hideNavigation, false);
+    // this.container.addEvent('touchstart', this.hideNavigation, false);
     this.container.addEvent('mousedown', this.hideNavigation, false);
 
     this.navigation = new DOMManipulator(this.refs.navigation);
@@ -26,8 +26,14 @@ export default class Navigation extends React.Component {
   componentWillUnmount() {
     this.icon.removeEvent('touchstart', this.click, true);
     this.icon.removeEvent('mousedown', this.click, true);
-    this.container.removeEvent('touchstart', this.hideNavigation, false);
+    // this.container.removeEvent('touchstart', this.hideNavigation, false);
     this.container.removeEvent('mousedown', this.hideNavigation, false);
+  }
+
+  isNavigationOpen() {
+    let style = window.getComputedStyle(this.container.node);
+    console.log('style', style, style.display, (style.display === 'none'));
+    return !(style.display === 'none');
   }
 
   hideNavigation() {

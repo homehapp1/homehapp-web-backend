@@ -6,7 +6,8 @@
   z-index: $zNavigation - 1;
 
   @include small() {
-    display: none;
+    right: 15px;
+    top: $contentPadding * 1.5 + $navigationIconSize;
   }
 
   ul {
@@ -25,6 +26,9 @@
         font-size: $iconSize * 0.7;
         margin-top: 2px;
         display: block;
+        text-align: center;
+        width: 30px;
+        margin-right: 0;
       }
 
       a {
@@ -53,16 +57,26 @@
 
         @include small() {
           position: static;
+
+          &.details {
+            position: absolute;
+            top: -40px;
+            right: 35px;
+          }
+
+          &.story {
+            position: absolute;
+            top: -40px;
+            right: 65px;
+          }
         }
       }
 
       &.animate {
          @for $i from 0 through $max {
            li[data-index="#{$i}"] {
-             right: $i * ($w + 10px);
-
-             @include small() {
-               right: 0;
+             @include notSmall() {
+               right: $i * ($w + 10px);
              }
            }
          }

@@ -118,8 +118,8 @@ export default class BigVideo extends BigBlock {
 
     // Mobile play button
     this.mobilePlay = new DOMManipulator(this.refs.mobilePlay);
-    this.mobilePlay.addEvent('mousedown', this.playVideo, true);
-    this.mobilePlay.addEvent('touchstart', this.playVideo, true);
+    this.mobilePlay.addEvent('click', this.playVideo, true);
+    this.mobilePlay.addEvent('touch', this.playVideo, true);
 
     // Pause button
     this.pause = new DOMManipulator(this.refs.pause);
@@ -337,6 +337,7 @@ export default class BigVideo extends BigBlock {
   }
 
   playVideo(event) {
+    debug('playVideo');
     if (event) {
       event.stopPropagation();
       event.preventDefault();
@@ -345,6 +346,7 @@ export default class BigVideo extends BigBlock {
       this.video.muted = false;
     }
     this.video.play();
+    this.wrapper.addClass('is-playing');
   }
 
   pauseVideo(event) {
@@ -353,6 +355,7 @@ export default class BigVideo extends BigBlock {
       event.preventDefault();
     }
     this.video.pause();
+    this.wrapper.removeClass('is-playing');
   }
 
   muteVideo(event) {

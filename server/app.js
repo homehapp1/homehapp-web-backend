@@ -84,7 +84,9 @@ exports.run = function(projectName, afterRun) {
       return new Promise((resolve) => {
         PROJECT_REVISION = require('moment')().format('YYYYMMDD');
         app.PROJECT_REVISION = PROJECT_REVISION;
-        let revPath = path.join(PROJECT_ROOT, 'BUILD_REVISION');
+        // let revPath = path.join(PROJECT_ROOT, 'BUILD_REVISION');
+        let date = (new Date()).toISOString().substr(0, 16).replace(/[^0-9]/, '');
+        let revPath = path.join(PROJECT_ROOT, date);
         fs.readFile(revPath, (err, content) => {
           if (err) {
             return resolve(PROJECT_REVISION);
