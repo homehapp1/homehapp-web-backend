@@ -89,7 +89,8 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.Neighborhood.statics.editableFields = function editableFIelds() {
     return [
-      'title', 'description', 'location', 'images'
+      'title', 'description', 'location', 'images', 'story', 'visible',
+      'metadata'
     ];
   };
 
