@@ -93,10 +93,12 @@ for (var key in openGraph) {
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="<%= revisionedStaticPath %>/images/favicon-57.png" />
 
   <script src="https://maps.googleapis.com/maps/api/js?v=3.2&libraries=geometry,drawing"></script>
-  <script type="text/javascript" src="http://cdn.raygun.io/raygun4js/raygun.min.js"></script>
-  <script>
-    Raygun.init('OCdFdBx08bVAUUNdSf0+eA==').attach();
-  </script>
+  <% if (env !== 'development') { %>
+    <script type="text/javascript" src="http://cdn.raygun.io/raygun4js/raygun.min.js"></script>
+    <script>
+      Raygun.init('OCdFdBx08bVAUUNdSf0+eA==').attach();
+    </script>
+  <% } %>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
