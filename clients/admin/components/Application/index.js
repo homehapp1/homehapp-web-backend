@@ -26,7 +26,7 @@ export default class Application extends React.Component {
     if (!AuthStore.getState().user) {
       AuthStore.fetchUser();
     }
-    NeighborhoodListStore.fetchNeighborhoods();
+    NeighborhoodListStore.fetchItems();
   }
 
   componentWillUnmount() {
