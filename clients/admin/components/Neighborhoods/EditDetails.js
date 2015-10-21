@@ -31,6 +31,7 @@ class NeighborhoodsEditDetails extends EditDetails {
   }
 
   state = {
+    model: null,
     error: null,
     uploads: UploadAreaUtils.UploadStore.getState().uploads,
     currentAttributes: this.props.neighborhood.attributes,
@@ -111,6 +112,8 @@ class NeighborhoodsEditDetails extends EditDetails {
       lon = this.props.neighborhood.location.coordinates[1];
     }
 
+    let neighborhood = this.state.model || this.props.neighborhood;
+
     return (
       <Row>
         <form name='neighborhoodDetails' ref='neighborhoodDetailsForm' method='POST'>
@@ -121,7 +124,7 @@ class NeighborhoodsEditDetails extends EditDetails {
                 ref='title'
                 label='Title'
                 placeholder='Title (optional)'
-                defaultValue={this.props.neighborhood.title}
+                defaultValue={neighborhood.title}
                 onChange={this.onFormChange.bind(this)}
               />
               <InputWidget
@@ -130,14 +133,14 @@ class NeighborhoodsEditDetails extends EditDetails {
                 label='Slug'
                 placeholder='Slug'
                 readOnly
-                defaultValue={this.props.neighborhood.slug}
+                defaultValue={neighborhood.slug}
               />
               <InputWidget
                 type='textarea'
                 ref='description'
                 label='Description'
                 placeholder='Write description'
-                defaultValue={this.props.neighborhood.description}
+                defaultValue={neighborhood.description}
                 onChange={this.onFormChange.bind(this)}
               />
             </Panel>

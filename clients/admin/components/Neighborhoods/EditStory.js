@@ -8,10 +8,11 @@ import InputWidget from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 import NeighborhoodStore from '../../stores/NeighborhoodStore';
-// import NeighborhoodActions from '../../actions/NeighborhoodActions';
+import NeighborhoodActions from '../../actions/NeighborhoodActions';
 import StoryEditBlocks from '../Shared/StoryEditBlocks';
+import ApplicationStore from '../../../common/stores/ApplicationStore';
 
-let debug = require('../../../common/debugger')('NeighborhoodsEditStory');
+let debug = require('debug')('NeighborhoodsEditStory');
 
 export default class NeighborhoodsEditStory extends React.Component {
   static propTypes = {
@@ -21,6 +22,7 @@ export default class NeighborhoodsEditStory extends React.Component {
   constructor(props) {
     super(props);
     this.storeListener = this.onNeighborhoodStoreChange.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   state = {
@@ -41,36 +43,31 @@ export default class NeighborhoodsEditStory extends React.Component {
   }
 
   onSave() {
-    debug('save');
+    debug('onSave');
+    debug('blocks', this.refs.storyBlocks.getBlocks());
+    let neighborhoodProps = {
+      id: this.props.neighborhood.id,
+      story: {
+        blocks: this.refs.storyBlocks.getBlocks(),
+        enabled: this.props.neighborhood.story.enabled
+      }
+    };
+    debug('neighborhoodProps', neighborhoodProps);
+    this.saveNeighborhood(neighborhoodProps);
   }
 
-  handlePendingState() {
-    return (
-      <div className='neighborhood-saving'>
-        <h3>Saving neighborhood...</h3>
-      </div>
-    );
+  saveNeighborhood(neighborhoodProps) {
+    debug('Update neighborhoodProps', neighborhoodProps);
+    NeighborhoodActions.updateItem(neighborhoodProps);
   }
 
-  handleErrorState() {
-    return (
-      <div className='neighborhood-error'>
-        <h3>Error updating neighborhood!</h3>
-        <p>{this.state.error.message}</p>
-      </div>
-    );
+  toggleEnabled() {
+    // Invert the value and update the view
+    this.props.neighborhood.story.enabled = !(this.props.neighborhood.story.enabled);
+    this.forceUpdate();
   }
 
   render() {
-    let error = null;
-    let savingLoader = null;
-    if (this.state.error) {
-      error = this.handleErrorState();
-    }
-    if (NeighborhoodStore.isLoading()) {
-      savingLoader = this.handlePendingState();
-    }
-
     let blocks = [];
     if (this.props.neighborhood.story.blocks) {
       blocks = this.props.neighborhood.story.blocks;
@@ -80,27 +77,39 @@ export default class NeighborhoodsEditStory extends React.Component {
     if (this.props.neighborhood.story.enabled) {
       enabledStatus = {checked: true};
     }
+    debug('Neighborhood', this.props.neighborhood);
+
+    let previewLink = null;
+    if (this.props.neighborhood && typeof this.props.neighborhood.location.city === 'object') {
+      previewLink = (
+        <a href={`${ApplicationStore.getState().config.siteHost}/neighborhoods/${this.props.neighborhood.city.slug}/${this.props.neighborhood.slug}/story`}
+          target='_blank'
+          className='btn btn-primary'>
+          Preview
+        </a>
+      );
+    }
 
     return (
       <Row>
-        {error}
-        {savingLoader}
         <form name='neighborhoodStory' ref='neighborhoodStoryForm' method='POST'>
           <Col md={10} sm={10}>
-            <Panel header='Common'>
+            <Panel header='Visibility settings'>
               <InputWidget
                 type='checkbox'
-                label='Enabled'
+                ref='enabled'
+                label='Show story on the public site'
                 {...enabledStatus}
+                addonBefore='Value'
+                onChange={this.toggleEnabled.bind(this)}
               />
             </Panel>
-            <Panel header='Blocks'>
-              <StoryEditBlocks blocks={blocks} />
-            </Panel>
+            <StoryEditBlocks parent={this.props.neighborhood} blocks={blocks} ref='storyBlocks' />
             <Well>
               <Row>
                 <Col md={6}>
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
+                  {previewLink}
                 </Col>
               </Row>
             </Well>

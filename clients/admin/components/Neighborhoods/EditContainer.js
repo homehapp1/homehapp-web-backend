@@ -15,13 +15,13 @@ class NeighborhoodsEditContainer extends React.Component {
 
   state = {
     error: null,
-    neighborhood: NeighborhoodListStore.getNeighborhood(this.props.params.id)
+    neighborhood: NeighborhoodListStore.getItem(this.props.params.id)
   }
 
   componentDidMount() {
     NeighborhoodListStore.listen(this.storeListener);
-    if (!NeighborhoodListStore.getNeighborhood(this.props.params.id)) {
-      NeighborhoodListStore.fetchNeighborhoods();
+    if (!NeighborhoodListStore.getItem(this.props.params.id)) {
+      NeighborhoodListStore.fetchItems();
     }
   }
 
@@ -32,7 +32,7 @@ class NeighborhoodsEditContainer extends React.Component {
   onChange(/*state*/) {
     this.setState({
       error: NeighborhoodListStore.getState().error,
-      neighborhood: NeighborhoodListStore.getNeighborhood(this.props.params.id)
+      neighborhood: NeighborhoodListStore.getItem(this.props.params.id)
     });
   }
 
@@ -62,8 +62,10 @@ class NeighborhoodsEditContainer extends React.Component {
       return this.handlePendingState();
     }
 
+    let tab = this.props.params.tab || 1;
+
     return (
-      <NeighborhoodsEdit neighborhood={this.state.neighborhood} />
+      <NeighborhoodsEdit neighborhood={this.state.neighborhood} tab={tab} />
     );
   }
 }

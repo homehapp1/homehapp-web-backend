@@ -16,12 +16,12 @@ class NeighborhoodsIndexContainer extends React.Component {
 
   state = {
     error: null,
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
+    neighborhoods: NeighborhoodListStore.getState().items
   }
 
   componentDidMount() {
     NeighborhoodListStore.listen(this.storeListener);
-    NeighborhoodListStore.fetchNeighborhoods();
+    NeighborhoodListStore.fetchItems();
   }
 
   componentWillUnmount() {

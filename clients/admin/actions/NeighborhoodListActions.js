@@ -1,20 +1,9 @@
-import alt from '../../common/alt';
+let debug = require('debug')('NeighborhoodListActions');
 
-// let debug = require('../../common/debugger')('NeighborhoodListActions');
-
-@alt.createActions
-class NeighborhoodListActions {
-  updateNeighborhoods(neighborhoods) {
-    this.dispatch(neighborhoods);
-  }
-  fetchNeighborhoods(skipCache) {
-    // debug('fetchNeighborhoods', skipCache);
-    this.dispatch(skipCache);
-  }
-  fetchFailed(error) {
-    debug('fetchFailed', error);
-    this.dispatch(error);
-  }
-}
-
-module.exports = NeighborhoodListActions;
+export default require('../../common/actions/BaseListActions')
+  .generate('NeighborhoodListActions', {
+    updateItem(model) {
+      debug('updateItem', model);
+      this.dispatch(model);
+    }
+  });

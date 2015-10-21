@@ -1,64 +1,25 @@
-import alt from '../../common/alt';
 import NeighborhoodListActions from '../actions/NeighborhoodListActions';
 import NeighborhoodListSource from '../sources/NeighborhoodListSource';
-// import Cache from '../../common/Cache';
+import ListStore from '../../common/stores/BaseListStore';
+let debug = require('debug')('NeighborhoodListStore');
 
-let debug = require('../../common/debugger')('NeighborhoodListStore');
-
-@alt.createStore
-class NeighborhoodListStore {
-  constructor() {
-    this.on('bootstrap', () => {
-      debug('bootstrapping', this.neighborhoods);
-    });
-
-    this.bindListeners({
-      handleUpdateNeighborhoods: NeighborhoodListActions.UPDATE_NEIGHBORHOODS,
-      handleFetchNeighborhoods: NeighborhoodListActions.FETCH_NEIGHBORHOODS,
-      handleFetchFailed: NeighborhoodListActions.FETCH_FAILED
-    });
-
-    this.neighborhoods = [];
-    this.error = null;
-
-    this.exportPublicMethods({
-      getNeighborhood: this.getNeighborhood
-    });
-
-    this.exportAsync(NeighborhoodListSource);
-  }
-
-  getNeighborhood(id = null) {
-    debug('getNeighborhood', id);
-    let { neighborhoods } = this.getState();
-    if (!id) {
-      return neighborhoods;
-    }
-
-    for (let neighborhood of neighborhoods) {
-      if (neighborhood.id === id) {
-        return neighborhood;
+export default ListStore.generate('NeighborhoodListStore', {
+  actions: NeighborhoodListActions,
+  source: NeighborhoodListSource,
+  listeners: {
+    handleUpdateItem: {
+      action: NeighborhoodListActions.UPDATE_ITEM,
+      method: function handleUpdateItem(model) {
+        //this.getInstance().debug('handleUpdateItem', model);
+        debug('handleUpdateItem', this, model);
+        console.log('this.getInstance()', this.getInstance());
+        this.error = null;
+        if (!this.getInstance().isLoading()) {
+          setTimeout(() => {
+            this.getInstance().updateItem(model);
+          });
+        }
       }
     }
-    return null;
   }
-
-  handleUpdateNeighborhoods(neighborhoods) {
-    // debug('handleUpdateNeighborhoods', neighborhoods);
-    this.neighborhoods = neighborhoods;
-    this.error = null;
-  }
-
-  handleFetchNeighborhoods() {
-    // debug('handleFetchNeighborhoods');
-    this.neighborhoods = [];
-    this.error = null;
-  }
-
-  handleFetchFailed(error) {
-    debug('handleFetchFailed', error);
-    this.error = error;
-  }
-}
-
-module.exports = NeighborhoodListStore;
+});
