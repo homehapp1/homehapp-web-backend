@@ -52,6 +52,7 @@ function checkAndUpdateBuildRevision() {
 function buildContainer() {
   dockerFile="$CWD/Dockerfile.$PNAME.$1"
   docker build -t $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME -f $dockerFile $CWD
+  # docker build -t $CONTAINER_REGISTRY_HOST/$PROJECT_ID/$PNAME -f $dockerFile --no-cache $CWD
 }
 
 # Arguments:
