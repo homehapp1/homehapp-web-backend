@@ -26,21 +26,6 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: ''
     },
-    location: {
-      country: {
-        type: String,
-        default: 'Great Britain'
-      },
-      coordinates: {
-        type: [Number],
-        default: [],
-        index: '2dsphere'
-      }
-    },
-    navigation: {
-      type: Boolean,
-      default: true
-    },
     visible: {
       type: Boolean,
       index: true,
@@ -62,7 +47,7 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.Page.statics.editableFields = function () {
     return [
-      'title', 'description'
+      'title', 'slug', 'story', 'visible'
     ];
   };
 
