@@ -1,5 +1,6 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 let debug = require('debug')('routes/pages');
+import { setLastMod, initMetadata } from '../../../clients/common/Helpers';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -19,9 +20,19 @@ exports.registerRoutes = (app) => {
     .fetch()
     .then((result) => {
       debug('Page fetched', result);
-      res.locals.data.HomeStore = {
-        page: result.model
+      let page = result.model;
+
+      initMetadata(res);
+      setLastMod([page]);
+      res.locals.data.title = [page.title];
+      res.locals.page = {
+        title: page.title
+        // description: description
       };
+      res.locals.data.PageStore = {
+        page: page
+      };
+      debug('Set local data', res.locals.page, res.locals.data);
       next();
     })
     .catch(() => {
