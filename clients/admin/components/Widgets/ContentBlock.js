@@ -3,13 +3,15 @@ import BaseBlock from '../Widgets/BaseBlock';
 
 export default class AdminContentBlock extends BaseBlock {
   blockProperties = {
-    // title: {
-    //   label: 'Title',
-    //   type: 'text'
-    // },
+    title: {
+      label: 'Title (optional)',
+      type: 'text',
+      required: false
+    },
     content: {
       label: 'Content',
-      type: 'textarea'
+      type: 'textarea',
+      required: true
     },
     align: {
       label: 'Alignment',
