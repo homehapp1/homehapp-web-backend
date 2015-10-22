@@ -12,9 +12,7 @@ import Button from 'react-bootstrap/lib/Button';
 
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
-import PagesDetails from './Details';
 
-import PageStore from '../../stores/PageStore';
 import PageListStore from '../../stores/PageListStore';
 
 import { setPageTitle, createNotification } from '../../../common/Helpers';
@@ -103,7 +101,6 @@ export default class PagesEdit extends React.Component {
     if (this.state.error) {
       return this.handleErrorState();
     }
-    let loading = null;
     if (PageListStore.isLoading() || !this.state.page) {
       return this.handlePendingState();
     }

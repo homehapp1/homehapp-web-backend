@@ -17,14 +17,6 @@ export default class PagesIndex extends React.Component {
     this.storeListener = this.onChange.bind(this);
   }
 
-  onChange(state) {
-    debug('onChange', state);
-    this.setState({
-      pages: state.items,
-      error: state.error
-    });
-  }
-
   state = {
     pages: null,
     error: null
@@ -39,6 +31,14 @@ export default class PagesIndex extends React.Component {
 
   componentWillUnmount() {
     PageListStore.unlisten(this.storeListener);
+  }
+
+  onChange(state) {
+    debug('onChange', state);
+    this.setState({
+      pages: state.items,
+      error: state.error
+    });
   }
 
   handlePendingState() {

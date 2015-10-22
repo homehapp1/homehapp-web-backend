@@ -2,7 +2,6 @@
 import React from 'react';
 // import { Link } from 'react-router';
 import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
 import Nav from 'react-bootstrap/lib/Nav';
 import TabbedArea from 'react-bootstrap/lib/TabbedArea';
 import TabPane from 'react-bootstrap/lib/TabPane';
@@ -11,7 +10,6 @@ import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import PagesDetails from './Details';
 import ViewMetadata from '../Shared/ViewMetadata';
 
-import PageStore from '../../stores/PageStore';
 import PageListStore from '../../stores/PageListStore';
 
 import { setPageTitle, createNotification } from '../../../common/Helpers';
@@ -28,12 +26,9 @@ export default class PagesEdit extends React.Component {
     this.storeListener = this.onStateChange.bind(this);
   }
 
-  onStateChange(state) {
-    debug('onStateListChange', state);
-    this.setState({
-      error: state.error,
-      page: PageListStore.getItem(this.props.params.id) || null
-    });
+  state = {
+    page: PageListStore.getItem(this.props.params.id),
+    error: null
   }
 
   componentDidMount() {
@@ -50,9 +45,12 @@ export default class PagesEdit extends React.Component {
     PageListStore.unlisten(this.storeListener);
   }
 
-  state = {
-    page: PageListStore.getItem(this.props.params.id),
-    error: null
+  onStateChange(state) {
+    debug('onStateListChange', state);
+    this.setState({
+      error: state.error,
+      page: PageListStore.getItem(this.props.params.id) || null
+    });
   }
 
   handleErrorState() {
@@ -83,7 +81,6 @@ export default class PagesEdit extends React.Component {
     if (this.state.error) {
       return this.handleErrorState();
     }
-    let loading = null;
     if (PageListStore.isLoading() || !this.state.page) {
       return this.handlePendingState();
     }
