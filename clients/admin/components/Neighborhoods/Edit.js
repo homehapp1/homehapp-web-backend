@@ -13,6 +13,8 @@ import EditDetails from './EditDetails';
 import EditStory from './EditStory';
 import EditModel from '../Shared/EditModel';
 import ViewMetadata from '../Shared/ViewMetadata';
+import NeighborhoodStore from '../../stores/NeighborhoodStore';
+import NeighborhoodActions from '../../actions/NeighborhoodActions';
 
 import { setPageTitle } from '../../../common/Helpers';
 
@@ -56,7 +58,7 @@ export default class NeighborhoodsEdit extends EditModel {
               <EditStory neighborhood={this.props.neighborhood} />
             </TabPane>
             <TabPane eventKey={3} tab='Metadata'>
-              <ViewMetadata object={this.props.neighborhood} />
+              <ViewMetadata object={this.props.neighborhood} store={NeighborhoodStore} actions={NeighborhoodActions} />
             </TabPane>
           </TabbedArea>
         </Row>
