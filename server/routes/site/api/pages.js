@@ -10,7 +10,6 @@ exports.registerRoutes = (app) => {
     .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
-      debug('Page fetched', result);
       res.json({
         status: 'ok',
         page: result.model

@@ -22,6 +22,9 @@ import NeighborhoodList from './Neighborhood/NeighborhoodList';
 import NeighborhoodContainer from './Neighborhood/NeighborhoodContainer';
 import NeighborhoodHomeFilterContainer from './Neighborhood/NeighborhoodHomeFilterContainer';
 
+import Partners from './Partners';
+import PartnersContact from './Partners/Contact';
+
 // MIscellaneous other handlers
 import Page from './Page';
 
@@ -51,6 +54,10 @@ module.exports = (
       <Route name='neighborhoodViewHomes' path=':city/:neighborhood/homes' handler={NeighborhoodHomeFilterContainer} />
       <DefaultRoute handler={CityContainer} />
       <NotFoundRoute handler={RouteNotFound} />
+    </Route>
+    <Route name='partners' path='/partners' handler={Partners}>
+      <Route name='partnersContact' path='contact' handler={PartnersContact} />
+      <DefaultRoute handler={Partners} />
     </Route>
     <Route name='page' path=':slug' handler={Page} />
     <NotFoundRoute handler={RouteNotFound} />

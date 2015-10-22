@@ -32,7 +32,7 @@ export default class PagesEdit extends React.Component {
   }
 
   componentDidMount() {
-    setPageTitle(['Create', 'Pages']);
+    setPageTitle(['Edit', 'Pages']);
 
     PageListStore.listen(this.storeListener);
 

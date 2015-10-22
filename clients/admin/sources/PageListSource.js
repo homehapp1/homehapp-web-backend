@@ -1,6 +1,5 @@
 import SourceBuilder from '../../common/sources/Builder';
 import PageListActions from '../actions/PageListActions';
-let debug = require('debug')('PageListSource');
 
 export default SourceBuilder.build({
   name: 'PageListSource',

@@ -1,6 +1,6 @@
 import SourceBuilder from '../../common/sources/Builder';
 import NeighborhoodActions from '../actions/NeighborhoodActions';
-let debug = require('debug')('NeighborhoodSource');
+// let debug = require('debug')('NeighborhoodSource');
 
 export default SourceBuilder.build({
   name: 'NeighborhoodSource',

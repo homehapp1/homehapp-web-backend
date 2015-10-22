@@ -24,6 +24,10 @@ export default class PagesDetails extends React.Component {
     context: React.PropTypes.object
   }
 
+  static contextTypes = {
+    router: React.PropTypes.func
+  }
+
   static defaultProps = {
     page: {
       id: null,
@@ -36,25 +40,9 @@ export default class PagesDetails extends React.Component {
     }
   }
 
-  static contextTypes = {
-    router: React.PropTypes.func
-  }
-
   constructor() {
     super();
     this.storeListener = this.onPageStoreChange.bind(this);
-  }
-
-  onPageStoreChange(state) {
-    debug('onPageStoreChange', state);
-    this.setState(state);
-    debug('this.state', this.state);
-
-    if (state.model && state.model.id) {
-      setTimeout(() => {
-        this.context.router.transitionTo('pageEdit', {id: state.model.id});
-      }, 100);
-    }
   }
 
   state = {
@@ -69,6 +57,18 @@ export default class PagesDetails extends React.Component {
 
   componentWillUnmount() {
     PageStore.unlisten(this.storeListener);
+  }
+
+  onPageStoreChange(state) {
+    debug('onPageStoreChange', state);
+    this.setState(state);
+    debug('this.state', this.state);
+
+    if (state.model && state.model.id) {
+      setTimeout(() => {
+        this.context.router.transitionTo('pageEdit', {id: state.model.id});
+      }, 100);
+    }
   }
 
   onFormChange() {

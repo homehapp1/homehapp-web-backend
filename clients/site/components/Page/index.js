@@ -41,6 +41,10 @@ export default class Page extends React.Component {
       page: state.model,
       error: state.error
     });
+
+    if (state.model && state.model.title) {
+      setPageTitle(state.model.title);
+    }
   }
 
   handleErrorState() {
