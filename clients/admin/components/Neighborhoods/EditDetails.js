@@ -12,6 +12,7 @@ import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import { randomNumericId } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import EditDetails from '../Shared/EditDetails';
+import PlacePicker from '../../../common/components/Widgets/PlacePicker';
 
 let debug = require('../../../common/debugger')('NeighborhoodsEditDetails');
 // const countries = require('../../../common/lib/Countries').forSelect();
@@ -28,6 +29,7 @@ class NeighborhoodsEditDetails extends EditDetails {
     this.imageUploaderInstanceId = randomNumericId();
     this.state.images = props.neighborhood.images;
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
+    this.setCoordinates = this.setCoordinates.bind(this);
   }
 
   state = {
@@ -76,16 +78,21 @@ class NeighborhoodsEditDetails extends EditDetails {
       }
     });
 
+    let lat = this.refs.locationLatitude.getValue();
+    let lng = this.refs.locationLongitude.getValue();
+    let coordinates = [];
+
+    if (lat && lng) {
+      coordinates = [lat, lng];
+    }
+
     let neighborhoodProps = {
       uuid: this.props.neighborhood.id,
       slug: this.refs.slug.getValue(),
       title: this.refs.title.getValue(),
       description: this.refs.description.getValue(),
       location: {
-        coordinates: [
-          this.refs.locationLatitude.getValue(),
-          this.refs.locationLongitude.getValue()
-        ]
+        coordinates: coordinates
       },
       images: images
     };
@@ -145,6 +152,7 @@ class NeighborhoodsEditDetails extends EditDetails {
               />
             </Panel>
             <Panel header='Location'>
+              <PlacePicker lat={this.state.lat} lng={this.state.lng} onChange={this.setCoordinates} />
               <InputWidget
                 label='Coordinates'
                 help='Coordinates for the neighborhood' wrapperClassName='wrapper'>
@@ -153,16 +161,18 @@ class NeighborhoodsEditDetails extends EditDetails {
                     <InputWidget
                       type='text'
                       ref='locationLatitude'
+                      readOnly
                       addonBefore='Latitude:'
-                      defaultValue={lat}
+                      value={lat}
                     />
                   </Col>
                   <Col xs={6}>
                     <InputWidget
                       type='text'
                       ref='locationLongitude'
+                      readOnly
                       addonBefore='Longitude:'
-                      defaultValue={lon}
+                      value={lon}
                     />
                   </Col>
                 </Row>
