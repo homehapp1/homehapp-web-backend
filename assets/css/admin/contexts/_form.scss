@@ -4,3 +4,39 @@
     padding-bottom: 5px;
   }
 }
+
+.sort-actions {
+  i {
+    font-size: 150%;
+    & + i {
+      margin-left: 0.5em;
+    }
+
+    &.disabled {
+      opacity: 0;
+    }
+  }
+}
+
+.flashable {
+  [data-flash] {
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, $transitionDurationSlow);
+    @include vendors(animation-name, flash);
+    @include vendors(animation-duration, 1500ms);
+  }
+}
+
+@include animate(flash) {
+  0% {
+    background-color: rgba(217, 237, 247, 1);
+  }
+
+  50% {
+    background-color: rgba(217, 237, 247, 1);
+  }
+
+  100% {
+    background-color: rgba(217, 237, 247, 0);
+  }
+}
