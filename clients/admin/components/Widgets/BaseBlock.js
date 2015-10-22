@@ -150,18 +150,24 @@ export default class WidgetsBaseBlock extends React.Component {
   renderPropertyRow(key, prop) {
     let input = null;
 
-    let placeholder = '';
-    if (prop.placeholder) {
-      placeholder = prop.placeholder;
-    }
     let defaultValue = this.props[key] || null;
     if (!defaultValue && prop.defaultValue) {
       defaultValue = prop.defaultValue;
     }
 
     let inputProps = {
-      defaultValue: defaultValue
+      defaultValue: defaultValue,
+      required: (prop.required),
+      placeholder: prop.placeholder || '',
+      name: key
     };
+
+    if (prop.pattern) {
+      inputProps.pattern = prop.pattern;
+    }
+    if (prop.validate) {
+      inputProps.validate = prop.validate;
+    }
 
     switch(prop.type) {
       case 'text':
@@ -192,10 +198,8 @@ export default class WidgetsBaseBlock extends React.Component {
         input = (
           <InputWidget
             type={prop.type}
-            name={key}
             label={prop.label}
             ref={key + 'Ref'}
-            placeholder={placeholder}
             onChange={(e) => {
               if (prop.type === 'checkbox') {
                 this.props[key] = !(this.props[key]);
