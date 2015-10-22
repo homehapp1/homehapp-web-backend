@@ -122,7 +122,7 @@ class NeighborhoodsEditDetails extends EditDetails {
       this.setState({
         lat: lat,
         lng: lng
-      })
+      });
     };
 
     return (
