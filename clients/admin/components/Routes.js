@@ -19,7 +19,7 @@ import HomesDeleteContainer from './Homes/DeleteContainer';
 import AgentsIndexContainer from './Agents/IndexContainer';
 
 // Neighborhoods
-import NeighborhoodsIndexContainer from './Neighborhoods/IndexContainer';
+import Neighborhoods from './Neighborhoods';
 import NeighborhoodsEditContainer from './Neighborhoods/EditContainer';
 
 // Contact requests
@@ -53,7 +53,7 @@ let routes = (
       <DefaultRoute handler={AgentsIndexContainer}/>
     </Route>
     <Route name='neighborhoods' path='/neighborhoods'>
-      <DefaultRoute handler={NeighborhoodsIndexContainer}/>
+      <DefaultRoute handler={Neighborhoods}/>
       <Route name='neighborhoodDelete' path=':id/delete' handler={NeighborhoodsEditContainer} />
       <Route name='neighborhoodEdit' path=':id' handler={NeighborhoodsEditContainer}>
         <Route name='neighborhoodEditTab' path=':tab' handler={NeighborhoodsEditContainer} />
