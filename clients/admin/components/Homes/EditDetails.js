@@ -55,7 +55,9 @@ export default class HomesEditDetails extends EditDetails {
     home: null,
     currentAttributes: [],
     images: [],
-    coordinates: []
+    coordinates: [],
+    lat: null,
+    lng: null
   }
 
   componentDidMount() {
