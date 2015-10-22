@@ -1,7 +1,6 @@
 /*global window */
-
-
 import React from 'react';
+// let debug = require('debug')('EditModel');
 
 export default class EditModel extends React.Component {
   static propTypes = {
@@ -12,8 +11,9 @@ export default class EditModel extends React.Component {
     ])
   }
 
-  defaultProps = {
-    tab: 1
+  static defaultProps = {
+    tab: 1,
+    params: {}
   }
 
   constructor(props) {
@@ -26,9 +26,10 @@ export default class EditModel extends React.Component {
     metadata: 3
   }
 
-  resolveOpenTab() {
-    let tab = this.props.tab;
-
+  resolveOpenTab(tab = null) {
+    if (!tab) {
+      tab = this.props.tab || 1;
+    }
     if (typeof this.tabs[tab] !== 'undefined') {
       return this.tabs[tab];
     }
