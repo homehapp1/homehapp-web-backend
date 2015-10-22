@@ -1,5 +1,5 @@
 import QueryBuilder from '../../../lib/QueryBuilder';
-import {/*NotImplemented,*/ BadRequest} from '../../../lib/Errors';
+// import { NotImplemented, BadRequest } from '../../../lib/Errors';
 let debug = require('debug')('/api/neighborhoods');
 
 exports.registerRoutes = (app) => {
@@ -17,6 +17,7 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Neighborhood')
     .parseRequestArguments(req)
+    .populate(populate)
     .findAll()
     .sort('title')
     .fetch()
@@ -67,6 +68,7 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Neighborhood')
     .findByUuid(req.params.uuid)
+    .populate(populate)
     .fetch()
     .then((result) => {
       res.json({
@@ -88,6 +90,7 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Neighborhood')
     .findByUuid(req.params.uuid)
+    .populate(populate)
     .update(data)
     .then((model) => {
       res.json({
