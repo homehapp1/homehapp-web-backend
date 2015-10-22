@@ -75,7 +75,7 @@ export default class Navigation extends React.Component {
             <li>
               <Link to='neighborhoodList' params={{city: 'london'}}>Neighbourhoods</Link>
             </li>
-            <li className='secondary'><Link to='contentAbout'>About us</Link></li>
+            <li className='secondary'><Link to='page' params={{slug: 'about'}}>About us</Link></li>
           </ul>
         </div>
       </div>

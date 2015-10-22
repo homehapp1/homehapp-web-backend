@@ -23,12 +23,7 @@ import NeighborhoodContainer from './Neighborhood/NeighborhoodContainer';
 import NeighborhoodHomeFilterContainer from './Neighborhood/NeighborhoodHomeFilterContainer';
 
 // MIscellaneous other handlers
-import ContentAbout from './Content/About';
-import ContentCareers from './Content/Careers';
-import ContentPrivacy from './Content/Privacy';
-import ContentTerms from './Content/Terms';
-import Partners from './Partners';
-import PartnersContact from './Partners/Contact';
+import Page from './Page';
 
 module.exports = (
   <Route name='app' path='/' handler={Application}>
@@ -57,15 +52,7 @@ module.exports = (
       <DefaultRoute handler={CityContainer} />
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
-    <Route name='contentAbout' path='/about' handler={ContentAbout} />
-    <Route name='contentCareers' path='/careers' handler={ContentCareers} />
-    <Route name='contentPrivacy' path='/privacy' handler={ContentPrivacy} />
-    <Route name='contentTerms' path='/terms' handler={ContentTerms} />
-
-  <Route name='partners' path='/partners'>
-      <Route name='partnersContact' path='contact' handler={PartnersContact} />
-      <DefaultRoute name='partnersContent' handler={Partners} />
-    </Route>
+    <Route name='page' path=':slug' handler={Page} />
     <NotFoundRoute handler={RouteNotFound} />
   </Route>
 );
