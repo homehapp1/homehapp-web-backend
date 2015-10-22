@@ -13,6 +13,7 @@ class Homepage extends React.Component {
           <h2>Frontpage</h2>
           <NavItemLink to='homes'>Homes</NavItemLink>
           <NavItemLink to='neighborhoods'>Neighborhoods</NavItemLink>
+          <NavItemLink to='pages'>Content pages</NavItemLink>
           <NavItemLink to='agents'>Agents</NavItemLink>
           <NavItemLink to='contacts'>Contact requests</NavItemLink>
           <NavItemLink to='users'>Users</NavItemLink>

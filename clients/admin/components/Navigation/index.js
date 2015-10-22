@@ -27,9 +27,10 @@ class Navigation extends React.Component {
           <Nav navbar>
             <NavItemLink eventKey={1} to='homes'>Homes</NavItemLink>
             <NavItemLink eventKey={2} to='neighborhoods'>Neighborhoods</NavItemLink>
-            <NavItemLink eventKey={3} to='agents'>Agents</NavItemLink>
-            <NavItemLink eventKey={4} to='contacts'>Contact requests</NavItemLink>
-            <NavItemLink eventKey={5} to='users'>Users</NavItemLink>
+            <NavItemLink eventKey={3} to='pages'>Content pages</NavItemLink>
+            <NavItemLink eventKey={4} to='agents'>Agents</NavItemLink>
+            <NavItemLink eventKey={5} to='contacts'>Contact requests</NavItemLink>
+            <NavItemLink eventKey={6} to='users'>Users</NavItemLink>
           </Nav>
           <Nav navbar right>
             <DropdownButton eventKey={1} title={userName}>
