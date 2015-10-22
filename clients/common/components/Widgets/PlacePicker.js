@@ -33,14 +33,14 @@ export default class PlacePicker extends Map {
   }
 
   setInitialMarkers() {
-    debug('Set initial markers');
+    // debug('Set initial markers');
     this.setMarkers();
   }
 
   setMarkers() {
     let lat = this.props.lat || this.getCenter()[0];
     let lng = this.props.lng || this.getCenter()[1];
-    console.log('Set markers', lat, lng, this.props.lat, this.props.lng);
+    debug('Set markers', lat, lng, this.props.lat, this.props.lng);
 
     if (this.marker) {
       let latLng = new google.maps.LatLng(lat, lng);
@@ -58,13 +58,19 @@ export default class PlacePicker extends Map {
     });
     this.marker.setMap(this.map);
     google.maps.event.addListener(this.marker, 'dragend', (event) => {
-      debug('Drag end', event);
       this.props.onChange(event.latLng.lat(), event.latLng.lng());
     });
   }
 
   resize() {
     debug('Window resized, hooray!');
+  }
+
+  getValue() {
+    if (this.props.lat && this.props.lng) {
+      return [this.props.lat, this.props.lng];
+    }
+    return null;
   }
 
   render() {
