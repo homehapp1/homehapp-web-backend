@@ -20,7 +20,7 @@ export default class NeighborhoodSelect extends React.Component {
 
   state = {
     error: null,
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
+    neighborhoods: NeighborhoodListStore.getState().items
   }
 
   componentDidMount() {
@@ -33,7 +33,7 @@ export default class NeighborhoodSelect extends React.Component {
 
   onChange() {
     this.setState({
-      neighborhoods: NeighborhoodListStore.getState().neighborhoods
+      neighborhoods: NeighborhoodListStore.getState().items
     });
   }
 

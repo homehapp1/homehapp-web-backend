@@ -10,7 +10,7 @@ import Homepage from './Homepage';
 import RouteNotFound from './ErrorPages/RouteNotFound';
 
 // Homes
-import HomesIndexContainer from './Homes/IndexContainer';
+import HomesIndex from './Homes';
 import HomesCreateContainer from './Homes/CreateContainer';
 import HomesEditContainer from './Homes/EditContainer';
 import HomesDeleteContainer from './Homes/DeleteContainer';
@@ -42,7 +42,7 @@ let routes = (
   <Route name='app' path='/' handler={Application}>
     <DefaultRoute handler={Homepage}/>
     <Route name='homes' path='/homes'>
-      <DefaultRoute handler={HomesIndexContainer}/>
+      <DefaultRoute handler={HomesIndex}/>
       <Route name='homeCreate' path='create' handler={HomesCreateContainer} />
       <Route name='homeDelete' path=':id/delete' handler={HomesDeleteContainer} />
       <Route name='homeEdit' path=':id' handler={HomesEditContainer}>
