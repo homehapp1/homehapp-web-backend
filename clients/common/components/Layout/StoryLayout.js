@@ -124,14 +124,25 @@ export default class StoryLayout extends React.Component {
   getContentBlock(item, index) {
     debug('getContentBlock', item.properties);
     let content = null;
+    let title = null;
+
+    if (item.properties.title) {
+      title = (<h2>{item.properties.title}</h2>);
+    }
 
     if (item.properties.quote) {
       content = (
-        <blockquote className='content-wrapper'>{item.properties.content}</blockquote>
+        <blockquote className='content-wrapper'>
+          {title}
+          {item.properties.content}
+        </blockquote>
       );
     } else {
       content = (
-        <div className='content-wrapper'>{item.properties.content}</div>
+        <div className='content-wrapper'>
+          {title}
+          {item.properties.content}
+        </div>
       );
     }
 
