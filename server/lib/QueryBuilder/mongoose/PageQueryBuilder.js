@@ -15,7 +15,6 @@ export default class PageQueryBuilder extends BaseQueryBuilder {
       });
       this._configurePopulationForCursor(cursor);
       cursor.exec((err, content) => {
-        debug('findBySlug', content.title);
         if (err) {
           debug('Got error', err);
           return callback(err);
@@ -24,6 +23,7 @@ export default class PageQueryBuilder extends BaseQueryBuilder {
           debug('No content found');
           return callback(new NotFound('Page not found'));
         }
+        debug('findBySlug', content.title);
 
         this._loadedModel = content;
         this.result.model = content;
