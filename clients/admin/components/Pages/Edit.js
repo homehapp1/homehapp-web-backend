@@ -9,14 +9,17 @@ import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import PagesDetails from './Details';
 import ViewMetadata from '../Shared/ViewMetadata';
+import EditModel from '../Shared/EditModel';
 
 import PageListStore from '../../stores/PageListStore';
+import PageActions from '../../actions/PageActions';
+import PageStore from '../../stores/PageStore';
 
 import { setPageTitle, createNotification } from '../../../common/Helpers';
 
 let debug = require('debug')('PagesEdit');
 
-export default class PagesEdit extends React.Component {
+export default class PagesEdit extends EditModel {
   static propTypes = {
     params: React.PropTypes.object.isRequired
   }
@@ -86,7 +89,8 @@ export default class PagesEdit extends React.Component {
     }
 
     let title = (this.state.page) ? this.state.page.title : '';
-    debug('this.state', this.state);
+    let openTab = this.resolveOpenTab(this.props.params.tab);
+    debug('openTab', openTab);
 
     return (
       <SubNavigationWrapper>
@@ -98,12 +102,12 @@ export default class PagesEdit extends React.Component {
         </Nav>
         <Row>
           <h1><i className='fa fa-page'></i> Edit {title}</h1>
-          <TabbedArea defaultActiveKey={1}>
+          <TabbedArea defaultActiveKey={openTab}>
             <TabPane eventKey={1} tab='Details'>
               <PagesDetails page={this.state.page} />
             </TabPane>
             <TabPane eventKey={3} tab='Metadata'>
-              <ViewMetadata object={this.state.page} />
+              <ViewMetadata object={this.state.page} store={PageStore} actions={PageActions} />
             </TabPane>
           </TabbedArea>
         </Row>
