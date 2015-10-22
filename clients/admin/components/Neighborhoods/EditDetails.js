@@ -78,21 +78,13 @@ class NeighborhoodsEditDetails extends EditDetails {
       }
     });
 
-    let lat = this.refs.locationLatitude.getValue();
-    let lng = this.refs.locationLongitude.getValue();
-    let coordinates = [];
-
-    if (lat && lng) {
-      coordinates = [lat, lng];
-    }
-
     let neighborhoodProps = {
       uuid: this.props.neighborhood.id,
       slug: this.refs.slug.getValue(),
       title: this.refs.title.getValue(),
       description: this.refs.description.getValue(),
       location: {
-        coordinates: coordinates
+        coordinates: this.refs.coordinates.getValue()
       },
       images: images
     };
@@ -112,14 +104,26 @@ class NeighborhoodsEditDetails extends EditDetails {
       return null;
     }
     this.handleRenderState();
-
-    let lat, lon = '';
-    if (this.props.neighborhood.location.coordinates.length) {
-      lat = this.props.neighborhood.location.coordinates[0];
-      lon = this.props.neighborhood.location.coordinates[1];
-    }
-
     let neighborhood = this.state.model || this.props.neighborhood;
+
+    let lat = null;
+    let lng = null;
+
+    if (this.state.lat && this.state.lng) {
+      lat = this.state.lat;
+      lng = this.state.lng;
+    } else if (neighborhood.location.coordinates.length) {
+      lat = neighborhood.location.coordinates[0];
+      lng = neighborhood.location.coordinates[1];
+    }
+    debug('lat', lat, 'lng', lng);
+
+    let updateCoords = (lat, lng) => {
+      this.setState({
+        lat: lat,
+        lng: lng
+      })
+    };
 
     return (
       <Row>
@@ -152,7 +156,7 @@ class NeighborhoodsEditDetails extends EditDetails {
               />
             </Panel>
             <Panel header='Location'>
-              <PlacePicker lat={this.state.lat} lng={this.state.lng} onChange={this.setCoordinates} />
+              <PlacePicker lat={lat} lng={lng} ref='coordinates' onChange={updateCoords} />
               <InputWidget
                 label='Coordinates'
                 help='Coordinates for the neighborhood' wrapperClassName='wrapper'>
@@ -172,7 +176,7 @@ class NeighborhoodsEditDetails extends EditDetails {
                       ref='locationLongitude'
                       readOnly
                       addonBefore='Longitude:'
-                      value={lon}
+                      value={lng}
                     />
                   </Col>
                 </Row>
