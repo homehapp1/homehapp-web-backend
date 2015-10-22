@@ -2,11 +2,7 @@ import React from 'react';
 
 export default class ContentBlock extends React.Component {
   static propTypes = {
-    src: React.PropTypes.string,
-    alt: React.PropTypes.string,
     align: React.PropTypes.string,
-    fixed: React.PropTypes.bool,
-    gradient: React.PropTypes.string,
     children: React.PropTypes.oneOfType([
       React.PropTypes.object,
       React.PropTypes.array
