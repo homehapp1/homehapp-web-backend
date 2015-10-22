@@ -1,5 +1,5 @@
 import QueryBuilder from '../../../lib/QueryBuilder';
-let debug = require('debug')('/api/pages');
+// let debug = require('debug')('/api/pages');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
