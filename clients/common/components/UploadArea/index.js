@@ -1,4 +1,5 @@
 import React from 'react';
+import ProgressBar from 'react-bootstrap/lib/ProgressBar';
 import ExecutionEnvironment from 'react/lib/ExecutionEnvironment';
 import request from '../../request';
 import UploadAreaUtils from './utils';
@@ -203,6 +204,30 @@ class UploadArea extends React.Component {
     });
   }
 
+  getLoader() {
+    let ids = Object.keys(this.state.uploads);
+    let files = [];
+    let progress = 0;
+    ids.map((id, index) => {
+      let file = this.state.uploads[id];
+      if (file.progress === 100) {
+        return null;
+      }
+      files.push(file.name);
+      progress += file.progress;
+    });
+
+    if (!files.length) {
+      return null;
+    }
+
+    // let percentage = `${Math.ceil(Math.round(10 * progress / (files.length))) / 10}%`;
+    let percentage = Math.ceil(Math.round(10 * progress / (files.length))) / 10;
+    return (
+      <ProgressBar striped active now={percentage} label={`${Math.round(percentage)}%`} />
+    );
+  }
+
   render() {
     let cls = [
       this.props.className,
@@ -215,6 +240,7 @@ class UploadArea extends React.Component {
             let file = this.state.uploads[id];
             let progress = `${Math.round(file.progress)}%`;
             let classes = ['upload'];
+            debug('File', file);
 
             if (Math.round(file.progress) >= 100) {
               classes.push('finished');
@@ -241,7 +267,7 @@ class UploadArea extends React.Component {
         style={{ width: this.props.width, height: this.props.height }}>
         <div className='dz-message'>
           {this.props.children}
-          {loader}
+          {this.getLoader()}
         </div>
       </div>
     );
