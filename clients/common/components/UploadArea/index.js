@@ -26,6 +26,8 @@ class UploadArea extends React.Component {
     height: React.PropTypes.string,
     className: React.PropTypes.string,
     maxFiles: React.PropTypes.number,
+    maxSize: React.PropTypes.number,
+    onError: React.PropTypes.func,
     onProgress: React.PropTypes.func,
     onUpload: React.PropTypes.func,
     acceptedMimes: React.PropTypes.string,
@@ -48,7 +50,8 @@ class UploadArea extends React.Component {
     uploadUrl: null,
     uploadParams: {},
     clickable: true,
-    isVideo: false
+    isVideo: false,
+    maxSize: Infinity
   }
 
   constructor(props) {
@@ -119,6 +122,25 @@ class UploadArea extends React.Component {
       params: params,
       clickable: this.props.clickable,
       accept: (file, done) => {
+        if (file.size > this.props.maxSize) {
+          let maxSize = `${this.props.maxSize} bytes`;
+          if (this.props.maxSize > 1024) {
+            maxSize = `${Math.round(this.props.maxSize / 1024)} kB`;
+          }
+          if (this.props.maxSize > 1024 * 1024) {
+            maxSize = `${Math.round(this.props.maxSize / (1024 * 1024))} MB`;
+          }
+
+          let error = `File size exceeded the maximum allowed, which is ${maxSize}`;
+
+          if (typeof this.props.onError === 'function') {
+            this.props.onError(error);
+          } else {
+            console.error(error);
+          }
+          return false;
+        }
+
         file.id = Helpers.randomNumericId();
         UploadAreaUtils.UploadActions.updateUpload({
           instanceId: this.props.instanceId,
