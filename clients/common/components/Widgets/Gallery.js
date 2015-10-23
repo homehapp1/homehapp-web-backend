@@ -321,10 +321,12 @@ export default class Gallery extends React.Component {
     let next = this.galleryImages.indexOf(this.currentImage) + dir;
 
     if (next < 0) {
-      next = this.galleryImages.length - 1;
+      next = 0;
+      // next = this.galleryImages.length - 1;
     }
     if (next >= this.galleryImages.length) {
-      next = 0;
+      next = this.galleryImages.length - 1;
+      // next = 0;
     }
 
     this.currentImage = this.galleryImages[next];
@@ -363,6 +365,13 @@ export default class Gallery extends React.Component {
     let image = document.createElement('img');
     let app = this;
 
+    for (let img in this.imageContainer.getElementsByTagName('img')) {
+      if (img.src === src) {
+        image = img;
+        break;
+      }
+    }
+
     if (typeof this.preloaded[src] === 'undefined') {
       image.setAttribute('data-distance', distance);
       image.onload = function() {
@@ -370,8 +379,9 @@ export default class Gallery extends React.Component {
       };
       image.src = src;
       image.className = 'gallery-image';
-
-      this.imageContainer.appendChild(image);
+      if (!image.parentNode) {
+        this.imageContainer.appendChild(image);
+      }
     }
   }
 
