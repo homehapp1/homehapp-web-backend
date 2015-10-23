@@ -1,3 +1,5 @@
+
+
 import path from 'path';
 import fs from 'fs';
 import http from 'http';
@@ -13,6 +15,8 @@ import Configuration from './lib/Configuration';
 import Helpers from './lib/Helpers';
 import Errors from './lib/Errors';
 import Logger from './lib/Logger';
+
+import bodyParser from 'body-parser';
 
 let PROJECT_NAME = 'site';
 let PROJECT_ROOT = path.resolve(__dirname, '..');
@@ -80,13 +84,14 @@ exports.run = function(projectName, afterRun) {
       }
     }
 
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
+
     function resolveCurrentRevision() {
       return new Promise((resolve) => {
         PROJECT_REVISION = require('moment')().format('YYYYMMDD');
         app.PROJECT_REVISION = PROJECT_REVISION;
-        // let revPath = path.join(PROJECT_ROOT, 'BUILD_REVISION');
-        let date = (new Date()).toISOString().substr(0, 16).replace(/[^0-9]/, '');
-        let revPath = path.join(PROJECT_ROOT, date);
+        let revPath = path.join(PROJECT_ROOT, 'BUILD_REVISION');
         fs.readFile(revPath, (err, content) => {
           if (err) {
             return resolve(PROJECT_REVISION);
@@ -175,10 +180,6 @@ exports.run = function(projectName, afterRun) {
     function configureMiddleware() {
       return new Promise((resolve, reject) => {
         debug('configureMiddleware');
-
-        let bodyParser = require('body-parser');
-        app.use(bodyParser.urlencoded({ extended: false }));
-        app.use(bodyParser.json());
 
         if (config.isomorphic.enabled) {
           app.use(function prepareResData(req, res, next) {
