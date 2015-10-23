@@ -13,7 +13,7 @@ function printUsage() {
   echo "Required environment variables:"
   echo "  PROJECT_ID:     Google Project ID"
   echo ""
-  echo "Usage ./support/createContainers.sh [project name] OR PROJECT_NAME=name ./support/createContainers.sh"
+  echo "Usage ./support/createContainers.sh [project name] [stg|prod]"
 }
 function printUsageAndExit() {
   printUsage
