@@ -6,7 +6,7 @@ exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
   let populate = {
     home: {
-      select: 'slug id uuid homeTitle'
+      select: {}
     }
   };
 
