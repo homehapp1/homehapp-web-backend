@@ -38,9 +38,9 @@ fi
 
 function createCluster() {
   if [ "$1" = "-d" ]; then
-    echo "Execute: 'gcloud beta container clusters create $CLUSTER_NAME --num-nodes 1 --machine-type g1-small --project $PROJECT_ID'"
+    echo "Execute: 'gcloud beta container clusters create $CLUSTER_NAME --num-nodes 1 --machine-type n1-standard-1 --project $PROJECT_ID'"
   else
-    gcloud beta container clusters create $CLUSTER_NAME --num-nodes 1 --machine-type g1-small --project $PROJECT_ID
+    gcloud beta container clusters create $CLUSTER_NAME --num-nodes 1 --machine-type n1-standard-1 --project $PROJECT_ID
     CLUSTER_GOOGLE_NAME=`kubectl config view | grep $PROJECT_ID | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1`
     NODE_GOOGLE_NAME=`kubectl get nodes --context=$CLUSTER_GOOGLE_NAME | awk '{print $1}' | tail -n 1`
     local len=${#NODE_GOOGLE_NAME}
