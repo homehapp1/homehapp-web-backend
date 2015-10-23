@@ -7,7 +7,7 @@ import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import {randomNumericId, setCDNUrlProperties, merge, enumerate} from '../../../common/Helpers';
+import { randomNumericId, setCDNUrlProperties, merge, enumerate, createNotification } from '../../../common/Helpers';
 import ImageList from './ImageList';
 
 let debug = require('../../../common/debugger')('WidgetsBaseBlock');
@@ -337,14 +337,26 @@ export default class WidgetsBaseBlock extends React.Component {
               <UploadArea
                 isVideo
                 className={`uploadarea ${key}-uploadarea`}
+                maxSize={100 * 1024 * 1024}
                 onUpload={(file) => {
                   this.onVideoUpload(key, file);
+                }}
+                onError={(error) => {
+                  createNotification({
+                    duration: 10,
+                    type: 'danger',
+                    label: 'Upload failed',
+                    message: error.toString()
+                  });
                 }}
                 instanceId={this.uploaderInstanceIds[key]}
                 {...uploaderConfig}
               >
                 <Well>
-                  <p>Drag new video here, or click to select from filesystem.</p>
+                  <p>
+                    Drag new video here, or click to select from filesystem.
+                    Maximum filesize is 100 MB.
+                  </p>
                 </Well>
               </UploadArea>
             </td>
