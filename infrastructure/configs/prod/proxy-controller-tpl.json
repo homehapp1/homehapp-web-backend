@@ -1,0 +1,81 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": ":CONTROLLER_NAME",
+    "labels": {
+      "name": ":PROJECT_NAME",
+      "role": "proxy",
+      "revision": ":REV"
+    },
+    "namespace": ""
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "name": ":PROJECT_NAME",
+      "revision": ":REV"
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "name": ":PROJECT_NAME",
+          "revision": ":REV"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {"name": "log-storage", "emptyDir": {}},
+          {"name": "secrets", "secret": {"secretName": "proxy-secret"}}
+        ],
+        "containers": [
+          {
+            "name": ":PROJECT_NAME",
+            "image": "eu.gcr.io/:PROJECT_ID/nginx-proxy:latest",
+            "env": [
+              {"name": "SERVICE_HOST_ENV_NAME", "value": ":SERVICE_HOST"},
+              {"name": "SERVICE_PORT_ENV_NAME", "value": ":SERVICE_PORT"},
+              {"name": "ENABLE_SSL", "value": "true"}
+            ],
+            "ports": [
+              {
+                "name": "proxy-http",
+                "containerPort": 80,
+                "protocol": "TCP"
+              },
+              {
+                "name": "proxy-https",
+                "containerPort": 443,
+                "protocol": "TCP"
+              }
+            ],
+            "imagePullPolicy": "Always",
+            "volumeMounts": [
+              {"name": "log-storage", "mountPath": "/mnt/log"},
+              {"name": "secrets", "mountPath": "/etc/secrets", "readOnly": true}
+            ]
+          },
+          {
+            "name": "sidecar-log-collector",
+            "image": "eu.gcr.io/:PROJECT_ID/fluentd-sidecar-gcp:latest",
+            "resources": {
+              "limits": {
+                "cpu": "100m",
+                "memory": "200Mi"
+              }
+            },
+            "env": [
+              {"name": "FILES_TO_COLLECT", "value": "/mnt/log/nginx/error.log /mnt/log/nginx/access.log"},
+              {"name": "PROJECT_NAME", "value": ":PROJECT_NAME"}
+            ],
+            "volumeMounts": [
+              {"name": "log-storage", "readOnly": true, "mountPath": "/mnt/log"}
+            ]
+          }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst"
+      }
+    }
+  }
+}
