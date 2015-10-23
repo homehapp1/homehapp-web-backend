@@ -169,6 +169,8 @@ class HomesIndex extends React.Component {
               <tr>
                 <th>Title</th>
                 <th>Neighborhood</th>
+                <th>Story blocks</th>
+                <th>Enabled</th>
                 <th></th>
               </tr>
             </thead>
@@ -196,6 +198,13 @@ class HomesIndex extends React.Component {
                   downClass.push('disabled');
                 }
 
+                let enabled = null;
+                if (home.story.enabled) {
+                  enabled = (
+                    <span>yes</span>
+                  );
+                }
+
                 return (
                   <tr key={`home-${i}-${this.iterator}`} className='sortable'>
                     <td>
@@ -208,6 +217,8 @@ class HomesIndex extends React.Component {
                     <td>
                       {neighborhood}
                     </td>
+                    <td>{home.story.blocks.length}</td>
+                    <td>{enabled}</td>
                     <td className='sort-actions'>
                       <i className={upClass.join(' ')} onClick={() => {
                         this.movePosition(i, 1);
