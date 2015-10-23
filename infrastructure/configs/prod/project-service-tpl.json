@@ -1,0 +1,24 @@
+{
+   "kind": "Service",
+   "apiVersion": "v1",
+   "metadata": {
+      "name": ":PROJECT_NAME",
+      "labels": {
+         "name": ":PROJECT_NAME",
+         "role": "frontend"
+      }
+   },
+   "spec": {
+      "ports": [
+        {
+          "name": "endpoint",
+          "port": 80,
+          "targetPort": "http",
+          "protocol": "TCP"
+        }
+      ],
+      "selector": {
+         "name": ":PROJECT_NAME"
+      }
+   }
+}
