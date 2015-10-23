@@ -6,25 +6,73 @@ import Table from 'react-bootstrap/lib/Table';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 // import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import TimeAgo from '../../../common/components/TimeAgo';
+import Loading from '../../../common/components/Widgets/Loading';
+
+import ContactListStore from '../../stores/ContactListStore';
+import ContactsIndex from './index';
 
 import { setPageTitle } from '../../../common/Helpers';
 
 let debug = require('debug')('ContactsIndex');
 
-export default class ContactsIndex extends React.Component {
+export default class Contacts extends React.Component {
   static propTypes = {
     contacts: React.PropTypes.array.isRequired
   }
 
   constructor(props) {
     super(props);
+    this.storeListener = this.onChange.bind(this);
+  }
+
+  state = {
+    error: null,
+    contacts: ContactListStore.getState().contacts
   }
 
   componentDidMount() {
     setPageTitle('Contact requests');
+    ContactListStore.listen(this.storeListener);
+    ContactListStore.fetchContacts();
+  }
+
+  componentWillUnmount() {
+    ContactListStore.unlisten(this.storeListener);
+  }
+
+  onChange(state) {
+    debug('onChange', state);
+    this.setState({
+      contacts: ContactListStore.getState().contacts
+    });
+  }
+
+  handlePendingState() {
+    return (
+      <Loading>
+        <h3>Loading contacts...</h3>
+      </Loading>
+    );
+  }
+
+  handleErrorState() {
+    return (
+      <div className='contacts-error'>
+        <h3>Error loading contacts!</h3>
+        <p>{this.state.error.message}</p>
+      </div>
+    );
   }
 
   render() {
+    if (this.state.error) {
+      return this.handleErrorState();
+    }
+
+    if (ContactListStore.isLoading() || !this.state.contacts) {
+      return this.handlePendingState();
+    }
+
     debug('Render', this.props.contacts);
     return (
       <SubNavigationWrapper>
@@ -32,22 +80,23 @@ export default class ContactsIndex extends React.Component {
           <h2 className='navigation-title'>
             Contacts
           </h2>
-          <p>There are {this.props.contacts.length} contacts in the system currently.</p>
+          <p>There are {this.state.contacts.length} contacts in the system currently.</p>
         </Nav>
         <Row>
-          <h1><i className='fa fa-contact'></i> {this.props.contacts.length} contacts</h1>
+          <h1><i className='fa fa-contact'></i> {this.state.contacts.length} contacts</h1>
           <Table>
             <thead>
               <tr>
                 <th>Timestamp</th>
                 <th>Home</th>
                 <th>Contact type</th>
+                <th>Contact subtype</th>
                 <th>Sender</th>
                 <th>Recipient</th>
               </tr>
             </thead>
             <tbody>
-              {this.props.contacts.map((contact, i) => {
+              {this.state.contacts.map((contact, i) => {
                 let sender = null;
                 let senderEmail = null;
                 let home = null;
@@ -92,34 +141,11 @@ export default class ContactsIndex extends React.Component {
                     </td>
                     <td>{home}</td>
                     <td>{contact.type}</td>
+                    <td>{contact.subType}</td>
                     <td>{sender} {senderEmail}</td>
                     <td>{recipient} {recipientEmail}</td>
                   </tr>
                 );
-                // let home = null;
-                // let recipient = [];
-                //
-                // if (contact.recipient.name) {
-                //   recipient.push(contact.recipient.name);
-                // }
-                // if (contact.recipient.email) {
-                //   recipient.push(contact.recipient.email);
-                // }
-                //
-                //
-                // return (
-                //   <tr key={`contact${i}`}>
-                //     <td>{recipient.join(' ')}</td>
-                //     <td>
-                //       <Link
-                //         to='contactView'
-                //         params={{id: contact.id}}>
-                //         {contact.contactTitle}
-                //       </Link>
-                //     </td>
-                //     <td>{home}</td>
-                //   </tr>
-                // );
               })}
             </tbody>
           </Table>

@@ -23,7 +23,7 @@ import Neighborhoods from './Neighborhoods';
 import NeighborhoodsEditContainer from './Neighborhoods/EditContainer';
 
 // Contact requests
-import ContactsIndexContainer from './Contacts/IndexContainer';
+import Contacts from './Contacts';
 import ContactsViewContainer from './Contacts/ViewContainer';
 
 // Homes
@@ -68,7 +68,7 @@ let routes = (
       <Route name='pageDelete' path=':id/delete' handler={PagesDelete} />
     </Route>
     <Route name='contacts' path='/contacts'>
-      <DefaultRoute handler={ContactsIndexContainer}/>
+      <DefaultRoute handler={Contacts}/>
       <Route name='contactView' path=':id' handler={ContactsViewContainer} />
       <Route name='contactDelete' path=':id/delete' handler={ContactsViewContainer} />
     </Route>
