@@ -73,7 +73,6 @@ export default class Contacts extends React.Component {
       return this.handlePendingState();
     }
 
-    debug('Render', this.props.contacts);
     return (
       <SubNavigationWrapper>
         <Nav sidebar>
