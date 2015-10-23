@@ -39,6 +39,14 @@ export default class HomeNavigation extends React.Component {
     for (let i = 0; i < items.length; i++) {
       items[i].attr('data-index', items.length - i - 1);
     }
+    let links = navi.getByTagName('a');
+    for (let link of links) {
+      if (link.attr('href') === window.location.pathname) {
+        link.addClass('active');
+      } else {
+        link.removeClass('active');
+      }
+    }
 
     setTimeout(function() {
       navi.addClass('animate');
@@ -74,29 +82,50 @@ export default class HomeNavigation extends React.Component {
     return `https://www.twitter.com/share?url=${window.location.href}&via=homehapp`;
   }
 
+  getDetailsLink() {
+    let href = this.context.router.makeHref('home', {slug: this.props.home.slug});
+    let className = '';
+
+    if (this.props.home.story.enabled) {
+      href = this.context.router.makeHref('homeDetails', {slug: this.props.home.slug});
+    }
+
+    return (
+      <li className='details'>
+        <a href={href} className={className}><i className='fa fa-info-circle'></i></a>
+      </li>
+    );
+  }
+
+  getStoryLink() {
+    debug('getStoryLink', this.context.router);
+    let currentRoutes = this.context.router.getCurrentRoutes();
+    debug('currentRoutes', currentRoutes);
+    if (!this.props.home.story.enabled) {
+      return null;
+    }
+
+    let href = this.context.router.makeHref('home', {slug: this.props.home.slug});
+    let className = '';
+
+    return (
+      <li className='story'>
+        <a href={href} className={className}><i className='fa fa-home'></i></a>
+      </li>
+    );
+  }
+
   render() {
     let todo = function() {
       console.info('Implement phone calling');
     };
-
-    let story = null;
-
-    if (this.props.home.story.enabled) {
-      story = (
-        <li className='story'>
-          <Link to='homeStory' params={{slug: this.props.home.slug}}><i className='fa fa-home'></i></Link>
-        </li>
-      );
-    }
     debug('this.props.router', this.props.router);
 
     return (
       <ContentNavigation>
         <ul ref='navi'>
-          {story}
-          <li className='details'>
-            <Link to='homeDetails' params={{slug: this.props.home.slug}}><i className='fa fa-info-circle'></i></Link>
-          </li>
+          {this.getStoryLink()}
+          {this.getDetailsLink()}
           <li className='phone'>
             <a href='#' onClick={todo}><i className='fa fa-phone'></i></a>
           </li>

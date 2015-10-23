@@ -12,6 +12,7 @@ import Nav from 'react-bootstrap/lib/Nav';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 
 import { setPageTitle } from '../../../common/Helpers';
+import DOMManipulator from '../../../common/DOMManipulator';
 // import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 
 let debug = require('debug')('HomesIndex');
