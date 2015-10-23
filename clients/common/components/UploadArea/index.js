@@ -208,7 +208,7 @@ class UploadArea extends React.Component {
     let ids = Object.keys(this.state.uploads);
     let files = [];
     let progress = 0;
-    ids.map((id, index) => {
+    ids.map((id) => {
       let file = this.state.uploads[id];
       if (file.progress === 100) {
         return null;
@@ -233,32 +233,6 @@ class UploadArea extends React.Component {
       this.props.className,
       'clearfix'
     ];
-    let loader = (
-      <div className='upload-area-progress-container'>
-        {
-          Object.keys(this.state.uploads).map((id, index) => {
-            let file = this.state.uploads[id];
-            let progress = `${Math.round(file.progress)}%`;
-            let classes = ['upload'];
-            debug('File', file);
-
-            if (Math.round(file.progress) >= 100) {
-              classes.push('finished');
-            }
-
-            return (
-              <div className={classes.join(' ')} key={`uploadArea${index}`}>
-                <div className='bar-container clearfix'>
-                  <div className='bar' style={{width: progress}}></div>
-                  <div className='percentage'>{progress}</div>
-                </div>
-                <div className='filename'>{file.name}</div>
-              </div>
-            );
-          })
-        }
-      </div>
-    );
 
     return (
       <div
