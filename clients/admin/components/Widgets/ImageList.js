@@ -49,7 +49,7 @@ export default class ImageList extends React.Component {
         <thead>
           <tr>
             <th>Thumbnail</th>
-            <th>Details</th>
+            <th>Description</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -83,8 +83,7 @@ export default class ImageList extends React.Component {
                     <InputWidget
                       type='text'
                       ref='alt'
-                      label='Short human-readable description'
-                      placeholder='(optional, but strongly recommended)'
+                      placeholder='(description, recommended strongly)'
                       defaultValue={image.alt}
                       onChange={altChange}
                     />

@@ -27,24 +27,56 @@ class CloudinaryAdapter {
     return `//res.cloudinary.com/${this.config.projectName}/raw/upload`;
   }
 
+  sendResponse(body, res) {
+    let transformation = this.config.transformations.default;
+    if (this.config.transformations[body.folder]) {
+      transformation = this.config.transformations[body.folder];
+    }
+    let signData = {
+      folder: body.folder || '',
+      timestamp: Math.floor(new Date().getTime() / 1000)
+    };
+    if (transformation) {
+      signData.transformation = transformation;
+    }
+    res.send({
+      status: 'ok',
+      signed: this.cloudinary.utils.sign_request(signData)
+    });
+  }
+
   registerRoutes() {
     debug('Registering POST route: /api/cdn/signature');
     this.app.post('/api/cdn/signature', (req, res) => {
-      let transformation = this.config.transformations.default;
-      if (this.config.transformations[req.body.folder]) {
-        transformation = this.config.transformations[req.body.folder];
+      debug('Request', req);
+
+      if (!req.body) {
+        debug('No body found');
+        let rawBody = '';
+        req.setEncoding('utf8');
+        req.on('data', function(chunk) {
+          rawBody += chunk;
+          debug('Chunk', rawBody);
+
+          // "1k should be enough for anybody"
+          if (rawBody.length > 1024) {
+            res.status(413).json({
+              status: 'error',
+              message: 'Request entity too large, allowed JSON request maximum size is 1k'
+            });
+          }
+        });
+        req.on('end', () => {
+          let body = JSON.parse(rawBody);
+          if (!body) {
+            throw new Error('Failed to parse JSON request');
+          }
+          this.sendResponse(body, res);
+        });
+        return null;
       }
-      let signData = {
-        folder: req.body.folder,
-        timestamp: Math.floor(new Date().getTime() / 1000)
-      };
-      if (transformation) {
-        signData.transformation = transformation;
-      }
-      res.send({
-        status: 'ok',
-        signed: this.cloudinary.utils.sign_request(signData)
-      });
+      debug('Got JSON');
+      this.sendResponse(req.body, res);
     });
   }
 }
