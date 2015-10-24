@@ -10,7 +10,7 @@
     "namespace": ""
   },
   "spec": {
-    "replicas": 2,
+    "replicas": 1,
     "selector": {
       "name": ":PROJECT_NAME",
       "revision": ":REV"
@@ -30,6 +30,12 @@
           {
             "name": ":PROJECT_NAME",
             "image": "eu.gcr.io/:PROJECT_ID/:PROJECT_BASE_NAME::REV-:ENV",
+            "resources": {
+              "limits": {
+                "cpu": "80m",
+                "memory": "400Mi"
+              }
+            },
             "ports": [
               {
                 "name": "http",
