@@ -162,7 +162,7 @@ export default class Map extends React.Component {
 
   resize() {
     let map = new DOMManipulator(this.refs.map);
-    let content = new DOMManipulator(this.refs.content);
+    let content = (this.refs.content) ? new DOMManipulator(this.refs.content) : null;
     let container = new DOMManipulator(this.refs.container);
     let width = Math.floor(container.parent().width());
 
@@ -174,7 +174,10 @@ export default class Map extends React.Component {
     let mapSize = 600;
     map.width(Math.min(mapSize, width));
     map.height(Math.min(mapSize, width));
-    content.width(width);
+
+    if (content) {
+      content.width(width);
+    }
   }
 
   // Get a plain arithmetic average for the center position for a set of
@@ -232,6 +235,20 @@ export default class Map extends React.Component {
       'widget',
       'map'
     ];
+    debug('Map children', this.props.children);
+    let auxContent = null;
+
+    if (this.props.children) {
+      auxContent = (
+        <div className='aux-content'>
+          <div className='content-wrapper' ref='content'>
+            {this.props.children}
+          </div>
+        </div>
+      );
+    } else {
+      classes.push('no-aux-content');
+    }
 
     return (
       <div className={classNames(classes)}>
@@ -239,11 +256,7 @@ export default class Map extends React.Component {
           <div className='map-content'>
             <div className='map-wrapper' ref='map'></div>
           </div>
-          <div className='aux-content'>
-            <div className='content-wrapper' ref='content'>
-              {this.props.children}
-            </div>
-          </div>
+          {auxContent}
         </div>
       </div>
     );

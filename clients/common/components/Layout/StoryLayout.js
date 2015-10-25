@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 // Widgets
-import Agent from '../Widgets/Agent';
+import Agents from '../Widgets/Agents';
 import BigImage from '../Widgets/BigImage';
 import BigVideo from '../Widgets/BigVideo';
 import Columns from '../Widgets/Columns';
@@ -22,8 +22,8 @@ export default class StoryLayout extends React.Component {
     blocks: React.PropTypes.array.isRequired
   };
 
-  getAgent(item, index) {
-    return (<Agent {...item.properties} key={index} />);
+  getAgents(item, index) {
+    return (<Agents {...item.properties} key={index} />);
   }
 
   getBigImage(item, index) {
@@ -98,12 +98,18 @@ export default class StoryLayout extends React.Component {
 
     if (item.contentBlock) {
       content = item.properties.contentBlock;
-    } else {
+    } else if (item.properties.label || item.properties.content) {
       content = (
         <div className='content-wrapper' key={index}>
           <h3>{item.properties.label}</h3>
           {item.properties.content}
         </div>
+      );
+    }
+
+    if (!content) {
+      return (
+        <Map {...item.properties} key={index} />
       );
     }
 
