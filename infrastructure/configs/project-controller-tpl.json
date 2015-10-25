@@ -30,6 +30,12 @@
           {
             "name": ":PROJECT_NAME",
             "image": "eu.gcr.io/:PROJECT_ID/:PROJECT_NAME::REV-:ENV",
+            "resources": {
+              "limits": {
+                "cpu": "80m",
+                "memory": "400Mi"
+              }
+            },
             "ports": [
               {
                 "containerPort": 8080,
