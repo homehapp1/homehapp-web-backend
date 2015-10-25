@@ -155,10 +155,11 @@ class NeighborhoodsEditDetails extends EditDetails {
         lng: lng
       });
     };
-
+    let selectedCity = null;
     let cities = [];
     if (neighborhood.location.city) {
       cities.push(neighborhood.location.city);
+      selectedCity = neighborhood.location.city.id;
     }
     if (Array.isArray(this.state.cities)) {
       this.state.cities.map((city) => {
@@ -202,18 +203,15 @@ class NeighborhoodsEditDetails extends EditDetails {
                 ref='locationCity'
                 label='City'
                 onChange={this.onFormChange.bind(this)}
+                defaultValue={selectedCity}
               >
                 {
                   cities.map((city, i) => {
                     let props = {
                       value: city.id
                     };
-                    if (neighborhood.location.city && neighborhood.location.city.id === city.id) {
-                      props.selected = true;
-                    }
-
                     return (
-                      <option {...props} key={`city-${i}`}>{city.title}</option>
+                      <option value={city.id} key={`city-${i}`}>{city.title}</option>
                     );
                   })
                 }
