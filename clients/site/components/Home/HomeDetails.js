@@ -5,7 +5,7 @@ import HomeNavigation from './HomeNavigation';
 
 import { setPageTitle } from '../../../common/Helpers';
 
-// let debug = require('debug')('HomeDetails');
+let debug = require('debug')('HomeDetails');
 
 export default class HomeDetails extends React.Component {
   static propTypes = {
@@ -142,10 +142,26 @@ export default class HomeDetails extends React.Component {
       }
     });
 
-    blocks.push({
-      template: 'Map',
-      properties: this.props.home.location
-    });
+    if (this.props.home.location.coordinates) {
+      blocks.push({
+        template: 'Map',
+        properties: {
+          markers: [{
+            location: this.props.home.location.coordinates,
+            title: this.props.homeTitle
+          }]
+        }
+      });
+    }
+
+    if (this.props.home.agents.length) {
+      blocks.push({
+        template: 'Agents',
+        properties: {
+          agents: this.props.home.agents
+        }
+      });
+    }
 
     // blocks.push({
     //   template: 'Agent',
