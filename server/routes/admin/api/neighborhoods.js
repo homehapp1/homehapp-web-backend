@@ -80,25 +80,55 @@ exports.registerRoutes = (app) => {
 
   });
 
-  app.put('/api/neighborhoods/:uuid', app.authenticatedRoute, function(req, res, next) {
-    debug('API update neighborhood with uuid', req.params.uuid);
-    //console.log('req.body', req.body);
-
+  let updateNeighborhood = function updateNeighborhood(req, res, next) {
     let data = req.body.neighborhood;
     debug('data', data);
 
-    QB
-    .forModel('Neighborhood')
-    .findByUuid(req.params.uuid)
-    .populate(populate)
-    .update(data)
-    .then((model) => {
+    return new Promise((resolve, reject) => {
+      if (!data.location || !data.location.city) {
+        data.location.city = null;
+      }
+
+      // Update the neighborhood data after resolving the city
+      let update = (neighborhoodData) => {
+        QB
+        .forModel('Neighborhood')
+        .findByUuid(req.params.uuid)
+        .populate(populate)
+        .update(neighborhoodData)
+        .then((model) => {
+          resolve(model);
+        })
+        .catch((next) => {
+          reject(next);
+        });
+      };
+
+      // Get the city by UUID or fail and allow setting null value
+      QB.forModel('City')
+      .findByUuid(data.location.city)
+      .fetch()
+      .then((result) => {
+        data.location.city = result.model;
+        update(data);
+      })
+      .catch(() => {
+        data.location.city = null;
+        update(data);
+      });
+    });
+  };
+
+  app.put('/api/neighborhoods/:uuid', app.authenticatedRoute, function(req, res, next) {
+    debug('API update neighborhood with uuid', req.params.uuid);
+    //console.log('req.body', req.body);
+    updateNeighborhood(req, res, next)
+    .then((model => {
       res.json({
         status: 'ok',
         item: model
       });
-    })
+    }))
     .catch(next);
   });
-
 };

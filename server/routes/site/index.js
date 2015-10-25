@@ -1,4 +1,5 @@
 import QueryBuilder from '../../lib/QueryBuilder';
+import { setLastMod, initMetadata } from '../../../clients/common/Helpers';
 let debug = require('debug')('/');
 
 exports.registerRoutes = (app) => {
@@ -26,9 +27,11 @@ exports.registerRoutes = (app) => {
     .fetch()
     .then((result) => {
       debug(`Got ${result.models.length} homes`);
+      initMetadata(res);
       res.locals.data.HomeListStore = {
         homes: result.models
       };
+      setLastMod(result.models, res);
       res.locals.page = {
         title: 'Discover y',
         description: 'Homehapp - discover y'

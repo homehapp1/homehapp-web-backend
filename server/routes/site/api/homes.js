@@ -18,7 +18,8 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Home')
     .populate({
-      'location.neighborhood': {}
+      'location.neighborhood': {},
+      agents: {}
     })
     .findBySlug(req.params.slug)
     .fetch()

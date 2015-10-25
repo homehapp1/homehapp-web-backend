@@ -115,20 +115,42 @@ export default class HomeNavigation extends React.Component {
     );
   }
 
-  render() {
-    let todo = function() {
-      console.info('Implement phone calling');
-    };
-    debug('this.props.router', this.props.router);
+  getPhoneLink() {
+    if (!this.props.home.agents || !this.props.home.agents.length) {
+      debug('No agents');
+      return null;
+    }
 
+    let phone = null;
+
+    for (let agent of this.props.home.agents) {
+      debug('Check agent', agent);
+      if (agent.contactNumber) {
+        phone = String(agent.contactNumber).replace(/[^\+0-9]+/g, '');
+        break;
+      }
+    }
+
+    if (!phone) {
+      debug('No phone number found on any agent');
+      return null;
+    }
+    debug('Got number', phone);
+
+    return (
+      <li className='phone'>
+        <a href={`callto:${phone}`}><i className='fa fa-phone'></i></a>
+      </li>
+    );
+  }
+
+  render() {
     return (
       <ContentNavigation>
         <ul ref='navi'>
           {this.getStoryLink()}
           {this.getDetailsLink()}
-          <li className='phone'>
-            <a href='#' onClick={todo}><i className='fa fa-phone'></i></a>
-          </li>
+          {this.getPhoneLink()}
           <li className='contact'>
             <Link ref='contact' to='homeForm' params={{slug: this.props.home.slug}}><i className='fa fa-envelope-o'></i></Link>
           </li>

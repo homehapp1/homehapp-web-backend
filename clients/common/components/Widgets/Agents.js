@@ -29,24 +29,18 @@ export default class Agent extends React.Component {
     let mailTo = `mailto:${this.props.email}`;
 
     return (
-      <div className='widget agent pattern'>
+      <div className='widget agents pattern'>
         <div className='width-wrapper'>
           <h2>For more information and viewings</h2>
-          <p className='title'>
-            {this.props.title}
-          </p>
-          <h3>{this.props.name}</h3>
-          <div className='agent-details'>
-            <div className='phone'>
-              <a href={callTo}>Call</a>
-            </div>
-            <div className='photo'>
-              <Image {...image} />
-            </div>
-            <div className='email'>
-              <a href={mailTo}>Request details</a>
-            </div>
-          </div>
+          <ul>
+            {
+              this.props.agents.map((agent) => {
+                return (
+                  <li>{agent.name}</li>
+                );
+              })
+            }
+          </ul>
         </div>
       </div>
     );
