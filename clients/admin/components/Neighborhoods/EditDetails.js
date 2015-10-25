@@ -5,8 +5,10 @@ import Panel from 'react-bootstrap/lib/Panel';
 import InputWidget from '../Widgets/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
+import CityListStore from '../../stores/CityListStore';
 import NeighborhoodStore from '../../stores/NeighborhoodStore';
 import NeighborhoodActions from '../../actions/NeighborhoodActions';
+import ApplicationStore from '../../../common/stores/ApplicationStore';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import { randomNumericId } from '../../../common/Helpers';
@@ -26,6 +28,7 @@ class NeighborhoodsEditDetails extends EditDetails {
     super(props);
     this.storeListener = this.onNeighborhoodStoreChange.bind(this);
     this.uploadListener = this.onUploadChange.bind(this);
+    this.cityListener = this.onCityStoreChange.bind(this);
     this.imageUploaderInstanceId = randomNumericId();
     this.state.images = props.neighborhood.images;
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
@@ -35,6 +38,7 @@ class NeighborhoodsEditDetails extends EditDetails {
   state = {
     model: null,
     error: null,
+    cities: null,
     uploads: UploadAreaUtils.UploadStore.getState().uploads,
     currentAttributes: this.props.neighborhood.attributes,
     images: []
@@ -42,15 +46,28 @@ class NeighborhoodsEditDetails extends EditDetails {
 
   componentDidMount() {
     NeighborhoodStore.listen(this.storeListener);
+    CityListStore.listen(this.cityListener);
+
+    setTimeout(() => {
+      CityListStore.fetchItems();
+    }, 100);
   }
 
   componentWillUnmount() {
     NeighborhoodStore.unlisten(this.storeListener);
+    CityListStore.unlisten(this.cityListener);
   }
 
   onNeighborhoodStoreChange(state) {
     debug('onNeighborhoodStoreChange', state);
     this.setState(state);
+  }
+
+  onCityStoreChange(state) {
+    debug('onCityStoreChange', state);
+    this.setState({
+      cities: state.items || state.cities
+    });
   }
 
   onUploadChange(state) {
@@ -84,7 +101,8 @@ class NeighborhoodsEditDetails extends EditDetails {
       title: this.refs.title.getValue(),
       description: this.refs.description.getValue(),
       location: {
-        coordinates: this.refs.coordinates.getValue()
+        coordinates: this.refs.coordinates.getValue(),
+        city: this.refs.locationCity.getValue() || null
       },
       images: images
     };
@@ -95,6 +113,19 @@ class NeighborhoodsEditDetails extends EditDetails {
 
   onCancel() {
     React.findDOMNode(this.refs.neighborhoodDetailsForm).reset();
+  }
+
+  getPreviewLink(neighborhood) {
+    if (!neighborhood || typeof neighborhood.location.city !== 'object') {
+      return null;
+    }
+    return (
+      <a href={`${ApplicationStore.getState().config.siteHost}/neighborhoods/${neighborhood.location.city.slug}/${this.props.neighborhood.slug}/story`}
+        target='_blank'
+        className='btn btn-primary'>
+        Preview
+      </a>
+    );
   }
 
   render() {
@@ -124,6 +155,16 @@ class NeighborhoodsEditDetails extends EditDetails {
         lng: lng
       });
     };
+
+    let cities = [];
+    if (neighborhood.location.city) {
+      cities.push(neighborhood.location.city);
+    }
+    if (Array.isArray(this.state.cities)) {
+      this.state.cities.map((city) => {
+        cities.push(city);
+      });
+    }
 
     return (
       <Row>
@@ -156,6 +197,27 @@ class NeighborhoodsEditDetails extends EditDetails {
               />
             </Panel>
             <Panel header='Location'>
+              <InputWidget
+                type='select'
+                ref='locationCity'
+                label='City'
+                onChange={this.onFormChange.bind(this)}
+              >
+                {
+                  cities.map((city, i) => {
+                    let props = {
+                      value: city.id
+                    };
+                    if (neighborhood.location.city && neighborhood.location.city.id === city.id) {
+                      props.selected = true;
+                    }
+
+                    return (
+                      <option {...props} key={`city-${i}`}>{city.title}</option>
+                    );
+                  })
+                }
+              </InputWidget>
               <PlacePicker lat={lat} lng={lng} ref='coordinates' onChange={updateCoords} />
               <InputWidget
                 label='Coordinates'
@@ -208,6 +270,7 @@ class NeighborhoodsEditDetails extends EditDetails {
               <Row>
                 <Col md={6}>
                   <Button bsStyle='success' accessKey='s' onClick={this.onSave.bind(this)}>Save</Button>
+                  {this.getPreviewLink(neighborhood)}
                 </Col>
               </Row>
             </Well>
