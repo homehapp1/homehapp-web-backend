@@ -71,7 +71,7 @@ export default class BigVideo extends BigBlock {
     if (!this.refs.video) {
       return null;
     }
-    
+
     this.onUnmount();
   }
 
@@ -124,23 +124,34 @@ export default class BigVideo extends BigBlock {
     this.play.addEvent('mousedown', this.playVideo, true);
     this.play.addEvent('touchstart', this.playVideo, true);
 
-    // Mobile play button
-    this.mobilePlay = new DOMManipulator(this.refs.mobilePlay);
-    this.mobilePlay.addEvent('click', this.playVideo, true);
-    this.mobilePlay.addEvent('touch', this.playVideo, true);
-
     // Pause button
     this.pause = new DOMManipulator(this.refs.pause);
     this.pause.addEvent('mousedown', this.pauseVideo, true);
     this.pause.addEvent('touchstart', this.pauseVideo, true);
 
+    // Mobile play button
+    this.mobilePlay = new DOMManipulator(this.refs.mobilePlay);
+    this.mobilePlay.addEvent('click', this.playVideo, true);
+    this.mobilePlay.addEvent('touch', this.playVideo, true);
+
+    // Mobile play button
+    this.mobilePause = new DOMManipulator(this.refs.mobilePause);
+    this.mobilePause.addEvent('click', this.pauseVideo, true);
+    this.mobilePause.addEvent('touch', this.pauseVideo, true);
+    this.mobilePause.addClass('hidden');
+
+    // General video events
     this.video.addEventListener('play', () => {
       this.play.addClass('hidden');
       this.pause.removeClass('hidden');
+      this.mobilePlay.addClass('hidden');
+      this.mobilePause.removeClass('hidden');
     });
     this.video.addEventListener('pause', () => {
       this.play.removeClass('hidden');
       this.pause.addClass('hidden');
+      this.mobilePlay.removeClass('hidden');
+      this.mobilePause.addClass('hidden');
     });
     this.video.addEventListener('click', this.togglePlay.bind(this));
     this.video.addEventListener('touch', this.togglePlay.bind(this));
@@ -309,11 +320,16 @@ export default class BigVideo extends BigBlock {
     }
     // debug('onDisplayContainer');
     this.bar.skipAnimation();
+    let iPhone = false;
+
+    if (navigator && navigator.platform && /iPhone|iPod/.test(navigator.platform)) {
+      iPhone = true;
+    }
 
     if (!this.muteChanged) {
       this.video.muted = true;
     }
-    if (this.canPlay) {
+    if (this.canPlay && !iPhone) {
       this.video.currentTime = 0;
       this.video.play();
     }
@@ -443,7 +459,10 @@ export default class BigVideo extends BigBlock {
     return (
       <div className='bigvideo-wrapper' ref='container'>
         <div {...props} ref='wrapper'>
-          <i className='fa fa-play play-icon' ref='mobilePlay'></i>
+          <div className='mobile-icons show-for-small'>
+            <i className='fa fa-play' ref='mobilePlay'></i>
+            <i className='fa fa-pause' ref='mobilePause'></i>
+          </div>
           <div className='image-content'>
             <Image {...image} className='show-for-small' width={600} height={600} />
             <Video {...video} className='big-video hide-for-small' ref='video' />
