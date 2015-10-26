@@ -48,6 +48,7 @@ export default class BigVideo extends BigBlock {
     this.inFullscreen = false;
     this.muteChanged = false;
     this.canPlay = false;
+    this.shouldPlay = true;
   }
 
   componentDidMount() {
@@ -120,14 +121,14 @@ export default class BigVideo extends BigBlock {
   playbackControls() {
     // Play button
     this.play = new DOMManipulator(this.refs.play);
-    this.play.addClass('hidden');
-    this.play.addEvent('mousedown', this.playVideo, true);
-    this.play.addEvent('touchstart', this.playVideo, true);
+    this.play.addEvent('click', this.playVideo, true);
+    this.play.addEvent('touch', this.playVideo, true);
 
     // Pause button
     this.pause = new DOMManipulator(this.refs.pause);
-    this.pause.addEvent('mousedown', this.pauseVideo, true);
-    this.pause.addEvent('touchstart', this.pauseVideo, true);
+    this.pause.addClass('hidden');
+    this.pause.addEvent('click', this.pauseVideo, true);
+    this.pause.addEvent('touch', this.pauseVideo, true);
 
     // Mobile play button
     this.mobilePlay = new DOMManipulator(this.refs.mobilePlay);
@@ -207,6 +208,9 @@ export default class BigVideo extends BigBlock {
         });
       } catch (error) {
         debug('Error', error);
+        bar.css({
+          width: 0
+        });
       }
     });
   }
@@ -278,6 +282,10 @@ export default class BigVideo extends BigBlock {
     this.wrapper = new DOMManipulator(this.refs.wrapper);
     let prevScroll = 0;
 
+    if (!this.fullscreen.fullscreenEnabled()) {
+      this.fullscreen.addClass('hidden');
+    }
+
     let toggleFullscreen = (event) => {
       this.inFullscreen = true;
       // Store the scroll top
@@ -329,7 +337,7 @@ export default class BigVideo extends BigBlock {
     if (!this.muteChanged) {
       this.video.muted = true;
     }
-    if (this.canPlay && !iPhone) {
+    if (this.canPlay && !iPhone && this.shouldPlay) {
       this.video.currentTime = 0;
       this.video.play();
     }
@@ -365,6 +373,7 @@ export default class BigVideo extends BigBlock {
     if (event) {
       event.stopPropagation();
       event.preventDefault();
+      this.shouldPlay = true;
     }
     if (!this.muteChanged) {
       this.video.muted = false;
@@ -377,6 +386,7 @@ export default class BigVideo extends BigBlock {
     if (event) {
       event.stopPropagation();
       event.preventDefault();
+      this.shouldPlay = false;
     }
     this.video.pause();
     this.wrapper.removeClass('is-playing');
@@ -459,9 +469,9 @@ export default class BigVideo extends BigBlock {
     return (
       <div className='bigvideo-wrapper' ref='container'>
         <div {...props} ref='wrapper'>
-          <div className='mobile-icons show-for-small'>
+          <div className='mobile-icons hide-for-large'>
             <i className='fa fa-play' ref='mobilePlay'></i>
-            <i className='fa fa-pause' ref='mobilePause'></i>
+            <i className='fa fa-pause show-for-small' ref='mobilePause'></i>
           </div>
           <div className='image-content'>
             <Image {...image} className='show-for-small' width={600} height={600} />
@@ -492,5 +502,4 @@ export default class BigVideo extends BigBlock {
       </div>
     );
   }
-
 }
