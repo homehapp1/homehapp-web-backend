@@ -13,17 +13,9 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       city = result.city;
       return QB
-      .forModel('Home')
-      .distinct('location.neighborhood')
-      .fetch();
-    })
-    .then((result) => {
-      return QB
       .forModel('Neighborhood')
       .query({
-        _id: {
-          $in: result.models
-        },
+        enabled: true,
         'location.city': city
       })
       .findAll()

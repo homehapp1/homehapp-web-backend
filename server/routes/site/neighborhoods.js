@@ -81,17 +81,9 @@ exports.registerRoutes = (app) => {
 
       // Get each neighborhood ID that is populated with homes
       return QB
-      .forModel('Home')
-      .distinct('location.neighborhood')
-      .fetch();
-    })
-    .then((result) => {
-      return QB
       .forModel('Neighborhood')
       .query({
-        _id: {
-          $in: result.models
-        },
+        enabled: true,
         'location.city': city
       })
       .findAll()

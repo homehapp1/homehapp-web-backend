@@ -16,6 +16,8 @@ exports.registerRoutes = (app) => {
   });
 
   app.get('/', function(req, res, next) {
+    let homes = [];
+    let neighborhoods = [];
     debug('GET /');
     QB
     .forModel('Home')
@@ -38,6 +40,19 @@ exports.registerRoutes = (app) => {
       res.locals.page = {
         title: 'Discover y',
         description: 'Homehapp - discover y'
+      };
+
+      return QB
+      .forModel('Neighborhood')
+      .query({
+        enabled: true
+      })
+      .findAll()
+      .fetch();
+    })
+    .then((result) => {
+      res.locals.data.NeighborhoodListStore = {
+        models: result.models
       };
       next();
     });
