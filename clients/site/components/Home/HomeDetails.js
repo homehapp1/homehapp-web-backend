@@ -9,7 +9,12 @@ let debug = require('debug')('HomeDetails');
 
 export default class HomeDetails extends React.Component {
   static propTypes = {
-    home: React.PropTypes.object.isRequired
+    home: React.PropTypes.object.isRequired,
+    context: React.PropTypes.object
+  }
+
+  static contextTypes = {
+    router: React.PropTypes.func
   }
 
   componentDidMount() {
@@ -158,7 +163,8 @@ export default class HomeDetails extends React.Component {
       blocks.push({
         template: 'Agents',
         properties: {
-          agents: this.props.home.agents
+          agents: this.props.home.agents,
+          contactUrl: this.context.router.makeHref('homeForm', {slug: this.props.home.slug})
         }
       });
     }
