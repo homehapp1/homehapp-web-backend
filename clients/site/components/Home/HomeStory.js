@@ -44,16 +44,14 @@ export default class HomeStory extends React.Component {
         properties: this.props.home.location.neighborhood
       });
     }
-    if (this.props.home.agents && this.props.home.agents.length) {
-      blocks.push({
-        template: 'Agents',
-        properties: {
-          agents: this.props.home.agents,
-          home: this.props.home
-        }
-      });
-    }
-    debug('Render blocks', blocks);
+    blocks.push({
+      template: 'Agents',
+      properties: {
+        agents: this.props.home.agents,
+        home: this.props.home
+      }
+    });
+    
     console.log('Render blocks', blocks, this.props.home);
     return (
       <div className='home-view'>

@@ -159,15 +159,13 @@ export default class HomeDetails extends React.Component {
       });
     }
 
-    if (this.props.home.agents.length) {
-      blocks.push({
-        template: 'Agents',
-        properties: {
-          agents: this.props.home.agents,
-          contactUrl: this.context.router.makeHref('homeForm', {slug: this.props.home.slug})
-        }
-      });
-    }
+    blocks.push({
+      template: 'Agents',
+      properties: {
+        agents: this.props.home.agents,
+        home: this.props.home
+      }
+    });
 
     // blocks.push({
     //   template: 'Agent',
