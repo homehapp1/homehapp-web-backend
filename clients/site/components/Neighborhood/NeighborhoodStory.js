@@ -4,13 +4,12 @@ import { Link } from 'react-router';
 // Import widgets
 import BigImage from '../../../common/components/Widgets/BigImage';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
-import Icon from '../../../common/components/Widgets/Icon';
-import Map from '../../../common/components/Widgets/Map';
-import Gallery from '../../../common/components/Widgets/Gallery';
 import LargeText from '../../../common/components/Widgets/LargeText';
+import Map from '../../../common/components/Widgets/Map';
 import Separator from '../../../common/components/Widgets/Separator';
+import StoryLayout from '../../../common/components/Layout/StoryLayout';
 
-import { setPageTitle } from '../../../common/Helpers';
+import { setPageTitle, merge } from '../../../common/Helpers';
 let debug = require('../../../common/debugger')('NeighborhoodStory');
 
 export default class NeighborhoodStory extends React.Component {
@@ -19,7 +18,9 @@ export default class NeighborhoodStory extends React.Component {
   }
 
   componentDidMount() {
-    setPageTitle(this.state.neighborhood.pageTitle);
+    if (this.props.neighborhood) {
+      setPageTitle(this.props.neighborhood.pageTitle);
+    }
   }
 
   componentWillUnmount() {
@@ -86,32 +87,64 @@ export default class NeighborhoodStory extends React.Component {
     );
   }
 
+  getBlocks() {
+    let blocks = [];
+    let primaryImage = merge({}, this.props.neighborhood.mainImage);
+
+    if (this.props.neighborhood.story && this.props.neighborhood.story.blocks) {
+      debug('this.props.neighborhood.story.blocks', this.props.neighborhood.story.blocks);
+      blocks = [].concat(this.props.neighborhood.story.blocks);
+    } else {
+      blocks.push({
+        template: 'BigImage',
+        properties: {
+          image: primaryImage,
+          title: this.props.neighborhood.title,
+          marker: {
+            type: 'marker',
+            color: 'black',
+            size: 'large'
+          }
+        }
+      });
+      if (this.props.neighborhood.images.length > 1) {
+        blocks.push({
+          template: 'Gallery',
+          properties: {
+            images: this.props.neighborhood.images
+          }
+        });
+      }
+      if (this.props.neighborhood.description) {
+        blocks.push({
+          template: 'ContentBlock',
+          properties: {
+            content: this.props.neighborhood.description
+          }
+        });
+      }
+    }
+    debug('Use blocks', blocks);
+    return blocks;
+  }
+
   render() {
     debug('got neighborhood', this.props.neighborhood);
 
-    let secondaryImage = this.props.neighborhood.mainImage;
+    let blocks = this.getBlocks();
+    let secondaryImage = merge({}, this.props.neighborhood.mainImage);
     if (typeof this.props.neighborhood.images[1] !== 'undefined') {
       secondaryImage = this.props.neighborhood.images[1];
     }
 
     return (
       <div className='neighborhood-story'>
-        <BigImage image={this.props.neighborhood.mainImage} gradient='black'>
-          <LargeText align='center' valign='middle'>
-            <Icon type='marker' color='black' size='large' />
-            <h1>{this.props.neighborhood.title}</h1>
-          </LargeText>
-        </BigImage>
+        <StoryLayout blocks={blocks} />
 
         <ContentBlock className='with-gradient padded'>
-          <blockquote>{this.props.neighborhood.description}</blockquote>
           <p className='call-to-action'>
             <Link className='button' to='neighborhoodViewHomes' params={{city: this.props.neighborhood.location.city.slug, neighborhood: this.props.neighborhood.slug}}>Show homes</Link>
           </p>
-        </ContentBlock>
-
-        <ContentBlock className='with-gradient'>
-          <Gallery images={this.props.neighborhood.images} columns={5} imageWidth={300} fullscreen className='tight' />
         </ContentBlock>
 
         <BigImage image={secondaryImage}>
