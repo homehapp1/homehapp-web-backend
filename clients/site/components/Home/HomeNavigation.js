@@ -5,6 +5,7 @@ import ContentNavigation from '../Header/ContentNavigation';
 import HomeContact from './HomeContact';
 import Modal from '../../../common/components/Widgets/Modal';
 import DOMManipulator from '../../../common/DOMManipulator';
+import { scrollTop } from '../../../common/Helpers';
 
 let debug = require('debug')('HomeNavigation');
 
@@ -48,9 +49,45 @@ export default class HomeNavigation extends React.Component {
       }
     }
 
+    this.bindPhoneToAgents();
+
     setTimeout(function() {
       navi.addClass('animate');
     });
+  }
+
+  componentWillUnmount() {
+    this.unbindPhoneToAgents();
+  }
+
+  onPhoneClick(event) {
+    let target = document.getElementById('agentsList');
+    if (!target) {
+      return true;
+    }
+    scrollTop(target.getBoundingClientRect().top, 500);
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
+  }
+
+  bindPhoneToAgents() {
+    if (!this.refs.phone) {
+      return null;
+    }
+    this.onPhoneClick = this.onPhoneClick.bind(this);
+
+    let node = new DOMManipulator(this.refs.phone);
+    node.addEvent('click', this.onPhoneClick, true);
+  }
+
+  unbindPhoneToAgents() {
+    if (!this.refs.phone) {
+      return null;
+    }
+
+    let node = new DOMManipulator(this.refs.phone);
+    node.removeEvent('click', this.onPhoneClick, true);
   }
 
   createModal() {
@@ -98,9 +135,7 @@ export default class HomeNavigation extends React.Component {
   }
 
   getStoryLink() {
-    debug('getStoryLink', this.context.router);
     let currentRoutes = this.context.router.getCurrentRoutes();
-    debug('currentRoutes', currentRoutes);
     if (!this.props.home.story.enabled) {
       return null;
     }
@@ -139,7 +174,7 @@ export default class HomeNavigation extends React.Component {
 
     return (
       <li className='phone'>
-        <a href={`callto:${phone}`}><i className='fa fa-phone'></i></a>
+        <a href={`callto:${phone}`} ref='phone'><i className='fa fa-phone'></i></a>
       </li>
     );
   }
@@ -152,7 +187,7 @@ export default class HomeNavigation extends React.Component {
           {this.getDetailsLink()}
           {this.getPhoneLink()}
           <li className='contact'>
-            <Link ref='contact' to='homeForm' params={{slug: this.props.home.slug}}><i className='fa fa-envelope-o'></i></Link>
+            <Link ref='contact' to='homeForm' params={{slug: this.props.home.slug}} id='contactFormLink'><i className='fa fa-envelope-o'></i></Link>
           </li>
           <li className='facebook'>
             <a ref='facebook' target='_blank'><i className='fa fa-facebook-square'></i></a>
