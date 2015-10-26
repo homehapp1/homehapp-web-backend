@@ -2,7 +2,7 @@ import React from 'react';
 import InputWidget from '../Widgets/Input';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 
-// let debug = require('../../../common/debugger')('NeighborhoodSelect');
+let debug = require('debug')('NeighborhoodSelect');
 
 export default class NeighborhoodSelect extends React.Component {
   static propTypes = {
@@ -20,18 +20,23 @@ export default class NeighborhoodSelect extends React.Component {
 
   state = {
     error: null,
-    neighborhoods: NeighborhoodListStore.getState().items
+    neighborhoods: []
   }
 
   componentDidMount() {
     NeighborhoodListStore.listen(this.storeListener);
+
+    setTimeout(() => {
+      NeighborhoodListStore.fetchItems();
+    }, 100);
   }
 
   componentWillUnmount() {
     NeighborhoodListStore.unlisten(this.storeListener);
   }
 
-  onChange() {
+  onChange(state) {
+    debug('onChange', state);
     this.setState({
       neighborhoods: NeighborhoodListStore.getState().items
     });
