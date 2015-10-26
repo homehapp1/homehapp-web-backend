@@ -1,6 +1,6 @@
 import SourceBuilder from '../../common/sources/Builder';
 import NeighborhoodListActions from '../actions/NeighborhoodListActions';
-// let debug = require('debug')('NeighborhoodListSource');
+let debug = require('debug')('NeighborhoodListSource');
 
 export default SourceBuilder.build({
   name: 'NeighborhoodListSource',
@@ -13,6 +13,20 @@ export default SourceBuilder.build({
       remote: {
         method: 'get',
         uri: '/api/neighborhoods',
+        params: null,
+        response: {
+          key: 'items'
+        }
+      },
+      local: null,
+      actions: {
+        success: NeighborhoodListActions.updateItems
+      }
+    },
+    fetchPopulatedItems: {
+      remote: {
+        method: 'get',
+        uri: '/api/neighborhoods/populated',
         params: null,
         response: {
           key: 'items'
