@@ -11,7 +11,7 @@ import NeighborhoodActions from '../../actions/NeighborhoodActions';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import { randomNumericId } from '../../../common/Helpers';
+import { randomNumericId, createNotification } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import EditDetails from '../Shared/EditDetails';
 import PlacePicker from '../../../common/components/Widgets/PlacePicker';
@@ -86,6 +86,27 @@ class NeighborhoodsEditDetails extends EditDetails {
 
   onSave() {
     debug('save');
+
+    for (let key in this.refs) {
+      let ref = this.refs[key];
+      if (typeof ref.isValid !== 'function') {
+        continue;
+      }
+
+      if (!ref.isValid()) {
+        debug('Validation failed', ref);
+        let label = ref.props.label || 'Validation error';
+        let message = ref.message || 'Field failed the validation';
+
+        createNotification({
+          type: 'danger',
+          duration: 10,
+          label: label,
+          message: message
+        });
+        return false;
+      }
+    }
 
     let images = [];
     // Clean broken images
