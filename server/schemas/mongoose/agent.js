@@ -67,7 +67,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.Agent.statics.editableFields = function () {
     return [
       'firstname', 'lastname', 'phone', 'email',
-      'image', 'location'
+      'image', 'location', 'title'
     ];
   };
   schemas.Agent.virtual('mainImage').get(function() {
