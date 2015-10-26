@@ -98,7 +98,7 @@ export default class NeighborhoodsEditStory extends React.Component {
               <InputWidget
                 type='checkbox'
                 ref='enabled'
-                label='Show story on the public site'
+                label='Story visible'
                 {...enabledStatus}
                 addonBefore='Value'
                 onChange={this.toggleEnabled.bind(this)}
