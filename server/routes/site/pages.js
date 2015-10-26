@@ -19,20 +19,20 @@ exports.registerRoutes = (app) => {
     .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
-      debug('Page fetched', result);
+      debug('Page fetched', result.model);
       let page = result.model;
-
-      initMetadata(res);
-      setLastMod([page]);
       res.locals.data.title = [page.title];
       res.locals.page = {
         title: page.title
         // description: description
       };
       res.locals.data.PageStore = {
-        page: page
+        model: page
       };
+      debug('res.locals.data', res.locals.data);
       debug('Set local data', res.locals.page, res.locals.data);
+      initMetadata(res);
+      setLastMod([page], res);
       next();
     })
     .catch(() => {
