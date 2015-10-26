@@ -8,12 +8,37 @@ exports.registerRoutes = (app) => {
     'location.city': {}
   };
 
+  app.get('/api/neighborhoods/populated', app.authenticatedRoute, function(req, res, next) {
+    debug('API fetch populated neighborhoods');
+    QB
+    .forModel('Home')
+    .distinct('location.neighborhood')
+    .fetch()
+    .then((result) => {
+      return QB
+      .forModel('Neighborhood')
+      .query({
+        _id: {
+          $in: result.models
+        }
+      })
+      .parseRequestArguments(req)
+      .populate(populate)
+      .findAll()
+      .sort('title')
+      .fetch();
+    })
+    .then((result) => {
+      res.json({
+        status: 'ok',
+        items: result.models
+      });
+    })
+    .catch(next);
+  });
+
   app.get('/api/neighborhoods', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch neighborhoods');
-    debug('req.query', req.query);
-    let neighborhoods = [];
-    let cities = {};
-
     QB
     .forModel('Neighborhood')
     .parseRequestArguments(req)
@@ -22,43 +47,12 @@ exports.registerRoutes = (app) => {
     .sort('title')
     .fetch()
     .then((result) => {
-      neighborhoods = result.models;
-      let ids = [];
-      for (let neighborhood of neighborhoods) {
-        if (ids.indexOf(neighborhood.location.city) !== -1) {
-          continue;
-        }
-        ids.push(neighborhood.location.city);
-      }
-
-      return QB
-      .forModel('City')
-      .query({
-        _id: {
-          $in: ids
-        }
-      })
-      .findAll()
-      .fetch();
-    })
-    .then((result) => {
-      debug(`Got ${result.models.length} cities`);
-      for (let city of result.models) {
-        cities[city._id] = city;
-      }
-      for (let neighborhood of neighborhoods) {
-        let id = String(neighborhood.location.city);
-        if (typeof cities[id] !== 'undefined') {
-          neighborhood.location.city = cities[id];
-        }
-      }
       res.json({
         status: 'ok',
-        items: neighborhoods
+        items: result.models
       });
     })
     .catch(next);
-
   });
 
   app.get('/api/neighborhoods/:uuid', app.authenticatedRoute, function(req, res, next) {
