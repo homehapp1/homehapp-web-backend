@@ -15,6 +15,34 @@ exports.registerRoutes = (app) => {
     return res.redirect(301, `/homes/${req.params.slug}`);
   });
 
+  app.get('/', function(req, res, next) {
+    debug('GET /');
+    QB
+    .forModel('Home')
+    .parseRequestArguments(req)
+    .populate({
+      'location.neighborhood': {}
+    })
+    .sort({
+      'metadata.score': -1
+    })
+    .findAll()
+    .fetch()
+    .then((result) => {
+      debug(`Got ${result.models.length} homes`);
+      initMetadata(res);
+      res.locals.data.HomeListStore = {
+        homes: result.models
+      };
+      setLastMod(result.models, res);
+      res.locals.page = {
+        title: 'Homes',
+        description: 'Our exclusive homes'
+      };
+      next();
+    });
+  });
+
   let returnHomeBySlug = (req, res, next) => {
     let home = null;
     let neighborhood = null;

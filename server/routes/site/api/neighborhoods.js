@@ -68,6 +68,9 @@ exports.registerRoutes = (app) => {
       return QB
       .forModel('Home')
       .findByNeighborhood(neighborhood)
+      .sort({
+        'metadata.score': -1
+      })
       .fetch();
     })
     .then((result) => {
@@ -102,6 +105,9 @@ exports.registerRoutes = (app) => {
         QB
         .forModel('Home')
         .findByNeighborhood(neighborhood)
+        .sort({
+          'metadata.score': -1
+        })
         .fetch()
         .then((resultHome) => {
           let homes = [];

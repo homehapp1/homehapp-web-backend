@@ -23,6 +23,9 @@ exports.registerRoutes = (app) => {
     .populate({
       'location.neighborhood': {}
     })
+    .sort({
+      'metadata.score': -1
+    })
     .findAll()
     .fetch()
     .then((result) => {
