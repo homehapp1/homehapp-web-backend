@@ -30,10 +30,17 @@ export default class StoryLayout extends React.Component {
     debug('getBigImage', item.properties);
     let primary = null;
     let secondary = null;
+    let description = null;
 
     if (!item.properties.image) {
       console.warn('Tried to display a BigImage without any image', item);
       return null;
+    }
+
+    if (item.properties.description) {
+      description = (
+        <p>{item.properties.description}</p>
+      );
     }
 
     // Is this the primary title?
@@ -53,6 +60,7 @@ export default class StoryLayout extends React.Component {
       <BigImage {...item.properties} key={index}>
         <LargeText align={item.properties.align} valign={item.properties.valign}>
           {primary}
+          {description}
         </LargeText>
         {secondary}
       </BigImage>
@@ -63,12 +71,19 @@ export default class StoryLayout extends React.Component {
     debug('getBigVideo', item, index);
     let primary = null;
     let secondary = null;
+    let description = null;
 
     // Is this the primary title?
     if (item.properties.isPageTitle || !index) {
       primary = (<h1>{item.properties.title}</h1>);
     } else {
       primary = (<h2 className='block-title'>{item.properties.title}</h2>);
+    }
+
+    if (item.properties.description) {
+      description = (
+        <p>{item.properties.description}</p>
+      );
     }
 
     if (item.properties.secondary) {
@@ -81,6 +96,7 @@ export default class StoryLayout extends React.Component {
       <BigVideo {...item.properties} key={index}>
         <LargeText align={item.properties.align} valign={item.properties.valign}>
           {primary}
+          {description}
         </LargeText>
         {secondary}
       </BigVideo>
