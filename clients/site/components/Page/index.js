@@ -6,7 +6,7 @@ import ErrorPage from '../../../common/components/Layout/ErrorPage';
 import Loading from '../../../common/components/Widgets/Loading';
 import StoryLayout from '../../../common/components/Layout/StoryLayout';
 
-// let debug = require('debug')('Page');
+let debug = require('debug')('Page');
 
 export default class Page extends React.Component {
   static propTypes = {
@@ -19,7 +19,7 @@ export default class Page extends React.Component {
   }
 
   state = {
-    page: null,
+    page: PageStore.getState().model,
     error: null
   }
 
@@ -33,7 +33,7 @@ export default class Page extends React.Component {
     PageStore.unlisten(this.storeListener);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (!this.state.page || nextProps.params.slug !== this.state.page.slug) {
       PageStore.getItem(nextProps.params.slug);
       return true;
@@ -72,6 +72,7 @@ export default class Page extends React.Component {
   }
 
   render() {
+    debug('Render', this.state.page);
     if (this.state.error) {
       return this.handleErrorState();
     }
