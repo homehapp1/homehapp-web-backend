@@ -21,7 +21,7 @@ export default class Agent extends React.Component {
     //   };
     // }
     return (
-      <div className='widget agents pattern'>
+      <div className='widget agents pattern' id='agentsList'>
         <div className='width-wrapper'>
           <h2>For more information and viewings</h2>
           <ul className='agents-list'>
