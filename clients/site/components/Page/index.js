@@ -6,7 +6,7 @@ import ErrorPage from '../../../common/components/Layout/ErrorPage';
 import Loading from '../../../common/components/Widgets/Loading';
 import StoryLayout from '../../../common/components/Layout/StoryLayout';
 
-let debug = require('debug')('Page');
+// let debug = require('debug')('Page');
 
 export default class Page extends React.Component {
   static propTypes = {
@@ -26,17 +26,22 @@ export default class Page extends React.Component {
   componentDidMount() {
     // setPageTitle();
     PageStore.listen(this.storeListener);
-    if (!PageStore.getItem(this.props.params.slug)) {
-      PageStore.fetchItem(this.props.params.slug);
-    }
+    PageStore.getItem(this.props.params.slug);
   }
 
   componentWillUnmount() {
     PageStore.unlisten(this.storeListener);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!this.state.page || nextProps.params.slug !== this.state.page.slug) {
+      PageStore.getItem(nextProps.params.slug);
+      return true;
+    }
+    return true;
+  }
+
   onStateChange(state) {
-    debug('onStateChange', state);
     this.setState({
       page: state.model,
       error: state.error
@@ -89,7 +94,9 @@ export default class Page extends React.Component {
     }
 
     return (
-      <StoryLayout blocks={blocks} />
+      <div className='page' key={`page-${this.state.page.slug}`}>
+        <StoryLayout blocks={blocks} />
+      </div>
     );
   }
 }
