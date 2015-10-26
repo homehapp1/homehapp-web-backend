@@ -48,7 +48,8 @@ export default class HomeStory extends React.Component {
       blocks.push({
         template: 'Agents',
         properties: {
-          agents: this.props.home.agents
+          agents: this.props.home.agents,
+          home: this.props.home
         }
       });
     }
