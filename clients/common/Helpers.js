@@ -324,6 +324,10 @@ exports.initMetadata = function initMetadata(res) {
 exports.setLastMod = function setLastMod(objects, res) {
   let lastMod = null;
 
+  if (!Array.isArray(objects)) {
+    objects = [objects];
+  }
+
   for (let object of objects) {
     if (!object || typeof object.updatedAt === 'undefined') {
       continue;
@@ -336,8 +340,11 @@ exports.setLastMod = function setLastMod(objects, res) {
     }
   }
 
-  debug('lastMod', lastMod);
-  if (lastMod) {
+  if (!res) {
+    debug('Cannot set the last modified meta tags, missing argument `res`');
+  }
+
+  if (lastMod && res) {
     exports.initMetadata(res);
     let date = new Date(lastMod);
     try {
@@ -351,6 +358,7 @@ exports.setLastMod = function setLastMod(objects, res) {
       debug('Failed to set the last-modified', error.message);
     }
   }
+  return lastMod;
 };
 
 exports.createNotification = function createNotification(d) {
