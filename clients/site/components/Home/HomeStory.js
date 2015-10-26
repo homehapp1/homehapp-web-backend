@@ -44,16 +44,14 @@ export default class HomeStory extends React.Component {
         properties: this.props.home.location.neighborhood
       });
     }
-
-    // blocks.push({
-    //   template: 'Agent',
-    //   properties: {
-    //     name: 'Arttu Manninen',
-    //     title: 'Developer',
-    //     phone: '+358505958435',
-    //     email: 'arttu@kaktus.cc'
-    //   }
-    // });
+    if (this.props.home.agents && this.props.home.agents.length) {
+      blocks.push({
+        template: 'Agents',
+        properties: {
+          agents: this.props.home.agents
+        }
+      });
+    }
     debug('Render blocks', blocks);
     console.log('Render blocks', blocks, this.props.home);
     return (
