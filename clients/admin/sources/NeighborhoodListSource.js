@@ -23,6 +23,20 @@ export default SourceBuilder.build({
         success: NeighborhoodListActions.updateItems
       }
     },
+    fetchAllItems: {
+      remote: {
+        method: 'get',
+        uri: '/api/neighborhoods/all',
+        params: null,
+        response: {
+          key: 'items'
+        }
+      },
+      local: null,
+      actions: {
+        success: NeighborhoodListActions.updateItems
+      }
+    },
     fetchPopulatedItems: {
       remote: {
         method: 'get',
