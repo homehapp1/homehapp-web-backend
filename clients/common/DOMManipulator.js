@@ -189,6 +189,10 @@ class DOMManipulator {
     return !(!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement);
   }
 
+  fullscreenEnabled() {
+    return (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled);
+  }
+
   enterFullscreen() {
     debug('Enter fullscreen');
     if (this.node.requestFullscreen) {
@@ -219,7 +223,7 @@ class DOMManipulator {
   }
 
   toggleFullscreen(onEnter = null, onExit = null) {
-    if (document.fullscreenEnabled) {
+    if (!this.fullscreenEnabled()) {
       debug('Fullscreen not enabled');
     }
     let events = ['webkitfullscreenchange', 'mozfullscreenchange', 'fullscreenchange', 'MSFullscreenChange'];
