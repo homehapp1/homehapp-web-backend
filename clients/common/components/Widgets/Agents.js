@@ -89,7 +89,7 @@ export default class Agent extends React.Component {
                 let email = null;
 
                 if (agent.contactNumber) {
-                  let number = agent.contactNumber.replace(/[^\+0-9]/, '');
+                  let number = agent.contactNumber.replace(/[^\+0-9]/g, '');
                   phone = (
                     <a href={`callto:${number}`}>{agent.contactNumber}</a>
                   );
