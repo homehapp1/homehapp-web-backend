@@ -85,10 +85,6 @@ exports.registerRoutes = (app) => {
     debug('data', data);
 
     return new Promise((resolve, reject) => {
-      if (!data.location || !data.location.city) {
-        data.location.city = null;
-      }
-
       // Update the neighborhood data after resolving the city
       let update = (neighborhoodData) => {
         QB
@@ -103,6 +99,15 @@ exports.registerRoutes = (app) => {
           reject(next);
         });
       };
+
+      // Skip city updating
+      if (!data.location || typeof data.location.city === 'undefined') {
+        return update(data);
+      }
+
+      if (!data.location.city) {
+        data.location.city = null;
+      }
 
       // Get the city by UUID or fail and allow setting null value
       QB.forModel('City')
