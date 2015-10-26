@@ -10,7 +10,7 @@ import AgentActions from '../../actions/AgentActions';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ImageList from '../Widgets/ImageList';
-import { randomNumericId, merge } from '../../../common/Helpers';
+import { randomNumericId, merge, createNotification, scrollTop } from '../../../common/Helpers';
 
 const countries = require('../../../common/lib/Countries').forSelect();
 let debug = require('../../../common/debugger')('AgentsCreateEdit');
@@ -51,6 +51,12 @@ export default class AgentsCreateEdit extends React.Component {
   componentDidMount() {
     debug('componentDidMount');
     AgentStore.listen(this.storeListener);
+
+    let editor = React.findDOMNode(this.refs.agentEdit);
+    if (editor && editor.parentNode) {
+      let offset = editor.getBoundingClientRect();
+      scrollTop(offset.top - 100, 500);
+    }
   }
 
   componentWillUnmount() {
@@ -86,9 +92,32 @@ export default class AgentsCreateEdit extends React.Component {
       }
     });
 
+    // Prevalidate InputWidget contents
+    for (let key in this.refs) {
+      let ref = this.refs[key];
+      if (typeof ref.isValid !== 'function') {
+        continue;
+      }
+
+      if (!ref.isValid()) {
+        debug('Validation failed', ref);
+        let label = ref.props.label || 'Validation error';
+        let message = ref.message || 'Field failed the validation';
+
+        createNotification({
+          type: 'danger',
+          duration: 10,
+          label: label,
+          message: message
+        });
+        return false;
+      }
+    }
+
     let data = {
       firstname: this.refs.firstname.getValue(),
       lastname: this.refs.lastname.getValue(),
+      title: this.refs.title.getValue() || null,
       contactNumber: this.refs.contactNumber.getValue(),
       _realPhoneNumber: this.refs.realPhoneNumber.getValue(),
       _realPhoneNumberType: this.refs.realPhoneNumberType.getValue(),
@@ -286,7 +315,7 @@ export default class AgentsCreateEdit extends React.Component {
     let countrySelections = this.getCountryOptions();
 
     return (
-      <Row className='center-block'>
+      <Row className='center-block' ref='agentEdit'>
         <h1>{formTitle}</h1>
 
         <p>
@@ -315,6 +344,13 @@ export default class AgentsCreateEdit extends React.Component {
                 required
               />
               <InputWidget
+                type='text'
+                ref='title'
+                label='Job title'
+                placeholder='Job title'
+                defaultValue={agent.title}
+              />
+              <InputWidget
                 type='email'
                 ref='email'
                 label='Email'
@@ -341,6 +377,7 @@ export default class AgentsCreateEdit extends React.Component {
                       ref='realPhoneNumberType'
                       label='Type'
                       placeholder='Type'
+                      pattern='\+?[0-9 ]+'
                       defaultValue={agent.realPhoneNumberType}>
                       <option value='mobile'>Mobile</option>
                       <option value='local'>Landline</option>
