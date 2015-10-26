@@ -24,20 +24,34 @@ export default class Agent extends React.Component {
       <div className='widget agents pattern'>
         <div className='width-wrapper'>
           <h2>For more information and viewings</h2>
-          <ul>
+          <ul className='agents-list'>
             {
-              this.props.agents.map((agent) => {
+              this.props.agents.map((agent, index) => {
                 debug('Agent', agent);
+                let phone = null;
+                let email = null;
+
+                if (agent.contactNumber) {
+                  let number = agent.contactNumber.replace(/[^\+0-9]/, '');
+                  phone = (
+                    <a href={`callto:${number}`}>{agent.contactNumber}</a>
+                  );
+                }
+
                 let image = {
                   url: agent.mainImage.url,
                   alt: agent.mainImage.alt || agent.name,
                   variant: 'masked',
                   applySize: true
                 };
+
                 return (
-                  <li>
-                    <Image {...image} />
-                    {agent.name}
+                  <li className='agent' key={`agent-${index}`}>
+                    <p className='title'>{agent.title}</p>
+                    <p className='name'>{agent.name}</p>
+                    <Image {...image} className='photo' />
+                    <p className='phone'>{phone}</p>
+                    <p className='email'>{email}</p>
                   </li>
                 );
               })

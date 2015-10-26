@@ -23,43 +23,67 @@
     }
   }
 
-  .agent-details {
-    display: table;
-    margin-left: auto;
-    margin-right: auto;
+  .agents-list {
+    display: block;
+    margin: 0;
+    padding: $contentPadding 0;
+    text-align: center;
 
-    & > * {
-      display: table-cell;
-      vertical-align: middle;
-      width: 33.3%;
+    & > .agent {
+      display: inline-block;
+      width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+      vertical-align: top;
       font-weight: 400;
+      text-align: center;
+
+      @include small() {
+        width: 100%;
+      }
 
       a {
         color: black;
       }
 
-      &.phone a, &.email a {
-        padding-top: 60px;
+      .phone a, .email a {
+        padding-left: 60px;
+        min-height: 40px;
         min-width: 120px;
-        background-position: center top;
+        background-position: left center;
         background-size: auto 40px;
-        display: block;
+        display: inline-block;
       }
 
-      &.phone a {
+      p {
+        min-height: 1.5em;
+        line-height: 1.5em;
+        margin: 0;
+      }
+
+      .title {
+        color: $mediumGray;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: $fontSizeSecondary;
+      }
+
+      .phone a {
         background-image: url('../images/icons/phone.svg');
       }
 
-      &.email a {
+      .email a {
         background-image: url('../images/icons/mail.svg');
       }
 
-      &.photo {
+      .photo {
         padding: $contentPadding;
         background-image: url('../images/masks/hexagon-white-bordered.svg');
         background-size: contain;
         background-position: center center;
         min-width: 120px;
+        display: block;
+        margin: $contentPadding auto;
 
         img {
           @include small() {
