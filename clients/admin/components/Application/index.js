@@ -26,7 +26,6 @@ export default class Application extends React.Component {
     if (!AuthStore.getState().user) {
       AuthStore.fetchUser();
     }
-    NeighborhoodListStore.fetchItems();
   }
 
   componentWillUnmount() {
@@ -35,8 +34,7 @@ export default class Application extends React.Component {
 
   onChange() {
     this.setState({
-      user: AuthStore.getState().user,
-      neighborhoods: NeighborhoodListStore.getState().neighborhoods
+      user: AuthStore.getState().user
     });
   }
 
