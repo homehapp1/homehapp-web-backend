@@ -120,6 +120,7 @@ class NeighborhoodsEditDetails extends EditDetails {
       uuid: this.props.neighborhood.id,
       slug: this.refs.slug.getValue(),
       title: this.refs.title.getValue(),
+      enabled: this.refs.enabled.getValue(),
       description: this.refs.description.getValue(),
       location: {
         coordinates: this.refs.coordinates.getValue(),
@@ -168,7 +169,6 @@ class NeighborhoodsEditDetails extends EditDetails {
       lat = neighborhood.location.coordinates[0];
       lng = neighborhood.location.coordinates[1];
     }
-    debug('lat', lat, 'lng', lng);
 
     let updateCoords = (lat, lng) => {
       this.setState({
@@ -188,6 +188,15 @@ class NeighborhoodsEditDetails extends EditDetails {
       });
     }
 
+    let toggleEnabled = () => {
+      if (this.state.model) {
+        this.state.model.enabled = !(neighborhood.enabled);
+      } else {
+        this.props.neighborhood.enabled = !(neighborhood.enabled);
+      }
+      this.forceUpdate();
+    };
+
     return (
       <Row>
         <form name='neighborhoodDetails' ref='neighborhoodDetailsForm' method='POST'>
@@ -200,6 +209,13 @@ class NeighborhoodsEditDetails extends EditDetails {
                 placeholder='Title (optional)'
                 defaultValue={neighborhood.title}
                 onChange={this.onFormChange.bind(this)}
+              />
+              <InputWidget
+                type='checkbox'
+                ref='enabled'
+                label='Enabled'
+                checked={(neighborhood.enabled)}
+                onChange={toggleEnabled}
               />
               <InputWidget
                 type='text'

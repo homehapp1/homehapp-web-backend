@@ -25,7 +25,13 @@ export default class Neighborhoods extends React.Component {
   componentDidMount() {
     setPageTitle('Neighborhoods');
     NeighborhoodListStore.listen(this.storeListener);
-    NeighborhoodListStore.fetchPopulatedItems();
+
+    // This is a quick hack...
+    if (window && window.location.href.toString().match(/\/all/)) {
+      NeighborhoodListStore.fetchAllItems();
+    } else {
+      NeighborhoodListStore.fetchItems();
+    }
   }
 
   componentWillUnmount() {
@@ -62,7 +68,7 @@ export default class Neighborhoods extends React.Component {
       return this.handleErrorState();
     }
 
-    if (NeighborhoodListStore.isLoading() || !this.state.neighborhoods || !this.state.neighborhoods.length) {
+    if (NeighborhoodListStore.isLoading() || !this.state.neighborhoods) {
       return this.handlePendingState();
     }
 

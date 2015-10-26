@@ -18,6 +18,7 @@ exports.registerRoutes = (app) => {
       return QB
       .forModel('Neighborhood')
       .query({
+        enabled: true,
         _id: {
           $in: result.models
         }
@@ -37,12 +38,33 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
+  app.get('/api/neighborhoods/all', app.authenticatedRoute, function(req, res, next) {
+    debug('API fetch neighborhoods');
+    QB
+    .forModel('Neighborhood')
+    .parseRequestArguments(req)
+    .populate(populate)
+    .findAll()
+    .sort('title')
+    .fetch()
+    .then((result) => {
+      res.json({
+        status: 'ok',
+        items: result.models
+      });
+    })
+    .catch(next);
+  });
+
   app.get('/api/neighborhoods', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch neighborhoods');
     QB
     .forModel('Neighborhood')
     .parseRequestArguments(req)
     .populate(populate)
+    .query({
+      enabled: true
+    })
     .findAll()
     .sort('title')
     .fetch()

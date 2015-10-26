@@ -21,7 +21,7 @@ class NeighborhoodsEditContainer extends React.Component {
   componentDidMount() {
     NeighborhoodListStore.listen(this.storeListener);
     if (!NeighborhoodListStore.getItem(this.props.params.id)) {
-      NeighborhoodListStore.fetchItems();
+      NeighborhoodListStore.fetchAllItems();
     }
   }
 

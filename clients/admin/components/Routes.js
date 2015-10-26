@@ -54,6 +54,7 @@ let routes = (
     </Route>
     <Route name='neighborhoods' path='/neighborhoods'>
       <DefaultRoute handler={Neighborhoods}/>
+      <Route name='neighborhoodsAll' path='all' handler={Neighborhoods} />
       <Route name='neighborhoodDelete' path=':id/delete' handler={NeighborhoodsEditContainer} />
       <Route name='neighborhoodEdit' path=':id' handler={NeighborhoodsEditContainer}>
         <Route name='neighborhoodEditTab' path=':tab' handler={NeighborhoodsEditContainer} />

@@ -25,6 +25,10 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: ''
     },
+    enabled: {
+      type: Boolean,
+      default: false
+    },
     aliases: {
       type: [String],
       default: []
@@ -90,7 +94,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.Neighborhood.statics.editableFields = function editableFIelds() {
     return [
       'title', 'description', 'location', 'images', 'story', 'visible',
-      'metadata'
+      'metadata', 'enabled'
     ];
   };
 
