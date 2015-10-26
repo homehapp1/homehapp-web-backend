@@ -52,6 +52,10 @@ export default class BigVideo extends BigBlock {
 
   componentDidMount() {
     debug('Video player mounted');
+    if (!this.refs.video) {
+      return null;
+    }
+
     this.onMounted();
     this.video = React.findDOMNode(this.refs.video);
 
@@ -64,6 +68,10 @@ export default class BigVideo extends BigBlock {
   }
 
   componentWillUnmount() {
+    if (!this.refs.video) {
+      return null;
+    }
+    
     this.onUnmount();
   }
 
