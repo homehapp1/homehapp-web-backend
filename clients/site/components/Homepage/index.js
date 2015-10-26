@@ -62,7 +62,7 @@ export default class Homepage extends React.Component {
 
     return (
       <div className='mainpage-list clearfix'>
-        <HomeList items={homes} max={12} className='mainpage-list short-list'>
+        <HomeList items={homes} max={4} className='mainpage-list short-list'>
           <h2>Exclusively for Homehapp</h2>
         </HomeList>
         <p className='call-to-action'>
