@@ -141,7 +141,7 @@ class NeighborhoodsEditDetails extends EditDetails {
       return null;
     }
     return (
-      <a href={`${ApplicationStore.getState().config.siteHost}/neighborhoods/${neighborhood.location.city.slug}/${this.props.neighborhood.slug}/story`}
+      <a href={`${ApplicationStore.getState().config.siteHost}/neighborhoods/${neighborhood.location.city.slug}/${this.props.neighborhood.slug}`}
         target='_blank'
         className='btn btn-primary'>
         Preview
