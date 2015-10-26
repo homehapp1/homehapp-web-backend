@@ -19,13 +19,13 @@ export default class Neighborhoods extends React.Component {
 
   state = {
     error: null,
-    neighborhoods: NeighborhoodListStore.getState().items
+    neighborhoods: null
   }
 
   componentDidMount() {
     setPageTitle('Neighborhoods');
     NeighborhoodListStore.listen(this.storeListener);
-    NeighborhoodListStore.fetchItems();
+    NeighborhoodListStore.fetchPopulatedItems();
   }
 
   componentWillUnmount() {
@@ -79,12 +79,19 @@ export default class Neighborhoods extends React.Component {
             <thead>
               <tr>
                 <th>Neighbourhood</th>
+                <th>City</th>
                 <th>Story blocks</th>
               </tr>
             </thead>
             <tbody>
               {this.state.neighborhoods.map((neighborhood, i) => {
                 let storyBlocks = neighborhood.story.blocks.length || null;
+                let city = null;
+
+                if (neighborhood.location && typeof neighborhood.location.city === 'object') {
+                  city = neighborhood.location.city.title;
+                }
+
                 return (
                   <tr key={i}>
                     <td>
@@ -94,6 +101,7 @@ export default class Neighborhoods extends React.Component {
                         {neighborhood.title}
                       </Link>
                     </td>
+                    <td>{city}</td>
                     <td>{storyBlocks}</td>
                   </tr>
                 );
