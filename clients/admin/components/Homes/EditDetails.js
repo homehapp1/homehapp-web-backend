@@ -592,7 +592,7 @@ export default class HomesEditDetails extends EditDetails {
                     onUpload={(file, data) => {
                       this.onImageUpload(file, data, 'floorplans');
                     }}
-                    acceptedMimes='image/*'
+                    acceptedMimes='image/*,application/pdf'
                     instanceId='floorplans'>
                     <Well>
                       <p>Drag new image here, or click to select from filesystem.</p>
