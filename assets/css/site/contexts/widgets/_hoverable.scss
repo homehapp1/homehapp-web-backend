@@ -22,7 +22,7 @@
     right: 0;
     bottom: 0;
     overflow: hidden;
-    z-index: 1;
+    z-index: 0;
 
     @include small() {
       &, & > img.hoverable-image {
@@ -39,7 +39,7 @@
       top: 0;
       bottom: 0;
       width: 100%;
-      height: auto;
+      height: 100%;
       @include vendors(transition-property, transform);
       @include vendors(transition-timing-function, linear);
       @include vendors(transition-duration, $transitionDurationFast);

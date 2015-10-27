@@ -88,11 +88,11 @@ export default class Homepage extends React.Component {
 
               return (
                 <div className='preview' key={index}>
-                  <Hoverable {...neighborhood.mainImage} width={464} height={556} mode='fill' applySize>
-                    <div className='neighborhood-title'>
+                  <Hoverable {...neighborhood.mainImage} width={464} height={556} mode='fill' applySize className='with-shadow'>
+                    <div className='title'>
                       <div className='wrapper'>
                         <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
-                          <span className='title'>{neighborhood.title}</span>
+                          {neighborhood.title}
                         </Link>
                       </div>
                     </div>

@@ -25,12 +25,19 @@ export default class Hoverable extends React.Component {
 
   static defaultProps = {
     applySize: true,
-    gravity: 'center'
+    gravity: 'center',
+    className: null
   };
 
   render() {
+    let classes = ['hoverable', 'widget'];
+
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
+
     return (
-      <span className='hoverable widget'>
+      <span className={classes.join(' ')}>
         <span className='hoverable-wrapper'>
           <Image {...this.props} className='hoverable-image' />
         </span>

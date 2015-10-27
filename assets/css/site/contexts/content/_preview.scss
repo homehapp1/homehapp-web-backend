@@ -39,32 +39,9 @@
     a {
       color: black;
       text-decoration: none;
-
-      .hoverable .title {
-        position: absolute;
-        left: $contentPadding;
-        right: $contentPadding;
-        bottom: $contentPadding;
-        z-index: 1;
-        font-family: $highlightFont;
-        font-size: $fontSizeHeading3;
-        font-weight: 500;
-        color: white;
-        text-shadow: $textShadow;
-
-        @include small() {
-          left: $contentPadding / 2;
-          bottom: $contentPadding / 2;
-          right: $contentPadding / 2;
-        }
-      }
     }
 
-    img {
-      display: block;
-    }
-
-    .neighborhood-title {
+    .title {
       display: block;
       height: 556px;
       position: absolute;
@@ -95,13 +72,13 @@
           vertical-align: middle;
           text-align: center;
           font-family: $highlightFont;
-          font-size: $fontSizeHeading3;
+          font-size: $fontSizeHeading25;
           font-weight: 400;
         }
       }
     }
 
-    .actions {
+    .actions, .description {
       position: absolute;
       bottom: $contentPadding;
       left: $contentPadding * 2;
@@ -131,11 +108,15 @@
       }
     }
 
-    .neighborhood-title, .actions {
-      &, a {
+    .title, .actions, .description {
+      &, p, a {
         color: white;
         text-shadow: $textShadow;
       }
+    }
+
+    .description {
+      font-size: $fontSizeHeading3;
     }
 
     .actions a {
@@ -161,36 +142,41 @@
       }
     }
 
-    .description {
-      padding: $contentPadding;
-      font-size: $fontSizeSecondary;
-      height: 7em;
-      overflow: hidden;
-
-      @include small() {
-        padding: $contentPadding / 2 0;
-        height: auto;
-      }
-
-      p {
-        margin: 0;
-      }
-
-      p.address {
-        span:after {
-          content: ', ';
-        }
-
-        span:last-child:after {
-          content: '';
-        }
-
-        .city:before {
-          content: ' ';
-          display: block;
-        }
-      }
-    }
+    // .description {
+    //   padding: $contentPadding;
+    //   font-size: $fontSizeSecondary;
+    //   height: 7em;
+    //   overflow: hidden;
+    //   position: absolute;
+    //   bottom: $contentPadding;
+    //   left: $contentPadding;
+    //   right: $contentPadding;
+    //   z-index:
+    //
+    //   @include small() {
+    //     padding: $contentPadding / 2 0;
+    //     height: auto;
+    //   }
+    //
+    //   p {
+    //     margin: 0;
+    //   }
+    //
+    //   p.address {
+    //     span:after {
+    //       content: ', ';
+    //     }
+    //
+    //     span:last-child:after {
+    //       content: '';
+    //     }
+    //
+    //     .city:before {
+    //       content: ' ';
+    //       display: block;
+    //     }
+    //   }
+    // }
   }
 
   h2:first-child {
