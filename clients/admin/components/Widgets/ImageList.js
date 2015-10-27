@@ -67,6 +67,11 @@ export default class ImageList extends React.Component {
                 c: 'fill'
               });
 
+              // Always use a web compatible image suffix
+              if (!thumbnailUrl.match(/\.(png|jpe?g|gif)$/i)) {
+                thumbnailUrl = thumbnailUrl.replace(/\.[a-z0-9]{2,4}$/, '.jpg');
+              }
+
               let altChange = (event) => {
                 image.alt = event.target.value;
                 this.props.onChange(event);
