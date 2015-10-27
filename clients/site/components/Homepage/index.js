@@ -112,7 +112,7 @@ export default class Homepage extends React.Component {
           }
 
           <p className='call-to-action'>
-            <Link to='search' className='button'>Find more</Link>
+            <Link to='neighborhoodList' params={{city: 'london'}} className='button'>Find more</Link>
           </p>
         </div>
       </div>
