@@ -133,6 +133,10 @@ export default class HomeList extends React.Component {
                 classes.push('first');
               }
 
+              if (home.story.enabled && home.story.blocks.length) {
+                classes.push('story');
+              }
+
               let link = {
                 to: 'home',
                 params: {
