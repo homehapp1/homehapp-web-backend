@@ -34,6 +34,7 @@ export default class HomesEditDetails extends EditDetails {
     this.storeListener = this.onHomeStoreChange.bind(this);
     this.uploadListener = this.onUploadChange.bind(this);
     this.imageUploaderInstanceId = randomNumericId();
+    this.floorPlanUploaderInstanceId = randomNumericId();
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
     this.setCoordinates = this.setCoordinates.bind(this);
 
@@ -46,6 +47,7 @@ export default class HomesEditDetails extends EditDetails {
         }
       ];
       this.state.images = props.home.images || [];
+      this.state.floorplans = props.home.floorplans || [];
     }
   }
 
@@ -55,6 +57,7 @@ export default class HomesEditDetails extends EditDetails {
     home: null,
     currentAttributes: [],
     images: [],
+    floorplans: [],
     coordinates: [],
     lat: null,
     lng: null
@@ -122,10 +125,18 @@ export default class HomesEditDetails extends EditDetails {
     }
 
     let images = [];
+    let floorplans = [];
+
     // Clean broken images
     this.state.images.forEach((image) => {
       if (image.url) {
         images.push(image);
+      }
+    });
+    // Clean broken images
+    this.state.floorplans.forEach((image) => {
+      if (image.url) {
+        floorplans.push(image);
       }
     });
 
@@ -163,7 +174,8 @@ export default class HomesEditDetails extends EditDetails {
       amenities: this.refs.amenities.getValue().split('\n'),
       facilities: this.refs.facilities.getValue().split('\n'),
       attributes: this.state.currentAttributes,
-      images: images
+      images: images,
+      floorplans: floorplans
     };
 
     this.saveHome(homeProps);
@@ -525,7 +537,7 @@ export default class HomesEditDetails extends EditDetails {
               <Row>
                 <Col md={6}>
                   <h2>Images</h2>
-                  <ImageList images={this.state.images} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} />
+                  <ImageList images={this.state.images} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} storageKey='images' />
                 </Col>
                 <Col md={6}>
                   <UploadArea
@@ -535,7 +547,29 @@ export default class HomesEditDetails extends EditDetails {
                     height='80px'
                     onUpload={this.onImageUpload.bind(this)}
                     acceptedMimes='image/*'
-                    instanceId={this.imageUploaderInstanceId}>
+                    instanceId='images'>
+                    <Well>
+                      <p>Drag new image here, or click to select from filesystem.</p>
+                    </Well>
+                  </UploadArea>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <h2>Floorplans</h2>
+                  <ImageList images={this.state.floorplans} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} storageKey='floorplans' />
+                </Col>
+                <Col md={6}>
+                  <UploadArea
+                    className='uploadarea image-uploadarea'
+                    signatureFolder='homeImage'
+                    width='100%'
+                    height='80px'
+                    onUpload={(file, data) => {
+                      this.onImageUpload(file, data, 'floorplans');
+                    }}
+                    acceptedMimes='image/*'
+                    instanceId='floorplans'>
                     <Well>
                       <p>Drag new image here, or click to select from filesystem.</p>
                     </Well>

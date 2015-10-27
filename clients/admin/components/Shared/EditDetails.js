@@ -16,10 +16,10 @@ export default class EditDetails extends React.Component {
     coordinates: []
   }
 
-  imageExists(url) {
-    debug('Check if image exists', this.state.images);
+  imageExists(url, key) {
+    debug('Check if image exists', this.state[key]);
     let found = false;
-    this.state.images.forEach((img) => {
+    this.state[key].forEach((img) => {
       if (img.url === url) {
         debug('Image exists');
         found = true;
@@ -29,8 +29,8 @@ export default class EditDetails extends React.Component {
     return found;
   }
 
-  addImage(imageData) {
-    debug('Add image', imageData);
+  addImage(imageData, key) {
+    debug('Add image', imageData, key);
     let isMaster = false;
     let image = {
       url: imageData.url,
@@ -39,42 +39,56 @@ export default class EditDetails extends React.Component {
       isMaster: isMaster
     };
 
-    if (!this.imageExists(image.url, this.state.images)) {
+    if (!this.imageExists(image.url, key)) {
       debug('Add', image);
-      this.state.images.push(image);
+      this.state[key].push(image);
     }
   }
 
-  addImages() {
-    debug('addImages', this.state.uploads);
+  addImages(key) {
+    debug('addImages', this.state.uploads, key);
     if (this.state.uploads) {
-      if (this.state.uploads[this.imageUploaderInstanceId]) {
-        let uploads = this.state.uploads[this.imageUploaderInstanceId];
+      if (this.state.uploads[key]) {
+        let uploads = this.state.uploads[key];
         debug('uploads str', uploads, typeof uploads);
         for (let i in uploads) {
-          this.addImage(uploads[i]);
+          this.addImage(uploads[i], key);
         }
       }
     }
   }
 
-  onImageUpload(data) {
-    debug('onImageUpload', data);
-    this.addImages();
+  onImageUpload(data, object, key = 'images') {
+    debug('Arguments', arguments);
+    if (typeof this.state[key] === 'undefined') {
+      debug(`onImageUpload: There is no state "${key}"`, this.state);
+      return null;
+    }
 
-    this.setState({
-      images: this.state.images
-    });
+    debug('onImageUpload', data);
+    this.addImages(key);
+
+    let state = {};
+    state[key] = this.state[key];
+    this.setState(state);
   }
 
-  onRemoveImageClicked(index) {
+  onRemoveImageClicked(index, key = 'images') {
+    debug('onRemoveImageClicked args', arguments);
+    if (typeof this.state[key] === 'undefined') {
+      debug(`onRemoveImageClicked: There is no state "${key}"`, this.state);
+      return null;
+    }
+
     let newImages = [];
-    this.state.images.forEach((item, idx) => {
+    this.state[key].forEach((item, idx) => {
       if (idx !== index) {
         newImages.push(item);
       }
     });
-    this.setState({images: newImages});
+    let state = {};
+    state[key] = newImages;
+    this.setState(state);
   }
 
   getCoordinates() {

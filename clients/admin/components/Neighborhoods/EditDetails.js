@@ -11,7 +11,7 @@ import NeighborhoodActions from '../../actions/NeighborhoodActions';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
-import { randomNumericId, createNotification } from '../../../common/Helpers';
+import { createNotification } from '../../../common/Helpers';
 import ImageList from '../Widgets/ImageList';
 import EditDetails from '../Shared/EditDetails';
 import PlacePicker from '../../../common/components/Widgets/PlacePicker';
@@ -29,7 +29,6 @@ class NeighborhoodsEditDetails extends EditDetails {
     this.storeListener = this.onNeighborhoodStoreChange.bind(this);
     this.uploadListener = this.onUploadChange.bind(this);
     this.cityListener = this.onCityStoreChange.bind(this);
-    this.imageUploaderInstanceId = randomNumericId();
     this.state.images = props.neighborhood.images;
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
     this.setCoordinates = this.setCoordinates.bind(this);
@@ -293,7 +292,7 @@ class NeighborhoodsEditDetails extends EditDetails {
                     height='80px'
                     onUpload={this.onImageUpload.bind(this)}
                     acceptedMimes='image/*'
-                    instanceId={this.imageUploaderInstanceId}>
+                    instanceId='images'>
                     <Well>
                       <p>Drag new image here, or click to select from filesystem.</p>
                     </Well>

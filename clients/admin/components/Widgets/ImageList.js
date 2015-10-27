@@ -28,7 +28,7 @@ export default class ImageList extends React.Component {
 
   static defaultProps = {
     images: [],
-    storageKey: null,
+    storageKey: 'images',
     label: null,
     max: Infinity
   };
