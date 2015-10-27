@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 // Widgets
 import Agents from '../Widgets/Agents';
+import Attachments from '../Widgets/Attachments';
 import BigImage from '../Widgets/BigImage';
 import BigVideo from '../Widgets/BigVideo';
 import Columns from '../Widgets/Columns';
@@ -24,6 +25,12 @@ export default class StoryLayout extends React.Component {
 
   getAgents(item, index) {
     return (<Agents {...item.properties} key={index} />);
+  }
+
+  getAttachments(item, index) {
+    return (
+      <Attachments {...item.properties} key={`AttachmentsWidget-${index}`} />
+    );
   }
 
   getBigImage(item, index) {
@@ -227,39 +234,6 @@ export default class StoryLayout extends React.Component {
               <li>Full renovation, 2011</li>
             </ul>
           </div>
-        </Columns>
-      </ContentBlock>
-    );
-  }
-
-  getIconList(item, index) {
-    return (
-      <ContentBlock className='icon-list pattern' key={index}>
-        <Columns cols={item.properties.icons.length}>
-          {
-            item.properties.icons.map((col, ind) => {
-              let label = (
-                <span>
-                  <Icon type={col.icon} className='large' />
-                  <span className='label'>{col.label}</span>
-                </span>
-              );
-
-              if (col.to) {
-                link = (
-                  <Link to={col.to} params={col.params}>
-                    {label}}
-                  </Link>
-                );
-              }
-
-              return (
-                <div className='icon-wrapper' key={ind}>
-                  {label}
-                </div>
-              );
-            })
-          }
         </Columns>
       </ContentBlock>
     );
