@@ -194,6 +194,21 @@ export default class HomeDetails extends React.Component {
       }
     });
 
+
+    if (this.props.home.location.coordinates && this.props.home.location.coordinates[0] && this.props.home.location.coordinates[1]) {
+      blocks.push({
+        template: 'Map',
+        properties: {
+          center: this.props.home.location.coordinates,
+          zoom: 12,
+          markers: [{
+            location: this.props.home.location.coordinates,
+            title: this.props.home.homeTitle
+          }]
+        }
+      });
+    }
+
     if (this.props.home.location.neighborhood) {
       blocks.push({
         template: 'Separator',
@@ -209,18 +224,6 @@ export default class HomeDetails extends React.Component {
         icon: 'marker'
       }
     });
-
-    if (this.props.home.location.coordinates) {
-      blocks.push({
-        template: 'Map',
-        properties: {
-          markers: [{
-            location: this.props.home.location.coordinates,
-            title: this.props.homeTitle
-          }]
-        }
-      });
-    }
 
     blocks.push({
       template: 'Agents',

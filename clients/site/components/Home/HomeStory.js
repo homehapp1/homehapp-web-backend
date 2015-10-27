@@ -28,12 +28,11 @@ export default class HomeStory extends React.Component {
         template: 'Map',
         properties: {
           center: this.props.home.location.coordinates,
+          zoom: 12,
           markers: [{
             location: this.props.home.location.coordinates,
             title: this.props.home.homeTitle
-          }],
-          label: 'Lorem ipsum',
-          content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.'
+          }]
         }
       });
     }
@@ -51,7 +50,7 @@ export default class HomeStory extends React.Component {
         home: this.props.home
       }
     });
-    
+
     console.log('Render blocks', blocks, this.props.home);
     return (
       <div className='home-view'>
