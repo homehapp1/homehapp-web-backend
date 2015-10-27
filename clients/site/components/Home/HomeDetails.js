@@ -75,21 +75,84 @@ export default class HomeDetails extends React.Component {
     };
   }
 
-  getIconList() {
-    return [
-      {
-        icon: 'floorplan',
-        label: 'Floor plan'
-      },
-      {
-        icon: 'epc',
-        label: 'EPC'
-      },
-      {
-        icon: 'brochures',
-        label: 'Brochure'
+  getAttachments() {
+    if (!this.props.home.brochures || !this.props.home.brochures.length) {
+      return [];
+    }
+
+    let attachments = this.props.home.brochures.map((attachment) => {
+      let type = attachment.tag || 'brochure';
+      let label = type;
+
+      if (attachment.alt) {
+        label = attachment.alt;
+      } else {
+        switch (type) {
+          case 'brochure':
+            label = 'Brochure';
+            break;
+          case 'epc':
+            label = 'EPC';
+            break;
+          case 'floorplan':
+            label = 'Floor plan';
+            break;
+        }
       }
+
+      return {
+        url: attachment.url,
+        type: type,
+        label: label
+      };
+    });
+
+    let types = [
+      'floorplan',
+      'epc',
+      'brochure'
     ];
+
+    // Sort the attachments by type
+    attachments.sort((a, b) => {
+      let indexA = types.indexOf(a.type);
+      let indexB = types.indexOf(b.type);
+
+      if (indexA === -1) {
+        return 1;
+      }
+
+      if (indexB === -1) {
+        return -1;
+      }
+
+      if (indexA > indexB) {
+        return 1;
+      }
+
+      if (indexA < indexB) {
+        return -1;
+      }
+
+      return 0;
+    });
+
+    debug('Sorted', attachments);
+
+    return attachments;
+    //   {
+    //     icon: 'floorplan',
+    //     label: 'Floor plan'
+    //   },
+    //   {
+    //     icon: 'epc',
+    //     label: 'EPC'
+    //   },
+    //   {
+    //     icon: 'brochures',
+    //     label: 'Brochure'
+    //   }
+    // ];
   }
 
   render() {
@@ -113,13 +176,13 @@ export default class HomeDetails extends React.Component {
       });
     }
 
-    let iconlist = this.getIconList();
+    let attachments = this.getAttachments();
 
-    if (iconlist.length) {
+    if (attachments.length) {
       blocks.push({
-        template: 'IconList',
+        template: 'Attachments',
         properties: {
-          icons: iconlist
+          attachments: attachments
         }
       });
     }
