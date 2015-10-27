@@ -106,7 +106,7 @@ exports.loadSchemas = function (mongoose, next) {
       blocks: [schemas.HomeStoryBlock]
     },
     images: [schemas.HomeImage],
-    floorplans: [schemas.HomeImage],
+    brochures: [schemas.HomeImage],
     // Flags
     visible: {
       type: Boolean,
@@ -175,7 +175,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.Home.statics.editableFields = function () {
     return [
       'title', 'description', 'location', 'costs', 'story', 'amenities',
-      'facilities', 'attributes', 'images', 'announcementType', 'floorplans'
+      'facilities', 'attributes', 'images', 'announcementType', 'brochures'
     ];
   };
 
