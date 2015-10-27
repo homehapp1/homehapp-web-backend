@@ -7,7 +7,7 @@ import ApplicationStore from '../../../common/stores/ApplicationStore';
 
 import {setCDNUrlProperties} from '../../../common/Helpers';
 
-// let debug = require('../../../common/debugger')('ImageList');
+let debug = require('../../../common/debugger')('ImageList');
 
 function getFullImageUrl(url) {
   if (!url.match(/^http/)) {
@@ -23,18 +23,68 @@ export default class ImageList extends React.Component {
     onChange: React.PropTypes.func.isRequired,
     storageKey: React.PropTypes.string,
     label: React.PropTypes.string,
-    max: React.PropTypes.number
+    max: React.PropTypes.number,
+    types: React.PropTypes.object
   };
 
   static defaultProps = {
     images: [],
     storageKey: 'images',
     label: null,
-    max: Infinity
+    max: Infinity,
+    types: null
   };
 
   getValue() {
+    debug('getValue for ImageList', this.props.images);
     return this.props.images;
+  }
+
+  getTypes(image) {
+    if (!this.props.types) {
+      return null;
+    }
+
+    // JS event for the type changing
+    let typeChange = (event) => {
+      image.tag = event.target.value || null;
+      this.props.onChange(event);
+      debug('set type', image);
+    };
+
+    // Create an array map
+    let types = [];
+    for (let k in this.props.types) {
+      types.push({value: k, label: this.props.types[k]});
+    }
+
+    // Sort the types alphabetically
+    types.sort((a, b) => {
+      if (a.label > b.label) {
+        return 1;
+      }
+      if (a.label > b.label) {
+        return -1;
+      }
+      return 0;
+    });
+
+    return (
+      <InputWidget
+        type='select'
+        defaultValue={image.tag}
+        onChange={typeChange}
+      >
+        <option value=''>Select type...</option>
+        {
+          types.map((type, index) => {
+            return (
+              <option value={type.value} key={`imagelist-type-${index}`}>{type.label}</option>
+            );
+          })
+        }
+      </InputWidget>
+    );
   }
 
   render() {
@@ -92,6 +142,7 @@ export default class ImageList extends React.Component {
                       defaultValue={image.alt}
                       onChange={altChange}
                     />
+                    {this.getTypes(image)}
                   </td>
                   <td>
                     <Button
