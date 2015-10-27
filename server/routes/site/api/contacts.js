@@ -4,7 +4,7 @@ let debug = require('debug')('/api/contact');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
-  let createContact = function createContact(res, data) {
+  let createContact = function createContact(res, next, data) {
     QB
     .forModel('Contact')
     .create(data)
@@ -36,11 +36,11 @@ exports.registerRoutes = (app) => {
       .then((result) => {
         data.home = result.model;
         debug('Link the contact request to home', result.model.homeTitle);
-        createContact(res, data);
+        createContact(res, next, data);
       })
       .catch(next);
     } else {
-      createContact(res, data);
+      createContact(res, next, data);
     }
   });
 };

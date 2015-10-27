@@ -37,12 +37,6 @@ export default class HomeStory extends React.Component {
       });
     }
 
-    if (this.props.home.location.neighborhood) {
-      blocks.push({
-        template: 'Neighborhood',
-        properties: this.props.home.location.neighborhood
-      });
-    }
     blocks.push({
       template: 'Agents',
       properties: {
@@ -50,6 +44,13 @@ export default class HomeStory extends React.Component {
         home: this.props.home
       }
     });
+
+    if (this.props.home.location.neighborhood) {
+      blocks.push({
+        template: 'Neighborhood',
+        properties: this.props.home.location.neighborhood
+      });
+    }
 
     console.log('Render blocks', blocks, this.props.home);
     return (

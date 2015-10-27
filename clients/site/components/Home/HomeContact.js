@@ -10,11 +10,13 @@ let debug = require('debug')('HomeContact');
 export default class HomeContact extends React.Component {
   static propTypes = {
     home: React.PropTypes.object.isRequired,
-    context: React.PropTypes.object
+    context: React.PropTypes.object,
+    onClose:  React.PropTypes.func
   }
 
   static contextTypes = {
-    router: React.PropTypes.func
+    router: React.PropTypes.func,
+    onClose: null
   };
 
   constructor() {
@@ -38,11 +40,23 @@ export default class HomeContact extends React.Component {
     this.setState(state);
   }
 
+  getContactType() {
+    let details = React.findDOMNode(this.refs.subTypeDetails);
+    let viewing = React.findDOMNode(this.refs.subTypeViewing);
+    if (viewing && viewing.checked) {
+      return viewing.value;
+    }
+    if (details && details.checked) {
+      return details.value;
+    }
+    return null;
+  }
+
   sendRequest(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    let contactType = (React.findDOMNode(this.refs.typeDetails)).checked ? (React.findDOMNode(this.refs.typeDetails)).value : (React.findDOMNode(this.refs.typeViewing)).value;
+    let contactType = this.getContactType();
     let agent = this.props.home.agents[0] || null;
 
     let props = {
@@ -100,6 +114,11 @@ export default class HomeContact extends React.Component {
     let error = this.handleErrorState();
 
     if (this.state.contact) {
+      if (typeof this.props.onClose === 'function') {
+        setTimeout(() => {
+          this.props.onClose();
+        }, 3000);
+      }
       return (
         <ContentBlock className='home contact-form'>
           <h2>Your message was received</h2>

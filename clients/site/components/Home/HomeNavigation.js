@@ -90,10 +90,19 @@ export default class HomeNavigation extends React.Component {
     node.removeEvent('click', this.onPhoneClick, true);
   }
 
+  modalClose() {
+    let modals = document.getElementById('modals').getElementsByClassName('contact-form');
+    for (let modal of modals) {
+      if (modal.parentNode) {
+        modal.parentNode.removeChild(modal);
+      }
+    }
+  }
+
   createModal() {
     return (
       <Modal className='white with-overflow contact-form'>
-        <HomeContact home={this.props.home} context={this.context} />
+        <HomeContact home={this.props.home} context={this.context} onClose={this.modalClose.bind(this)} />
       </Modal>
     );
   }

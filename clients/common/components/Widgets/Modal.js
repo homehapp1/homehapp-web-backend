@@ -25,11 +25,11 @@ export default class Modal extends React.Component {
   }
 
   componentDidMount() {
-    this.refs.modal.getDOMNode().addEventListener('click', this.removeModal, false);
-    this.refs.modal.getDOMNode().addEventListener('touch', this.removeModal, false);
+    React.findDOMNode(this.refs.modal).addEventListener('click', this.removeModal, false);
+    React.findDOMNode(this.refs.modal).addEventListener('touch', this.removeModal, false);
 
-    this.refs.close.getDOMNode().addEventListener('click', this.removeModal, true);
-    this.refs.close.getDOMNode().addEventListener('touchstart', this.removeModal, true);
+    React.findDOMNode(this.refs.close).addEventListener('click', this.removeModal, true);
+    React.findDOMNode(this.refs.close).addEventListener('touchstart', this.removeModal, true);
 
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
     this.body.addClass('no-scroll');
@@ -38,13 +38,13 @@ export default class Modal extends React.Component {
 
   componentWillUnmount() {
     if (this.refs.modal) {
-      this.refs.modal.getDOMNode().removeEventListener('click', this.removeModal, false);
-      this.refs.modal.getDOMNode().removeEventListener('touch', this.removeModal, false);
+      React.findDOMNode(this.refs.modal).removeEventListener('click', this.removeModal, false);
+      React.findDOMNode(this.refs.modal).removeEventListener('touch', this.removeModal, false);
     }
 
     if (this.refs.close) {
-      this.refs.close.getDOMNode().removeEventListener('click', this.removeModal, true);
-      this.refs.close.getDOMNode().removeEventListener('touchstart', this.removeModal, true);
+      React.findDOMNode(this.refs.close).removeEventListener('click', this.removeModal, true);
+      React.findDOMNode(this.refs.close).removeEventListener('touchstart', this.removeModal, true);
     }
 
     if (this.body.getByClass('modal-wrapper').length <= 1) {
@@ -64,13 +64,17 @@ export default class Modal extends React.Component {
 
     this.props.onclose();
 
-    let node = this.refs.modal.getDOMNode();
+    let node = React.findDOMNode(this.refs.modal);
     React.unmountComponentAtNode(node);
     this.componentWillUnmount();
     node.parentNode.removeChild(node);
     e.preventDefault();
     e.stopPropagation();
     return false;
+  }
+
+  closeModal() {
+    React.findDOMNode(this.refs.close).click();
   }
 
   render() {
