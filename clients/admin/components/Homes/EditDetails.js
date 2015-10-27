@@ -37,6 +37,7 @@ export default class HomesEditDetails extends EditDetails {
     this.floorPlanUploaderInstanceId = randomNumericId();
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
     this.setCoordinates = this.setCoordinates.bind(this);
+    this.onFormChange = this.onFormChange.bind(this);
 
     if (props.home) {
       this.setInitialLocation(props.home.location);
@@ -289,6 +290,17 @@ export default class HomesEditDetails extends EditDetails {
     );
   }
 
+  changeStatus(event) {
+    debug('changeStatus', event.target.value);
+    // this.onFormChange(event);
+    let home = this.state.home || this.props.home;
+    home.announcementType = event.target.value;
+    this.setState({
+      home: home
+    });
+    return true;
+  }
+
   render() {
     this.handleErrorState();
     if (HomeStore.isLoading()) {
@@ -365,9 +377,8 @@ export default class HomesEditDetails extends EditDetails {
                 type='select'
                 ref='announcementType'
                 label='Announcement type'
-                defaultValue='buy'
-                value={home.announcementType}
-                onChange={this.onFormChange.bind(this)}
+                defaultValue={home.announcementType}
+                onChange={this.changeStatus.bind(this)}
               >
                 <option value='buy'>This home is for sale</option>
                 <option value='rent'>This home is for rent</option>
@@ -481,16 +492,29 @@ export default class HomesEditDetails extends EditDetails {
                 <option value='EUR'>Euro</option>
                 <option value='SUD'>US Dollars</option>
               </InputWidget>
-              <InputWidget
-                type='text'
-                ref='costsSellingPrice'
-                label='Selling price'
-                placeholder='(optional)'
-                defaultValue={home.costs.sellingPrice}
-                onChange={this.onFormChange.bind(this)}
-                pattern='([0-9]*)(\.[0-9]+)?'
-                patternError='Please enter a valid number (e.g. 123.45) without any units'
-              />
+              <div className={(home.announcementType === 'rent') ? 'hidden' : ''}>
+                <InputWidget
+                  type='text'
+                  ref='costsSellingPrice'
+                  label='Selling price'
+                  placeholder='(optional)'
+                  defaultValue={home.costs.sellingPrice}
+                  onChange={this.onFormChange.bind(this)}
+                  pattern='([0-9]*)(\.[0-9]+)?'
+                  patternError='Please enter a valid number (e.g. 123.45) without any units'
+                />
+              </div>
+              <div className={(home.announcementType !== 'rent') ? 'hidden' : ''}>
+                <InputWidget
+                  type='text'
+                  ref='costsRentalPrice'
+                  label='Rental price'
+                  placeholder='1234.56'
+                  onChange={this.onFormChange.bind(this)}
+                  pattern='([0-9]*)(\.[0-9]+)?'
+                  patternError='Please enter a valid number (e.g. 123.45) without any units'
+                />
+              </div>
               <InputWidget
                 type='text'
                 ref='costsCouncilTax'
