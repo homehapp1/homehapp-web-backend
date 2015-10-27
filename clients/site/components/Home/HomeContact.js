@@ -101,15 +101,9 @@ export default class HomeContact extends React.Component {
   }
 
   render() {
-    //let terms = '/404';
-
     if (this.props.context) {
       this.context = this.props.context;
     }
-
-    // if (this.context && this.context.router) {
-    //   terms = this.context.router.makeHref('contentTerms');
-    // }
 
     let error = this.handleErrorState();
 

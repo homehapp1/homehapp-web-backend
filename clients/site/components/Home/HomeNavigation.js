@@ -97,6 +97,8 @@ export default class HomeNavigation extends React.Component {
         modal.parentNode.removeChild(modal);
       }
     }
+    let body = document.getElementsByTagName('body')[0];
+    body.className = body.className.replace(/ ?no-scroll/g, '');
   }
 
   createModal() {
