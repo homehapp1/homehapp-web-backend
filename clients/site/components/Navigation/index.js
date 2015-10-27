@@ -2,61 +2,91 @@ import React from 'react';
 import { Link } from 'react-router';
 import DOMManipulator from '../../../common/DOMManipulator';
 
+let debug = require('debug')('Navigation');
+
 export default class Navigation extends React.Component {
   constructor() {
     super();
     this.click = this.click.bind(this);
     this.hideNavigation = this.hideNavigation.bind(this);
     this.body = null;
+
+    // Bind to self
+    this.hideNavigation = this.hideNavigation.bind(this);
+    this.showNavigation = this.showNavigation.bind(this);
+    this.onDocumentClick = this.onDocumentClick.bind(this);
   }
 
   componentDidMount() {
+    this.container = new DOMManipulator(this.refs.container);
+
+    // Icon actions
     this.icon = new DOMManipulator(this.refs.icon);
     this.icon.addEvent('touchstart', this.click, true);
     this.icon.addEvent('mousedown', this.click, true);
 
-    this.container = new DOMManipulator(this.refs.container);
-    // this.container.addEvent('touchstart', this.hideNavigation, false);
-    this.container.addEvent('mousedown', this.hideNavigation, false);
-
+    // Navigation actions
     this.navigation = new DOMManipulator(this.refs.navigation);
+    this.navigation.addEvent('mouseover', this.showNavigation, true);
+    this.navigation.addEvent('mouseout', this.hideNavigation, false);
+
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
   }
 
   componentWillUnmount() {
-    this.icon.removeEvent('touchstart', this.click, true);
-    this.icon.removeEvent('mousedown', this.click, true);
-    // this.container.removeEvent('touchstart', this.hideNavigation, false);
-    this.container.removeEvent('mousedown', this.hideNavigation, false);
+    // Remove events
+    this.icon.removeEvent('touch', this.click, true);
+    this.icon.removeEvent('click', this.click, true);
+    this.navigation.removeEvent('mouseover', this.showNavigation, true);
+    this.navigation.removeEvent('mouseout', this.hideNavigation, false);
   }
 
-  isNavigationOpen() {
-    let style = window.getComputedStyle(this.container.node);
-    console.log('style', style, style.display, (style.display === 'none'));
-    return !(style.display === 'none');
+  onDocumentClick(event) {
+    debug('onDocumentClick', event);
+    let target = event.target;
+    let preventDefault = true;
+
+    // Check if inside navigation
+    while (target.parentNode) {
+      if (target.id === 'navigation') {
+        return true;
+      }
+      target = target.parentNode;
+    }
+
+    // Otherwise catch the event, hide navigation and remove the self
+    event.preventDefault();
+    event.stopPropagation();
+    this.hideNavigation();
   }
 
-  hideNavigation() {
+  hideNavigation(event) {
+    debug('hideNavigation', event);
     this.icon.removeClass('open');
     this.navigation.removeClass('open');
     this.body.removeClass('no-scroll-small').removeClass('away-for-small');
+    document.removeEventListener('mousedown', this.onDocumentClick, true);
+    document.removeEventListener('touchstart', this.onDocumentClick, true);
   }
 
   showNavigation() {
     this.icon.addClass('open');
     this.navigation.addClass('open');
     this.body.addClass('no-scroll-small').addClass('away-for-small');
+    document.addEventListener('mousedown', this.onDocumentClick, true);
+    document.addEventListener('touchstart', this.onDocumentClick, true);
   }
 
-  click(e) {
-    if (this.navigation.hasClass('open')) {
-      this.hideNavigation();
+  click(event) {
+    debug('body hasclass', this.body.hasClass('no-scroll-small'));
+    if (this.body.hasClass('no-scroll-small')) {
+      this.hideNavigation(event);
     } else {
-      this.showNavigation();
+      this.showNavigation(event);
     }
 
-    e.preventDefault();
-    e.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
     return false;
   }
 

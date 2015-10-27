@@ -98,31 +98,6 @@
       }
     }
 
-    @include notSmall() {
-      &:hover {
-        & > * {
-          background-color: $red;
-          box-shadow: none;
-
-          &.middle {
-            opacity: 0;
-          }
-
-          &.top {
-            $m: 0.5 * ($navigationIconSize - $oSquared);
-            $t: translateY($m) rotate(45deg);
-            @include vendors(transform, $t);
-          }
-
-          &.bottom {
-            $m: -0.5 * ($navigationIconSize - $oSquared);
-            $t: translateY($m) rotate(-45deg);
-            @include vendors(transform, $t);
-          }
-        }
-      }
-    }
-
     &.loading {
       @include vendors(animation-name, rotate);
       @include vendors(animation-iteration-count, infinite);
@@ -216,24 +191,6 @@
       @include small() {
         width: 100%;
         left: 0;
-      }
-    }
-  }
-
-  @include notSmall() {
-    &:hover {
-      & > .icon {
-        float: right;
-      }
-
-      & > .container {
-        display: block;
-        width: 250px;
-
-        @include small() {
-          width: 100%;
-          left: 0;
-        }
       }
     }
   }
