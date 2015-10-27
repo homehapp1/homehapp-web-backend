@@ -75,7 +75,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.Contact.statics.editableFields = function () {
     return [
       'title', 'message', 'type', 'sender', 'recipient', 'tags',
-      'home'
+      'home', 'subType'
     ];
   };
 
