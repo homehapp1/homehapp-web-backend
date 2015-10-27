@@ -48,7 +48,7 @@ export default class HomesEditDetails extends EditDetails {
         }
       ];
       this.state.images = props.home.images || [];
-      this.state.floorplans = props.home.floorplans || [];
+      this.state.brochures = props.home.brochures || [];
     }
   }
 
@@ -58,7 +58,7 @@ export default class HomesEditDetails extends EditDetails {
     home: null,
     currentAttributes: [],
     images: [],
-    floorplans: [],
+    brochures: [],
     coordinates: [],
     lat: null,
     lng: null
@@ -80,6 +80,12 @@ export default class HomesEditDetails extends EditDetails {
 
   componentWillUnmount() {
     HomeStore.unlisten(this.storeListener);
+  }
+
+  brochureTypes = {
+    floorplan: 'Floorplan',
+    epc: 'EPC',
+    brochure: 'Brochure'
   }
 
   onHomeStoreChange(state) {
@@ -126,7 +132,7 @@ export default class HomesEditDetails extends EditDetails {
     }
 
     let images = [];
-    let floorplans = [];
+    let brochures = [];
 
     // Clean broken images
     this.state.images.forEach((image) => {
@@ -135,9 +141,9 @@ export default class HomesEditDetails extends EditDetails {
       }
     });
     // Clean broken images
-    this.state.floorplans.forEach((image) => {
+    this.state.brochures.forEach((image) => {
       if (image.url) {
-        floorplans.push(image);
+        brochures.push(image);
       }
     });
 
@@ -176,7 +182,7 @@ export default class HomesEditDetails extends EditDetails {
       facilities: this.refs.facilities.getValue().split('\n'),
       attributes: this.state.currentAttributes,
       images: images,
-      floorplans: floorplans
+      brochures: brochures
     };
 
     this.saveHome(homeProps);
@@ -302,6 +308,7 @@ export default class HomesEditDetails extends EditDetails {
   }
 
   render() {
+    debug('this.brochureTypes', this.brochureTypes);
     this.handleErrorState();
     if (HomeStore.isLoading()) {
       this.handlePendingState();
@@ -580,8 +587,14 @@ export default class HomesEditDetails extends EditDetails {
               </Row>
               <Row>
                 <Col md={6}>
-                  <h2>Floorplans</h2>
-                  <ImageList images={this.state.floorplans} onRemove={this.onRemoveImageClicked} onChange={this.onFormChange} storageKey='floorplans' />
+                  <h2>Brochures</h2>
+                  <ImageList
+                    images={this.state.brochures}
+                    onRemove={this.onRemoveImageClicked}
+                    onChange={this.onFormChange}
+                    storageKey='brochures'
+                    types={this.brochureTypes}
+                  />
                 </Col>
                 <Col md={6}>
                   <UploadArea
@@ -590,10 +603,10 @@ export default class HomesEditDetails extends EditDetails {
                     width='100%'
                     height='80px'
                     onUpload={(file, data) => {
-                      this.onImageUpload(file, data, 'floorplans');
+                      this.onImageUpload(file, data, 'brochures');
                     }}
                     acceptedMimes='image/*,application/pdf'
-                    instanceId='floorplans'>
+                    instanceId='brochures'>
                     <Well>
                       <p>Drag new image here, or click to select from filesystem.</p>
                     </Well>
