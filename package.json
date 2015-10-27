@@ -38,6 +38,7 @@
     "passport-strategy": "1.0.0",
     "react": "0.13.3",
     "react-bootstrap": "0.24.5",
+    "react-cookie": "^0.4.1",
     "react-google-maps": "2.2.0",
     "react-router": "0.13.4",
     "react-router-bootstrap": "0.18.1",

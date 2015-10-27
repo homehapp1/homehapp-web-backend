@@ -2,6 +2,7 @@ import React from 'react';
 let {RouteHandler} = require('react-router');
 
 import Header from '../Header';
+import CookiePolicy from '../Header/CookiePolicy';
 import Navigation from '../Navigation';
 import Footer from '../Footer';
 import Layout from '../../../common/components/Layout';
@@ -36,6 +37,7 @@ export default class Application extends React.Component {
       <Layout>
         <Navigation {...this.props} />
         <Header {...this.props} />
+        <CookiePolicy />
         <div id='container'>
           <RouteHandler />
         </div>

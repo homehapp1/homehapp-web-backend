@@ -6,22 +6,29 @@
   right: 0;
   height: $h;
   line-height: $h;
-  background-color: black;
-  color: white;
   text-align: center;
-  z-index: 100;
+  z-index: $zCookie;
   font-weight: 300;
-  
-  a {
-    cursor: pointer;
-    color: $orange;
-  }
-  
-  & + #header {
-    margin-top: $h;
-  }
-  
-  &.hidden + #header {
-    margin-top: 0;
+  text-align: center;
+
+  p {
+    margin: 0 auto;
+    padding: 0.2em 0.5em;
+    background-color: black;
+    width: auto;
+    display: block;
+    font-size: 12px;
+    display: inline-block;
+
+    &, a {
+      color: white;
+    }
+
+    .close {
+      text-align: center;
+      cursor: pointer;
+      color: $red;
+      margin-right: 0.5em;
+    }
   }
 }

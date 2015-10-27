@@ -56,6 +56,7 @@ $zHeader: 100;
 $zNavigation: $zHeader + 10;
 $zModal: 1000;
 $zFooter: $zHeader;
+$zCookie: $zModal + 100;
 
 // Transitions
 $easingEaseOutSlow: cubic-bezier(0,1,0,1);
