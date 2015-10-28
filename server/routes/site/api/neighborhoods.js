@@ -3,6 +3,23 @@ let debug = require('debug')('app');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+  app.get('/api/neighborhoods', function(req, res, next) {
+    QB
+    .forModel('Neighborhood')
+    .parseRequestArguments(req)
+    .populate({
+      'location.city': 'slug title'
+    })
+    .findAll()
+    .fetch()
+    .then((result) => {
+      res.json({
+        status: 'ok',
+        neighborhoods: result.models
+      });
+    });
+  });
+
   app.get('/api/neighborhoods/:city', function(req, res, next) {
     let city = null;
 
@@ -14,6 +31,7 @@ exports.registerRoutes = (app) => {
       city = result.city;
       return QB
       .forModel('Neighborhood')
+      .parseRequestArguments(req)
       .query({
         enabled: true,
         'location.city': city
@@ -37,6 +55,7 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('City')
     .findBySlug(req.params.city)
+    .parseRequestArguments(req)
     .fetch()
     .then((result) => {
       city = result.city;
@@ -79,6 +98,7 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('City')
     .findBySlug(req.params.city)
+    .parseRequestArguments(req)
     .fetch()
     .then((resultCity) => {
       let city = resultCity.city;
@@ -97,6 +117,7 @@ exports.registerRoutes = (app) => {
         QB
         .forModel('Home')
         .findByNeighborhood(neighborhood)
+        .parseRequestArguments(req)
         .sort({
           'metadata.score': -1
         })

@@ -15,9 +15,23 @@ export default SourceBuilder.build({
         uri: (model, args) => {
           let url = '/api/homes';
           let filters = [];
+
+          // Pass the allowed keys with quick validation
           if (typeof args[0] === 'object') {
-            if (args[0].type) {
-              filters.push(`type=${args[0].type}`);
+            for (let i in args[0]) {
+              let v = args[0][i];
+              switch (i) {
+                case 'limit':
+                  if (!isNaN(v)) {
+                    filters.push(`limit=${v}`);
+                  }
+                  break;
+                case 'type':
+                  if (['', 'buy', 'rent'].indexOf(v) !== -1) {
+                    filters.push(`type=${v}`);
+                  }
+                  break;
+              }
             }
           }
           if (filters.length) {

@@ -32,9 +32,8 @@ exports.registerRoutes = (app) => {
       debug(`Got ${result.models.length} homes`);
       initMetadata(res);
       res.locals.data.HomeListStore = {
-        homes: result.models
+        items: result.models
       };
-      setLastMod(result.models, res);
       res.locals.page = {
         title: 'Discover y',
         description: 'Homehapp - discover y'
@@ -50,8 +49,9 @@ exports.registerRoutes = (app) => {
     })
     .then((result) => {
       res.locals.data.NeighborhoodListStore = {
-        models: result.models
+        items: result.models
       };
+      setLastMod([].concat(result.models).concat(res.locals.data.HomeListStore), res);
       next();
     });
   });

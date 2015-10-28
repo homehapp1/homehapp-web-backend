@@ -15,32 +15,83 @@ exports.registerRoutes = (app) => {
     return res.redirect(301, `/homes/${req.params.slug}`);
   });
 
-  app.get('/', function(req, res, next) {
-    debug('GET /');
-    QB
-    .forModel('Home')
-    .parseRequestArguments(req)
-    .populate({
-      'location.neighborhood': {}
-    })
-    .sort({
-      'metadata.score': -1
-    })
-    .findAll()
-    .fetch()
-    .then((result) => {
-      debug(`Got ${result.models.length} homes`);
-      initMetadata(res);
-      res.locals.data.HomeListStore = {
-        homes: result.models
-      };
-      setLastMod(result.models, res);
+  let listHomes = (req, res) => {
+    let query = {};
+
+    if (req.params.type) {
+      query.announcementType = req.params.type;
+    }
+
+    return new Promise((resolve, reject) => {
+      QB
+      .forModel('Home')
+      .parseRequestArguments(req)
+      .query(query)
+      .populate({
+        'location.neighborhood': {}
+      })
+      .sort({
+        'metadata.score': -1
+      })
+      .findAll()
+      .fetch()
+      .then((result) => {
+        debug(`Got ${result.models.length} homes`);
+        initMetadata(res);
+        res.locals.data.HomeListStore = {
+          items: result.models
+        };
+        setLastMod(result.models, res);
+        resolve(result.models);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    });
+  };
+
+  app.get('/homes', function(req, res, next) {
+    debug('GET /homes');
+
+    listHomes(req, res, next)
+    .then(() => {
       res.locals.page = {
         title: 'Homes',
         description: 'Our exclusive homes'
       };
       next();
-    });
+    })
+    .catch(next);
+  });
+
+  app.get('/search', function(req, res, next) {
+    debug('GET /search');
+
+    listHomes(req, res, next)
+    .then(() => {
+      res.locals.page = {
+        title: 'Homes',
+        description: 'Our exclusive homes'
+      };
+      next();
+    })
+    .catch(next);
+  });
+
+  app.get('/search/:type', function(req, res, next) {
+    debug(`GET /search/${req.params.type}`);
+
+    let title = (req.params.type === 'buy') ? 'sell' : 'rent';
+
+    listHomes(req, res, next)
+    .then(() => {
+      res.locals.page = {
+        title: 'Homes',
+        description: `Our exclusive homes for ${title}`
+      };
+      next();
+    })
+    .catch(next);
   });
 
   let returnHomeBySlug = (req, res, next) => {
