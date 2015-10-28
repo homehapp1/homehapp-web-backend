@@ -1,45 +1,39 @@
-import request from '../../common/request';
+import SourceBuilder from '../../common/sources/Builder';
 import HomeListActions from '../actions/HomeListActions';
+// let debug = require('debug')('HomeListSource');
 
-let debug = require('../../common/debugger')('HomeListSource');
-
-let HomeListSource = {
-  fetchHomes: () => {
-    return {
-      remote(/*storeState*/) {
-        debug('fetchHomes:remote', arguments);
-        let type = (arguments[1]) ? arguments[1].type : '';
-
-        return request.get(`/api/homes?type=${type}`)
-          .then((response) => {
-            debug('got response', response);
-            if (!response.data || !response.data.homes) {
-              let err = new Error('Invalid response');
-              return Promise.reject(err);
+export default SourceBuilder.build({
+  name: 'HomeListSource',
+  actions: {
+    base: HomeListActions,
+    error: HomeListActions.requestFailed
+  },
+  methods: {
+    fetchItems: {
+      remote: {
+        method: 'get',
+        uri: (model, args) => {
+          let url = '/api/homes';
+          let filters = [];
+          if (typeof args[0] === 'object') {
+            if (args[0].type) {
+              filters.push(`type=${args[0].type}`);
             }
-            return Promise.resolve(response.data.homes);
-          })
-          .catch((response) => {
-            if (response instanceof Error) {
-              return Promise.reject(response);
-            } else {
-              let msg = 'unexpected error';
-              if (response.data.error) {
-                msg = response.data.error;
-              }
-              return Promise.reject(new Error(msg));
-            }
-            return Promise.reject(response);
-          });
+          }
+          if (filters.length) {
+            url += `?${filters.join('&')}`;
+          }
+          return url;
+        },
+        params: null,
+        response: {
+          key: 'homes'
+        }
       },
-      local(/*storeState, slug*/) {
-        return null;
-      },
-      success: HomeListActions.updateHomes,
-      error: HomeListActions.fetchFailed,
-      loading: HomeListActions.fetchHomes
-    };
+      local: null,
+      actions: {
+        success: HomeListActions.updateItems
+      }
+    }
   }
-};
-
-export default HomeListSource;
+});
