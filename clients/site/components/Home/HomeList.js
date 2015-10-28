@@ -169,12 +169,8 @@ export default class HomeList extends React.Component {
                 <div className={classes.join(' ')} key={`containerItem${index}`}>
                   <Link {...link} className='thumbnail'>
                     <Hoverable {...mainImage} width={464} height={556} mode='fill' applySize className='with-shadow'>
-                      <div className='title'>
-                        <div className='wrapper'>
-                          <span>{home.homeTitle}</span>
-                        </div>
-                      </div>
                       <div className='description'>
+                        <h3><span>{home.homeTitle}</span></h3>
                         <p className='price'>{home.formattedPrice}</p>
                         <p className='address'>
                           {this.getStreet(home)}

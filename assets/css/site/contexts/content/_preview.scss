@@ -84,7 +84,6 @@
       left: $contentPadding * 2;
       right: $contentPadding * 2;
       z-index: 2;
-      text-align: center;
       font-size: $fontSizeSecondary;
 
       @include small() {
@@ -109,14 +108,22 @@
     }
 
     .title, .actions, .description {
-      &, p, a {
+      &, * {
         color: white;
         text-shadow: $textShadow;
       }
     }
 
+    .actions {
+      text-align: center;
+    }
+
     .description {
-      font-size: $fontSizeHeading3;
+      h3, p {
+        margin: 0.2em 0;
+      }
+
+      font-size: $fontSize;
     }
 
     .actions a {
