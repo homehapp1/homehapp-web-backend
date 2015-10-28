@@ -1,6 +1,4 @@
 /*eslint-env es6 */
-
-
 import React from 'react';
 
 // Internal components
@@ -16,24 +14,41 @@ import Loading from '../../../common/components/Widgets/Loading';
 
 import { setPageTitle } from '../../../common/Helpers';
 
+let debug = require('debug')('HomeSearch');
+
 export default class HomeSearch extends React.Component {
   static propTypes = {
     params: React.PropTypes.object
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.storeListener = this.onChange.bind(this);
+    this.state.type = props.params.mode || 'buy';
   }
 
   state = {
     error: null,
+    type: 'buy',
     homes: HomeListStore.getState().homes
+  }
+
+  componentWillReceiveProps(props) {
+    let type = props.params.mode || this.state.type || 'buy';
+    debug('componentWillReceiveProps', props.params, type);
+    this.setState({
+      type: type
+    });
+    let filters = {type: type};
+    debug('Filters in componentWillReceiveProps', filters);
+    this.updateFilters(filters);
   }
 
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
-    HomeListStore.fetchHomes({limit: 20});
+    let filters = {type: this.props.params.mode || this.state.type};
+    debug('Filters in compontDidMount', filters, this.props.params);
+    this.updateFilters(filters);
   }
 
   componentWillUnmount() {
@@ -42,6 +57,11 @@ export default class HomeSearch extends React.Component {
 
   onChange(state) {
     this.setState(state);
+  }
+
+  updateFilters(filters = {}) {
+    debug('Filters', filters);
+    HomeListStore.fetchHomes(filters);
   }
 
   handlePendingState() {
@@ -72,17 +92,12 @@ export default class HomeSearch extends React.Component {
       return this.handlePendingState();
     }
 
-    let mode = 'sale';
-
-    if (this.props.params && this.props.params.mode) {
-      mode = this.props.params.mode;
-    }
-    setPageTitle(`Our exclusive properties for ${mode}`);
+    setPageTitle(`Our exclusive properties for ${this.state.type}`);
 
     return (
       <div id='propertyFilter'>
         <ContentBlock className='padded'>
-          <h1>Our exclusive properties for {mode}</h1>
+          <h1>Our exclusive properties for {this.state.type}</h1>
         </ContentBlock>
         <HomeList items={this.state.homes} />
       </div>

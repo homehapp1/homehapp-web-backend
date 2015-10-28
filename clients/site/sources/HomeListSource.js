@@ -8,7 +8,9 @@ let HomeListSource = {
     return {
       remote(/*storeState*/) {
         debug('fetchHomes:remote', arguments);
-        return request.get(`/api/homes`)
+        let type = (arguments[1]) ? arguments[1].type : '';
+
+        return request.get(`/api/homes?type=${type}`)
           .then((response) => {
             debug('got response', response);
             if (!response.data || !response.data.homes) {

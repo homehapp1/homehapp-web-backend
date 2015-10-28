@@ -1,5 +1,6 @@
 import QueryBuilder from '../../../lib/QueryBuilder';
 let debug = require('debug')('/api/homes');
+let url = require('url');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -34,9 +35,17 @@ exports.registerRoutes = (app) => {
   });
 
   app.get('/api/homes', function(req, res, next) {
+    let parts = url.parse(req.url, true);
+    let query = {};
+    if (parts.query.type) {
+      query.announcementType = parts.query.type;
+    }
+    debug('Query', query);
+
     QB
     .forModel('Home')
     .parseRequestArguments(req)
+    .query(query)
     .populate({
       'location.neighborhood': {}
     })
