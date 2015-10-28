@@ -35,7 +35,8 @@ exports.loadSchemas = function (mongoose, next) {
     },
     announcementType: {
       type: String,
-      default: 'sell'
+      enum: ['buy', 'rent'],
+      default: 'buy'
     },
     description: {
       type: String,
