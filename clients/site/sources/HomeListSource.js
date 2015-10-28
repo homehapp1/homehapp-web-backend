@@ -31,6 +31,9 @@ export default SourceBuilder.build({
                     filters.push(`type=${v}`);
                   }
                   break;
+                case 'story':
+                  filters.push('story=1');
+                  break;
               }
             }
           }

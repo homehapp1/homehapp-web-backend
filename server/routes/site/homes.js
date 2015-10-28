@@ -21,6 +21,9 @@ exports.registerRoutes = (app) => {
     if (req.params.type) {
       query.announcementType = req.params.type;
     }
+    if (req.params.story) {
+      query['story.enabled'] = true;
+    }
 
     return new Promise((resolve, reject) => {
       QB
@@ -58,6 +61,20 @@ exports.registerRoutes = (app) => {
       res.locals.page = {
         title: 'Homes',
         description: 'Our exclusive homes'
+      };
+      next();
+    })
+    .catch(next);
+  });
+
+  app.get('/homes/:story(stories)', function(req, res, next) {
+    debug('GET /homes/stories');
+
+    listHomes(req, res, next)
+    .then(() => {
+      res.locals.page = {
+        title: 'Storified homes',
+        description: 'Our storified homes'
       };
       next();
     })
@@ -156,7 +173,14 @@ exports.registerRoutes = (app) => {
         debug('Redirecting the UUID based call to slug based URL', href);
         return res.redirect(301, href);
       })
-      .catch(next);
+      .catch(() => {
+        res.status(404);
+        next();
+      });
+    })
+    .catch(() => {
+      res.status(404);
+      next();
     });
   };
 
