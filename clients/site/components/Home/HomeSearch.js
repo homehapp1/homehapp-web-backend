@@ -30,7 +30,7 @@ export default class HomeSearch extends React.Component {
   state = {
     error: null,
     type: 'buy',
-    homes: HomeListStore.getState().homes
+    homes: HomeListStore.getState().items
   }
 
   componentDidMount() {
@@ -56,12 +56,15 @@ export default class HomeSearch extends React.Component {
   }
 
   onChange(state) {
-    this.setState(state);
+    this.setState({
+      error: state.error,
+      homes: state.items
+    });
   }
 
   updateFilters(filters = {}) {
     debug('Filters', filters);
-    HomeListStore.fetchHomes(filters);
+    HomeListStore.fetchItems(filters);
   }
 
   handlePendingState() {
@@ -92,6 +95,8 @@ export default class HomeSearch extends React.Component {
       return this.handlePendingState();
     }
 
+    let homes = this.state.homes || [];
+
     setPageTitle(`Our exclusive properties for ${this.state.type}`);
 
     return (
@@ -99,7 +104,7 @@ export default class HomeSearch extends React.Component {
         <ContentBlock className='padded'>
           <h1>Our exclusive properties for {this.state.type}</h1>
         </ContentBlock>
-        <HomeList items={this.state.homes} />
+        <HomeList items={homes} />
       </div>
     );
   }
