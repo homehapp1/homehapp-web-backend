@@ -127,7 +127,16 @@
       }
 
       h3, p {
+        line-height: 1em;
         margin: 0;
+      }
+
+      p {
+        font-size: $fontSizeSecondary;
+
+        span + span:before {
+          content: ', ';
+        }
       }
 
       font-size: $fontSize;
