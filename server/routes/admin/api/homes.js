@@ -33,7 +33,7 @@ exports.registerRoutes = (app) => {
   });
 
   app.post('/api/homes', app.authenticatedRoute, function(req, res, next) {
-    debug('API update home with uuid', req.params.uuid);
+    debug('Admin create home');
     //debug('req.body', req.body);
 
     let data = req.body.home;
