@@ -28,6 +28,10 @@ exports.loadSchemas = function (mongoose, next) {
       index: true,
       required: true
     },
+    enabled: {
+      type: Boolean,
+      default: true
+    },
     // Details
     title: {
       type: String,
