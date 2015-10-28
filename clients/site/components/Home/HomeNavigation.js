@@ -146,7 +146,6 @@ export default class HomeNavigation extends React.Component {
   }
 
   getStoryLink() {
-    let currentRoutes = this.context.router.getCurrentRoutes();
     if (!this.props.home.story.enabled) {
       return null;
     }

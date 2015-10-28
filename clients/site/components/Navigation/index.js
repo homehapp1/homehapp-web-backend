@@ -44,7 +44,6 @@ export default class Navigation extends React.Component {
   onDocumentClick(event) {
     // debug('onDocumentClick', event);
     let target = event.target;
-    let preventDefault = true;
 
     // Check if inside navigation
     while (target.parentNode) {
@@ -60,7 +59,7 @@ export default class Navigation extends React.Component {
     this.hideNavigation();
   }
 
-  hideNavigation(event) {
+  hideNavigation() {
     // debug('hideNavigation', event);
     this.icon.removeClass('open');
     this.navigation.removeClass('open');

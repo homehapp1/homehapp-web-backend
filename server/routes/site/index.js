@@ -16,8 +16,6 @@ exports.registerRoutes = (app) => {
   });
 
   app.get('/', function(req, res, next) {
-    let homes = [];
-    let neighborhoods = [];
     debug('GET /');
     QB
     .forModel('Home')

@@ -1,5 +1,4 @@
 import React from 'react';
-import { setFullHeight } from '../../Helpers';
 import ContentBlock from './ContentBlock';
 import Icon from './Icon';
 

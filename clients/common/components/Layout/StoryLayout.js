@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 
 // Widgets
 import Agents from '../Widgets/Agents';
@@ -10,7 +9,6 @@ import Columns from '../Widgets/Columns';
 import ContentBlock from '../Widgets/ContentBlock';
 import ContentImage from '../Widgets/ContentImage';
 import Gallery from '../Widgets/Gallery';
-import Icon from '../Widgets/Icon';
 import LargeText from '../Widgets/LargeText';
 import Map from '../Widgets/Map';
 import Neighborhood from '../Widgets/Neighborhood';

@@ -6,11 +6,10 @@ import Navigation from '../Navigation';
 // import AuthActions from '../../../common/actions/AuthActions';
 import AuthStore from '../../../common/stores/AuthStore';
 
-import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
-
 export default class Application extends React.Component {
   static propTypes = {
   }
+
   static defaultProps = {
   }
 

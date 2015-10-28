@@ -52,7 +52,7 @@ export default class StoryBlocks extends React.Component {
     return blocks;
   }
 
-  appendBlocks(blocks, home) {
+  appendBlocks(blocks) {
     blocks = blocks || [];
 
     // Add location

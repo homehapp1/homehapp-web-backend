@@ -11,6 +11,10 @@ export default class CookiePolicy extends React.Component {
     this.cookieName = 'acceptcookies';
   }
 
+  state = {
+    approved: cookie.load('approved')
+  }
+
   componentDidMount() {
     let node = React.findDOMNode(this.refs.close);
     if (node) {
@@ -27,10 +31,6 @@ export default class CookiePolicy extends React.Component {
     this.setState({
       approved: dt
     });
-  }
-
-  state = {
-    approved: cookie.load('approved')
   }
 
   render() {
