@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import DOMManipulator from '../../../common/DOMManipulator';
 
-let debug = require('debug')('Navigation');
+// let debug = require('debug')('Navigation');
 
 export default class Navigation extends React.Component {
   constructor() {
@@ -42,7 +42,7 @@ export default class Navigation extends React.Component {
   }
 
   onDocumentClick(event) {
-    debug('onDocumentClick', event);
+    // debug('onDocumentClick', event);
     let target = event.target;
     let preventDefault = true;
 
@@ -61,7 +61,7 @@ export default class Navigation extends React.Component {
   }
 
   hideNavigation(event) {
-    debug('hideNavigation', event);
+    // debug('hideNavigation', event);
     this.icon.removeClass('open');
     this.navigation.removeClass('open');
     this.body.removeClass('no-scroll-small').removeClass('away-for-small');
@@ -78,7 +78,7 @@ export default class Navigation extends React.Component {
   }
 
   click(event) {
-    debug('body hasclass', this.body.hasClass('no-scroll-small'));
+    // debug('body hasclass', this.body.hasClass('no-scroll-small'));
     if (this.body.hasClass('no-scroll-small')) {
       this.hideNavigation(event);
     } else {
