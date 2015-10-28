@@ -37,12 +37,12 @@ export default class Application extends React.Component {
       <Layout>
         <Navigation {...this.props} />
         <Header {...this.props} />
-        <CookiePolicy />
         <div id='container'>
           <RouteHandler />
         </div>
         <Footer {...this.props} />
         <GoogleAnalytics router={this.context.router} />
+        <CookiePolicy />
       </Layout>
     );
   }
