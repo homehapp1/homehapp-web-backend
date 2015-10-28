@@ -92,8 +92,8 @@ export default class HomeList extends React.Component {
     return null;
   }
   getCity(home) {
-    if (home.location.address.city) {
-      return (<span className='neighborhood'>{home.location.address.city}</span>);
+    if (home.location.neighborhood && home.location.neighborhood.city && home.location.neighborhood.city.title) {
+      return (<span className='neighborhood'>{home.location.neighborhood.city.title}</span>);
     }
     return null;
   }
@@ -176,7 +176,6 @@ export default class HomeList extends React.Component {
                           {this.getStreet(home)}
                           {this.getNeighborhood(home)}
                           {this.getCity(home)}
-                          <span className='city'>{home.location.address.city}</span>
                         </p>
                       </div>
                     </Hoverable>
