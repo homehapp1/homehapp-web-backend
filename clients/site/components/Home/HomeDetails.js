@@ -33,7 +33,6 @@ export default class HomeDetails extends StoryBlocks {
     });
 
     content.push((<span>{this.props.home.formattedPrice}</span>));
-
     return content;
   }
 
