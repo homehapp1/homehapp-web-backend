@@ -4,7 +4,7 @@
   border-top: solid 1px transparent;
   margin-top: -1px;
 
-  &, h1, h2, h3, p {
+  &, h1, h2, h3, p, a {
     color: white;
     text-shadow: $textShadow;
   }
@@ -42,6 +42,25 @@
 
     .icon + h1, .icon + h2 {
       margin-top: 0;
+    }
+  }
+
+  .home-links {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+
+    li {
+      display: inline;
+      text-transform: uppercase;
+
+      &.active > * {
+        text-decoration: underline;
+      }
+
+      & + li {
+        margin-left: 1em;
+      }
     }
   }
 

@@ -1,20 +1,15 @@
 import React from 'react';
-
+import StoryBlocks from './StoryBlocks';
 import StoryLayout from '../../../common/components/Layout/StoryLayout';
 import HomeNavigation from './HomeNavigation';
 
 import { setPageTitle } from '../../../common/Helpers';
 
-let debug = require('debug')('HomeDetails');
+// let debug = require('debug')('HomeDetails');
 
-export default class HomeDetails extends React.Component {
+export default class HomeDetails extends StoryBlocks {
   static propTypes = {
-    home: React.PropTypes.object.isRequired,
-    context: React.PropTypes.object
-  }
-
-  static contextTypes = {
-    router: React.PropTypes.func
+    home: React.PropTypes.object.isRequired
   }
 
   componentDidMount() {
@@ -63,15 +58,8 @@ export default class HomeDetails extends React.Component {
         align: 'center',
         valign: 'middle',
         isPageTitle: true,
-        secondary: this.getSecondaryTitle()
+        secondary: this.addViewControls(this.props.home)
       }
-    };
-  }
-
-  getNeighborhoodBlock() {
-    return {
-      template: 'Neighborhood',
-      properties: this.props.home.location.neighborhood
     };
   }
 
@@ -137,22 +125,7 @@ export default class HomeDetails extends React.Component {
       return 0;
     });
 
-    debug('Sorted', attachments);
-
     return attachments;
-    //   {
-    //     icon: 'floorplan',
-    //     label: 'Floor plan'
-    //   },
-    //   {
-    //     icon: 'epc',
-    //     label: 'EPC'
-    //   },
-    //   {
-    //     icon: 'brochures',
-    //     label: 'Brochure'
-    //   }
-    // ];
   }
 
   render() {
@@ -193,55 +166,7 @@ export default class HomeDetails extends React.Component {
         home: this.props.home
       }
     });
-
-
-    if (this.props.home.location.coordinates && this.props.home.location.coordinates[0] && this.props.home.location.coordinates[1]) {
-      blocks.push({
-        template: 'Map',
-        properties: {
-          center: this.props.home.location.coordinates,
-          zoom: 12,
-          markers: [{
-            location: this.props.home.location.coordinates,
-            title: this.props.home.homeTitle
-          }]
-        }
-      });
-    }
-
-    if (this.props.home.location.neighborhood) {
-      blocks.push({
-        template: 'Separator',
-        properties: {}
-      });
-
-      blocks.push(this.getNeighborhoodBlock());
-    }
-
-    blocks.push({
-      template: 'Separator',
-      properties: {
-        icon: 'marker'
-      }
-    });
-
-    blocks.push({
-      template: 'Agents',
-      properties: {
-        agents: this.props.home.agents,
-        home: this.props.home
-      }
-    });
-
-    // blocks.push({
-    //   template: 'Agent',
-    //   properties: {
-    //     name: 'Arttu Manninen',
-    //     title: 'Developer',
-    //     phone: '+358505958435',
-    //     email: 'arttu@kaktus.cc'
-    //   }
-    // });
+    blocks = this.appendBlocks(blocks, this.props.home);
 
     return (
       <div className='home-view'>

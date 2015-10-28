@@ -194,8 +194,6 @@ export default class HomeNavigation extends React.Component {
     return (
       <ContentNavigation>
         <ul ref='navi'>
-          {this.getStoryLink()}
-          {this.getDetailsLink()}
           {this.getPhoneLink()}
           <li className='contact'>
             <Link ref='contact' to='homeForm' params={{slug: this.props.home.slug}} id='contactFormLink'><i className='fa fa-envelope-o'></i></Link>
