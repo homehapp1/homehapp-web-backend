@@ -113,7 +113,7 @@ export default class NeighborhoodStory extends React.Component {
           }
         }
       });
-      if (this.props.neighborhood.images.length > 1) {
+      if (this.props.neighborhood.images && this.props.neighborhood.images.length > 1) {
         blocks.push({
           template: 'Gallery',
           properties: {
@@ -140,7 +140,7 @@ export default class NeighborhoodStory extends React.Component {
     }
 
     let secondaryImage = merge({}, this.props.neighborhood.mainImage);
-    if (typeof this.props.neighborhood.images[1] !== 'undefined') {
+    if (this.props.neighborhood.images && typeof this.props.neighborhood.images[1] !== 'undefined') {
       secondaryImage = this.props.neighborhood.images[1];
     }
 
