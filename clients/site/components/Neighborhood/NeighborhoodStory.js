@@ -139,6 +139,11 @@ export default class NeighborhoodStory extends React.Component {
       return this.getMap();
     }
 
+    let secondaryImage = merge({}, this.props.neighborhood.mainImage);
+    if (typeof this.props.neighborhood.images[1] !== 'undefined') {
+      secondaryImage = this.props.neighborhood.images[1];
+    }
+
     return (
       <div class='neighborhood-home-blocks'>
         <ContentBlock className='with-gradient padded'>
@@ -167,10 +172,6 @@ export default class NeighborhoodStory extends React.Component {
     debug('got neighborhood', this.props.neighborhood);
 
     let blocks = this.getBlocks();
-    let secondaryImage = merge({}, this.props.neighborhood.mainImage);
-    if (typeof this.props.neighborhood.images[1] !== 'undefined') {
-      secondaryImage = this.props.neighborhood.images[1];
-    }
 
     return (
       <div className='neighborhood-story'>
