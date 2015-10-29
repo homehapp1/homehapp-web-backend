@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import DOMManipulator from '../../../common/DOMManipulator';
 
-// let debug = require('debug')('Navigation');
+let debug = require('debug')('Navigation');
 
 export default class Navigation extends React.Component {
   constructor() {
@@ -19,6 +19,7 @@ export default class Navigation extends React.Component {
 
   componentDidMount() {
     this.container = new DOMManipulator(this.refs.container);
+    this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
 
     // Icon actions
     this.icon = new DOMManipulator(this.refs.icon);
@@ -29,6 +30,13 @@ export default class Navigation extends React.Component {
     this.navigation = new DOMManipulator(this.refs.navigation);
     this.navigation.addEvent('mouseover', this.showNavigation, true);
     this.navigation.addEvent('mouseout', this.hideNavigation, false);
+
+    // Navigation links
+    this.links = this.navigation.getByTagName('a');
+    for (let link of this.links) {
+      link.addEvent('click', this.hideNavigation.bind(this));
+      link.addEvent('touch', this.hideNavigation.bind(this));
+    }
 
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
   }
@@ -50,6 +58,7 @@ export default class Navigation extends React.Component {
       if (target.id === 'navigation') {
         return true;
       }
+
       target = target.parentNode;
     }
 
@@ -66,6 +75,7 @@ export default class Navigation extends React.Component {
     this.body.removeClass('no-scroll-small').removeClass('away-for-small');
     document.removeEventListener('mousedown', this.onDocumentClick, true);
     document.removeEventListener('touchstart', this.onDocumentClick, true);
+    return true;
   }
 
   showNavigation() {
