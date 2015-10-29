@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 // import Columns from '../../../common/components/Widgets/Columns';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Icon from '../../../common/components/Widgets/Icon';
+import Image from '../../../common/components/Widgets/Image';
 import PartnersForm from './Form';
 import Modal from '../../../common/components/Widgets/Modal';
 
@@ -53,18 +54,20 @@ export default class ContentPartners extends React.Component {
   }
 
   render() {
+    let image = {
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1441014109/site/images/icons/icon_mobile_large.svg',
+      alt: ''
+    };
     return (
       <ContentBlock className='padded' align='left' valign='top'>
         <div className='center'>
           <Icon type='clipboard' className='large' />
         </div>
-        <h1>Partners</h1>
-        <h3>Who we are</h3>
-        <p>Homehapp is...</p>
-        <h3>We are looking for</h3>
-        <p>We are looking for partners</p>
-        <h3>What we offer</h3>
-        <p>What we offer to our partners</p>
+        <h1>Why Homehapp?</h1>
+        <p>We believe there is better way to help people find homes they belong to. Its an idea whose time has come, and we at homehapp are making it happen.</p>
+        <div className='centered'>
+          <Image {...image} />
+        </div>
         <p className='call-to-action'>
           <Link className='button transparent' to='partnersContact' ref='button'>Get in contact & share us your details</Link>
         </p>

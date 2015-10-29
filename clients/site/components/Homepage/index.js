@@ -167,7 +167,7 @@ export default class Homepage extends React.Component {
         <BigImage gradient='green' fixed image={placeholder} proportion={0.8}>
           <LargeText align='center' valign='middle' proportion={0.8}>
             <div className='splash'>
-              <h1>Every home has<br /> a unique story</h1>
+              <h1>Find the home<br />you belong to</h1>
             </div>
           </LargeText>
         </BigImage>
