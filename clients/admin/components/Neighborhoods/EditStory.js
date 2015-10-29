@@ -104,7 +104,7 @@ export default class NeighborhoodsEditStory extends React.Component {
                 onChange={this.toggleEnabled.bind(this)}
               />
             </Panel>
-            <StoryEditBlocks parent={this.props.neighborhood} blocks={blocks} ref='storyBlocks' />
+            <StoryEditBlocks parent={this.props.neighborhood} blocks={blocks} disabled={['HTMLContent']} ref='storyBlocks' />
             <Well>
               <Row>
                 <Col md={6}>
