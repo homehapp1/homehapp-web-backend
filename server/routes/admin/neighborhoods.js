@@ -19,25 +19,26 @@ exports.registerRoutes = (app) => {
       next();
     })
     .catch(next);
-
   });
 
-  app.get('/neighborhoods/edit/:uuid', app.authenticatedRoute, function(req, res, next) {
-    console.log('fetch neighborhood by uuid', req.params.uuid);
-    console.log('req.query', req.query);
-
+  let redirectBySlug = (req, res, next) => {
     QB
     .forModel('Neighborhood')
-    .findByUuid(req.params.uuid)
+    .parseRequestArguments(req)
+    .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
-      res.locals.data.NeighborhoodListStore = {
-        neighborhoods: [result.neighborhoodJson]
-      };
-      next();
+      res.redirect(301, `/neighborhoods/${result.model.uuid}`);
     })
-    .catch(next);
+    .catch(() => {
+      next();
+    });
+  };
 
+  app.get('/neighborhoods/:city/:slug', app.authenticatedRoute, function(req, res, next) {
+    return redirectBySlug(req, res, next);
   });
-
+  app.get('/neighborhoods/:slug', app.authenticatedRoute, function(req, res, next) {
+    return redirectBySlug(req, res, next);
+  });
 };
