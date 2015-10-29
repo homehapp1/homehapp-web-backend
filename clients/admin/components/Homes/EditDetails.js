@@ -18,6 +18,7 @@ import EditDetails from '../Shared/EditDetails';
 import PlacePicker from '../../../common/components/Widgets/PlacePicker';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
+let marked = require('marked');
 
 export default class HomesEditDetails extends EditDetails {
   static propTypes = {
@@ -178,9 +179,7 @@ export default class HomesEditDetails extends EditDetails {
       details: {
         area: Number(this.refs.detailsArea.getValue())
       },
-      amenities: this.refs.amenities.getValue().split('\n'),
-      facilities: this.refs.facilities.getValue().split('\n'),
-      attributes: this.state.currentAttributes,
+      properties: this.refs.properties.getValue(),
       images: images,
       brochures: brochures
     };
@@ -296,6 +295,15 @@ export default class HomesEditDetails extends EditDetails {
     );
   }
 
+  propertiesChange(event) {
+    // debug('event', event.target.value);
+    let markdown = marked(event.target.value);
+    debug('markdown', markdown);
+
+    let node = React.findDOMNode(this.refs.propertiesPreview);
+    node.innerHTML = marked(markdown);
+  }
+
   changeStatus(event) {
     debug('changeStatus', event.target.value);
     // this.onFormChange(event);
@@ -319,11 +327,8 @@ export default class HomesEditDetails extends EditDetails {
       costs: {
         currency: 'GBP'
       },
-      details: {
-        area: null
-      },
-      amenities: [],
-      facilities: []
+      details: '',
+      properties: ''
     }, this.state.home || this.props.home || {});
     let homeLocation = merge({
       address: {
@@ -363,8 +368,23 @@ export default class HomesEditDetails extends EditDetails {
         </a>
       );
     }
+
+    let propertiesPreview = marked(home.properties);
+
     debug('Render', home);
     //debug('Neighborhood of this home', this.props.homeLocation.neighborhood);
+    let markdownExample = (
+      <p>Building<br />
+        <br />
+        - built in 1823<br />
+        - solid brick walls<br />
+        <br />
+        Amenities<br />
+        <br />
+        - sauna<br />
+        - gym<br />
+      </p>
+    );
 
     return (
       <Row>
@@ -475,7 +495,7 @@ export default class HomesEditDetails extends EditDetails {
                 </Row>
               </InputWidget>
             </Panel>
-            <Panel header='General specifications'>
+            <Panel header='Specifications'>
               <InputWidget
                 type='text'
                 ref='detailsArea'
@@ -486,6 +506,26 @@ export default class HomesEditDetails extends EditDetails {
                 pattern='([0-9]*)(\.[0-9]+)?'
                 patternError='Please enter a valid number (e.g. 123.45) without any units'
               />
+              <InputWidget
+                type='textarea'
+                ref='properties'
+                label='Amenities'
+                placeholder='(optional)'
+                className='xlarge'
+                defaultValue={home.properties || home.amenities.join(`\n`)}
+                onInput={this.propertiesChange.bind(this)}
+                onChange={this.onFormChange.bind(this)}
+              />
+              <Row>
+                <Col md={6}>
+                  <p>Preview:</p>
+                  <div ref='propertiesPreview' className='markdown-preview' dangerouslySetInnerHTML={{__html: propertiesPreview}}></div>
+                </Col>
+                <Col md={6}>
+                  <p>Example</p>
+                  <code className='preline markdown-example'>{markdownExample}</code>
+                </Col>
+              </Row>
             </Panel>
             <Panel header='Pricing information'>
               <InputWidget
@@ -532,37 +572,6 @@ export default class HomesEditDetails extends EditDetails {
                 pattern='([0-9]*)(\.[0-9]+)?'
                 patternError='Please enter a valid number (e.g. 123.45) without any units'
               />
-            </Panel>
-            <Panel header='Amenities'>
-              <InputWidget
-                type='textarea'
-                ref='amenities'
-                label='Input Amenities (one per line)'
-                placeholder='(optional)'
-                defaultValue={home.amenities.join(`\n`)}
-                onChange={this.onFormChange.bind(this)}
-              />
-            </Panel>
-            <Panel header='Facilities'>
-              <InputWidget
-                type='textarea'
-                ref='facilities'
-                label='Input Facilities (one per line)'
-                placeholder='(optional)'
-                defaultValue={home.facilities.join(`\n`)}
-                onChange={this.onFormChange.bind(this)}
-              />
-            </Panel>
-            <Panel header='Other Attributes'>
-              {
-                this.state.currentAttributes.map((attr, index) => {
-                  let isLast = false;
-                  if (index === this.state.currentAttributes.length - 1) {
-                    isLast = true;
-                  }
-                  return this.renderAttributeRow(index, attr, isLast);
-                })
-              }
             </Panel>
             <Panel header='Images'>
               <Row>

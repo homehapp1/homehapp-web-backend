@@ -51,10 +51,6 @@ exports.loadSchemas = function (mongoose, next) {
         type: Number,
         default: null
       },
-      freeform: {
-        type: String,
-        default: ''
-      }
     },
     location: {
       address: {
@@ -103,9 +99,13 @@ exports.loadSchemas = function (mongoose, next) {
         type: Number
       }
     },
-    attributes: [schemas.HomeAttribute],
-    amenities: [String],
-    facilities: [String],
+    properties: {
+      type: String,
+      default: ''
+    },
+    // attributes: [schemas.HomeAttribute],
+    // amenities: [String],
+    // facilities: [String],
     // Story
     story: {
       enabled: {
@@ -184,7 +184,8 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.Home.statics.editableFields = function () {
     return [
       'title', 'description', 'location', 'costs', 'story', 'amenities',
-      'facilities', 'attributes', 'images', 'announcementType', 'brochures'
+      'facilities', 'attributes', 'images', 'announcementType', 'brochures',
+      'properties'
     ];
   };
 
