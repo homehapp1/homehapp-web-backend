@@ -36,18 +36,15 @@ export default class HomeSearch extends React.Component {
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
     let filters = {type: this.props.params.mode || this.state.type};
-    debug('Filters in compontDidMount', filters, this.props.params);
     this.updateFilters(filters);
   }
 
   componentWillReceiveProps(props) {
     let type = props.params.mode || this.state.type || 'buy';
-    debug('componentWillReceiveProps', props.params, type);
     this.setState({
       type: type
     });
     let filters = {type: type};
-    debug('Filters in componentWillReceiveProps', filters);
     this.updateFilters(filters);
   }
 
