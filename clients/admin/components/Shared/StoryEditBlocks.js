@@ -9,6 +9,7 @@ import AdminContentImage from '../Widgets/ContentImage';
 import AdminBigVideo from '../Widgets/BigVideo';
 import AdminGallery from '../Widgets/Gallery';
 import AdminLargeText from '../Widgets/LargeText';
+import AdminHTMLContent from '../Widgets/HTMLContent';
 import {moveToIndex} from '../../../common/Helpers';
 
 let debug = require('debug')('StoryEditBlocks');
@@ -16,10 +17,14 @@ let debug = require('debug')('StoryEditBlocks');
 export default class StoryEditBlocks extends React.Component {
   static propTypes = {
     blocks: React.PropTypes.array.isRequired,
+    disabled: React.PropTypes.array,
+    enabled: React.PropTypes.array,
     parent: React.PropTypes.object
   };
   static defaultProps = {
-    parent: null
+    parent: null,
+    disabled: [],
+    enabled: []
   }
 
   constructor(props) {
@@ -193,8 +198,40 @@ export default class StoryEditBlocks extends React.Component {
     );
   }
 
+  getHTMLContent(item, index) {
+    return (
+      <AdminHTMLContent {...item.properties} ref={'block' + index} />
+    );
+  }
+
   render() {
     this.iterator++;
+    let blockTypes = [
+      {
+        template: 'BigImage',
+        label: 'Big image'
+      },
+      {
+        template: 'BigVideo',
+        label: 'Video block'
+      },
+      {
+        template: 'ContentBlock',
+        label: 'Content block'
+      },
+      {
+        template: 'ContentImage',
+        label: 'Content Image'
+      },
+      {
+        template: 'Gallery',
+        label: 'Gallery'
+      },
+      {
+        template: 'HTMLContent',
+        label: 'HTML content'
+      }
+    ];
     return (
       <div className='edit-story'>
         {
@@ -224,12 +261,20 @@ export default class StoryEditBlocks extends React.Component {
             ref='blockTemplate'
             onChange={this.onAddBlock.bind(this)}
           >
-            <option value=''>Choose template to use</option>
-            <option value='BigImage'>Big Image</option>
-            <option value='BigVideo'>Video block</option>
-            <option value='ContentBlock'>Content Block</option>
-            <option value='ContentImage'>Content Image</option>
-            <option value='Gallery'>Gallery</option>
+            <option value=''>Choose the template to add</option>
+            {blockTypes.map((type, index) => {
+              if (this.props.disabled.indexOf(type.template) !== -1) {
+                return null;
+              }
+
+              if (this.props.enabled.length && this.props.disabled.indexOf(type.template) === -1) {
+                return null;
+              }
+
+              return (
+                <option value={type.template} key={`template-${type.template}-${index}`}>{type.label}</option>
+              );
+            })}
           </InputWidget>
         </Panel>
       </div>
