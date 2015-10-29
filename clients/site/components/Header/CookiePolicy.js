@@ -44,7 +44,7 @@ export default class CookiePolicy extends React.Component {
         <p>
           <span className='close' ref='close'>×</span>
           This site uses cookies. By continuing to browse the site you are
-          agreeing to our use of cookies. <Link to='page' params={{slug: 'cookies'}}>Find out more ›</Link>
+          agreeing to our use of cookies. <Link to='page' params={{slug: 'privacy'}}>Find out more ›</Link>
         </p>
       </div>
     );
