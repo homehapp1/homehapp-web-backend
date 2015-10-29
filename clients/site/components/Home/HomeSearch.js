@@ -96,13 +96,13 @@ export default class HomeSearch extends React.Component {
     }
 
     let homes = this.state.homes || [];
-
-    setPageTitle(`Our exclusive properties for ${this.state.type}`);
+    let label = (this.state.type === 'buy') ? 'sale' : 'rent';
+    setPageTitle(`Select homes for ${label} in London’s finest neighourhoods`);
 
     return (
       <div id='propertyFilter'>
         <ContentBlock className='padded'>
-          <h1>Our exclusive properties for {this.state.type}</h1>
+          <h1>Select homes for {label} in London’s finest neighourhoods</h1>
         </ContentBlock>
         <HomeList items={homes} />
       </div>
