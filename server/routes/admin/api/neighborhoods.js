@@ -96,7 +96,7 @@ exports.registerRoutes = (app) => {
 
   });
 
-  let updateNeighborhood = function updateNeighborhood(req, res, next) {
+  let updateNeighborhood = function updateNeighborhood(req, res) {
     let data = req.body.neighborhood;
     debug('data', data);
 
@@ -111,8 +111,8 @@ exports.registerRoutes = (app) => {
         .then((model) => {
           resolve(model);
         })
-        .catch((next) => {
-          reject(next);
+        .catch((error) => {
+          reject(error);
         });
       };
 
