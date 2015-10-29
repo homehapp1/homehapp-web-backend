@@ -62,9 +62,20 @@ exports.registerRoutes = (app) => {
   };
 
   app.get('/neighborhoods', function(req, res, next) {
-    initMetadata(res);
-    res.locals.openGraph['og:url'] = '/neighborhoods/london';
-    next();
+    QB
+    .forModel('City')
+    .findAll()
+    .fetch()
+    .then((result) => {
+      if (result.models.length === 1) {
+        debug('Found only one city', result.models[0]);
+        return res.redirect(301, `/neighborhoods/${result.models[0].slug}`);
+      }
+      res.locals.data.CityListStore = {
+        cities: result.models
+      };
+    })
+    .catch(next);
   });
 
   app.get('/neighborhoods/:city', function(req, res, next) {
