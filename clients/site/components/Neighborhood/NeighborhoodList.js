@@ -12,7 +12,7 @@ import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
 import { setPageTitle } from '../../../common/Helpers';
-// let debug = require('../../../common/debugger')('NeighborhoodList');
+let debug = require('../../../common/debugger')('NeighborhoodList');
 
 export default class NeighborhoodList extends React.Component {
   static propTypes = {
@@ -32,7 +32,10 @@ export default class NeighborhoodList extends React.Component {
   componentDidMount() {
     setPageTitle(`Neighbourhoods of ${this.city.substr(0, 1).toUpperCase()}${this.city.substr(1)}`);
     NeighborhoodListStore.listen(this.storeListener);
-    NeighborhoodListStore.fetchNeighborhoods(this.city);
+
+    if (!NeighborhoodListStore.getState().neighborhoods) {
+      NeighborhoodListStore.fetchItems({city: this.city});
+    }
   }
 
   componentWillUnmount() {
@@ -41,7 +44,11 @@ export default class NeighborhoodList extends React.Component {
   }
 
   onChange(state) {
-    this.setState(state);
+    debug('set state', state);
+    this.setState({
+      error: state.error,
+      neighborhoods: state.neighborhoods
+    });
   }
 
   handlePendingState() {

@@ -46,7 +46,7 @@ export default class Homepage extends React.Component {
     if (!NeighborhoodListStore.getState().items) {
       NeighborhoodListStore.fetchItems({limit: 4});
     }
-    
+
     setPageTitle('Discover y');
   }
 
@@ -58,9 +58,9 @@ export default class Homepage extends React.Component {
   }
 
   onHomeListChange(state) {
-    debug('onHomehoodListChange', state);
+    debug('onHomeListChange', state);
     this.setState({
-      status: state.status,
+      status: state.error,
       homes: state.items
     });
   }
@@ -68,8 +68,8 @@ export default class Homepage extends React.Component {
   onNeighborhoodListChange(state) {
     debug('onNeighborhoodListChange', state);
     this.setState({
-      status: state.status,
-      neighborhoods: status.items
+      status: state.error,
+      neighborhoods: state.items
     });
   }
 
@@ -146,7 +146,6 @@ export default class Homepage extends React.Component {
   }
 
   render() {
-    debug('Render', HomeListStore.getState());
     let placeholder = {
       url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
       alt: ''
