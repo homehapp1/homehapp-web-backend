@@ -44,9 +44,9 @@ exports.registerRoutes = (app) => {
 
         // Common metadata for all the single neighborhood views
         let images = [];
-        if (neighborhood.images) {
-          for (let i = 0; i < neighborhood.images.length; i++) {
-            let src = result.neighborhood.images[i].url || result.neighborhood.images[i].src;
+        if (neighborhood && neighborhood.images) {
+          for (let image of neighborhood.images) {
+            let src = image.url || image.src;
             if (src) {
               images.push(src.replace(/upload\//, 'upload/c_fill,h_526,w_1000/g_south_west,l_homehapp-logo-horizontal-with-shadow,x_20,y_20/v1441911573/'));
             }
@@ -62,9 +62,20 @@ exports.registerRoutes = (app) => {
   };
 
   app.get('/neighborhoods', function(req, res, next) {
-    initMetadata(res);
-    res.locals.openGraph['og:url'] = '/neighborhoods/london';
-    next();
+    QB
+    .forModel('City')
+    .findAll()
+    .fetch()
+    .then((result) => {
+      if (result.models.length === 1) {
+        debug('Found only one city', result.models[0]);
+        return res.redirect(301, `/neighborhoods/${result.models[0].slug}`);
+      }
+      res.locals.data.CityListStore = {
+        cities: result.models
+      };
+    })
+    .catch(next);
   });
 
   app.get('/neighborhoods/:city', function(req, res, next) {

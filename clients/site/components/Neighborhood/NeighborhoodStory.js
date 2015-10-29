@@ -113,7 +113,7 @@ export default class NeighborhoodStory extends React.Component {
           }
         }
       });
-      if (this.props.neighborhood.images.length > 1) {
+      if (this.props.neighborhood.images && this.props.neighborhood.images.length > 1) {
         blocks.push({
           template: 'Gallery',
           properties: {
@@ -137,6 +137,11 @@ export default class NeighborhoodStory extends React.Component {
   renderHomeBlocks() {
     if (!this.props.neighborhood.homes || !this.props.neighborhood.homes.length) {
       return this.getMap();
+    }
+
+    let secondaryImage = merge({}, this.props.neighborhood.mainImage);
+    if (this.props.neighborhood.images && typeof this.props.neighborhood.images[1] !== 'undefined') {
+      secondaryImage = this.props.neighborhood.images[1];
     }
 
     return (
@@ -167,10 +172,6 @@ export default class NeighborhoodStory extends React.Component {
     debug('got neighborhood', this.props.neighborhood);
 
     let blocks = this.getBlocks();
-    let secondaryImage = merge({}, this.props.neighborhood.mainImage);
-    if (typeof this.props.neighborhood.images[1] !== 'undefined') {
-      secondaryImage = this.props.neighborhood.images[1];
-    }
 
     return (
       <div className='neighborhood-story'>
