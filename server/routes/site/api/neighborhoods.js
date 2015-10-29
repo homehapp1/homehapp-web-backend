@@ -10,12 +10,15 @@ exports.registerRoutes = (app) => {
     .populate({
       'location.city': 'slug title'
     })
+    .sort({
+      title: 1
+    })
     .findAll()
     .fetch()
     .then((result) => {
       res.json({
         status: 'ok',
-        neighborhoods: result.models
+        items: result.models
       });
     });
   });
@@ -36,13 +39,16 @@ exports.registerRoutes = (app) => {
         enabled: true,
         'location.city': city
       })
+      .sort({
+        title: 1
+      })
       .findAll()
       .fetch();
     })
     .then((result) => {
       res.json({
         status: 'ok',
-        neighborhoods: result.models
+        items: result.models
       });
     })
     .catch(next);

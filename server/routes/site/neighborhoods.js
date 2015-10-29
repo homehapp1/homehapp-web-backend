@@ -86,6 +86,9 @@ exports.registerRoutes = (app) => {
         enabled: true,
         'location.city': city
       })
+      .sort({
+        title: 1
+      })
       .findAll()
       .fetch();
     })
