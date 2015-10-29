@@ -50,6 +50,10 @@ exports.loadSchemas = function (mongoose, next) {
       area: {
         type: Number,
         default: null
+      },
+      freeform: {
+        type: String,
+        default: ''
       }
     },
     location: {
