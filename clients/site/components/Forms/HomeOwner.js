@@ -122,8 +122,6 @@ export default class HomeContact extends React.Component {
         </ContentBlock>
       );
     }
-    debug('home', this.props.home);
-
     return (
       <ContentBlock className='contact-form'>
         <h2>Contact us concering your home</h2>
