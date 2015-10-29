@@ -44,9 +44,9 @@ exports.registerRoutes = (app) => {
 
         // Common metadata for all the single neighborhood views
         let images = [];
-        if (neighborhood.images) {
-          for (let i = 0; i < neighborhood.images.length; i++) {
-            let src = result.neighborhood.images[i].url || result.neighborhood.images[i].src;
+        if (neighborhood && neighborhood.images) {
+          for (let image of neighborhood.images) {
+            let src = image.url || image.src;
             if (src) {
               images.push(src.replace(/upload\//, 'upload/c_fill,h_526,w_1000/g_south_west,l_homehapp-logo-horizontal-with-shadow,x_20,y_20/v1441911573/'));
             }
