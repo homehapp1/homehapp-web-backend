@@ -10,7 +10,7 @@ import ApplicationStore from '../../../common/stores/ApplicationStore';
 import { randomNumericId, setCDNUrlProperties, merge, enumerate, createNotification } from '../../../common/Helpers';
 import ImageList from './ImageList';
 
-let debug = require('../../../common/debugger')('WidgetsBaseBlock');
+let debug = require('debug')('WidgetsBaseBlock');
 
 function getFullImageUrl(url) {
   if (!url.match(/^http/)) {
