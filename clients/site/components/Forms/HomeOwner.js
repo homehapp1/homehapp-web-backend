@@ -9,7 +9,6 @@ let debug = require('debug')('HomeContact');
 
 export default class HomeContact extends React.Component {
   static propTypes = {
-    home: React.PropTypes.object.isRequired,
     context: React.PropTypes.object,
     onClose:  React.PropTypes.func
   }
@@ -61,7 +60,6 @@ export default class HomeContact extends React.Component {
     event.stopPropagation();
 
     let contactType = this.getContactType();
-    let agent = this.props.home.agents[0] || null;
 
     let props = {
       sender: {
@@ -71,9 +69,7 @@ export default class HomeContact extends React.Component {
       type: 'email',
       subType: contactType,
       message: React.findDOMNode(this.refs.message).value,
-      agent: agent,
-      home: this.props.home.id,
-      tags: ['contact', 'email', `home:${this.props.home.id}`]
+      tags: ['contact', 'email', contactType]
     };
 
     if (!props.sender.name) {
@@ -126,11 +122,9 @@ export default class HomeContact extends React.Component {
         </ContentBlock>
       );
     }
-    debug('home', this.props.home);
-
     return (
-      <ContentBlock className='home contact-form'>
-        <h2>Home details</h2>
+      <ContentBlock className='contact-form'>
+        <h2>Contact us concering your home</h2>
         {error}
         <form method='post' onSubmit={this.sendRequest}>
           <div className='form'>
@@ -156,10 +150,10 @@ export default class HomeContact extends React.Component {
 
             <Columns cols={2} className='control-group'>
               <label className='control radio'>
-                <input type='radio' name='subType' value='Details requested' ref='subTypeDetails' defaultChecked /> Request details
+                <input type='radio' name='subType' value='let' ref='subTypeDetails' defaultChecked /> Home to let
               </label>
               <label className='control radio'>
-                <input type='radio' name='subType' value='Arrange viewing' ref='subTypeViewing' /> Arrange viewing
+                <input type='radio' name='subType' value='sell' ref='subTypeViewing' /> Home for sale
               </label>
             </Columns>
 

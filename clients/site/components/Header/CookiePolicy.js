@@ -11,6 +11,10 @@ export default class CookiePolicy extends React.Component {
     this.cookieName = 'acceptcookies';
   }
 
+  state = {
+    approved: cookie.load('approved')
+  }
+
   componentDidMount() {
     let node = React.findDOMNode(this.refs.close);
     if (node) {
@@ -29,10 +33,6 @@ export default class CookiePolicy extends React.Component {
     });
   }
 
-  state = {
-    approved: cookie.load('approved')
-  }
-
   render() {
     if (cookie.load(this.cookieName)) {
       debug('Cookie saved, do not display the consent screen');
@@ -44,7 +44,7 @@ export default class CookiePolicy extends React.Component {
         <p>
           <span className='close' ref='close'>×</span>
           This site uses cookies. By continuing to browse the site you are
-          agreeing to our use of cookies. <Link to='page' params={{slug: 'cookies'}}>Find out more ›</Link>
+          agreeing to our use of cookies. <Link to='page' params={{slug: 'privacy'}}>Find out more ›</Link>
         </p>
       </div>
     );

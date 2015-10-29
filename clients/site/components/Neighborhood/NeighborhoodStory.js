@@ -54,6 +54,12 @@ export default class NeighborhoodStory extends React.Component {
     debug('Set markers', markers);
     debug('Homes', homes, this.props.neighborhood.location.coordinates);
 
+    if (!homes.length) {
+      return (
+        <Map center={this.props.neighborhood.location.coordinates} markers={markers} />
+      );
+    }
+
     return (
       <Map center={this.props.neighborhood.location.coordinates} markers={markers}>
         {
@@ -91,7 +97,7 @@ export default class NeighborhoodStory extends React.Component {
     let blocks = [];
     let primaryImage = merge({}, this.props.neighborhood.mainImage);
 
-    if (this.props.neighborhood.story && this.props.neighborhood.story.blocks) {
+    if (this.props.neighborhood.story && this.props.neighborhood.story.blocks.length) {
       debug('this.props.neighborhood.story.blocks', this.props.neighborhood.story.blocks);
       blocks = [].concat(this.props.neighborhood.story.blocks);
     } else {
@@ -128,19 +134,13 @@ export default class NeighborhoodStory extends React.Component {
     return blocks;
   }
 
-  render() {
-    debug('got neighborhood', this.props.neighborhood);
-
-    let blocks = this.getBlocks();
-    let secondaryImage = merge({}, this.props.neighborhood.mainImage);
-    if (typeof this.props.neighborhood.images[1] !== 'undefined') {
-      secondaryImage = this.props.neighborhood.images[1];
+  renderHomeBlocks() {
+    if (!this.props.neighborhood.homes || !this.props.neighborhood.homes.length) {
+      return this.getMap();
     }
 
     return (
-      <div className='neighborhood-story'>
-        <StoryLayout blocks={blocks} />
-
+      <div class='neighborhood-home-blocks'>
         <ContentBlock className='with-gradient padded'>
           <p className='call-to-action'>
             <Link className='button' to='neighborhoodViewHomes' params={{city: this.props.neighborhood.location.city.slug, neighborhood: this.props.neighborhood.slug}}>Show homes</Link>
@@ -159,6 +159,23 @@ export default class NeighborhoodStory extends React.Component {
         <ContentBlock align='center'>
           <Link className='button' to='neighborhoodViewHomes' params={{city: this.props.neighborhood.location.city.slug, neighborhood: this.props.neighborhood.slug}}>Show more homes</Link>
         </ContentBlock>
+      </div>
+    );
+  }
+
+  render() {
+    debug('got neighborhood', this.props.neighborhood);
+
+    let blocks = this.getBlocks();
+    let secondaryImage = merge({}, this.props.neighborhood.mainImage);
+    if (typeof this.props.neighborhood.images[1] !== 'undefined') {
+      secondaryImage = this.props.neighborhood.images[1];
+    }
+
+    return (
+      <div className='neighborhood-story'>
+        <StoryLayout blocks={blocks} />
+        {this.renderHomeBlocks()}
       </div>
     );
   }

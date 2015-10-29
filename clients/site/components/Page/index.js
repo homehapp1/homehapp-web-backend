@@ -29,16 +29,16 @@ export default class Page extends React.Component {
     PageStore.getItem(this.props.params.slug);
   }
 
-  componentWillUnmount() {
-    PageStore.unlisten(this.storeListener);
-  }
-
   shouldComponentUpdate(nextProps) {
     if (!this.state.page || nextProps.params.slug !== this.state.page.slug) {
       PageStore.getItem(nextProps.params.slug);
       return true;
     }
     return true;
+  }
+
+  componentWillUnmount() {
+    PageStore.unlisten(this.storeListener);
   }
 
   onStateChange(state) {

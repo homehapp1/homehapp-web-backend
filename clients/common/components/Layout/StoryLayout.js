@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 
 // Widgets
 import Agents from '../Widgets/Agents';
@@ -10,7 +9,7 @@ import Columns from '../Widgets/Columns';
 import ContentBlock from '../Widgets/ContentBlock';
 import ContentImage from '../Widgets/ContentImage';
 import Gallery from '../Widgets/Gallery';
-import Icon from '../Widgets/Icon';
+import HTMLContent from '../Widgets/HTMLContent';
 import LargeText from '../Widgets/LargeText';
 import Map from '../Widgets/Map';
 import Neighborhood from '../Widgets/Neighborhood';
@@ -113,6 +112,11 @@ export default class StoryLayout extends React.Component {
   getGallery(item, index) {
     debug('getGallery', item.properties);
     return (<Gallery {...item.properties} key={index} />);
+  }
+
+  getHTMLContent(item, index) {
+    debug('getHTMLContent', item.properties);
+    return (<HTMLContent {...item.properties} key={index} />);
   }
 
   getMap(item, index) {

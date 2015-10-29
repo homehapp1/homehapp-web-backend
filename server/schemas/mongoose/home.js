@@ -28,6 +28,10 @@ exports.loadSchemas = function (mongoose, next) {
       index: true,
       required: true
     },
+    enabled: {
+      type: Boolean,
+      default: true
+    },
     // Details
     title: {
       type: String,
@@ -35,7 +39,8 @@ exports.loadSchemas = function (mongoose, next) {
     },
     announcementType: {
       type: String,
-      default: 'sell'
+      enum: ['buy', 'rent'],
+      default: 'buy'
     },
     description: {
       type: String,

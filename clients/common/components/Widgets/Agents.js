@@ -86,7 +86,6 @@ export default class Agent extends React.Component {
               this.props.agents.map((agent, index) => {
                 debug('Agent', agent);
                 let phone = null;
-                let email = null;
 
                 if (agent.contactNumber) {
                   let number = agent.contactNumber.replace(/[^\+0-9]/g, '');

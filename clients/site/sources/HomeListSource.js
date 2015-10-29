@@ -1,45 +1,56 @@
-import request from '../../common/request';
+import SourceBuilder from '../../common/sources/Builder';
 import HomeListActions from '../actions/HomeListActions';
+// let debug = require('debug')('HomeListSource');
 
-let debug = require('../../common/debugger')('HomeListSource');
+export default SourceBuilder.build({
+  name: 'HomeListSource',
+  actions: {
+    base: HomeListActions,
+    error: HomeListActions.requestFailed
+  },
+  methods: {
+    fetchItems: {
+      remote: {
+        method: 'get',
+        uri: (model, args) => {
+          let url = '/api/homes';
+          let filters = [];
 
-let HomeListSource = {
-  fetchHomes: () => {
-    return {
-      remote(/*storeState*/) {
-        debug('fetchHomes:remote', arguments);
-        let type = (arguments[1]) ? arguments[1].type : '';
-
-        return request.get(`/api/homes?type=${type}`)
-          .then((response) => {
-            debug('got response', response);
-            if (!response.data || !response.data.homes) {
-              let err = new Error('Invalid response');
-              return Promise.reject(err);
-            }
-            return Promise.resolve(response.data.homes);
-          })
-          .catch((response) => {
-            if (response instanceof Error) {
-              return Promise.reject(response);
-            } else {
-              let msg = 'unexpected error';
-              if (response.data.error) {
-                msg = response.data.error;
+          // Pass the allowed keys with quick validation
+          if (typeof args[0] === 'object') {
+            for (let i in args[0]) {
+              let v = args[0][i];
+              switch (i) {
+                case 'limit':
+                  if (!isNaN(v)) {
+                    filters.push(`limit=${v}`);
+                  }
+                  break;
+                case 'type':
+                  if (['', 'buy', 'rent'].indexOf(v) !== -1) {
+                    filters.push(`type=${v}`);
+                  }
+                  break;
+                case 'story':
+                  filters.push('story=1');
+                  break;
               }
-              return Promise.reject(new Error(msg));
             }
-            return Promise.reject(response);
-          });
+          }
+          if (filters.length) {
+            url += `?${filters.join('&')}`;
+          }
+          return url;
+        },
+        params: null,
+        response: {
+          key: 'homes'
+        }
       },
-      local(/*storeState, slug*/) {
-        return null;
-      },
-      success: HomeListActions.updateHomes,
-      error: HomeListActions.fetchFailed,
-      loading: HomeListActions.fetchHomes
-    };
+      local: null,
+      actions: {
+        success: HomeListActions.updateItems
+      }
+    }
   }
-};
-
-export default HomeListSource;
+});

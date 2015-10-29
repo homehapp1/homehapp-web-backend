@@ -14,7 +14,7 @@ import PageStore from '../../stores/PageStore';
 import PageActions from '../../actions/PageActions';
 import StoryEditBlocks from '../Shared/StoryEditBlocks';
 
-import { createNotification, merge, setPageTitle } from '../../../common/Helpers';
+import { createNotification, merge } from '../../../common/Helpers';
 
 let debug = require('debug')('PagesDetails');
 
@@ -51,7 +51,6 @@ export default class PagesDetails extends React.Component {
   }
 
   componentDidMount() {
-    setPageTitle(['Create', 'Page']);
     PageStore.listen(this.storeListener);
   }
 

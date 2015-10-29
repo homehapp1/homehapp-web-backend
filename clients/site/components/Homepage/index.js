@@ -5,6 +5,8 @@ import { Link } from 'react-router';
 import HomeListStore from '../../stores/HomeListStore';
 import HomeList from '../Home/HomeList';
 
+import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
+
 import BigImage from '../../../common/components/Widgets/BigImage';
 import Columns from '../../../common/components/Widgets/Columns';
 import Hoverable from '../../../common/components/Widgets/Hoverable';
@@ -19,12 +21,14 @@ let debug = require('../../../common/debugger')('Homepage');
 export default class Homepage extends React.Component {
   constructor() {
     super();
-    this.storeListener = this.onChange.bind(this);
+    this.homeStoreListener = this.onHomeListChange.bind(this);
+    this.neighborhoodStoreListener = this.onNeighborhoodListChange.bind(this);
   }
 
   state = {
     error: null,
-    homes: HomeListStore.getState().homes
+    homes: HomeListStore.getState().items,
+    neighborhoods: NeighborhoodListStore.getState().items
   }
 
   componentDidMount() {
@@ -32,19 +36,41 @@ export default class Homepage extends React.Component {
     window.dispatchEvent(new Event('resize'));
     document.getElementsByTagName('body')[0].setAttribute('data-handler', 'homepage');
 
-    HomeListStore.listen(this.storeListener);
-    HomeListStore.fetchHomes();
+    HomeListStore.listen(this.homeStoreListener);
+    NeighborhoodListStore.listen(this.neighborhoodStoreListener);
+
+    if (!HomeListStore.getState().items) {
+      HomeListStore.fetchItems({limit: 4});
+    }
+
+    if (!NeighborhoodListStore.getState().items) {
+      NeighborhoodListStore.fetchItems({limit: 4});
+    }
+
     setPageTitle('Discover y');
   }
 
   componentWillUnmount() {
     document.getElementsByTagName('body')[0].removeAttribute('data-handler');
-    HomeListStore.unlisten(this.storeListener);
+    HomeListStore.unlisten(this.homeStoreListener);
+    NeighborhoodListStore.unlisten(this.neighborhoodStoreListener);
     setPageTitle();
   }
 
-  onChange(state) {
-    this.setState(state);
+  onHomeListChange(state) {
+    debug('onHomeListChange', state);
+    this.setState({
+      status: state.error,
+      homes: state.items
+    });
+  }
+
+  onNeighborhoodListChange(state) {
+    debug('onNeighborhoodListChange', state);
+    this.setState({
+      status: state.error,
+      neighborhoods: state.items
+    });
   }
 
   handlePendingState() {
@@ -126,19 +152,7 @@ export default class Homepage extends React.Component {
     };
 
     let homes = this.state.homes || [];
-
-    let neighborhoods = [];
-    for (let home of homes) {
-      let neighborhood = home.location.neighborhood;
-      if (!neighborhood) {
-        continue;
-      }
-
-      if (neighborhoods.indexOf(neighborhood) === -1) {
-        neighborhoods.push(neighborhood);
-      }
-    }
-
+    let neighborhoods = this.state.neighborhoods || [];
     debug('Neighborhoods', neighborhoods, 'Homes', homes);
 
     let partnerImage = {
@@ -153,7 +167,7 @@ export default class Homepage extends React.Component {
         <BigImage gradient='green' fixed image={placeholder} proportion={0.8}>
           <LargeText align='center' valign='middle' proportion={0.8}>
             <div className='splash'>
-              <h1>Every home has<br /> a unique story</h1>
+              <h1>Find the home<br />you belong to</h1>
             </div>
           </LargeText>
         </BigImage>

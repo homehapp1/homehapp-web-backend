@@ -9,11 +9,10 @@ import TimeAgo from '../../../common/components/TimeAgo';
 import Loading from '../../../common/components/Widgets/Loading';
 
 import ContactListStore from '../../stores/ContactListStore';
-import ContactsIndex from './index';
 
 import { setPageTitle } from '../../../common/Helpers';
 
-let debug = require('debug')('ContactsIndex');
+let debug = require('debug')('Contacts');
 
 export default class Contacts extends React.Component {
   static propTypes = {

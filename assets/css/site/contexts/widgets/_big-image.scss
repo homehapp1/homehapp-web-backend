@@ -7,6 +7,9 @@
   &, h1, h2, h3, p, a {
     color: white;
     text-shadow: $textShadow;
+    @include small() {
+      @include vendors(hyphens, auto);
+    }
   }
 
   & > .image-content {
@@ -25,6 +28,12 @@
   }
 
   & > .image-text {
+    h1, h2 {
+      @include small() {
+        font-size: $fontSizeHeading25;
+      }
+    }
+
     & > .secondary {
       @include notSmall() {
         position: absolute;

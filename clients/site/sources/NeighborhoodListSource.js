@@ -1,43 +1,84 @@
-import request from '../../common/request';
+import SourceBuilder from '../../common/sources/Builder';
 import NeighborhoodListActions from '../actions/NeighborhoodListActions';
+// let debug = require('debug')('NeighborhoodListSource');
 
-let debug = require('../../common/debugger')('NeighborhoodListSource');
+export default SourceBuilder.build({
+  name: 'NeighborhoodListSource',
+  actions: {
+    base: NeighborhoodListActions,
+    error: NeighborhoodListActions.requestFailed
+  },
+  methods: {
+    fetchItems: {
+      remote: {
+        method: 'get',
+        uri: (model, args) => {
+          let url = '/api/neighborhoods';
+          let filters = [];
 
-let NeighborhoodListSource = {
-  fetchNeighborhoods: () => {
-    return {
-      remote(storeState, city) {
-        debug('fetchNeighborhoods:remote', arguments);
-        return request.get(`/api/neighborhoods/${city}`)
-          .then((response) => {
-            debug('got response', response);
-            if (!response.data || !response.data.neighborhoods) {
-              let err = new Error('Invalid response');
-              return Promise.reject(err);
-            }
-            return Promise.resolve(response.data.neighborhoods);
-          })
-          .catch((response) => {
-            if (response instanceof Error) {
-              return Promise.reject(response);
-            } else {
-              let msg = 'unexpected error';
-              if (response.data.error) {
-                msg = response.data.error;
+          // Pass the allowed keys with quick validation
+          if (typeof args[0] === 'object') {
+            for (let i in args[0]) {
+              let v = args[0][i];
+              switch (i) {
+                case 'city':
+                  url += `/${v}`;
+                  break;
+                case 'limit':
+                  if (!isNaN(v)) {
+                    filters.push(`limit=${v}`);
+                  }
+                  break;
+                case 'type':
+                  if (['', 'buy', 'rent'].indexOf(v) !== -1) {
+                    filters.push(`type=${v}`);
+                  }
+                  break;
               }
-              return Promise.reject(new Error(msg));
             }
-            return Promise.reject(response);
-          });
+          }
+          if (filters.length) {
+            url += `?${filters.join('&')}`;
+          }
+          return url;
+        },
+        params: null,
+        response: {
+          key: 'items'
+        }
       },
-      local(/*storeState, slug*/) {
-        return null;
+      local: null,
+      actions: {
+        success: NeighborhoodListActions.updateItems
+      }
+    },
+    fetchAllItems: {
+      remote: {
+        method: 'get',
+        uri: '/api/neighborhoods/all',
+        params: null,
+        response: {
+          key: 'items'
+        }
       },
-      success: NeighborhoodListActions.updateNeighborhoods,
-      error: NeighborhoodListActions.fetchFailed,
-      loading: NeighborhoodListActions.fetchNeighborhoods
-    };
+      local: null,
+      actions: {
+        success: NeighborhoodListActions.updateItems
+      }
+    },
+    fetchPopulatedItems: {
+      remote: {
+        method: 'get',
+        uri: '/api/neighborhoods/populated',
+        params: null,
+        response: {
+          key: 'items'
+        }
+      },
+      local: null,
+      actions: {
+        success: NeighborhoodListActions.updateItems
+      }
+    }
   }
-};
-
-export default NeighborhoodListSource;
+});

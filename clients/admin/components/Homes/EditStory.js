@@ -104,7 +104,7 @@ export default class HomesEditStory extends React.Component {
                 onChange={this.toggleEnabled.bind(this)}
               />
             </Panel>
-            <StoryEditBlocks parent={this.props.home} blocks={blocks} ref='storyBlocks' />
+            <StoryEditBlocks parent={this.props.home} blocks={blocks} disabled={['HTMLContent']} ref='storyBlocks' />
             <Well>
               <Row>
                 <Col md={6}>

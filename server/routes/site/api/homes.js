@@ -37,9 +37,18 @@ exports.registerRoutes = (app) => {
   app.get('/api/homes', function(req, res, next) {
     let parts = url.parse(req.url, true);
     let query = {};
-    if (parts.query.type) {
-      query.announcementType = parts.query.type;
+    for (let k in parts.query) {
+      let v = parts.query[k];
+      switch (k) {
+        case 'type':
+          query.announcementType = v;
+          break;
+        case 'story':
+          query['story.enabled'] = (Number(v)) ? true : false;
+          break;
+      }
     }
+
     debug('Query', query);
 
     QB

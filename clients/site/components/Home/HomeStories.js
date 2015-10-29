@@ -14,7 +14,7 @@ import Loading from '../../../common/components/Widgets/Loading';
 
 import { setPageTitle } from '../../../common/Helpers';
 
-let debug = require('debug')('HomeSearch');
+// let debug = require('debug')('HomeSearch');
 
 export default class HomeSearch extends React.Component {
   static propTypes = {
@@ -24,28 +24,21 @@ export default class HomeSearch extends React.Component {
   constructor(props) {
     super(props);
     this.storeListener = this.onChange.bind(this);
-    this.state.type = props.params.mode || 'buy';
   }
 
   state = {
     error: null,
-    type: 'buy',
     homes: HomeListStore.getState().items
   }
 
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
-    let filters = {type: this.props.params.mode || this.state.type};
-    this.updateFilters(filters);
-  }
 
-  componentWillReceiveProps(props) {
-    let type = props.params.mode || this.state.type || 'buy';
-    this.setState({
-      type: type
-    });
-    let filters = {type: type};
-    this.updateFilters(filters);
+    if (!HomeListStore.getState().items) {
+      HomeListStore.fetchItems({story: true});
+    }
+
+    setPageTitle(`Our home stories`);
   }
 
   componentWillUnmount() {
@@ -57,11 +50,6 @@ export default class HomeSearch extends React.Component {
       error: state.error,
       homes: state.items
     });
-  }
-
-  updateFilters(filters = {}) {
-    debug('Filters', filters);
-    HomeListStore.fetchItems(filters);
   }
 
   handlePendingState() {
@@ -93,13 +81,11 @@ export default class HomeSearch extends React.Component {
     }
 
     let homes = this.state.homes || [];
-    let label = (this.state.type === 'buy') ? 'sale' : 'rent';
-    setPageTitle(`Select homes for ${label} in London’s finest neighourhoods`);
 
     return (
       <div id='propertyFilter'>
         <ContentBlock className='padded'>
-          <h1>Select homes for {label} in London’s finest neighourhoods</h1>
+          <h1>Our home stories</h1>
         </ContentBlock>
         <HomeList items={homes} />
       </div>

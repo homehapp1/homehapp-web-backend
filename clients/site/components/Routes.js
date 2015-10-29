@@ -14,7 +14,11 @@ import HomeContactContainer from './Home/HomeContactContainer';
 import HomeDetailsContainer from './Home/HomeDetailsContainer';
 import HomeStoryContainer from './Home/HomeStoryContainer';
 import HomeSearch from './Home/HomeSearch';
+import HomeStories from './Home/HomeStories';
 import RouteNotFound from './ErrorPages/RouteNotFound';
+
+// Forms
+import HomeOwner from './Forms/HomeOwner';
 
 // Neighborhoods handlers
 import CityContainer from './City/CityContainer';
@@ -32,6 +36,9 @@ module.exports = (
   <Route name='app' path='/' handler={Application}>
     <DefaultRoute handler={Homepage}/>
     <Route name='homes' path='/homes'>
+      <Route name='contactLetting' path='letting' handler={HomeOwner} />
+      <Route name='contactSelling' path='selling' handler={HomeOwner} />
+      <Route name='homeStories' path='stories' handler={HomeStories} />
       <Route name='home' path=':slug'>
         <Route name='homeDetails' path='details' handler={HomeDetailsContainer} />
         <Route name='homeStory' path='story' handler={HomeStoryContainer} />

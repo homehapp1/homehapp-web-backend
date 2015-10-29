@@ -243,9 +243,6 @@ class NeighborhoodsEditDetails extends EditDetails {
               >
                 {
                   cities.map((city, i) => {
-                    let props = {
-                      value: city.id
-                    };
                     return (
                       <option value={city.id} key={`city-${i}`}>{city.title}</option>
                     );
