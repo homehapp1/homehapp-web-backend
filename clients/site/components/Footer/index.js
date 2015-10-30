@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Image from '../../../common/components/Widgets/Image';
+import SocialMedia from '../Navigation/SocialMedia';
 
 export default class Footer extends React.Component {
   render() {
@@ -14,23 +15,7 @@ export default class Footer extends React.Component {
             <li><Link to='page' params={{slug: 'privacy'}}>Privacy policy</Link></li>
             <li><Link to='page' params={{slug: 'careers'}}>Careers</Link></li>
           </ul>
-          <ul className='footer-links social'>
-            <li>
-              <a href='https://www.facebook.com/homehapp' target='_blank'>
-                <i className='fa fa-facebook-square'></i>
-              </a>
-            </li>
-            <li>
-              <a href='https://www.twitter.com/homehapp' target='_blank'>
-                <i className='fa fa-twitter'></i>
-              </a>
-            </li>
-            <li>
-              <a href='https://www.instagram.com/homehapp' target='_blank'>
-                <i className='fa fa-instagram'></i>
-              </a>
-            </li>
-          </ul>
+          <SocialMedia className='footer-links' />
         </div>
       </div>
     );
