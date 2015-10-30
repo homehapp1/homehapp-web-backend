@@ -370,6 +370,10 @@ export default class HomesEditDetails extends EditDetails {
     }
 
     let propertiesPreview = marked(home.properties);
+    let properties = home.properties;
+    if (!properties && home.amenities && home.amenities.length) {
+      properties = home.amenities.join(`\n`);
+    }
 
     debug('Render', home);
     //debug('Neighborhood of this home', this.props.homeLocation.neighborhood);
@@ -512,7 +516,7 @@ export default class HomesEditDetails extends EditDetails {
                 label='Amenities'
                 placeholder='(optional)'
                 className='xlarge'
-                defaultValue={home.properties || home.amenities.join(`\n`)}
+                defaultValue={properties}
                 onInput={this.propertiesChange.bind(this)}
                 onChange={this.onFormChange.bind(this)}
               />
