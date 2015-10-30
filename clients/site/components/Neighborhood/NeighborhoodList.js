@@ -19,8 +19,10 @@ export default class NeighborhoodList extends React.Component {
     params: React.PropTypes.object.isRequired
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    debug('Props', props);
+    this.city = props.params.city;
     this.storeListener = this.onChange.bind(this);
   }
 
@@ -32,10 +34,8 @@ export default class NeighborhoodList extends React.Component {
   componentDidMount() {
     setPageTitle(`Neighbourhoods of ${this.city.substr(0, 1).toUpperCase()}${this.city.substr(1)}`);
     NeighborhoodListStore.listen(this.storeListener);
-
-    if (!NeighborhoodListStore.getState().neighborhoods) {
-      NeighborhoodListStore.fetchItems({city: this.city});
-    }
+    debug('NeighborhoodListStore.getState()', NeighborhoodListStore.getState());
+    NeighborhoodListStore.fetchItems({city: this.city});
   }
 
   componentWillUnmount() {
@@ -77,12 +77,6 @@ export default class NeighborhoodList extends React.Component {
       author: 'Steve Cadman',
       type: 'asset'
     };
-
-    this.city = 'london';
-
-    if (typeof this.props.params !== 'undefined' && typeof this.props.params.city !== 'undefined') {
-      this.city = this.props.params.city;
-    }
 
     if (this.state.error) {
       return this.handleErrorState();
