@@ -56,13 +56,13 @@ body {
 
   &.away-for-small {
     @include small() {
-      #container {
+      #container, #footer {
         @include vendors(transform, translateX(-1 * $navigationOffset));
         opacity: 0.5;
       }
 
       #header {
-        @include vendors(transform, translateX(-5%));
+        @include vendors(transform, translateX(-40px));
       }
     }
   }
@@ -97,7 +97,7 @@ body {
 #app {
   min-height: 100%;
 
-  #layout, #container {
+  #layout, #container, #footer {
     @include vendors(transition-property, all);
     @include vendors(transition-duration, $transitionDuration);
     @include vendors(transition-timing-function, ease-out);

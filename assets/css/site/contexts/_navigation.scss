@@ -116,17 +116,19 @@
       @include vendors(transition-timing-function, ease-out);
       @include vendors(transform, translateX(100%));
       font-weight: 500;
-      font-size: $fontSizeSecondary * 0.7;
+      font-size: 11pt;
     }
 
     & > ul {
       margin: 0;
-      padding: $contentPadding * 2;
+      padding: $contentPadding * 0.6 $contentPadding * 1.5;
       list-style: none;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 
       @include small() {
         box-shadow: none;
+        width: $navigationOffset;
+        border: solid 1px transparent;
       }
 
       li {
@@ -148,7 +150,7 @@
 
           @include small() {
             color: $extraLightGray;
-            padding: $contentPadding / 3 0;
+            padding: $contentPadding / 4 0;
           }
 
           &:hover, &.active {
@@ -159,14 +161,16 @@
 
       &.social {
         position: absolute;
-        bottom: $contentPadding / 2;
+        bottom: 0;
         font-size: $fontSizeHeading3;
+        padding-left: $contentPadding;
+        padding-right: $contentPadding;
 
         li {
-          float: left;
+          display: inline-block;
 
-          & + li {
-            margin-left: 1em;
+          a {
+            padding: 0 0.2em;
           }
         }
       }
