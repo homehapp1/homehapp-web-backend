@@ -11,8 +11,8 @@ module.exports = function (projectRoot) {
       adapter: 'mongoose',
       adapterConfig: {
         uri: [
-          'mongodb://homehapp:NPUPZZD6Qocrh2o8diDhkXO4KtkXRRmp@10.240.199.54/homehapp',
-          'mongodb://homehapp:NPUPZZD6Qocrh2o8diDhkXO4KtkXRRmp@10.240.220.185'
+          'mongodb://homehapp:NPUPZZD6Qocrh2o8diDhkXO4KtkXRRmp@mongodb2-hhmdb-1/homehapp',
+          'mongodb://homehapp:NPUPZZD6Qocrh2o8diDhkXO4KtkXRRmp@mongodb2-hhmdb-2'
         ],
         options: {
           replset: {

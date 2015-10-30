@@ -79,10 +79,19 @@ Change the environment variable "AUTH" to be "no" and restart the instance.
 
 Remember to run Kitematic before trying to create the containers
 
+Always run the following commands before executing
+any of the deployment related methods!
+
 ```sh
 export PROJECT_ID=homehappweb
 gcloud config set project $PROJECT_ID
 ```
+
+## Initial steps before creating clusters
+
+Following are only done if creating the clusters for first time.
+
+Create and push the logger container
 
 ```sh
 cd support/docker/fluentd-sidecar-gcp
@@ -90,29 +99,91 @@ make build push
 cd ../../../
 ```
 
-Creating Staging containers (add 1 as last argument to clear old containers)
+Create and push the nginx proxy container
 
 ```sh
-./support/createContainers.sh site stg
-./support/createContainers.sh admin stg
-./support/createContainers.sh api stg
+cd support/dockers/nginx-proxy
+make build push
+cd ../../../
 ```
 
-These are run only when creating the clusters, not when updating them
+## Creating clusters
+
+0. For staging do
+
+export CLUSTER_ENV=stg
+
+0. For production do
+
+export CLUSTER_ENV=prod
+
+1. Create and push the containers
 
 ```sh
-./support/createCluster.sh site stg
-./support/createCluster.sh admin stg
-./support/createCluster.sh api stg
+./support/createContainers.sh $CLUSTER_ENV site
+./support/createContainers.sh $CLUSTER_ENV admin
+./support/createContainers.sh $CLUSTER_ENV api
 ```
+
+2. Initialize the cluster
+
+This will create the container cluster nodes
 
 ```sh
-./support/updateCluster.sh site stg
-./support/updateCluster.sh admin stg
-./support/updateCluster.sh api stg
+./support/initCluster $CLUSTER_ENV
 ```
 
-# Updating site assets
+3. Setup the containers to run inside the cluster
+
+This will deploy and configure the controllers and services
+for the project.
+
+3.1 STAGING
+
+```sh
+./support/setupCluster.sh $CLUSTER_ENV site
+./support/setupCluster.sh $CLUSTER_ENV admin
+./support/setupCluster.sh $CLUSTER_ENV api
+```
+
+3.2 PRODUCTION
+
+When setuping the production environment you need to add the
+certificate path prefix as last argument.
+
+```sh
+./support/setupCluster.sh $CLUSTER_ENV site certs/homehapp_com/star_homehapp_com
+./support/setupCluster.sh $CLUSTER_ENV admin certs/homehapp_com/star_homehapp_com
+./support/setupCluster.sh $CLUSTER_ENV api certs/homehapp_com/star_homehapp_com
+```
+
+## Updating clusters
+
+0. For staging do
+
+export CLUSTER_ENV=stg
+
+0. For production do
+
+export CLUSTER_ENV=prod
+
+1. Create and push the containers
+
+```sh
+./support/createContainers.sh $CLUSTER_ENV site
+./support/createContainers.sh $CLUSTER_ENV admin
+./support/createContainers.sh $CLUSTER_ENV api
+```
+
+2. Update the controllers
+
+```sh
+./support/updateCluster.sh $CLUSTER_ENV site
+./support/updateCluster.sh $CLUSTER_ENV admin
+./support/updateCluster.sh $CLUSTER_ENV api
+```
+
+3. Updating site assets
 
 Build the site static files
 
@@ -128,6 +199,11 @@ npm run distribute-site
 npm run distribute-admin
 ```
 
+# Administration First-run
+
+Credentials:
+admin@homehapp.com / ekb7iLMGQsHYL2nr5OMnf88+IuHn5jDg
+
 # Run locally
 
 1. Start Mongo with `mongod`
@@ -135,43 +211,4 @@ npm run distribute-admin
     to create local content
 2. For running the site use `npm run dev`
 3. For running the admin interface use `npm run dev-admin`
-
-# Production infrastructure
-
-Creating Production containers (add 1 as last argument to clear old containers)
-
-```sh
-./support/createContainers.sh site prod
-./support/createContainers.sh admin prod
-./support/createContainers.sh api prod
-```
-
-### Create
-
-```sh
-export PROJECT_ID=homehappweb
-gcloud config set project $PROJECT_ID
-```
-
-```sh
-cd support/dockers/nginx-proxy
-make build push
-cd ../../../
-```
-
-```sh
-./support/production/createCluster.sh site certs/homehapp_com/star_homehapp_com
-./support/production/createCluster.sh admin certs/homehapp_com/star_homehapp_com
-./support/production/createCluster.sh api certs/homehapp_com/star_homehapp_com
-```
-
-Administration first run:
-admin@homehapp.com / ekb7iLMGQsHYL2nr5OMnf88+IuHn5jDg
-
-### Update
-
-```sh
-./support/production/updateCluster.sh site
-./support/production/updateCluster.sh admin
-./support/production/updateCluster.sh api
-```
+4. For running the mobile api use `npm run dev-api`

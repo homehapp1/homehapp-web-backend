@@ -4,16 +4,17 @@
 REV=`git rev-parse --short HEAD`
 CWD=`pwd`
 CONTAINER_REGISTRY_HOST=eu.gcr.io
-PNAME=$1
-ENV=$2
-CLEAN=$3
+ENV=$1
+PNAME=$2
+NO_CLEAN=$3
 BUILD_REVISION_FILE="$CWD/BUILD_REVISION";
 
 function printUsage() {
   echo "Required environment variables:"
   echo "  PROJECT_ID:     Google Project ID"
   echo ""
-  echo "Usage ./support/createContainers.sh [project name] [stg|prod]"
+  echo "Usage ./support/createContainers.sh [stg|prod] [project name]"
+  echo "Add -n as last argument, to not clean old containers"
 }
 function printUsageAndExit() {
   printUsage
@@ -30,9 +31,11 @@ if [ "$PROJECT_ID" = "" ]; then
   printUsageAndExit
 fi
 
-if [ "$PNAME" = "" ]; then
-  PNAME=$PROJECT_NAME
+if [ "$ENV" = "" ]; then
+  echo "No environment defined!"
+  printUsageAndExit
 fi
+
 if [ "$PNAME" = "" ]; then
   echo "No project defined!"
   printUsageAndExit
@@ -88,7 +91,7 @@ else
   tagContainer "stg"
 fi
 
-if [ "$CLEAN" = "1" ]; then
+if [ "$NO_CLEAN" = "" ]; then
   echo "Cleaning old Docker containers"
   echo ""
   cleanOldImages
