@@ -15,6 +15,7 @@ export default class Navigation extends React.Component {
     this.hideNavigation = this.hideNavigation.bind(this);
     this.showNavigation = this.showNavigation.bind(this);
     this.onDocumentClick = this.onDocumentClick.bind(this);
+    this.onResize = this.onResize.bind(this);
   }
 
   componentDidMount() {
@@ -28,8 +29,8 @@ export default class Navigation extends React.Component {
 
     // Navigation actions
     this.navigation = new DOMManipulator(this.refs.navigation);
-    this.navigation.addEvent('mouseover', this.showNavigation, true);
-    this.navigation.addEvent('mouseout', this.hideNavigation, false);
+    // this.navigation.addEvent('mouseover', this.showNavigation, true);
+    // this.navigation.addEvent('mouseout', this.hideNavigation, false);
 
     // Navigation links
     this.links = this.navigation.getByTagName('a');
@@ -39,6 +40,7 @@ export default class Navigation extends React.Component {
     }
 
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
+    window.addEventListener('resize', this.onResize);
   }
 
   componentWillUnmount() {
@@ -47,6 +49,18 @@ export default class Navigation extends React.Component {
     this.icon.removeEvent('click', this.click, true);
     this.navigation.removeEvent('mouseover', this.showNavigation, true);
     this.navigation.removeEvent('mouseout', this.hideNavigation, false);
+    window.removeEventListener('resize', this.onResize);
+    this.onResize();
+  }
+
+  onResize() {
+    if (!window || !this.container) {
+      return null;
+    }
+
+    this.container.css({
+      height: `${window.innerHeight}px`
+    });
   }
 
   onDocumentClick(event) {

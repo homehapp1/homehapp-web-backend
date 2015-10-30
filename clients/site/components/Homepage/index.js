@@ -164,6 +164,19 @@ export default class Homepage extends React.Component {
       height: 515
     };
 
+    let leftImage = {
+      src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213568/site/images/content/homehapp_web_phone_left.png',
+      alt: '',
+      width: 300,
+      height: 856
+    };
+    let rightImage = {
+      src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213569/site/images/content/homehapp_web_phone_right.png',
+      alt: '',
+      width: 300,
+      height: 856
+    };
+
     return (
       <div id='mainpage' className='mainpage'>
         <BigImage gradient='green' fixed image={placeholder} proportion={0.8}>
@@ -175,11 +188,22 @@ export default class Homepage extends React.Component {
         </BigImage>
         {this.renderHomeList(homes)}
         <ContentBlock className='with-gradient'>
-          <div className='center'>
-            <hr className='spacer' />
-            <Image {...placeholder} width={970} />
-            <hr className='spacer' />
-          </div>
+          <Columns cols={2} className='table'>
+            <div className='left' data-valign='middle'>
+              <Image {...leftImage} />
+            </div>
+            <div data-valign='middle'>
+              Lorem ipsum dolor sit amet.
+            </div>
+          </Columns>
+          <Columns cols={2} className='table'>
+            <div data-valign='middle'>
+              Lorem ipsum dolor sit amet.
+            </div>
+            <div className='right' data-valign='middle'>
+              <Image {...rightImage} />
+            </div>
+          </Columns>
           <h2 className='block-title'>Partner with us</h2>
           <Columns cols={4} className='table important' align='center' valign='middle'>
             <div className='span1'></div>

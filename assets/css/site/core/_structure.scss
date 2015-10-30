@@ -56,13 +56,12 @@ body {
 
   &.away-for-small {
     @include small() {
-      #container, #footer {
+      #header, #container, #footer, #navigation {
         @include vendors(transform, translateX(-1 * $navigationOffset));
-        opacity: 0.5;
       }
 
-      #header {
-        @include vendors(transform, translateX(-40px));
+      #header, #container, #footer {
+        opacity: 0.5;
       }
     }
   }
