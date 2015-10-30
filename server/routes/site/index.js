@@ -26,6 +26,7 @@ exports.registerRoutes = (app) => {
     .sort({
       'metadata.score': -1
     })
+    .limit(4)
     .findAll()
     .fetch()
     .then((result) => {
@@ -52,6 +53,8 @@ exports.registerRoutes = (app) => {
         neighborhoods: result.models
       };
       setLastMod([].concat(result.models).concat(res.locals.data.HomeListStore), res);
+
+      // return res.json(res.locals.data);
       next();
     });
   });
