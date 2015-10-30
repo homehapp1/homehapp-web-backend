@@ -1,33 +1,44 @@
 #cookiePolicy {
   $h: 20px;
+  $p: 4px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: $h;
-  line-height: $h;
   text-align: center;
   z-index: $zCookie;
   font-weight: 300;
   text-align: center;
 
+  @include small() {
+    left: 30px;
+    right: 30px;
+    top: auto;
+    bottom: $p;
+  }
+
   p {
+    display: inline-block;
     margin: 0 auto;
-    padding: 0.2em 0.5em;
+    padding: $p 0.5em $p 0;
+    min-height: $h;
+    line-height: $h - 2 * $p;
     background-color: black;
     width: auto;
-    display: block;
     font-size: 12px;
-    display: inline-block;
+    vertical-align: top;
 
     &, a {
       color: white;
     }
 
     .close {
+      display: block;
+      float: left;
       text-align: center;
       cursor: pointer;
       color: $red;
+      width: $h;
       margin-right: 0.5em;
     }
   }

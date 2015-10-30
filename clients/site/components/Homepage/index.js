@@ -188,7 +188,7 @@ export default class Homepage extends React.Component {
         </BigImage>
         {this.renderHomeList(homes)}
         <ContentBlock className='with-gradient'>
-          <Columns cols={2} className='table'>
+          <Columns cols={2} className='table' valign='middle'>
             <div className='left' data-valign='middle'>
               <Image {...leftImage} />
             </div>
@@ -197,7 +197,7 @@ export default class Homepage extends React.Component {
             </div>
           </Columns>
           <Columns cols={2} className='table'>
-            <div data-valign='middle'>
+            <div>
               Lorem ipsum dolor sit amet.
             </div>
             <div className='right' data-valign='middle'>
