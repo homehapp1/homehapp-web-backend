@@ -22,6 +22,10 @@ body {
   @include vendors(transition-duration, $transitionDuration);
   overflow-y: scroll;
 
+  @include small() {
+    background-color: $extraDarkGray;
+  }
+
   &.no-scroll {
     overflow-y: hidden;
 
@@ -51,9 +55,10 @@ body {
   }
 
   &.away-for-small {
-    #header, #container {
+    #container, #header {
       @include small() {
         @include vendors(transform, translateX(-1 * $navigationOffset));
+        opacity: 0.5;
       }
     }
   }
@@ -84,7 +89,7 @@ body {
 #app {
   min-height: 100%;
 
-  #container {
+  #layout, #container {
     @include vendors(transition-property, all);
     @include vendors(transition-duration, $transitionDuration);
     @include vendors(transition-timing-function, ease-out);
