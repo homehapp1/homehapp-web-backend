@@ -28,6 +28,10 @@
 
   a {
     color: $darkGray;
+
+    &.active {
+      text-decoration: underline;
+    }
   }
 
   .logotype {
