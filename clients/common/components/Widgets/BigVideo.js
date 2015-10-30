@@ -474,7 +474,7 @@ export default class BigVideo extends BigBlock {
             <i className='fa fa-pause show-for-small' ref='mobilePause'></i>
           </div>
           <div className='image-content'>
-            <Image {...image} className='show-for-small' width={600} height={600} />
+            <Image {...image} className='show-for-small' width={600} height={400} />
             <Video {...video} className='big-video hide-for-small' ref='video' />
           </div>
           {author}

@@ -60,7 +60,7 @@ export default class BigImage extends BigBlock {
         <div className='image-content' ref='container'>
           <Image {...image} className='show-for-large' width={1920} height={800} />
           <Image {...image} className='show-for-medium' width={1000} height={800} />
-          <Image {...image} className='show-for-small' width={600} height={600} />
+          <Image {...image} className='show-for-small' width={600} height={400} />
         </div>
         {author}
         <div className='image-text full-height' {...textProps}>

@@ -124,7 +124,6 @@ exports.scrollTop = function scrollTop(offset = null, speed = 500) {
 };
 
 exports.setFullHeight = function setFullHeight() {
-  let items = document.getElementsByClassName('full-height');
   let height = window.innerHeight;
 
   let setHeight = function(item, strict = false) {
@@ -155,14 +154,30 @@ exports.setFullHeight = function setFullHeight() {
     }
   };
 
-  for (let i = 0; i < items.length; i++) {
-    setHeight(items[i], false);
+  if (window && window.innerWidth <= 640) {
+    let items = document.getElementsByClassName('full-height');
+    for (let item of items) {
+      item.style.height = null;
+      item.style.minHeight = null;
+    }
+
+    items = document.getElementsByClassName('full-height-strict');
+    for (let item of items) {
+      item.style.height = null;
+      item.style.minHeight = null;
+    }
+
+    return null;
+  }
+
+  let items = document.getElementsByClassName('full-height');
+  for (let item of items) {
+    setHeight(item, false);
   }
 
   items = document.getElementsByClassName('full-height-strict');
-
-  for (let i = 0; i < items.length; i++) {
-    setHeight(items[i], true);
+  for (let item of items) {
+    setHeight(item, true);
   }
 };
 

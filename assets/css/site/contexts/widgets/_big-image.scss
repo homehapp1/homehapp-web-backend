@@ -32,6 +32,14 @@
       @include small() {
         font-size: $fontSizeHeading25;
       }
+
+      margin-bottom: 0;
+    }
+
+    p {
+      @include small() {
+        margin: 0 0 $contentPadding / 2;
+      }
     }
 
     & > .secondary {

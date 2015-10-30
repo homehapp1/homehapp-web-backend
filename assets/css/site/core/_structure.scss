@@ -55,10 +55,14 @@ body {
   }
 
   &.away-for-small {
-    #container, #header {
-      @include small() {
+    @include small() {
+      #container {
         @include vendors(transform, translateX(-1 * $navigationOffset));
         opacity: 0.5;
+      }
+
+      #header {
+        @include vendors(transform, translateX(-5%));
       }
     }
   }
@@ -84,6 +88,10 @@ body {
   @include vendors(transition-property, all);
   @include vendors(transition-duration, $transitionDuration);
   @include vendors(transition-timing-function, ease-out);
+
+  @include small() {
+    min-height: 400px;
+  }
 }
 
 #app {
