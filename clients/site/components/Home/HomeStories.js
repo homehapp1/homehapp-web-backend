@@ -50,14 +50,6 @@ export default class HomeSearch extends React.Component {
     });
   }
 
-  handlePendingState() {
-    return (
-      <Loading>
-        <p>Loading homes...</p>
-      </Loading>
-    );
-  }
-
   handleErrorState() {
     let error = {
       title: 'Error loading homes!',
@@ -70,6 +62,10 @@ export default class HomeSearch extends React.Component {
   }
 
   render() {
+    if (this.state.error) {
+      return handleErrorState();
+    }
+    
     let homes = this.state.homes || [];
 
     let placeholder = {
