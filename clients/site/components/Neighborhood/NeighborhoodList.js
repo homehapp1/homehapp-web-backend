@@ -42,7 +42,6 @@ export default class NeighborhoodList extends React.Component {
   }
 
   onChange(state) {
-    debug('set state', state);
     this.setState({
       error: state.error,
       neighborhoods: state.items
