@@ -145,7 +145,7 @@ export default class NeighborhoodStory extends React.Component {
     }
 
     return (
-      <div class='neighborhood-home-blocks'>
+      <div className='neighborhood-home-blocks'>
         <ContentBlock className='with-gradient padded'>
           <p className='call-to-action'>
             <Link className='button' to='neighborhoodViewHomes' params={{city: this.props.neighborhood.location.city.slug, neighborhood: this.props.neighborhood.slug}}>Show homes</Link>
