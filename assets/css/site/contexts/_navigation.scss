@@ -2,7 +2,7 @@
   $offset: 10px;
   $pv: $contentPadding;
   display: block;
-  position: absolute;
+  position: fixed;
   z-index: $zNavigation;
   width: 100%;
   line-height: $headerHeight - 2 * $pv;
@@ -179,25 +179,27 @@
     }
   }
 
-  &.open {
-    & > .icon {
-      float: right;
-    }
+  @include small() {
+    &.open {
+      & > .icon {
+        float: right;
+      }
 
-    & > .container {
-      display: block;
-      width: 250px;
+      & > .container {
+        display: block;
+        width: 250px;
 
-      @include small() {
-        width: 100%;
-        left: 0;
+        @include small() {
+          width: 100%;
+          left: 0;
+        }
       }
     }
   }
 }
 
 @include notSmall() {
-  [data-handler="homepage"] #navigation {
+  #navigation {
     .icon {
       display: none;
     }
