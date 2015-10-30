@@ -170,10 +170,25 @@
 
           @include small() {
             color: white;
+            padding: $contentPadding / 3 0;
           }
 
           &:hover, &.active {
             color: $turquoise;
+          }
+        }
+      }
+
+      &.social {
+        position: absolute;
+        bottom: $contentPadding / 2;
+        font-size: $fontSizeHeading3;
+
+        li {
+          float: left;
+
+          & + li {
+            margin-left: 1em;
           }
         }
       }
@@ -213,6 +228,10 @@
       position: absolute;
       overflow: visible;
 
+      .secondary {
+        display: none !important;
+      }
+
       & > ul {
         padding: 0 $contentPadding 0 0;
         background-color: transparent;
@@ -231,10 +250,6 @@
 
             &:hover, &.active {
               color: $turquoise;
-            }
-
-            &.secondary {
-              display: none;
             }
           }
 

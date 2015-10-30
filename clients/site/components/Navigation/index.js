@@ -121,6 +121,23 @@ export default class Navigation extends React.Component {
             <li className='secondary'><Link to='page' params={{slug: 'why-homehapp'}}>Why Homehapp</Link></li>
             <li className='secondary'><Link to='page' params={{slug: 'careers'}}>Careers</Link></li>
           </ul>
+          <ul className='secondary social'>
+            <li>
+              <a href='https://www.facebook.com/homehapp' target='_blank'>
+                <i className='fa fa-facebook-square'></i>
+              </a>
+            </li>
+            <li>
+              <a href='https://www.twitter.com/homehapp' target='_blank'>
+                <i className='fa fa-twitter'></i>
+              </a>
+            </li>
+            <li>
+              <a href='https://www.instagram.com/homehapp' target='_blank'>
+                <i className='fa fa-instagram'></i>
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     );
