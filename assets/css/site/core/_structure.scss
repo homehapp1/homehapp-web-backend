@@ -51,9 +51,9 @@ body {
   }
 
   &.away-for-small {
-    #container {
+    #header, #container {
       @include small() {
-        @include vendors(transform, translateX(-100%));
+        @include vendors(transform, translateX(-1 * $navigationOffset));
       }
     }
   }
