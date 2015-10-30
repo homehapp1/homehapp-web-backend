@@ -27,8 +27,8 @@ export default class Homepage extends React.Component {
 
   state = {
     error: null,
-    homes: HomeListStore.getState().items,
-    neighborhoods: NeighborhoodListStore.getState().items
+    homes: HomeListStore.getState().homes,
+    neighborhoods: NeighborhoodListStore.getState().neighborhoods
   }
 
   componentDidMount() {
@@ -38,14 +38,8 @@ export default class Homepage extends React.Component {
 
     HomeListStore.listen(this.homeStoreListener);
     NeighborhoodListStore.listen(this.neighborhoodStoreListener);
-
-    if (!HomeListStore.getState().items) {
-      HomeListStore.fetchItems({limit: 4});
-    }
-
-    if (!NeighborhoodListStore.getState().items) {
-      NeighborhoodListStore.fetchItems({limit: 4});
-    }
+    HomeListStore.fetchItems({limit: 4});
+    NeighborhoodListStore.fetchItems({limit: 4});
 
     setPageTitle('Discover y');
   }
@@ -61,7 +55,7 @@ export default class Homepage extends React.Component {
     debug('onHomeListChange', state);
     this.setState({
       status: state.error,
-      homes: state.items
+      homes: state.homes
     });
   }
 
@@ -69,7 +63,7 @@ export default class Homepage extends React.Component {
     debug('onNeighborhoodListChange', state);
     this.setState({
       status: state.error,
-      neighborhoods: state.items
+      neighborhoods: state.neighborhoods
     });
   }
 
@@ -106,36 +100,38 @@ export default class Homepage extends React.Component {
       <div className='mainpage-list clearfix with-gradient widget'>
         <div className='neighborhood-list preview-list short-list' ref='neighborhoodList'>
           <h2>Where is your home</h2>
-          {
-            neighborhoods.map((neighborhood, index) => {
-              if (index >= 6) {
-                return null;
-              }
+          <div className='list-container'>
+            {
+              neighborhoods.map((neighborhood, index) => {
+                if (index >= 6) {
+                  return null;
+                }
 
-              return (
-                <div className='preview' key={index}>
-                  <Hoverable {...neighborhood.mainImage} width={464} height={556} mode='fill' applySize className='with-shadow'>
-                    <div className='title'>
-                      <div className='wrapper'>
+                return (
+                  <div className='preview' key={index}>
+                    <Hoverable {...neighborhood.mainImage} width={464} height={556} mode='fill' applySize className='with-shadow'>
+                      <div className='title'>
+                        <div className='wrapper'>
+                          <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                            {neighborhood.title}
+                          </Link>
+                        </div>
+                      </div>
+
+                      <div className='actions'>
                         <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
-                          {neighborhood.title}
+                          Read About
+                        </Link>
+                        <Link to='neighborhoodViewHomes' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                          Show Homes
                         </Link>
                       </div>
-                    </div>
-
-                    <div className='actions'>
-                      <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
-                        Read About
-                      </Link>
-                      <Link to='neighborhoodViewHomes' params={{city: 'london', neighborhood: neighborhood.slug}}>
-                        Show Homes
-                      </Link>
-                    </div>
-                  </Hoverable>
-                </div>
-              );
-            })
-          }
+                    </Hoverable>
+                  </div>
+                );
+              })
+            }
+          </div>
 
           <p className='call-to-action'>
             <Link to='neighborhoodList' params={{city: 'london'}} className='button'>Find more</Link>
@@ -151,8 +147,8 @@ export default class Homepage extends React.Component {
       alt: ''
     };
 
-    let homes = this.state.homes || [];
-    let neighborhoods = this.state.neighborhoods || [];
+    let homes = [].concat(this.state.homes) || [];
+    let neighborhoods = [].concat(this.state.neighborhoods) || [];
     debug('Neighborhoods', neighborhoods, 'Homes', homes);
 
     let partnerImage = {

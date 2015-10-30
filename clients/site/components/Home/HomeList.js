@@ -120,9 +120,13 @@ export default class HomeList extends React.Component {
     return (
       <div className={containerClass.join(' ')} ref='container'>
         {this.props.children}
-        <div className='clearfix'>
+        <div className='clearfix list-container'>
           {
             homes.map((home, index) => {
+              if (!home) {
+                return null;
+              }
+              
               let classes = ['preview'];
 
               if (index === this.props.max) {
