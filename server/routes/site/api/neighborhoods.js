@@ -46,6 +46,9 @@ exports.registerRoutes = (app) => {
       .fetch();
     })
     .then((result) => {
+      for (let neighborhood of result.models) {
+        neighborhood.location.city = city;
+      }
       res.json({
         status: 'ok',
         items: result.models
