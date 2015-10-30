@@ -27,8 +27,8 @@ export default class Homepage extends React.Component {
 
   state = {
     error: null,
-    homes: HomeListStore.getState().homes,
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
+    homes: HomeListStore.getState().items,
+    neighborhoods: NeighborhoodListStore.getState().items
   }
 
   componentDidMount() {
@@ -55,7 +55,7 @@ export default class Homepage extends React.Component {
     debug('onHomeListChange', state);
     this.setState({
       status: state.error,
-      homes: state.homes
+      homes: state.items
     });
   }
 
@@ -63,7 +63,7 @@ export default class Homepage extends React.Component {
     debug('onNeighborhoodListChange', state);
     this.setState({
       status: state.error,
-      neighborhoods: state.neighborhoods
+      neighborhoods: state.items
     });
   }
 
@@ -96,6 +96,7 @@ export default class Homepage extends React.Component {
     if (!neighborhoods || !neighborhoods.length) {
       return null;
     }
+    let counter = 0;
     return (
       <div className='mainpage-list clearfix with-gradient widget'>
         <div className='neighborhood-list preview-list short-list' ref='neighborhoodList'>
@@ -103,9 +104,14 @@ export default class Homepage extends React.Component {
           <div className='list-container'>
             {
               neighborhoods.map((neighborhood, index) => {
-                if (index >= 6) {
+                if (counter >= 6) {
                   return null;
                 }
+
+                if (!neighborhood) {
+                  return null;
+                }
+                counter++;
 
                 return (
                   <div className='preview' key={index}>

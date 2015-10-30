@@ -33,7 +33,7 @@ exports.registerRoutes = (app) => {
       debug(`Got ${result.models.length} homes`);
       initMetadata(res);
       res.locals.data.HomeListStore = {
-        homes: result.models
+        items: result.models
       };
       res.locals.page = {
         title: 'Discover y',
@@ -50,7 +50,7 @@ exports.registerRoutes = (app) => {
     })
     .then((result) => {
       res.locals.data.NeighborhoodListStore = {
-        neighborhoods: result.models
+        items: result.models
       };
       setLastMod([].concat(result.models).concat(res.locals.data.HomeListStore), res);
 
