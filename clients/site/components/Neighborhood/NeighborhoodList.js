@@ -21,20 +21,18 @@ export default class NeighborhoodList extends React.Component {
 
   constructor(props) {
     super(props);
-    debug('Props', props);
     this.city = props.params.city;
     this.storeListener = this.onChange.bind(this);
   }
 
   state = {
     error: null,
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
+    neighborhoods: NeighborhoodListStore.getState().items || NeighborhoodListStore.getState().neighborhoods
   }
 
   componentDidMount() {
     setPageTitle(`Neighbourhoods of ${this.city.substr(0, 1).toUpperCase()}${this.city.substr(1)}`);
     NeighborhoodListStore.listen(this.storeListener);
-    debug('NeighborhoodListStore.getState()', NeighborhoodListStore.getState());
     NeighborhoodListStore.fetchItems({city: this.city});
   }
 
@@ -47,7 +45,7 @@ export default class NeighborhoodList extends React.Component {
     debug('set state', state);
     this.setState({
       error: state.error,
-      neighborhoods: state.neighborhoods
+      neighborhoods: state.items
     });
   }
 
@@ -80,10 +78,6 @@ export default class NeighborhoodList extends React.Component {
 
     if (this.state.error) {
       return this.handleErrorState();
-    }
-
-    if (NeighborhoodListStore.isLoading()) {
-      return this.handlePendingState();
     }
 
     let neighborhoods = this.state.neighborhoods || [];
