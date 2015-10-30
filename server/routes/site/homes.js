@@ -42,7 +42,7 @@ exports.registerRoutes = (app) => {
         debug(`Got ${result.models.length} homes`);
         initMetadata(res);
         res.locals.data.HomeListStore = {
-          items: result.models
+          homes: result.models
         };
         setLastMod(result.models, res);
         resolve(result.models);
