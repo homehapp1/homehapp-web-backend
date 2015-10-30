@@ -14,16 +14,11 @@ export default class HTMLContent extends React.Component {
   render() {
     let classes = [
       'widget',
-      'content-block',
-      this.props.align
+      'content-block'
     ];
 
     if (this.props.className) {
       classes.push(this.props.className);
-    }
-
-    if (this.props.fullheight) {
-      classes.push('full-height');
     }
 
     return (
