@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Columns from '../../../common/components/Widgets/Columns';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
 import ContactStore from '../../stores/ContactStore';
