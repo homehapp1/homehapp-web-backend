@@ -10,7 +10,6 @@ import HomeList from './HomeList';
 
 // Story widgets
 import BigImage from '../../../common/components/Widgets/BigImage';
-import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
 
