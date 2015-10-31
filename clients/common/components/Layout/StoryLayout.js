@@ -12,6 +12,7 @@ import Gallery from '../Widgets/Gallery';
 import HTMLContent from '../Widgets/HTMLContent';
 import LargeText from '../Widgets/LargeText';
 import Map from '../Widgets/Map';
+import Markdown from '../Widgets/Markdown';
 import Neighborhood from '../Widgets/Neighborhood';
 import Separator from '../Widgets/Separator';
 
@@ -204,41 +205,23 @@ export default class StoryLayout extends React.Component {
   }
 
   getDetails(item, index) {
+    if (!item.properties.home) {
+      console.warn('No home delivered to getDetails, return null', item);
+      return null;
+    }
+
+    let home = item.properties.home;
+    let details = (home.properties) ? home.properties : home.amenities.join(`\n`);
+
+    if (!details) {
+      return null;
+    }
+
+    debug('use details', details);
     return (
       <ContentBlock key={index} className='details-view'>
         <h2>Home details</h2>
-        <Columns cols={2}>
-          <div className='first'>
-            <h3>Accommodation</h3>
-            <ul>
-              <li>Room list</li>
-              <li>lorem ipsum</li>
-            </ul>
-            <h3>Type</h3>
-            <ul>
-              <li>Apartment</li>
-            </ul>
-            <h3>Plot holding type</h3>
-            <ul>
-              <li>Own</li>
-            </ul>
-          </div>
-          <div className='second'>
-            <h3>Amenities</h3>
-            <ul>
-              <li>List of amenities</li>
-              <li>lorem ipsum</li>
-            </ul>
-            <h3>Construction finished</h3>
-            <ul>
-              <li>1850</li>
-            </ul>
-            <h3>Recent renovations</h3>
-            <ul>
-              <li>Full renovation, 2011</li>
-            </ul>
-          </div>
-        </Columns>
+        <Markdown className='auto-columns'>{details}</Markdown>
       </ContentBlock>
     );
   }
