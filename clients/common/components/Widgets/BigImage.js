@@ -12,14 +12,16 @@ export default class BigImage extends BigBlock {
     proportion: React.PropTypes.number,
     children: React.PropTypes.object,
     align: React.PropTypes.string,
-    valign: React.PropTypes.string
+    valign: React.PropTypes.string,
+    className: React.PropTypes.string
   };
 
   static defaultProps = {
     fixed: false,
     proportion: 0,
     align: 'center',
-    valign: 'middle'
+    valign: 'middle',
+    className: null
   };
 
   render() {
@@ -33,6 +35,10 @@ export default class BigImage extends BigBlock {
 
     if (this.props.fixed) {
       classes.push('fixed');
+    }
+
+    if (this.props.className) {
+      classes.push(this.props.className);
     }
 
     let image = merge({}, this.props.image);

@@ -8,8 +8,13 @@ export default class Neighborhood extends React.Component {
     title: React.PropTypes.string.isRequired,
     slug: React.PropTypes.string.isRequired,
     images: React.PropTypes.array.isRequired,
-    coordinates: React.PropTypes.array
-  };
+    coordinates: React.PropTypes.array,
+    className: React.PropTypes.string
+  }
+
+  static defaultProps = {
+    className: null
+  }
 
   render() {
     let image = {
@@ -21,8 +26,10 @@ export default class Neighborhood extends React.Component {
       image = this.props.images[0];
     }
 
+    let classes = ['neighborhood'];
+
     return (
-      <BigImage image={image}>
+      <BigImage image={image} className={classes.join(' ')}>
         <LargeText align='center' valign='middle' className='full-height'>
           <p className='teaser'>...and about the neighbourhood</p>
           <h1>

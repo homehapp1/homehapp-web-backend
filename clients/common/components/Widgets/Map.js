@@ -18,8 +18,9 @@ export default class Map extends React.Component {
     ]),
     context: React.PropTypes.object,
     lat: React.PropTypes.number,
-    lng: React.PropTypes.number
-  };
+    lng: React.PropTypes.number,
+    className: React.PropTypes.string
+  }
 
   static contextTypes = {
     router: React.PropTypes.func
@@ -29,7 +30,8 @@ export default class Map extends React.Component {
     zoom: 10,
     minZoom: 6,
     maxZoom: 20,
-    markers: []
+    markers: [],
+    className: null
   };
 
   constructor() {
@@ -248,6 +250,10 @@ export default class Map extends React.Component {
       );
     } else {
       classes.push('no-aux-content');
+    }
+
+    if (this.props.className) {
+      classes.push(this.props.className);
     }
 
     return (

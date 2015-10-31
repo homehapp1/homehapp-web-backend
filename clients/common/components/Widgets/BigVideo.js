@@ -426,6 +426,10 @@ export default class BigVideo extends BigBlock {
       classes.push('fixed');
     }
 
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
+
     if (!this.props.video || !this.props.video.url) {
       console.warn('Tried to create a BigVideo block without a video', this.props.video);
       return null;
