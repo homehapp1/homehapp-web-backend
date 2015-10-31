@@ -143,6 +143,7 @@ export default class HomeDetails extends StoryBlocks {
         template: 'Gallery',
         properties: {
           images: this.props.home.images,
+          imageWidth: 300,
           className: 'pattern details-view'
         }
       });
