@@ -125,8 +125,6 @@ export default class Agent extends React.Component {
                 debug('Agent', agent);
                 let phone = null;
 
-                agent.contactNumber = '+358 50 5958435';
-
                 if (agent.contactNumber) {
                   let number = agent.contactNumber.replace(/[^\+0-9]/g, '');
                   phone = (
