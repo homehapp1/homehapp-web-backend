@@ -33,8 +33,7 @@ export default class HomeSearch extends React.Component {
 
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
-    debug('HomeListStore', HomeListStore);
-    HomeListStore.fetchItems({story: true});
+    HomeListStore.fetchItems({type: 'story'});
     setPageTitle(`Our home stories`);
   }
 
@@ -43,9 +42,10 @@ export default class HomeSearch extends React.Component {
   }
 
   onChange(state) {
+    debug('onChange', state);
     this.setState({
       error: state.error,
-      homes: state.homes
+      homes: state.items
     });
   }
 

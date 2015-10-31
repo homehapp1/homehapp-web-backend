@@ -411,6 +411,7 @@ export default class HomesEditDetails extends EditDetails {
                 defaultValue={home.announcementType}
                 onChange={this.changeStatus.bind(this)}
               >
+                <option value='story'>This home has a story, but is not for sale or rent</option>
                 <option value='buy'>This home is for sale</option>
                 <option value='rent'>This home is for rent</option>
               </InputWidget>
@@ -531,7 +532,7 @@ export default class HomesEditDetails extends EditDetails {
                 </Col>
               </Row>
             </Panel>
-            <Panel header='Pricing information'>
+            <Panel header='Pricing information' className={(home.announcementType === 'story') ? 'hidden' : ''}>
               <InputWidget
                 type='select'
                 ref='costsCurrency'

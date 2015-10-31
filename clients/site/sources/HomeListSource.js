@@ -27,7 +27,7 @@ export default SourceBuilder.build({
                   }
                   break;
                 case 'type':
-                  if (['', 'buy', 'rent'].indexOf(v) !== -1) {
+                  if (['', 'story', 'buy', 'rent'].indexOf(v) !== -1) {
                     filters.push(`type=${v}`);
                   }
                   break;

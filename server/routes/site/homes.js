@@ -67,19 +67,19 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  app.get('/homes/:story(stories)', function(req, res, next) {
-    debug('GET /homes/stories');
-
-    listHomes(req, res, next)
-    .then(() => {
-      res.locals.page = {
-        title: 'Storified homes',
-        description: 'Our storified homes'
-      };
-      next();
-    })
-    .catch(next);
-  });
+  // app.get('/homes/:story(stories)', function(req, res, next) {
+  //   debug('GET /homes/stories');
+  //
+  //   listHomes(req, res, next)
+  //   .then(() => {
+  //     res.locals.page = {
+  //       title: 'Storified homes',
+  //       description: 'Our storified homes'
+  //     };
+  //     next();
+  //   })
+  //   .catch(next);
+  // });
 
   app.get('/search', function(req, res, next) {
     debug('GET /search');
@@ -97,14 +97,22 @@ exports.registerRoutes = (app) => {
 
   app.get('/search/:type', function(req, res, next) {
     debug(`GET /search/${req.params.type}`);
+    let types = ['buy', 'rent', 'story'];
+    let titles = {
+      buy: 'Homes for sale',
+      rent: 'Homes for rent',
+      story: 'Our storified homes'
+    };
 
-    let title = (req.params.type === 'buy') ? 'sell' : 'rent';
+    if (types.indexOf(req.params.type) === -1) {
+      return next();
+    }
 
     listHomes(req, res, next)
     .then(() => {
       res.locals.page = {
-        title: 'Homes',
-        description: `Our exclusive homes for ${title}`
+        title: titles[req.params.type],
+        description: titles[req.params.type]
       };
       next();
     })

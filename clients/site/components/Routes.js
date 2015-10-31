@@ -38,7 +38,6 @@ module.exports = (
     <Route name='homes' path='/homes'>
       <Route name='contactLetting' path='letting' handler={HomeOwner} />
       <Route name='contactSelling' path='selling' handler={HomeOwner} />
-      <Route name='homeStories' path='stories' handler={HomeStories} />
       <Route name='home' path=':slug'>
         <Route name='homeDetails' path='details' handler={HomeDetailsContainer} />
         <Route name='homeStory' path='story' handler={HomeStoryContainer} />
@@ -50,6 +49,7 @@ module.exports = (
       <NotFoundRoute handler={RouteNotFound} />
     </Route>
     <Route name='search' path='/search'>
+      <Route name='homeStories' path='stories' handler={HomeStories} />
       <Route name='searchMode' path=':mode' handler={HomeSearch} />
       <DefaultRoute handler={HomeSearch} />
       <NotFoundRoute handler={RouteNotFound} />
