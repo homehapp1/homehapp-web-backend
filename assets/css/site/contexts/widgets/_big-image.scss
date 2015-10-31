@@ -39,6 +39,10 @@
     }
 
     & > .secondary {
+      @include small() {
+        padding-bottom: $contentPadding;
+      }
+
       @include notSmall() {
         position: absolute;
         bottom: $contentPadding;
