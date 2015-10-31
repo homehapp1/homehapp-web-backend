@@ -5,6 +5,32 @@ let url = require('url');
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
+  let populateCity = (home) => {
+    if (!home.location.neighborhood || !home.location.neighborhood.location || !home.location.neighborhood.location.city) {
+      debug('No city defined');
+      return new Promise().resolve();
+    }
+    debug('City defined');
+
+    return new Promise((resolve, reject) => {
+      QB
+      .forModel('City')
+      .findById(home.location.neighborhood.location.city)
+      .fetch()
+      .then((result) => {
+        debug('City available', result.model);
+        home.location.neighborhood.location.city = result.model;
+        resolve(home);
+      })
+      .catch((err) => {
+        // Do not populate city if it was not found from the database
+        debug('City not available', err);
+        home.location.neighborhood.location.city = null;
+        resolve(home);
+      });
+    });
+  };
+
   app.get('/api/home', function(req, res) {
     debug('Redirecting the API call to deprecated /api/home');
     return res.redirect(301, '/api/homes');
@@ -26,9 +52,12 @@ exports.registerRoutes = (app) => {
     .fetch()
     .then((result) => {
       debug('Home fetched', result);
-      res.json({
-        status: 'ok',
-        home: result.home
+      populateCity(result.home)
+      .then((home) => {
+        res.json({
+          status: 'ok',
+          home: home
+        });
       });
     })
     .catch(next);

@@ -82,7 +82,6 @@ exports.registerRoutes = (app) => {
     }
   });
 
-
   app.get('/api/homes/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch home with uuid', req.params.uuid);
     QB

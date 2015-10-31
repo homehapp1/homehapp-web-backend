@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { merge } from '../../../common/Helpers';
+let debug = require('debug')('StoryBlocks');
 
 export default class StoryBlocks extends React.Component {
   static propTypes = {
@@ -17,6 +19,21 @@ export default class StoryBlocks extends React.Component {
 
     let storyUrl = this.context.router.makeHref('home', {slug: home.slug});
     let detailsUrl = this.context.router.makeHref('homeDetails', {slug: home.slug});
+    let neighborhood = null;
+
+    if (home.location && home.location.neighborhood) {
+      debug('home.location.neighborhood.city', home.location.neighborhood);
+      neighborhood = (
+        <li>
+          <Link to='neighborhoodView' params={{
+              city: home.location.neighborhood.location.city.slug,
+              neighborhood: home.location.neighborhood.slug}
+            }>
+            Neighborhood
+          </Link>
+        </li>
+      );
+    }
 
     return (
       <ul className='home-links'>
@@ -27,9 +44,10 @@ export default class StoryBlocks extends React.Component {
         </li>
         <li className={(detailsUrl === window.location.pathname) ? 'active' : ''}>
           <a href={detailsUrl}>
-            Facts
+            Info
           </a>
         </li>
+        {neighborhood}
       </ul>
     );
   }

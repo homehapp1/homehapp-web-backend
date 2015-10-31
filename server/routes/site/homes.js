@@ -119,6 +119,32 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
+  let populateCity = (home) => {
+    if (!home.location.neighborhood || !home.location.neighborhood.location || !home.location.neighborhood.location.city) {
+      debug('No city defined');
+      return new Promise().resolve();
+    }
+    debug('City defined');
+
+    return new Promise((resolve, reject) => {
+      QB
+      .forModel('City')
+      .findById(home.location.neighborhood.location.city)
+      .fetch()
+      .then((result) => {
+        debug('City available', result.model);
+        home.location.neighborhood.location.city = result.model;
+        resolve(home);
+      })
+      .catch((err) => {
+        // Do not populate city if it was not found from the database
+        debug('City not available', err);
+        home.location.neighborhood.location.city = null;
+        resolve(home);
+      });
+    });
+  };
+
   let returnHomeBySlug = (req, res, next) => {
     let home = null;
     let neighborhood = null;
@@ -164,10 +190,13 @@ exports.registerRoutes = (app) => {
       };
 
       setLastMod([home, neighborhood], res);
-      res.locals.data.HomeStore = {
-        home: home
-      };
-      next();
+      populateCity(home)
+      .then((home) => {
+        res.locals.data.HomeStore = {
+          home: home
+        };
+        next();
+      });
     })
     .catch(() => {
       debug('Home not found by slug, try if the identifier was its UUID', slug);
