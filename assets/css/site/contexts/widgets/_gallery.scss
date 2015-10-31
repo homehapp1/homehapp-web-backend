@@ -7,6 +7,11 @@
     display: block;
     float: left;
     padding: $contentPadding / 2;
+
+    @include small() {
+      padding: 0;
+      margin-bottom: $contentPadding / 2;
+    }
   }
 
   &.tight {
