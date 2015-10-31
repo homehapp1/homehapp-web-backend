@@ -39,6 +39,15 @@
   .widget.columns {
     padding-top: 0;
   }
+
+  .content-wrapper {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: $contentPadding;
+    padding-right: $contentPadding;
+    text-align: justify;
+  }
 }
 
 .content-block {

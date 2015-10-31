@@ -16,7 +16,7 @@ $buttonBackground: $darkGray;
 $buttonBackgroundHover: darken($buttonBackground, 10%);
 
 $fontGray: #444444;
-$fontMediumGray: #7C7C7C;
+$fontMediumGray: $linkGray;
 $fontLightGray: #aaaaaa;
 $fontDarkGray: $fontGray;
 

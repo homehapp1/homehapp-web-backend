@@ -83,7 +83,8 @@ h3 {
 h2, .modal-container h1 {
   font-size: $fontSizeHeading2;
   font-weight: $titleWeight;
-  font-family: $defaultFont;
+  // font-family: $defaultFont;
+  font-family: $highlightFont;
 
   @include small() {
     font-size: $fontSizeHeading2 * $smallQ;
