@@ -1,6 +1,6 @@
 &.separator {
   $s: 5em;
-  height: 1em;
+  height: $contentPadding;
   position: relative;
   background-color: white;
 
@@ -9,9 +9,13 @@
     width: $s;
     height: $s;
     left: 50%;
-    top: 50%;
+    bottom: 0;
     margin-left: -0.5 * $s;
-    margin-top: -0.5 * $s;
+    margin-bottom: -0.5 * $s;
     z-index: 1;
   }
+}
+
+&.next-separator {
+  padding-bottom: $contentPadding;
 }
