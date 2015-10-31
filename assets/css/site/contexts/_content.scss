@@ -55,3 +55,21 @@ iframe {
 .call-to-action {
   text-align: center;
 }
+
+.auto-columns {
+  @include vendors(column-count, 2);
+  @include vendors(column-width, 50%);
+  @include vendors(column-gap, 80px);
+  @include vendors(column-fill, balance);
+  // column-fill: balance
+
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+
+  @include small() {
+    @include vendors(column-count, 1);
+    @include vendors(column-width, 100%);
+    @include vendors(column-gap, 0);
+  }
+}
