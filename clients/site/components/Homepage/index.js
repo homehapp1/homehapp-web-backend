@@ -83,7 +83,7 @@ export default class Homepage extends React.Component {
     return (
       <div className='mainpage-list clearfix'>
         <HomeList items={homes} max={4} className='mainpage-list short-list'>
-          <h2>Exclusively for Homehapp</h2>
+          <h2 className='block-title'>Exclusively for Homehapp</h2>
         </HomeList>
         <p className='call-to-action'>
           <Link to='search' className='button'>Find more</Link>
@@ -196,8 +196,8 @@ export default class Homepage extends React.Component {
               Lorem ipsum dolor sit amet.
             </div>
           </Columns>
-          <Columns cols={2} className='table'>
-            <div>
+          <Columns cols={2} className='table' valign='middle'>
+            <div data-valign='middle'>
               Lorem ipsum dolor sit amet.
             </div>
             <div className='right' data-valign='middle'>

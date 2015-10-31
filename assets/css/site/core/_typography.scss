@@ -95,6 +95,7 @@ h1, .block-title, .big-image h2, .big-video h2 {
   font-weight: $titleWeight;
   font-family: $highlightFont;
   font-weight: 400;
+  margin: 0.8em 0;
 
   @include small() {
     font-size: $fontSizeHeading1 * $smallQ;

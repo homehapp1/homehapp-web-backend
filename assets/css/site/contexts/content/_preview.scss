@@ -4,6 +4,10 @@
   padding-top: 5 * $contentPadding;
   padding-bottom: 5 * $contentPadding;
 
+  &.mainpage-list {
+    padding-top: 0;
+  }
+
   &.home-list {
     background-color: white;
   }
@@ -223,7 +227,7 @@
       }
     }
   }
-  
+
   &.short-list .preview:nth-child(3) + .preview {
     $minWidth: 3 * $previewWidth + 4 * $contentPadding;
 
