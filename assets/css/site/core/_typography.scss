@@ -98,7 +98,7 @@ h1, .block-title, .big-image h2, .big-video h2 {
   margin: 0.8em 0;
 
   @include small() {
-    font-size: $fontSizeHeading1 * $smallQ;
+    font-size: $fontSizeHeading25;
   }
 }
 
