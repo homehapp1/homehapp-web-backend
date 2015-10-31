@@ -98,13 +98,13 @@ export default class Agent extends React.Component {
   }
 
   getFormLink() {
-    if (!this.props.home) {
+    if (!this.props.home || this.props.agents.length) {
       return null;
     }
 
     return (
-      <p className='centered email'>
-        <Link to='homeForm' params={{slug: this.props.home.slug}} onClick={this.displayForm.bind(this)}>Contact us</Link>
+      <p className='centered has-icon email'>
+        <Link className='icon' to='homeForm' params={{slug: this.props.home.slug}} onClick={this.displayForm.bind(this)}>Contact us</Link>
       </p>
     );
   }
@@ -132,7 +132,7 @@ export default class Agent extends React.Component {
                   phone = (
                     <p className='phone has-icon'>
                       <span className='label'>
-                        <a href={`callto:${number}`}>{agent.contactNumber}</a>
+                        <a className='icon' href={`callto:${number}`}>{agent.contactNumber}</a>
                       </span>
                     </p>
                   );
@@ -153,7 +153,7 @@ export default class Agent extends React.Component {
                     {phone}
                     <p className='email has-icon'>
                       <span className='label'>
-                        <Link to='homeForm' params={{slug: this.props.home.slug}} onClick={this.displayForm.bind(this)}>
+                        <Link className='icon' to='homeForm' params={{slug: this.props.home.slug}} onClick={this.displayForm.bind(this)}>
                           Request details
                         </Link>
                       </span>

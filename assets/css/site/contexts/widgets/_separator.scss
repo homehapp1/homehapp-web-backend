@@ -16,6 +16,6 @@
   }
 }
 
-&.next-separator {
+&.next-separator:not(.map) {
   padding-bottom: $contentPadding;
 }
