@@ -83,7 +83,11 @@
 
     & + .pattern {
       background-position: left top;
-      padding-top: 1px;
+      &:before {
+        display: block;
+        content: ' ';
+        padding-top: 1px;
+      }
     }
   }
 
