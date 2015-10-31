@@ -26,9 +26,9 @@ export default class StoryBlocks extends React.Component {
       neighborhood = (
         <li>
           <Link to='neighborhoodView' params={{
-              city: home.location.neighborhood.location.city.slug,
-              neighborhood: home.location.neighborhood.slug}
-            }>
+            city: home.location.neighborhood.location.city.slug,
+            neighborhood: home.location.neighborhood.slug}
+          }>
             Neighborhood
           </Link>
         </li>
