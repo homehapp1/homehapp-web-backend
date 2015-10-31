@@ -1,5 +1,5 @@
 import QueryBuilder from '../../lib/QueryBuilder';
-//let debug = require('debug')('/api/homes');
+let debug = require('debug')('/api/homes');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -274,7 +274,7 @@ exports.registerRoutes = (app) => {
       .catch(next);
     }
 
-    if (data.location.neighborhood) {
+    if (data.location && data.location.neighborhood) {
       let neighborhoodUuid = data.location.neighborhood;
       data.location.neighborhood = null;
       QB
