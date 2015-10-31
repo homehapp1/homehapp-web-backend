@@ -211,7 +211,13 @@ export default class StoryLayout extends React.Component {
     }
 
     let home = item.properties.home;
-    let details = (home.properties) ? home.properties : '* ' + home.amenities.join(`\n* `);
+    let details = null;
+    if (home.properties) {
+      details = home.properties;
+    }
+    if (!details && Array.isArray(home.amenities)) {
+      details = home.amenities.join(`\n* `)
+    }
 
     if (!details) {
       return null;
