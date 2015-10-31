@@ -10,7 +10,6 @@ import HomeList from './HomeList';
 
 // Story widgets
 import BigImage from '../../../common/components/Widgets/BigImage';
-import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import LargeText from '../../../common/components/Widgets/LargeText';
 
 import { setPageTitle } from '../../../common/Helpers';
@@ -65,7 +64,7 @@ export default class HomeSearch extends React.Component {
     if (this.state.error) {
       return handleErrorState();
     }
-    
+
     let homes = this.state.homes || [];
 
     let placeholder = {

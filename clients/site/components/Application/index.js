@@ -8,7 +8,7 @@ import Footer from '../Footer';
 import Layout from '../../../common/components/Layout';
 import GoogleAnalytics from '../../../common/components/Analytics/GoogleAnalytics';
 
-let debug = require('debug')('Application');
+// let debug = require('debug')('Application');
 
 export default class Application extends React.Component {
   static propTypes = {
@@ -32,7 +32,7 @@ export default class Application extends React.Component {
   }
 
   render() {
-    debug(this.context.router);
+    // debug(this.context.router);
     return (
       <Layout>
         <Navigation {...this.props} />

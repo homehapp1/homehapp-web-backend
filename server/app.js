@@ -1,5 +1,3 @@
-
-
 import path from 'path';
 import fs from 'fs';
 import http from 'http';
@@ -125,7 +123,7 @@ exports.run = function(projectName, afterRun) {
           return resolve();
         }
         require(path.join(SOURCE_PATH, 'lib', 'Database')).configure(app, app.config.database)
-        .then( () => resolve() )
+        .then(() => resolve() )
         .catch((err) => {
           app.log.error(`Unable to configure database!: ${err.message}`, err);
           reject(err);
@@ -377,19 +375,19 @@ exports.run = function(projectName, afterRun) {
 
             res.locals.data.ApplicationStore.config = clientConfig;
 
-            debug('clientConfig', clientConfig);
+            // debug('clientConfig', clientConfig);
             // debug('res.locals.data', res.locals.data);
             // debug('res.locals.metadatas', res.locals.metadatas);
 
             let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
-
             alt.bootstrap(JSON.stringify(res.locals.data));
+            debug('Local data', res.locals.data);
 
             Router.run(routes, req.url, function (Handler) {
               let flushedState = alt.flush();
               let content = React.renderToString(React.createElement(Handler));
 
-              //console.log('flushedState', flushedState);
+              // debug('flushedState', flushedState);
               iso.add(content, flushedState);
 
               let html = iso.render();
@@ -400,7 +398,7 @@ exports.run = function(projectName, afterRun) {
                 metadatas: res.locals.metadatas
               })
               .then((locals) => {
-                //console.log('locals', locals);
+                // debug('locals', locals);
                 res.render('index', locals);
               });
             });
