@@ -8,7 +8,7 @@ exports.registerRoutes = (app) => {
   let populateCity = (home) => {
     if (!home.location.neighborhood || !home.location.neighborhood.location || !home.location.neighborhood.location.city) {
       debug('No city defined');
-      return new Promise().resolve();
+      return Promise.resolve(home);
     }
     debug('City defined');
 
