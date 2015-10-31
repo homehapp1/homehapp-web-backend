@@ -3,6 +3,11 @@
   padding-top: $padding;
   padding-bottom: $padding;
 
+  @include small() {
+    padding-top: $contentPadding;
+    padding-bottom: $contentPadding;
+  }
+
   & > .columns-container {
     margin-left: -0.5 * $padding;
     margin-right: -0.5 * $padding;
@@ -107,5 +112,15 @@
         vertical-align: bottom;
       }
     }
+  }
+}
+
+&.content-block {
+  .widget-columns:first-child {
+    padding-top: 0;
+  }
+
+  .widget-columns:last-child {
+    padding-bottom: 0;
   }
 }
