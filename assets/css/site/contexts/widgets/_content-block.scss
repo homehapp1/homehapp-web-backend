@@ -4,8 +4,8 @@
   background-color: white;
 
   @include small() {
-    padding-top: $contentPadding * 2;
-    padding-bottom: $contentPadding * 2;
+    padding-top: $contentPadding;
+    padding-bottom: $contentPadding;
   }
 
   & + .text-block {
@@ -34,6 +34,10 @@
     &.call-to-action {
       margin: 3 * $contentPadding 0 0;
     }
+  }
+
+  .widget.columns {
+    padding-top: 0;
   }
 }
 
