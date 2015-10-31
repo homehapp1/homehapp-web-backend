@@ -23,6 +23,55 @@ export default class StoryLayout extends React.Component {
     blocks: React.PropTypes.array.isRequired
   };
 
+  getPrevTemplate(index) {
+    if (!index) {
+      return null;
+    }
+
+    return this.props.blocks[index - 1].template;
+  }
+
+  getPrevTemplateClass(index) {
+    return 'prev-' + this.normalizeTemplateName(this.getPrevTemplate(index));
+  }
+
+  getNextTemplate(index) {
+    if (index >= this.props.blocks.length - 1) {
+      return null;
+    }
+
+    return this.props.blocks[index + 1].template;
+  }
+
+  getNextTemplateClass(index) {
+    return 'next-' + this.normalizeTemplateName(this.getNextTemplate(index));
+  }
+
+  setClasses(item, index) {
+    if (!index || index >= this.props.blocks.length - 1) {
+      return null;
+    }
+
+    let prev = this.getPrevTemplateClass(index);
+    let next = this.getNextTemplateClass(index);
+
+    if (!item.properties.className) {
+      item.properties.className = '';
+    }
+
+    item.properties.className += ` ${prev} ${next}`;
+  }
+
+  normalizeTemplateName(name) {
+    return name.replace(/([A-Z])/g, function(match, char, index) {
+      if (!index) {
+        return char.toLowerCase();
+      }
+
+      return `-${char.toLowerCase()}`;
+    });
+  }
+
   getAgents(item, index) {
     return (<Agents {...item.properties} key={index} />);
   }
@@ -242,6 +291,7 @@ export default class StoryLayout extends React.Component {
         {
           this.props.blocks.map((item, index) => {
             let method = `get${item.template}`;
+            this.setClasses(item, index);
 
             if (typeof this[method] === 'function') {
               debug('Render with', method);
