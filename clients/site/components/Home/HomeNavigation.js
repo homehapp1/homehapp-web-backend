@@ -109,7 +109,6 @@ export default class HomeNavigation extends React.Component {
     e.stopPropagation();
     this.modal = this.createModal();
     this.modalContainer = null;
-    this.preloaded = {};
 
     // Create the modal
     React.render(this.modal, document.getElementById('modals'));
