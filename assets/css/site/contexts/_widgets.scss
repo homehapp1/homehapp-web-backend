@@ -52,6 +52,10 @@
     background-image: linear-gradient($d, $g1, $g2);
   }
 
+  h2 {
+    margin-top: 0.5em;
+  }
+
   &.item-separator {
     $size: 100px;
 

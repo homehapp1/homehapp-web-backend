@@ -498,7 +498,6 @@ export default class BigVideo extends BigBlock {
             </i>
           </div>
         </div>
-        <Separator type='white' />
       </div>
     );
   }
