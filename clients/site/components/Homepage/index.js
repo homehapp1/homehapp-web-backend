@@ -164,17 +164,21 @@ export default class Homepage extends React.Component {
       height: 515
     };
 
+    // Match the original proportions for the phone images
+    let w = 200;
+    let h = Math.round(856 / 300 * w);
+
     let leftImage = {
       src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213568/site/images/content/homehapp_web_phone_left.png',
       alt: '',
-      width: 300,
-      height: 856
+      width: w,
+      height: h
     };
     let rightImage = {
       src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213569/site/images/content/homehapp_web_phone_right.png',
       alt: '',
-      width: 300,
-      height: 856
+      width: w,
+      height: h
     };
 
     return (
@@ -188,19 +192,34 @@ export default class Homepage extends React.Component {
         </BigImage>
         {this.renderHomeList(homes)}
         <ContentBlock className='with-gradient'>
+          <h2 className='block-title'>Why Homehapp?</h2>
+          <p>
+            We believe there is a better way to help people find homes they
+            belong to. It is an idea whose time has come, and we at Homehapp
+            are making it happen.
+          </p>
           <Columns cols={2} className='table' valign='middle'>
-            <div className='left' data-valign='middle'>
+            <div className='centered' data-valign='middle'>
               <Image {...leftImage} />
             </div>
             <div data-valign='middle'>
-              Lorem ipsum dolor sit amet.
+              We want to bring transparency and efficiency to the property
+              market, putting people in touch with the right professionals so
+              that they get the best service. Our aim is to help everybody
+              find a home that’s right for them and a home that they love –
+              the home that will make them happy.
             </div>
           </Columns>
           <Columns cols={2} className='table' valign='middle'>
             <div data-valign='middle'>
-              Lorem ipsum dolor sit amet.
+              HomeHapp brings out the true essence of homes and neighborhoods
+              by showing them through the eyes of the people who live there.
+              It offers an easy to use platform on which to post, and share
+              home moments and home stories. This content connects buyers and
+              tenants to sellers and landlords, as well as linking them to a
+              host of service providers in a sharing-economy model.
             </div>
-            <div className='right' data-valign='middle'>
+            <div className='centered' data-valign='middle'>
               <Image {...rightImage} />
             </div>
           </Columns>
@@ -209,7 +228,11 @@ export default class Homepage extends React.Component {
             <div className='span1'></div>
             <div className='span5 centered'>
               <p>
-                <em>Become a service provider in Homehapp. We are looking for estate agents partners, legals, home decor...</em>
+                <em>
+                  Homehapp is a platform for buyers and sellers, landlords and
+                  tenants, Estate agents, legal conveyancers, chartered surveyors.
+                  Expand your reach and increase your sales.
+                </em>
               </p>
               <p>
                 <Link to='partners' className='button white'>Contact</Link>
