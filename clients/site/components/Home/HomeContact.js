@@ -16,7 +16,9 @@ export default class HomeContact extends React.Component {
 
   static contextTypes = {
     router: React.PropTypes.func,
-    onClose: null
+    onClose: () => {
+      debug('Default onclose');
+    }
   };
 
   constructor() {
