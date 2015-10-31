@@ -3,14 +3,17 @@
   background-color: $extraLightGray;
   padding: $contentPadding / 2;
 
+  @include small() {
+    padding: $contentPadding / 4;
+  }
+
   img {
     display: block;
     float: left;
     padding: $contentPadding / 2;
 
     @include small() {
-      padding: 0;
-      margin-bottom: $contentPadding / 2;
+      padding: $contentPadding / 4;
     }
   }
 
