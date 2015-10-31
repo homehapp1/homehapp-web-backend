@@ -5,7 +5,7 @@
   padding-bottom: 5 * $contentPadding;
 
   &.mainpage-list {
-    padding-top: 0;
+    padding-top: 1px;
   }
 
   &.home-list {
@@ -34,7 +34,7 @@
       @include small() {
         display: block;
         max-width: 100%;
-        margin: 0 0 $contentPadding;
+        margin: 0 auto $contentPadding;
         border-style: none none solid;
       }
 

@@ -29,10 +29,6 @@
 
   & > .image-text {
     h1, h2 {
-      @include small() {
-        font-size: $fontSizeHeading25;
-      }
-
       margin-bottom: 0;
     }
 
