@@ -298,8 +298,6 @@ export default class HomesEditDetails extends EditDetails {
   propertiesChange(event) {
     // debug('event', event.target.value);
     let markdown = marked(event.target.value);
-    debug('markdown', markdown);
-
     let node = React.findDOMNode(this.refs.propertiesPreview);
     node.innerHTML = marked(markdown);
   }
