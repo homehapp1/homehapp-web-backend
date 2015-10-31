@@ -80,6 +80,11 @@ body {
   margin-right: auto;
   padding-left: $contentPadding;
   padding-right: $contentPadding;
+
+  @include small() {
+    padding-left: $contentPadding / 2;
+    padding-right: $contentPadding / 2;
+  }
 }
 
 .full-height {

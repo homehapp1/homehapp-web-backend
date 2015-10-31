@@ -13,7 +13,7 @@
   }
 
   @include small() {
-    padding: $contentPadding;
+    padding: $contentPadding / 2;
   }
 
   .list-container {
@@ -34,7 +34,7 @@
       @include small() {
         display: block;
         max-width: 100%;
-        margin: 0 auto $contentPadding;
+        margin: 0 auto $contentPadding / 2;
         border-style: none none solid;
       }
 
