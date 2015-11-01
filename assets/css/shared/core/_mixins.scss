@@ -153,6 +153,11 @@
     }
   }
 
+  img[data-valign="top"], video[data-valign="top"] {
+    top: 0;
+    @include vendors(transform, translateX(-50%));
+  }
+
   &[data-valign="middle"] {
     & > img, & > video {
       top: 50%;
@@ -165,6 +170,12 @@
       top: auto;
       bottom: 0;
     }
+  }
+
+  img[data-valign="bottom"], video[data-valign="bottom"] {
+    top: auto;
+    bottom: 0;
+    @include vendors(transform, translateX(-50%));
   }
 
   @content;

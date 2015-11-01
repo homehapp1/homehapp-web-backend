@@ -31,7 +31,9 @@ export default class Image extends React.Component {
     ]),
     gravity: React.PropTypes.string,
     className: React.PropTypes.string,
-    applySize: React.PropTypes.bool
+    applySize: React.PropTypes.bool,
+    align: React.PropTypes.string,
+    valign: React.PropTypes.string
   }
 
   static defaultProps = {
@@ -44,7 +46,9 @@ export default class Image extends React.Component {
     mode: null,
     applySize: false,
     gravity: 'center',
-    linked: ''
+    linked: '',
+    align: null,
+    valign: null
   }
 
   constructor() {
@@ -129,6 +133,14 @@ export default class Image extends React.Component {
 
     this.attributes.alt = this.props.alt || '';
     this.attributes.title = this.props.title || this.attributes.alt;
+
+    if (this.props.align) {
+      this.attributes['data-align'] = this.props.align;
+    }
+
+    if (this.props.valign) {
+      this.attributes['data-valign'] = this.props.valign;
+    }
 
     this.attributes.className = this.getClass();
     this.setAspectRatio();

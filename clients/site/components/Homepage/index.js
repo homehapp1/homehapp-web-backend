@@ -153,6 +153,14 @@ export default class Homepage extends React.Component {
       alt: ''
     };
 
+    let mainImage = {
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1446398493/site/images/content/red-brick-building.jpg',
+      alt: 'Red brick London',
+      align: 'center',
+      valign: 'bottom',
+      gravity: 'south'
+    };
+
     let homes = [].concat(this.state.homes) || [];
     let neighborhoods = [].concat(this.state.neighborhoods) || [];
     debug('Neighborhoods', neighborhoods, 'Homes', homes);
@@ -183,7 +191,7 @@ export default class Homepage extends React.Component {
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed image={placeholder} proportion={0.8}>
+        <BigImage gradient='green' fixed image={mainImage} proportion={0.8} align='center' valign='bottom'>
           <LargeText align='center' valign='middle' proportion={0.8}>
             <div className='splash'>
               <h1>Find the home<br />you belong to</h1>
