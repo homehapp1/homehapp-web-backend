@@ -1,7 +1,10 @@
 #mainpage {
   .splash {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 45%;
     $q: 14px;
-    margin-top: -80px;
 
     img {
       display: block;
