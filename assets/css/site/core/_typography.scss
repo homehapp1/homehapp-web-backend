@@ -58,6 +58,7 @@ body {
   color: $fontMediumGray;
 }
 
+$mediumQ: 0.9;
 $smallQ: 0.8;
 
 h1, h2, h3, h4, h5, h6, li, p {
@@ -75,6 +76,10 @@ h3 {
   font-size: $fontSizeHeading3;
   font-weight: $titleWeight;
 
+  @include medium() {
+    font-size: $fontSizeHeading3 * $mediumQ;
+  }
+
   @include small() {
     font-size: $fontSizeHeading3 * $smallQ;
   }
@@ -85,6 +90,10 @@ h2, .modal-container h1 {
   font-weight: $titleWeight;
   // font-family: $defaultFont;
   font-family: $highlightFont;
+
+  @include medium() {
+    font-size: $fontSizeHeading2 * $mediumQ;
+  }
 
   @include small() {
     font-size: $fontSizeHeading2 * $smallQ;
@@ -97,6 +106,10 @@ h1, .block-title, .big-image h2, .big-video h2 {
   font-family: $highlightFont;
   font-weight: 400;
   margin: 0.8em 0;
+
+  @include medium() {
+    font-size: $fontSizeHeading2 * $mediumQ;
+  }
 
   @include small() {
     font-size: $fontSizeHeading25;
