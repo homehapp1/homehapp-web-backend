@@ -35,6 +35,18 @@
   }
 }
 
+.narrow-text {
+  max-width: 40em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.emphasize {
+  font-size: $fontSizeHeading3;
+  font-style: italic;
+  line-height: 1.5em;
+}
+
 .spacer {
   height: 3 * $contentPadding;
   display: block;

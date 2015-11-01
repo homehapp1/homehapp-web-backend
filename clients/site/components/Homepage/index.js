@@ -201,56 +201,65 @@ export default class Homepage extends React.Component {
         {this.renderHomeList(homes)}
         <ContentBlock className='with-gradient'>
           <h2 className='block-title'>Why Homehapp?</h2>
-          <p>
-            We believe there is a better way to help people find homes they
-            belong to. It is an idea whose time has come, and we at Homehapp
-            are making it happen.
-          </p>
-          <Columns cols={2} className='table' valign='middle'>
+          <div className='narrow-text emphasize'>
+            <p>
+              We believe there’s a better way to help people find the homes they belong to. Its an idea whose time has come, and we at homehapp are making it happen.”
+            </p>
+            <p>
+              Home is more than a place. It’s a feeling – a sense of belonging. A home isn’t just the four walls we live in – it’s our street, our neighborhood and our town.
+            </p>
+          </div>
+        </ContentBlock>
+        <ContentBlock className='with-gradient'>
+          <hr className='spacer' />
+          <Columns cols={2} className='table emphasize' valign='middle'>
             <div className='centered' data-valign='middle'>
               <Image {...leftImage} />
             </div>
             <div data-valign='middle'>
-              We want to bring transparency and efficiency to the property
-              market, putting people in touch with the right professionals so
-              that they get the best service. Our aim is to help everybody
-              find a home that’s right for them and a home that they love –
-              the home that will make them happy.
+              <p>
+                You can upload your home photos and videos, and write about your home life in a few clicks from your phone. Add insights or news on your neighbourhood and share with friends. Keep a history of your house, record repairs and renovations. Organise information, floor plans, EPC – all in one place.
+              </p>
+              <p>
+                On homehapp, every home can have a digital identity- which can be kept private or published to the open community.
+              </p>
             </div>
           </Columns>
-          <Columns cols={2} className='table' valign='middle'>
+          <hr className='spacer' />
+          <Columns cols={2} className='table emphasize' valign='middle'>
             <div data-valign='middle'>
-              HomeHapp brings out the true essence of homes and neighborhoods
-              by showing them through the eyes of the people who live there.
-              It offers an easy to use platform on which to post, and share
-              home moments and home stories. This content connects buyers and
-              tenants to sellers and landlords, as well as linking them to a
-              host of service providers in a sharing-economy model.
+              <p>
+                When you wish to let or sell your home, you can do so exactly in the ways that suit you.
+              </p>
+              <p>
+                You may wish to deal directly, and publish your offer to the entire homehapp community.
+              </p>
+              <p>
+                You can engage pro services – Photographer, Surveyor, Legal et al
+              </p>
+              <p>
+                You can appoint an Estate Agent of your choice to provide transaction management services
+              </p>
             </div>
             <div className='centered' data-valign='middle'>
               <Image {...rightImage} />
             </div>
           </Columns>
+          <hr className='spacer' />
+        </ContentBlock>
+        <ContentBlock className='with-gradient'>
           <h2 className='block-title'>Partner with us</h2>
-          <Columns cols={4} className='table important' align='center' valign='middle'>
-            <div className='span1'></div>
-            <div className='span5 centered'>
-              <p>
-                <em>
-                  Homehapp is a platform for buyers and sellers, landlords and
-                  tenants, Estate agents, legal conveyancers, chartered surveyors.
-                  Expand your reach and increase your sales.
-                </em>
-              </p>
-              <p>
-                <Link to='partners' className='button white'>Contact</Link>
-              </p>
-            </div>
-            <div className='span5 centered'>
-              <Image {...partnerImage} />
-            </div>
-            <div className='span1'></div>
-          </Columns>
+          <div className='center emphasize narrow-text'>
+            <p>
+              Homehapp is a platform for buyers and sellers, landlords and
+              tenants, Estate agents, legal conveyancers, chartered surveyors.
+              Expand your reach and increase your sales.
+            </p>
+            <hr className='spacer' />
+            <p className='call-to-action'>
+              <Link to='partners' className='button white'>Contact</Link>
+            </p>
+          </div>
         </ContentBlock>
         {this.renderNeighborhoods(neighborhoods)}
       </div>
