@@ -10,21 +10,21 @@ export default class LargeText extends React.Component {
       React.PropTypes.array
     ]),
     proportion: React.PropTypes.number,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    aspectRatio: React.PropTypes.number
   };
 
   static defaultProps = {
     align: 'center',
     valign: 'middle',
-    proportion: 1,
+    proportion: null,
+    aspectRatio: null,
     className: null
   };
 
   render() {
     let classes = [
-      'widget',
-      'large-text',
-      'full-height'
+      'width-wrapper'
     ];
 
     if (this.props.className) {
@@ -36,9 +36,16 @@ export default class LargeText extends React.Component {
       'data-valign': this.props.valign
     };
 
+    if (this.props.aspectRatio) {
+      classes.push('aspect-ratio');
+      props['data-aspect-ratio'] = this.props.aspectRatio;
+    } else {
+      classes.push('full-height');
+    }
+
     return (
       <div className='widget large-text'>
-        <div className='width-wrapper full-height' data-proportion={this.props.proportion}>
+        <div className={classes.join(' ')} {...props}>
           <div className='content' {...props}>
             {this.props.children}
           </div>

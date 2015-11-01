@@ -10,6 +10,7 @@ export default class BigImage extends BigBlock {
     fixed: React.PropTypes.bool,
     gradient: React.PropTypes.string,
     proportion: React.PropTypes.number,
+    aspectRatio: React.PropTypes.number,
     children: React.PropTypes.object,
     align: React.PropTypes.string,
     valign: React.PropTypes.string,
@@ -18,18 +19,48 @@ export default class BigImage extends BigBlock {
 
   static defaultProps = {
     fixed: false,
-    proportion: 0,
+    proportion: null,
+    aspectRatio: null,
     align: 'center',
     valign: 'middle',
     className: null
   };
 
+  getRelativeHeight(width, height) {
+    if (!this.props.aspectRatio) {
+      return height;
+    }
+
+    return Math.round(width / this.props.aspectRatio);
+  }
+
+  getBigImage(image) {
+    let width = 1920;
+    let height = this.getRelativeHeight(width, 800);
+    return (
+      <Image {...image} className='show-for-large' width={width} height={height} />
+    );
+  }
+
+  getMediumImage(image) {
+    let width = 1000;
+    let height = this.getRelativeHeight(width, 800);
+    return (
+      <Image {...image} className='show-for-medium' width={width} height={height} />
+    );
+  }
+
+  getSmallImage(image) {
+    let width = 600;
+    let height = this.getRelativeHeight(width, 400);
+    return (
+      <Image {...image} className='show-for-small' width={width} height={height} />
+    );
+  }
+
   render() {
-    let classes = [
-      'widget',
-      'big-image',
-      'full-height'
-    ];
+    let classes = ['widget', 'big-image'];
+    let classesText = ['image-text'];
 
     let textProps = {};
 
@@ -56,6 +87,16 @@ export default class BigImage extends BigBlock {
       textProps['data-proportion'] = this.props.proportion;
     }
 
+    if (this.props.aspectRatio) {
+      props['data-aspect-ratio'] = this.props.aspectRatio;
+      textProps['data-aspect-ratio'] = this.props.aspectRatio;
+      classes.push('aspect-ratio');
+      classesText.push('aspect-ratio');
+    } else {
+      classes.push('full-height');
+      classesText.push('full-height');
+    }
+
     let author = null;
     if (this.props.image.author) {
       author = (<div className='image-author'>&copy; {this.props.image.author}</div>);
@@ -64,12 +105,12 @@ export default class BigImage extends BigBlock {
     return (
       <div {...props}>
         <div className='image-content' ref='container'>
-          <Image {...image} className='show-for-large' width={1920} height={800} />
-          <Image {...image} className='show-for-medium' width={1000} height={800} />
-          <Image {...image} className='show-for-small' width={600} height={400} />
+          {this.getBigImage(image)}
+          {this.getMediumImage(image)}
+          {this.getSmallImage(image)}
         </div>
         {author}
-        <div className='image-text full-height' {...textProps}>
+        <div className={classesText.join(' ')} {...textProps}>
           {this.props.children}
         </div>
       </div>

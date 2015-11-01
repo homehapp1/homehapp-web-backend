@@ -154,23 +154,17 @@ export default class Homepage extends React.Component {
     };
 
     let mainImage = {
-      url: 'https://res.cloudinary.com/homehapp/image/upload/v1446398493/site/images/content/red-brick-building.jpg',
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1446398494/site/images/content/red-brick-building.jpg',
       alt: 'Red brick London',
       align: 'center',
       valign: 'bottom',
       gravity: 'south'
     };
+    let mainImageAspectRatio = 2296 / 1245;
 
     let homes = [].concat(this.state.homes) || [];
     let neighborhoods = [].concat(this.state.neighborhoods) || [];
     debug('Neighborhoods', neighborhoods, 'Homes', homes);
-
-    let partnerImage = {
-      src: 'https://res.cloudinary.com/homehapp/image/upload/v1442998167/site/images/content/tablelamp.jpg',
-      alt: '',
-      width: 424,
-      height: 515
-    };
 
     // Match the original proportions for the phone images
     let w = 200;
@@ -191,8 +185,8 @@ export default class Homepage extends React.Component {
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' fixed image={mainImage} proportion={0.8} align='center' valign='bottom'>
-          <LargeText align='center' valign='middle' proportion={0.8}>
+        <BigImage gradient='green' image={mainImage} aspectRatio={mainImageAspectRatio} align='center' valign='middle'>
+          <LargeText align='center' valign='middle' aspectRatio={mainImageAspectRatio}>
             <div className='splash'>
               <h1>Find the home<br />you belong to</h1>
             </div>
