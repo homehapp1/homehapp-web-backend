@@ -3,7 +3,7 @@ let debug = require('debug')('app');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
-  app.get('/api/neighborhoods', function(req) {
+  app.get('/api/neighborhoods', function(req, res, next) {
     QB
     .forModel('Neighborhood')
     .parseRequestArguments(req)
@@ -20,7 +20,8 @@ exports.registerRoutes = (app) => {
         status: 'ok',
         items: result.models
       });
-    });
+    })
+    .catch(next);
   });
 
   app.get('/api/neighborhoods/:city', function(req, res, next) {
