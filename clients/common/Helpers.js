@@ -154,8 +154,18 @@ exports.setFullHeight = function setFullHeight() {
     }
   };
 
+  let items = document.getElementsByClassName('aspect-ratio');
+  for (let item of items) {
+    let ar = Number(item.getAttribute('data-aspect-ratio'));
+    if (!ar) {
+      continue;
+    }
+
+    item.style.height = `${Math.round(window.innerWidth / ar)}px`;
+  }
+
   if (window && window.innerWidth <= 640) {
-    let items = document.getElementsByClassName('full-height');
+    items = document.getElementsByClassName('full-height');
     for (let item of items) {
       item.style.height = null;
       item.style.minHeight = null;
@@ -170,7 +180,7 @@ exports.setFullHeight = function setFullHeight() {
     return null;
   }
 
-  let items = document.getElementsByClassName('full-height');
+  items = document.getElementsByClassName('full-height');
   for (let item of items) {
     setHeight(item, false);
   }
