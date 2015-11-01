@@ -41,13 +41,14 @@
       width: 100%;
       height: 100%;
       @include vendors(transition-property, transform);
-      @include vendors(transition-timing-function, linear);
-      @include vendors(transition-duration, $transitionDurationFast);
+      @include vendors(transition-timing-function, ease-out);
+      @include vendors(transition-duration, $transitionDuration);
     }
   }
 
   &:hover > .hoverable-wrapper > img.hoverable-image {
     @include vendors(transition-duration, 60s);
-    @include vendors(transform, scale(1.5));
+    @include vendors(transition-timing-function, linear);
+    @include vendors(transform, scale(1.2));
   }
 }
