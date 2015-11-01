@@ -138,11 +138,10 @@ export default class Homepage extends React.Component {
               })
             }
           </div>
-
-          <p className='call-to-action'>
-            <Link to='neighborhoodList' params={{city: 'london'}} className='button'>Find more</Link>
-          </p>
         </div>
+        <p className='call-to-action'>
+          <Link to='neighborhoodList' params={{city: 'london'}} className='button'>Find more</Link>
+        </p>
       </div>
     );
   }
