@@ -76,7 +76,6 @@ export default class BigImage extends BigBlock {
     image.mode = 'fill';
 
     let props = {
-      className: classNames(classes),
       'data-gradient': this.props.gradient,
       'data-align': this.props.align,
       'data-valign': this.props.valign
@@ -96,6 +95,8 @@ export default class BigImage extends BigBlock {
       classes.push('full-height');
       classesText.push('full-height');
     }
+
+    props.className = classNames(classes);
 
     let author = null;
     if (this.props.image.author) {

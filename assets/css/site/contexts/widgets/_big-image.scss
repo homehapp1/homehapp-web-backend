@@ -12,13 +12,21 @@
     }
   }
 
-  & > .image-content {
+  &.full-height > .image-content {
     @include imageFill();
     z-index: -2;
 
     & > [data-valign='top'] {
       top: 0;
       bottom: auto;
+    }
+  }
+
+  &.aspect-ratio > .image-content {
+    @include imageContent();
+    & > * {
+      width: 100%;
+      height: 100%;
     }
   }
 

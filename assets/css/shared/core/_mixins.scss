@@ -126,7 +126,7 @@
   }
 }
 
-@mixin imageFill() {
+@mixin imageContent() {
   position: absolute;
   display: block;
   top: 0;
@@ -136,6 +136,10 @@
   overflow: hidden;
   z-index: 0;
   background-color: $extraLightGray;
+}
+
+@mixin imageFill() {
+  @include imageContent();
 
   & > img, & > video {
     position: absolute;
