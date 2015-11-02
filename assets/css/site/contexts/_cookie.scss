@@ -10,6 +10,11 @@
   font-weight: 300;
   text-align: center;
 
+  @include medium() {
+    top: auto;
+    bottom: 0;
+  }
+
   @include small() {
     left: 30px;
     right: 30px;
