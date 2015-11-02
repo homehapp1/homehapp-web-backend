@@ -30,6 +30,10 @@
     }
   }
 
+  &.masked {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
   & > .image-author {
     display: block;
     position: absolute;

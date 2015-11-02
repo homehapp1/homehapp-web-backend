@@ -23,7 +23,8 @@ export default class BigVideo extends BigBlock {
     ]),
     align: React.PropTypes.string,
     valign: React.PropTypes.string,
-    author: React.PropTypes.string
+    author: React.PropTypes.string,
+    zIndex: React.PropTypes.number
   };
 
   static defaultProps = {
@@ -32,7 +33,8 @@ export default class BigVideo extends BigBlock {
     poster: null,
     proportion: 1,
     align: 'center',
-    valign: 'middle'
+    valign: 'middle',
+    zIndex: -10
   };
 
   constructor() {

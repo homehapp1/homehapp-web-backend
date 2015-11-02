@@ -23,7 +23,8 @@ export default class BigImage extends BigBlock {
     aspectRatio: null,
     align: 'center',
     valign: 'middle',
-    className: null
+    className: null,
+    zIndex: -10
   };
 
   getRelativeHeight(width, height) {
