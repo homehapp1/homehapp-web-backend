@@ -214,7 +214,7 @@ export default class Homepage extends React.Component {
           <h2 className='block-title'>Why homehapp?</h2>
           <div className='narrow-text emphasize'>
             <p>
-              We believe there’s a better way to help people find the homes
+              ”We believe there’s a better way to help people find the homes
               they belong to. Its an idea whose time has come, and we at
               homehapp are making it happen.”
             </p>
@@ -232,7 +232,7 @@ export default class Homepage extends React.Component {
               <Image {...leftImage} />
             </div>
             <div data-valign='middle'>
-              <h3>The story of your life</h3>
+              <h3>Capture your moments</h3>
               <p>
                 You can upload your home photos and videos, and write about your
                 home life in a few clicks from your phone. Add insights or news
