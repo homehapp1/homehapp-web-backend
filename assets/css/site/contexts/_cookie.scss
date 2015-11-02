@@ -1,5 +1,5 @@
 #cookiePolicy {
-  $h: 20px;
+  $h: 22px;
   $p: 4px;
   position: fixed;
   top: 0;
@@ -20,13 +20,14 @@
   p {
     display: inline-block;
     margin: 0 auto;
-    padding: $p 0.5em $p 0;
+    padding: $p 0.5em $p $contentPadding;
     min-height: $h;
     line-height: $h - 2 * $p;
     background-color: black;
     width: auto;
-    font-size: 12px;
+    font-size: $fontSizeSecondary;
     vertical-align: top;
+    position: relative;
 
     &, a {
       color: white;
@@ -34,7 +35,9 @@
 
     .close {
       display: block;
-      float: left;
+      position: absolute;
+      left: 0;
+      top: $p;
       text-align: center;
       cursor: pointer;
       color: $red;
