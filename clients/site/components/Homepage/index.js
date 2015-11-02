@@ -214,10 +214,14 @@ export default class Homepage extends React.Component {
           <h2 className='block-title'>Why Homehapp?</h2>
           <div className='narrow-text emphasize'>
             <p>
-              We believe there’s a better way to help people find the homes they belong to. Its an idea whose time has come, and we at homehapp are making it happen.”
+              We believe there’s a better way to help people find the homes
+              they belong to. Its an idea whose time has come, and we at
+              Homehapp are making it happen.”
             </p>
             <p>
-              Home is more than a place. It’s a feeling – a sense of belonging. A home isn’t just the four walls we live in – it’s our street, our neighborhood and our town.
+              Home is more than a place. It’s a feeling – a sense of belonging.
+              A home isn’t just the four walls we live in – it’s
+              <strong>our street, our neighborhood and our town.</strong>
             </p>
           </div>
         </ContentBlock>
@@ -229,10 +233,16 @@ export default class Homepage extends React.Component {
             </div>
             <div data-valign='middle'>
               <p>
-                You can upload your home photos and videos, and write about your home life in a few clicks from your phone. Add insights or news on your neighbourhood and share with friends. Keep a history of your house, record repairs and renovations. Organise information, floor plans, EPC – all in one place.
+                You can upload your home photos and videos, and write about your
+                home life in a few clicks from your phone. Add insights or news
+                on <strong>your neighbourhood</strong> and share with friends.
+                Keep a history of <strong>your house</strong>, record repairs and
+                renovations. Organise information, floor plans, EPC – all in
+                one place.
               </p>
               <p>
-                On homehapp, every home can have a digital identity- which can be kept private or published to the open community.
+                On homehapp, every home can have a <strong>digital identity</strong>
+              – which can be kept private or published to the <strong>open community</strong>.
               </p>
             </div>
           </Columns>
@@ -240,16 +250,20 @@ export default class Homepage extends React.Component {
           <Columns cols={2} className='table rearrange emphasize' valign='middle'>
             <div data-valign='middle'>
               <p>
-                When you wish to let or sell your home, you can do so exactly in the ways that suit you.
+                When you wish to let or sell your home, you can do so
+                <strong>exactly in the ways that suit you.</strong>
               </p>
               <p>
-                You may wish to deal directly, and publish your offer to the entire homehapp community.
+                You may wish to deal directly, and publish your offer to the
+                entire <strong>Homehapp community.</strong>
               </p>
               <p>
-                You can engage pro services – Photographer, Surveyor, Legal et al
+                You can <strong>engage pro services</strong> – Photographer,
+                Surveyor, Legal et al
               </p>
               <p>
-                You can appoint an Estate Agent of your choice to provide transaction management services
+                You can <strong>appoint an Estate Agent</strong> of your choice
+                to provide transaction management services
               </p>
             </div>
             <div className='centered' data-valign='middle'>
