@@ -19,7 +19,7 @@ import PlacePicker from '../../../common/components/Widgets/PlacePicker';
 let debug = require('../../../common/debugger')('NeighborhoodsEditDetails');
 // const countries = require('../../../common/lib/Countries').forSelect();
 
-class NeighborhoodsEditDetails extends EditDetails {
+export default class NeighborhoodsEditDetails extends EditDetails {
   static propTypes = {
     neighborhood: React.PropTypes.object.isRequired
   }
@@ -32,6 +32,7 @@ class NeighborhoodsEditDetails extends EditDetails {
     this.state.images = props.neighborhood.images;
     this.onRemoveImageClicked = this.onRemoveImageClicked.bind(this);
     this.setCoordinates = this.setCoordinates.bind(this);
+    this.enabled = null;
   }
 
   state = {
@@ -119,7 +120,7 @@ class NeighborhoodsEditDetails extends EditDetails {
       uuid: this.props.neighborhood.id,
       slug: this.refs.slug.getValue(),
       title: this.refs.title.getValue(),
-      enabled: this.refs.enabled.getValue(),
+      enabled: this.enabled,
       description: this.refs.description.getValue(),
       location: {
         coordinates: this.refs.coordinates.getValue(),
@@ -137,7 +138,7 @@ class NeighborhoodsEditDetails extends EditDetails {
   }
 
   getPreviewLink(neighborhood) {
-    if (!neighborhood || typeof neighborhood.location.city !== 'object') {
+    if (!neighborhood || typeof neighborhood.location.city !== 'object' || !neighborhood.location.city) {
       return null;
     }
     return (
@@ -157,6 +158,7 @@ class NeighborhoodsEditDetails extends EditDetails {
     }
     this.handleRenderState();
     let neighborhood = this.state.model || this.props.neighborhood;
+    this.neighborhood = neighborhood;
 
     let lat = null;
     let lng = null;
@@ -190,8 +192,10 @@ class NeighborhoodsEditDetails extends EditDetails {
     let toggleEnabled = () => {
       if (this.state.model) {
         this.state.model.enabled = !(neighborhood.enabled);
+        this.enabled = this.state.model.enabled;
       } else {
         this.props.neighborhood.enabled = !(neighborhood.enabled);
+        this.enabled = this.props.neighborhood.enabled;
       }
       this.forceUpdate();
     };
@@ -311,5 +315,3 @@ class NeighborhoodsEditDetails extends EditDetails {
     );
   }
 }
-
-export default NeighborhoodsEditDetails;

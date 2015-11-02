@@ -63,11 +63,11 @@ exports.loadSchemas = function (mongoose, next) {
         type: [Number],
         default: [],
         index: '2dsphere'
-      },
-      area: {
-        type: [],
-        default: []
       }
+    },
+    area: {
+      type: [],
+      default: []
     },
     // Story
     story: {
@@ -98,7 +98,7 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.Neighborhood.statics.editableFields = function editableFIelds() {
     return [
       'title', 'description', 'location', 'images', 'story', 'visible',
-      'metadata', 'enabled'
+      'metadata', 'enabled', 'area'
     ];
   };
 

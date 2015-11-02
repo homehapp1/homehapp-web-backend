@@ -10,6 +10,7 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
+import EditArea from './EditArea';
 import EditStory from './EditStory';
 import EditModel from '../Shared/EditModel';
 import ViewMetadata from '../Shared/ViewMetadata';
@@ -56,6 +57,9 @@ export default class NeighborhoodsEdit extends EditModel {
             </TabPane>
             <TabPane eventKey={2} tab='Story'>
               <EditStory neighborhood={this.props.neighborhood} />
+            </TabPane>
+            <TabPane eventKey={4} tab='Area'>
+              <EditArea neighborhood={this.props.neighborhood} />
             </TabPane>
             <TabPane eventKey={3} tab='Metadata'>
               <ViewMetadata object={this.props.neighborhood} store={NeighborhoodStore} actions={NeighborhoodActions} />
