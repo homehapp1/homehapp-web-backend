@@ -48,7 +48,7 @@
   font-weight: $defaultWeight;
 
   h3 {
-    font-weight: $titleWeight;
+    font-weight: $titleWeight + 100;
     // font-family: $defaultFont;
     font-family: $highlightFont;
     font-size: $fontSizeHeading25;
