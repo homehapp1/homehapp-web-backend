@@ -5,13 +5,14 @@ import { Link } from 'react-router';
 import BigImage from '../../../common/components/Widgets/BigImage';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Image from '../../../common/components/Widgets/Image';
+import Hoverable from '../../../common/components/Widgets/Hoverable';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
 
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
-import { setPageTitle } from '../../../common/Helpers';
+import { setPageTitle, merge } from '../../../common/Helpers';
 // let debug = require('debug')('NeighborhoodList');
 
 export default class NeighborhoodList extends React.Component {
@@ -91,10 +92,11 @@ export default class NeighborhoodList extends React.Component {
         <ContentBlock className='neighborhoods-list'>
           {
             neighborhoods.map((neighborhood, index) => {
+              let image = merge({}, neighborhood.mainImage);
               return (
                 <div className='neighborhood' key={index}>
                   <Link className='image-wrapper' to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
-                    <Image {...neighborhood.mainImage} width={1200} height={680} mode='fill' />
+                    <Hoverable className='with-shadow' {...image} width={1200} height={680} mode='fill' />
                   </Link>
                   <ContentBlock valign='center'>
                     <h2 className='block-title'>
