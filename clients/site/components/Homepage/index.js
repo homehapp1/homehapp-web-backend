@@ -83,7 +83,7 @@ export default class Homepage extends React.Component {
     return (
       <div className='mainpage-list clearfix'>
         <HomeList items={homes} max={4} className='mainpage-list short-list'>
-          <h2 className='block-title'>Exclusively for Homehapp</h2>
+          <h2 className='block-title'>Exclusively for homehapp</h2>
         </HomeList>
         <p className='call-to-action'>
           <Link to='search' className='button'>Find more</Link>
@@ -211,12 +211,12 @@ export default class Homepage extends React.Component {
         </BigImage>
         {this.renderHomeList(homes)}
         <ContentBlock className='with-gradient'>
-          <h2 className='block-title'>Why Homehapp?</h2>
+          <h2 className='block-title'>Why homehapp?</h2>
           <div className='narrow-text emphasize'>
             <p>
               We believe there’s a better way to help people find the homes
               they belong to. Its an idea whose time has come, and we at
-              Homehapp are making it happen.”
+              homehapp are making it happen.”
             </p>
             <p>
               Home is more than a place. It’s a feeling – a sense of belonging.
@@ -255,7 +255,7 @@ export default class Homepage extends React.Component {
               </p>
               <p>
                 You may wish to deal directly, and publish your offer to the
-                entire <strong>Homehapp community.</strong>
+                entire <strong>homehapp community.</strong>
               </p>
               <p>
                 You can <strong>engage pro services</strong> – Photographer,
@@ -276,7 +276,7 @@ export default class Homepage extends React.Component {
           <h2 className='block-title'>Partner with us</h2>
           <div className='center emphasize narrow-text'>
             <p>
-              Homehapp is a platform for buyers and sellers, landlords and
+              homehapp is a platform for buyers and sellers, landlords and
               tenants, Estate agents, legal conveyancers, chartered surveyors.
               Expand your reach and increase your sales.
             </p>
@@ -284,6 +284,20 @@ export default class Homepage extends React.Component {
             <p className='call-to-action'>
               <Link to='partners' className='button white'>Contact</Link>
             </p>
+          </div>
+        </ContentBlock>
+        <ContentBlock className='with-gradient'>
+          <h2>Our Mission</h2>
+          <div className='center emphasize narrow-text'>
+            <p>
+              homehapp aims to <strong>serve an entire community</strong> of browsers and
+              storytellers who wish to create and consume home and
+              neighbourhood moments, which <strong>go beyond</strong> sales and lettings.
+              It’s a platform to provide an online identity and life to
+              <strong><Link to='homes'>homes</Link></strong> and
+              <strong><Link to='neighborhoodList' params={{city: 'london'}}>neighborhoods.</Link></strong>
+            </p>
+            <hr className='spacer' />
           </div>
         </ContentBlock>
         {this.renderNeighborhoods(neighborhoods)}
