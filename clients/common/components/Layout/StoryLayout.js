@@ -5,7 +5,6 @@ import Agents from '../Widgets/Agents';
 import Attachments from '../Widgets/Attachments';
 import BigImage from '../Widgets/BigImage';
 import BigVideo from '../Widgets/BigVideo';
-import Columns from '../Widgets/Columns';
 import ContentBlock from '../Widgets/ContentBlock';
 import ContentImage from '../Widgets/ContentImage';
 import Gallery from '../Widgets/Gallery';
@@ -15,7 +14,6 @@ import Map from '../Widgets/Map';
 import Markdown from '../Widgets/Markdown';
 import Neighborhood from '../Widgets/Neighborhood';
 import Separator from '../Widgets/Separator';
-import { merge } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('StoryLayout');
 

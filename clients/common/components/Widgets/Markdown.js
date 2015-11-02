@@ -49,7 +49,7 @@ export default class Markdown extends React.Component {
       let markdown = marked(rendered);
       debug('Return HTML', markdown);
       return (
-        <div className={classes.join(' ')} dangerouslySetInnerHTML={{__html: markdown}}></div>
+        <div className={classes.join(' ')} dangerouslySetInnerHTML={{__html: markdown}} key={`markdown-${index}`}></div>
       );
     });
     return children;

@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 // Widgets
 import BigImage from '../../../common/components/Widgets/BigImage';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
-import Image from '../../../common/components/Widgets/Image';
 import Hoverable from '../../../common/components/Widgets/Hoverable';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';

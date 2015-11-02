@@ -163,10 +163,10 @@ export default class Homepage extends React.Component {
   }
 
   render() {
-    let placeholder = {
-      url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
-      alt: ''
-    };
+    // let placeholder = {
+    //   url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
+    //   alt: ''
+    // };
 
     let mainImage = {
       url: 'https://res.cloudinary.com/homehapp/image/upload/v1446398494/site/images/content/red-brick-building.jpg',

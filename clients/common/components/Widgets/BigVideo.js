@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import Image from './Image';
 import Video from './Video';
-import Separator from './Separator';
 import BigBlock from './BigBlock';
 import DOMManipulator from '../../DOMManipulator';
 import { scrollTop } from '../../Helpers';
