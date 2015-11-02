@@ -13,6 +13,9 @@ exports.registerRoutes = (app) => {
     .sort({
       title: 1
     })
+    .query({
+      enabled: true
+    })
     .findAll()
     .fetch()
     .then((result) => {
