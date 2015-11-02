@@ -58,10 +58,15 @@ export default class Navigation extends React.Component {
     if (!window || !this.container) {
       return null;
     }
-
-    this.container.css({
-      height: `${window.innerHeight}px`
-    });
+    if (window.innerWidth <= 640) {
+      this.container.css({
+        height: `${window.innerHeight}px`
+      });
+    } else {
+      this.container.css({
+        height: 'auto'
+      });
+    }
   }
 
   onDocumentClick(event) {
