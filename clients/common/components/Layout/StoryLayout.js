@@ -15,6 +15,7 @@ import Map from '../Widgets/Map';
 import Markdown from '../Widgets/Markdown';
 import Neighborhood from '../Widgets/Neighborhood';
 import Separator from '../Widgets/Separator';
+import { merge } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('StoryLayout');
 
@@ -22,6 +23,11 @@ export default class StoryLayout extends React.Component {
   static propTypes = {
     blocks: React.PropTypes.array.isRequired
   };
+
+
+  setZ(item, index) {
+    item.properties.zIndex = -1 * (this.props.blocks.length - index);
+  }
 
   getPrevTemplate(index) {
     if (!index) {
@@ -87,6 +93,7 @@ export default class StoryLayout extends React.Component {
     let primary = null;
     let secondary = null;
     let description = null;
+    this.setZ(item, index);
 
     if (!item.properties.image) {
       console.warn('Tried to display a BigImage without any image', item);
@@ -128,6 +135,7 @@ export default class StoryLayout extends React.Component {
     let primary = null;
     let secondary = null;
     let description = null;
+    this.setZ(item, index);
 
     // Is this the primary title?
     if (item.properties.isPageTitle || !index) {
