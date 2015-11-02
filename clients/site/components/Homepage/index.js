@@ -221,7 +221,7 @@ export default class Homepage extends React.Component {
             <p>
               Home is more than a place. It’s a feeling – a sense of belonging.
               A home isn’t just the four walls we live in – it’s
-              <strong>our street, our neighborhood and our town.</strong>
+              our street, our neighborhood and our town.
             </p>
           </div>
         </ContentBlock>
@@ -236,14 +236,14 @@ export default class Homepage extends React.Component {
               <p>
                 You can upload your home photos and videos, and write about your
                 home life in a few clicks from your phone. Add insights or news
-                on <strong>your neighbourhood</strong> and share with friends.
-                Keep a history of <strong>your house</strong>, record repairs and
+                on your neighbourhood and share with friends.
+                Keep a history of your house, record repairs and
                 renovations. Organise information, floor plans, EPC – all in
                 one place.
               </p>
               <p>
-                On homehapp, every home can have a <strong>digital identity</strong>
-              – which can be kept private or published to the <strong>open community</strong>.
+                On homehapp, every home can have a digital identity
+              – which can be kept private or published to the open community.
               </p>
             </div>
           </Columns>
@@ -253,18 +253,18 @@ export default class Homepage extends React.Component {
               <h3>We serve you when letting or renting</h3>
               <p>
                 When you wish to let or sell your home, you can do so
-                <strong>exactly in the ways that suit you.</strong>
+                exactly in the ways that suit you.
               </p>
               <p>
                 You may wish to deal directly, and publish your offer to the
-                entire <strong>homehapp community.</strong>
+                entire homehapp community.
               </p>
               <p>
-                You can <strong>engage pro services</strong> – Photographer,
+                You can engage pro services – Photographer,
                 Surveyor, Legal et al
               </p>
               <p>
-                You can <strong>appoint an Estate Agent</strong> of your choice
+                You can appoint an Estate Agent of your choice
                 to provide transaction management services
               </p>
             </div>
@@ -294,12 +294,12 @@ export default class Homepage extends React.Component {
           <h2>Our Mission</h2>
           <div className='center emphasize narrow-text'>
             <p>
-              homehapp aims to <strong>serve an entire community</strong> of browsers and
+              homehapp aims to serve an entire community of browsers and
               storytellers who wish to create and consume home and
-              neighbourhood moments, which <strong>go beyond</strong> sales and lettings.
+              neighbourhood moments, which go beyond sales and lettings.
               It’s a platform to provide an online identity and life to
-              <strong><Link to='homes'>homes</Link></strong> and
-              <strong><Link to='neighborhoodList' params={{city: 'london'}}>neighborhoods.</Link></strong>
+              <Link to='homes'>homes</Link> and
+              <Link to='neighborhoodList' params={{city: 'london'}}>neighborhoods.</Link>
             </p>
             <hr className='spacer' />
           </div>
