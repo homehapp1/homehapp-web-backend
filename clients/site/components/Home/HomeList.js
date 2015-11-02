@@ -126,7 +126,7 @@ export default class HomeList extends React.Component {
               if (!home) {
                 return null;
               }
-              
+
               let classes = ['preview'];
 
               if (index === this.props.max) {
@@ -147,22 +147,6 @@ export default class HomeList extends React.Component {
                   slug: home.slug
                 }
               };
-              let rooms = 0;
-
-              for (let i = 0; i < home.attributes.length; i++) {
-                if (home.attributes[i].name !== 'rooms') {
-                  continue;
-                }
-
-                rooms = home.attributes[i].value;
-                break;
-              }
-
-              if (rooms === 1) {
-                rooms = `${rooms} bedroom`;
-              } else {
-                rooms = `${rooms} bedrooms`;
-              }
 
               let mainImage = {
                 url: home.mainImage.url,
