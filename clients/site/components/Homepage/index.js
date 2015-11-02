@@ -273,6 +273,7 @@ export default class Homepage extends React.Component {
           <hr className='spacer' />
         </ContentBlock>
         <ContentBlock className='with-gradient'>
+          <hr className='spacer' />
           <h2 className='block-title'>Partner with us</h2>
           <div className='center emphasize narrow-text'>
             <p>
@@ -287,6 +288,7 @@ export default class Homepage extends React.Component {
           </div>
         </ContentBlock>
         <ContentBlock className='with-gradient'>
+          <hr className='spacer' />
           <h2>Our Mission</h2>
           <div className='center emphasize narrow-text'>
             <p>
