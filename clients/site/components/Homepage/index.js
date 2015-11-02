@@ -232,6 +232,7 @@ export default class Homepage extends React.Component {
               <Image {...leftImage} />
             </div>
             <div data-valign='middle'>
+              <h3>The story of your life</h3>
               <p>
                 You can upload your home photos and videos, and write about your
                 home life in a few clicks from your phone. Add insights or news
@@ -249,6 +250,7 @@ export default class Homepage extends React.Component {
           <hr className='spacer' />
           <Columns cols={2} className='table rearrange emphasize' valign='middle'>
             <div data-valign='middle'>
+              <h3>We serve you when letting or renting</h3>
               <p>
                 When you wish to let or sell your home, you can do so
                 <strong>exactly in the ways that suit you.</strong>
