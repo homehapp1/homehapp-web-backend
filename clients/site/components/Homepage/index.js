@@ -189,13 +189,15 @@ export default class Homepage extends React.Component {
       src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213568/site/images/content/homehapp_web_phone_left.png',
       alt: '',
       width: w,
-      height: h
+      height: h,
+      className: 'hovering'
     };
     let rightImage = {
       src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213569/site/images/content/homehapp_web_phone_right.png',
       alt: '',
       width: w,
-      height: h
+      height: h,
+      className: 'hovering'
     };
 
     return (

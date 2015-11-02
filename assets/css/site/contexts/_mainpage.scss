@@ -74,4 +74,26 @@
       }
     }
   }
+
+  .hovering {
+    @include vendors(animation-name, hovering);
+    @include vendors(animation-duration, 7000ms);
+    @include vendors(animation-iteration-count, infinite);
+    @include vendors(animation-timing-function, ease-out);
+  }
+}
+
+@include animate(hovering) {
+  $s: 1.05;
+  0% {
+    @include vendors(transform, scaleX(1));
+  }
+
+  50% {
+    @include vendors(transform, scaleX($s));
+  }
+
+  100% {
+    @include vendors(transform, scaleX(1));
+  }
 }
