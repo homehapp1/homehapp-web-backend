@@ -41,13 +41,13 @@
       .thumbnail {
         .hoverable-wrapper {
           &:before {
-            $c1: rgba(0, 0, 0, 0.3);
+            $c1: rgba(0, 0, 0, 0.4);
             $c2: rgba(0, 0, 0, 0);
             display: block;
             content: ' ';
             position: absolute;
             z-index: 1;
-            height: 300px;
+            height: 500px;
             left: 0;
             right: 0;
             bottom: 0;
@@ -160,7 +160,7 @@
 
       .title, .actions, .description {
         &, * {
-          color: white;
+          color: $fontWhite;
           text-shadow: $textShadow;
         }
       }
@@ -170,19 +170,23 @@
       }
 
       .description {
-        left: $contentPadding;
+        left: $contentPadding + 3px;
         right: $contentPadding;
 
         h3 {
           font-weight: 400;
+          font-size: 30px;
+          margin-top: 0;
+          margin-bottom: 4px;
         }
 
         h3, p {
           line-height: 1em;
-          margin: 0;
         }
 
         p {
+          margin-top: 0;
+          margin-bottom: 0;
           font-size: $fontSizeSecondary;
 
           span + span:before {
