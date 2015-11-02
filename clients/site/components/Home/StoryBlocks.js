@@ -75,11 +75,16 @@ export default class StoryBlocks extends React.Component {
 
     // Add location
     if (this.props.home.location.coordinates && this.props.home.location.coordinates[0] && this.props.home.location.coordinates[1]) {
+      let area = null;
+      if (this.props.home.location.neighborhood && this.props.home.location.neighborhood.area) {
+        area = this.props.home.location.neighborhood.area;
+      }
       blocks.push({
         template: 'Map',
         properties: {
           center: this.props.home.location.coordinates,
           zoom: 12,
+          area: area,
           markers: [{
             location: this.props.home.location.coordinates,
             title: this.props.home.homeTitle

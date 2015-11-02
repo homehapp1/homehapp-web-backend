@@ -60,8 +60,13 @@ export default class NeighborhoodStory extends React.Component {
       );
     }
 
+    let area = [];
+    if (this.props.neighborhood.area) {
+      area = this.props.neighborhood.area;
+    }
+
     return (
-      <Map center={this.props.neighborhood.location.coordinates} markers={markers}>
+      <Map center={this.props.neighborhood.location.coordinates} markers={markers} area={area}>
         {
           homes.map((home, index) => {
             if (index >= 3) {
