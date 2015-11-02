@@ -79,7 +79,6 @@
     @include vendors(animation-name, hovering);
     @include vendors(animation-duration, 7000ms);
     @include vendors(animation-iteration-count, infinite);
-    @include vendors(animation-timing-function, ease-out);
   }
 }
 

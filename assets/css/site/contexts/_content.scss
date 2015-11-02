@@ -45,6 +45,12 @@
   font-size: $fontSizeHeading3;
   font-style: italic;
   line-height: 1.5em;
+
+  @include small() {
+    padding-left: $contentPadding;
+    padding-right: $contentPadding;
+    text-align: justify;
+  }
 }
 
 .spacer {

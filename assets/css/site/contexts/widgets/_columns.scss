@@ -96,6 +96,24 @@
 
           @include small() {
             display: block;
+            padding-left: $contentPadding;
+            padding-right: $contentPadding;
+          }
+        }
+      }
+    }
+
+    @include small() {
+      &.rearrange {
+        & > .columns-container > .row {
+          display: table;
+
+          & > * {
+            display: table-row;
+
+            &.row-end {
+              display: table-caption;
+            }
           }
         }
       }

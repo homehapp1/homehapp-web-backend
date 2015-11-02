@@ -237,7 +237,7 @@ export default class Homepage extends React.Component {
             </div>
           </Columns>
           <hr className='spacer' />
-          <Columns cols={2} className='table emphasize' valign='middle'>
+          <Columns cols={2} className='table rearrange emphasize' valign='middle'>
             <div data-valign='middle'>
               <p>
                 When you wish to let or sell your home, you can do so exactly in the ways that suit you.
