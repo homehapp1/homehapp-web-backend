@@ -182,6 +182,17 @@ export default class NeighborhoodsEditArea extends React.Component {
     this.polygon.setMap(this.map);
   }
 
+  updateMap() {
+    debug('Update map');
+    if (this.map) {
+      setTimeout(() => {
+        google.maps.event.trigger(this.map, 'resize');
+        let center = this.getCenter();
+        this.map.setCenter({lat: center[0], lng: center[1]});
+      }, 100);
+    }
+  }
+
   render() {
     this.neighborhood = this.state.neighborhood || this.props.neighborhood;
     let coords = this.neighborhood.area || [];
@@ -190,9 +201,9 @@ export default class NeighborhoodsEditArea extends React.Component {
     return (
       <Row>
         <form name='neighborhoodDetails' ref='neighborhoodDetailsForm' method='POST'>
-          <div className='map area-display' ref='map' style={{height: '500px'}} />
           <Col md={10} sm={10}>
             <Panel header='Area'>
+              <div className='map area-display' ref='map' style={{height: '500px'}} />
               <InputWidget
                 type='textarea'
                 ref='coords'

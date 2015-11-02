@@ -20,6 +20,10 @@ export default class EditModel extends React.Component {
     super(props);
   }
 
+  state = {
+    tab: null
+  }
+
   tabs = {
     details: 1,
     story: 2,
@@ -28,7 +32,7 @@ export default class EditModel extends React.Component {
 
   resolveOpenTab(tab = null) {
     if (!tab) {
-      tab = this.props.tab || 1;
+      tab = this.state.tab || this.props.tab || 1;
     }
     if (typeof this.tabs[tab] !== 'undefined') {
       return this.tabs[tab];
