@@ -63,6 +63,10 @@ exports.loadSchemas = function (mongoose, next) {
         type: [Number],
         default: [],
         index: '2dsphere'
+      },
+      area: {
+        type: [],
+        default: []
       }
     },
     // Story
