@@ -51,4 +51,43 @@
     @include vendors(transition-timing-function, linear);
     @include vendors(transform, scale(1.2));
   }
+
+  &.with-shadow .hoverable-wrapper {
+    &:before {
+      $c1: rgba(0, 0, 0, 0.4);
+      $c2: rgba(0, 0, 0, 0);
+      display: block;
+      content: ' ';
+      position: absolute;
+      z-index: 1;
+      height: 500px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: -webkit-linear-gradient(bottom, $c1, $c2);
+      background-image: -moz-linear-gradient(bottom, $c1, $c2);
+      background-image: -ms-linear-gradient(bottom, $c1, $c2);
+      background-image: -o-linear-gradient(bottom, $c1, $c2);
+      background-image: linear-gradient(bottom, $c1, $c2);
+      background-size: cover;
+    }
+
+    &:after {
+      $c1: rgba(0, 0, 0, 0.3);
+      display: block;
+      content: ' ';
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.05);
+    }
+  }
+  &, & > .hoverable {
+    display: block;
+    min-height: 200px;
+    position: relative;
+  }
 }
