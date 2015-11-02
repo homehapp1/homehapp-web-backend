@@ -8,7 +8,7 @@
     font-size: 24px;
     text-transform: uppercase;
     color: $fontMediumGray;
-    font-weight: 400;
+    font-weight: $boldWeight;
     margin: 0;
 
     & + h3 {
@@ -23,7 +23,7 @@
   p.has-icon {
     font-size: $fontSizeSecondary;
     white-space: nowrap;
-    font-weight: 400;
+    font-weight: $boldWeight;
 
     .icon {
       display: block;
@@ -60,7 +60,7 @@
     margin: 0;
     padding: $contentPadding 0;
     text-align: center;
-    font-weight: 400;
+    font-weight: $boldWeight;
 
     & > .agent {
       display: block;

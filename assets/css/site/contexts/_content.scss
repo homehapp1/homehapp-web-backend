@@ -43,12 +43,20 @@
 
 .emphasize {
   font-size: $fontSizeHeading3;
-  font-style: italic;
+  // font-style: italic;
   line-height: 1.5em;
+  font-weight: $defaultWeight;
+
+  h3 {
+    font-weight: $titleWeight;
+    // font-family: $defaultFont;
+    font-family: $highlightFont;
+    font-size: $fontSizeHeading25;
+  }
 
   strong {
-    font-weight: 400;
-    
+    font-weight: $boldWeight;
+
     &:before {
       content: ' ';
     }

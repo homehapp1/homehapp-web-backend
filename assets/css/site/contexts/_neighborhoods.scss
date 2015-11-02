@@ -81,7 +81,7 @@
         padding: 0.2em $contentPadding;
         text-align: center;
         width: 15em;
-        font-weight: 400;
+        font-weight: $buttonFontWeight;
         background-color: rgba(0, 0, 0, $opacity / 2);
         box-shadow: 0 0 2em rgba(0, 0, 0, $opacity);
         white-space: nowrap;

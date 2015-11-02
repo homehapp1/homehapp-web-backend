@@ -82,7 +82,7 @@
             vertical-align: middle;
             text-align: center;
             font-family: $highlightFont;
-            font-weight: 400;
+            font-weight: $boldWeight;
           }
         }
       }
@@ -133,7 +133,7 @@
         right: $contentPadding;
 
         h3 {
-          font-weight: 400;
+          font-weight: $titleWeight;
           font-size: 32px;
           margin-top: 0;
           margin-bottom: 4px;
@@ -147,7 +147,7 @@
           margin-top: 0;
           margin-bottom: 0;
           // font-size: $fontSizeSecondary;
-          font-weight: 400;
+          font-weight: $boldWeight;
 
           span + span:before {
             content: ', ';

@@ -7,7 +7,7 @@
   right: 0;
   text-align: center;
   z-index: $zCookie;
-  font-weight: 300;
+  font-weight: $defaultWeight;
   text-align: center;
 
   @include medium() {

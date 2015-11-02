@@ -1,6 +1,6 @@
 // @import url("//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
 @import url("../fonts/font-awesome/css/font-awesome.min.css");
-@import url("https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,700italic,700,400italic|Roboto+Slab:400,300,700");
+@import url("https://fonts.googleapis.com/css?family=Roboto:500,400,300,300italic,700italic,700,500italic,400italic|Roboto+Slab:400,300,700");
 
 
 body, input, select, textarea {
@@ -104,7 +104,6 @@ h1, .block-title, .big-image h2, .big-video h2 {
   font-size: $fontSizeHeading1;
   font-weight: $titleWeight;
   font-family: $highlightFont;
-  font-weight: 400;
   margin: 0.8em 0;
 
   @include medium() {

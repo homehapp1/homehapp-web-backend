@@ -117,7 +117,7 @@
       bottom: 0;
       box-shadow: none;
       background-color: $extraDarkGray;
-      font-weight: 500;
+      font-weight: $boldWeight;
       font-size: 11pt;
     }
 
@@ -217,7 +217,7 @@
             float: left;
             color: white;
             font-style: normal;
-            font-weight: 400;
+            font-weight: $navigationWeight;
 
             &:hover, &.active {
               color: $turquoise;

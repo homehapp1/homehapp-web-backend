@@ -49,9 +49,12 @@ $fontSizeHeading3: 1.25 * $baseSize;
 $fontSizeSecondary: 0.8 * $baseSize;
 $fontSizeSmall: 0.7 * $baseSize;
 $fontSizeButton: 0.8 * $baseSize;
-$defaultWeight: 200;
-$titleWeight: 400;
-$navigationWeight: 200;
+$defaultWeight: 300;
+$titleWeight: 500;
+$boldWeight: $titleWeight;
+$buttonFontWeight: $titleWeight;
+$buttonWeight: $buttonFontWeight;
+$navigationWeight: 400;
 
 $textShadow: 0 0 2px rgba(0, 0, 0, 5 * $maskOpacity);
 $textShadowWhite: 0 0 2px rgba(255, 255, 255, 5 * $maskOpacity);
@@ -79,4 +82,4 @@ $navigationIconSize: 20px;
 $fontSizeButton: $fontSize;
 
 $defaultFont: "Roboto", Helvetica, Arial, sans-serif;
-$highlightFont: "Roboto Slab";
+$highlightFont: "Roboto Slab", monospace, serif;
