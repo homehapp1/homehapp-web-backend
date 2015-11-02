@@ -96,11 +96,27 @@ export default class Homepage extends React.Component {
     if (!neighborhoods || !neighborhoods.length) {
       return null;
     }
+    neighborhoods.sort((a, b) => {
+      if (a.story.blocks.length > b.story.blocks.length) {
+        return -1;
+      }
+      if (a.story.blocks.length < b.story.blocks.length) {
+        return 1;
+      }
+      if (a.title > b.title) {
+        return -1;
+      }
+      if (a.title < b.title) {
+        return 1;
+      }
+      return 0;
+    });
+
     let counter = 0;
     return (
       <div className='mainpage-list clearfix with-gradient widget'>
         <div className='neighborhood-list preview-list short-list' ref='neighborhoodList'>
-          <h2>Where is your home</h2>
+          <h2 className='block-title'>Where is your home</h2>
           <div className='list-container'>
             {
               neighborhoods.map((neighborhood, index) => {
@@ -166,7 +182,7 @@ export default class Homepage extends React.Component {
     debug('Neighborhoods', neighborhoods, 'Homes', homes);
 
     // Match the original proportions for the phone images
-    let w = 200;
+    let w = 180;
     let h = Math.round(856 / 300 * w);
 
     let leftImage = {
