@@ -169,13 +169,13 @@ export default class Homepage extends React.Component {
     // };
 
     let mainImage = {
-      url: 'https://res.cloudinary.com/homehapp/image/upload/v1446398494/site/images/content/red-brick-building.jpg',
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1446508515/site/images/content/london-view-2.jpg',
       alt: 'Red brick London',
       align: 'center',
-      valign: 'bottom',
-      gravity: 'south'
+      valign: 'middle',
+      gravity: 'center'
     };
-    let mainImageAspectRatio = 2296 / 1245;
+    // let mainImageAspectRatio = 4828 / 3084;
 
     let homes = [].concat(this.state.homes) || [];
     let neighborhoods = [].concat(this.state.neighborhoods) || [];
@@ -200,10 +200,18 @@ export default class Homepage extends React.Component {
       className: 'hovering'
     };
 
+    // <BigImage className='masked' image={mainImage} aspectRatio={mainImageAspectRatio} align='center' valign='middle'>
+    //   <LargeText align='center' valign='middle' aspectRatio={mainImageAspectRatio}>
+    //     <div className='splash'>
+    //       <h1>Find the home<br />you belong to</h1>
+    //     </div>
+    //   </LargeText>
+    // </BigImage>
+
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage className='masked' image={mainImage} aspectRatio={mainImageAspectRatio} align='center' valign='middle'>
-          <LargeText align='center' valign='middle' aspectRatio={mainImageAspectRatio}>
+        <BigImage className='masked full-height fixed' image={mainImage} proportion={0.9} align='center' valign='middle'>
+          <LargeText align='center' valign='middle' proportion={0.9} className='full-height'>
             <div className='splash'>
               <h1>Find the home<br />you belong to</h1>
             </div>
