@@ -200,7 +200,7 @@ export default class Homepage extends React.Component {
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage gradient='green' image={mainImage} aspectRatio={mainImageAspectRatio} align='center' valign='middle'>
+        <BigImage className='masked' image={mainImage} aspectRatio={mainImageAspectRatio} align='center' valign='middle'>
           <LargeText align='center' valign='middle' aspectRatio={mainImageAspectRatio}>
             <div className='splash'>
               <h1>Find the home<br />you belong to</h1>
