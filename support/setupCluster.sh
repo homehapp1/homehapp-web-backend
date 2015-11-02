@@ -166,9 +166,9 @@ function createProxyService() {
 
 function configureProxyFirewall() {
   if [ "$1" = "-d" ]; then
-    echo "Execute: 'gcloud compute firewall-rules create ${CLUSTER_NAME}-web-public --allow TCP:80,TCP:443 --source-ranges 0.0.0.0/0 --target-tags gke-${CLUSTER_NAME}-node'"
+    echo "Execute: 'gcloud compute firewall-rules create ${CLUSTER_NAME}-${PBNAME}-public --allow TCP:80,TCP:443 --source-ranges 0.0.0.0/0 --target-tags gke-${CLUSTER_NAME}-node'"
   else
-    gcloud compute firewall-rules create ${CLUSTER_NAME}-web-public --project $PROJECT_ID --allow TCP:80,TCP:443 --source-ranges 0.0.0.0/0 --target-tags gke-${CLUSTER_NAME}-node
+    gcloud compute firewall-rules create ${CLUSTER_NAME}-${PBNAME}-public --project $PROJECT_ID --allow TCP:80,TCP:443 --source-ranges 0.0.0.0/0 --target-tags gke-${CLUSTER_NAME}-node
   fi
 }
 
@@ -201,27 +201,27 @@ if [ "$ENV" = "prod" ]; then
   echo ""
   echo "Creating Proxy Secret $PNAME-proxy-secret"
 
-  createProxySecret $3
+  createProxySecret $4
 
   echo ""
   echo "Creating Proxy Replication Controller $PNAME-proxy-controller"
 
-  createProxyController $3
+  createProxyController $4
 
   echo ""
   echo "Creating Proxy Service $PNAME-proxy-service"
 
-  createProxyService $3
+  createProxyService $4
 
   echo ""
   echo "Tagging Cluster nodes for $CLUSTER_NAME"
 
-  tagClusterNodes $3
+  tagClusterNodes $4
 
   echo ""
   echo "Configuring Firewall for $PNAME-proxy"
 
-  configureProxyFirewall $3
+  configureProxyFirewall $4
 fi
 
 echo ""
