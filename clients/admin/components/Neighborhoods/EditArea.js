@@ -60,7 +60,12 @@ export default class NeighborhoodsEditArea extends React.Component {
 
   getCenter() {
     let defaultCenter = [51.5072, 0.1275];
-    return defaultCenter;
+
+    if (!this.neighborhood.location.coords || !this.neighborhood.location.coords[0] || !this.neighborhood.location.coords[1]) {
+      return defaultCenter;
+    }
+
+    return this.neighborhood.location.coords;
   }
 
   initMap() {
