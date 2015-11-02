@@ -100,6 +100,7 @@ export default class NeighborhoodsEditArea extends React.Component {
 
     this.map = new google.maps.Map(this.mapContainer, options);
     this.drawPolygon();
+    this.fitToBounds();
   }
 
   onChange() {
@@ -142,6 +143,19 @@ export default class NeighborhoodsEditArea extends React.Component {
       });
       return false;
     }
+    this.fitToBounds();
+    return true;
+  }
+
+  fitToBounds() {
+    if (!this.neighborhood.area || !this.neighborhood.area.length) {
+      return false;
+    }
+    let bounds = new google.maps.LatLngBounds();
+    for (let pos of this.neighborhood.area) {
+      bounds.extend(new google.maps.LatLng(pos.lat, pos.lng));
+    }
+    this.map.fitBounds(bounds);
     return true;
   }
 
@@ -187,8 +201,11 @@ export default class NeighborhoodsEditArea extends React.Component {
     if (this.map) {
       setTimeout(() => {
         google.maps.event.trigger(this.map, 'resize');
-        let center = this.getCenter();
-        this.map.setCenter({lat: center[0], lng: center[1]});
+
+        if (!this.fitToBounds()) {
+          let center = this.getCenter();
+          this.map.setCenter({lat: center[0], lng: center[1]});
+        }
       }, 100);
     }
   }
