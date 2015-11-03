@@ -65,10 +65,12 @@ export default class PlacePicker extends Map {
     google.maps.event.addListener(this.marker, 'dragend', (event) => {
       this.props.onChange(event.latLng.lat(), event.latLng.lng());
     });
-    google.maps.event.addListener(this.map, 'rightclick', (event) => {
-      this.props.onChange(event.latLng.lat(), event.latLng.lng());
-      this.marker.setPosition(event.latLng);
-    });
+    google.maps.event.addListener(this.map, 'rightclick', this.moveMarker.bind(this));
+  }
+
+  moveMarker(event) {
+    this.props.onChange(event.latLng.lat(), event.latLng.lng());
+    this.marker.setPosition(event.latLng);
   }
 
   setArea(area = null) {
@@ -94,6 +96,7 @@ export default class PlacePicker extends Map {
       fillOpacity: 0.2
     });
     this.area.setMap(this.map);
+    google.maps.event.addListener(this.area, 'rightclick', this.moveMarker.bind(this));
     this.fitToBounds(area);
   }
 
