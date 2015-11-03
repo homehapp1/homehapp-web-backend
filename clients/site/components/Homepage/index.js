@@ -226,7 +226,7 @@ export default class Homepage extends React.Component {
           <div className='narrow-text emphasize'>
             <p>
               ”We believe there’s a better way to help people find the homes
-              they belong to. Its an idea whose time has come, and we at
+              they belong to. It’s an idea whose time has come, and we at
               homehapp are making it happen.”
             </p>
             <p>
