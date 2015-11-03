@@ -15,6 +15,10 @@ export default class PlacePicker extends Map {
       React.PropTypes.string
     ]),
     onChange: React.PropTypes.func,
+    area: React.PropTypes.oneOfType([
+      React.PropTypes.null,
+      React.PropTypes.array
+    ]),
     zoom: React.PropTypes.number,
     markers: React.PropTypes.oneOfType([
       React.PropTypes.null,
@@ -35,6 +39,7 @@ export default class PlacePicker extends Map {
   setInitialMarkers() {
     // debug('Set initial markers');
     this.setMarkers();
+    this.setArea();
   }
 
   setMarkers() {
@@ -60,6 +65,49 @@ export default class PlacePicker extends Map {
     google.maps.event.addListener(this.marker, 'dragend', (event) => {
       this.props.onChange(event.latLng.lat(), event.latLng.lng());
     });
+    google.maps.event.addListener(this.map, 'rightclick', (event) => {
+      this.props.onChange(event.latLng.lat(), event.latLng.lng());
+      this.marker.setPosition(event.latLng);
+    });
+  }
+
+  setArea(area = null) {
+    if (!area) {
+      area = this.props.area;
+    }
+
+    if (!area || !Array.isArray(area) || !area.length) {
+      return null;
+    }
+
+    // Delete the old map
+    if (this.area) {
+      this.area.setMap(null);
+    }
+
+    this.area = new google.maps.Polygon({
+      paths: area,
+      strokeColor: '#9dc1fd',
+      fillColor: '#9dc1fd',
+      strokeOpacity: 0.8,
+      strokeWeight: 1,
+      fillOpacity: 0.2
+    });
+    this.area.setMap(this.map);
+    this.fitToBounds(area);
+  }
+
+  fitToBounds(area) {
+    if (!area || !Array.isArray(area) || !area.length) {
+      debug('Cannot fit the area to bounds, no area provided');
+      return false;
+    }
+    let bounds = new google.maps.LatLngBounds();
+    for (let pos of area) {
+      bounds.extend(new google.maps.LatLng(pos.lat, pos.lng));
+    }
+    this.map.fitBounds(bounds);
+    return true;
   }
 
   resize() {

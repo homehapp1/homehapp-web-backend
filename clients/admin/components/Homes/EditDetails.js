@@ -72,6 +72,9 @@ export default class HomesEditDetails extends EditDetails {
   componentWillReceiveProps(props) {
     debug('componentWillReceiveProps', props);
     if (props.home) {
+      if (props.home.location.neighborhood) {
+        this.onNeighborhoodChange(props.home.location.neighborhood);
+      }
       this.setState({
         currentAttributes: props.home.attributes || {},
         images: props.home.images || []
@@ -106,6 +109,18 @@ export default class HomesEditDetails extends EditDetails {
     // TODO: Validation could be done here
     //debug('onFormChange', event, type, target);
     //this.props.home.facilities = this.refs.facilities.getValue().split("\n");
+  }
+
+  onNeighborhoodChange(neighborhood) {
+    debug('this.home', this.home);
+    if (!this.home) {
+      return null;
+    }
+
+    if (!this.refs.placePicker) {
+      return null;
+    }
+    this.refs.placePicker.setArea(neighborhood.area);
   }
 
   onSave() {
@@ -305,7 +320,8 @@ export default class HomesEditDetails extends EditDetails {
   changeStatus(event) {
     debug('changeStatus', event.target.value);
     // this.onFormChange(event);
-    let home = this.state.home || this.props.home;
+    this.home = this.state.home || this.props.home;
+    let home = this.home;
     home.announcementType = event.target.value;
     this.setState({
       home: home
@@ -340,6 +356,7 @@ export default class HomesEditDetails extends EditDetails {
       neighborhood: null
     }, home.location || {});
 
+    this.home = home;
     if (this.props.home) {
       home.title = this.props.home.homeTitle;
     }
@@ -352,7 +369,16 @@ export default class HomesEditDetails extends EditDetails {
 
     let lat = this.state.lat || 0;
     let lng = this.state.lng || 0;
-    debug('lat', lat, 'lng', lng);
+    let area = null;
+    if (home.location.neighborhood && home.location.neighborhood.area) {
+      area = home.location.neighborhood.area;
+      if (!lat && home.location.neighborhood.location.coordinates && home.location.neighborhood.location.coordinates.length >= 2) {
+        lat = home.location.neighborhood.location.coordinates[0];
+        lng = home.location.neighborhood.location.coordinates[1];
+      }
+    }
+
+    debug('lat', lat, 'lng', lng, 'area', area);
 
     let deleteLink = null;
     let previewLink = null;
@@ -443,6 +469,7 @@ export default class HomesEditDetails extends EditDetails {
               <NeighborhoodSelect
                 ref='addressNeighborhood'
                 selected={homeLocation.neighborhood}
+                onChange={this.onNeighborhoodChange.bind(this)}
               />
               <InputWidget
                 type='text'
@@ -471,7 +498,7 @@ export default class HomesEditDetails extends EditDetails {
                 {countrySelections}
               </InputWidget>
 
-              <PlacePicker lat={this.state.lat} lng={this.state.lng} onChange={this.setCoordinates} />
+              <PlacePicker lat={this.state.lat} lng={this.state.lng} area={area} onChange={this.setCoordinates} ref='placePicker' />
 
               <InputWidget
                 label='Coordinates'

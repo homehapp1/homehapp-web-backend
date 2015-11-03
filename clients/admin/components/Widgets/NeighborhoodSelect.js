@@ -9,7 +9,8 @@ export default class NeighborhoodSelect extends React.Component {
     selected: React.PropTypes.oneOfType([
       React.PropTypes.null,
       React.PropTypes.object
-    ])
+    ]),
+    onChange: React.PropTypes.func
   }
 
   constructor(props) {
@@ -59,6 +60,10 @@ export default class NeighborhoodSelect extends React.Component {
     for (let neighborhood of this.state.neighborhoods) {
       if (neighborhood.id === selected) {
         this.selected = neighborhood;
+        if (typeof this.props.onChange === 'function') {
+          this.props.onChange(neighborhood);
+        }
+        break;
       }
     }
   }
