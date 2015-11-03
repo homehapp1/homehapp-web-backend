@@ -128,23 +128,26 @@ export default class Homepage extends React.Component {
                   return null;
                 }
                 counter++;
+                let city = 'london';
+
+                if (neighborhood.location.city && neighborhood.location.city.slug) {
+                  city = neighborhood.location.city.slug;
+                }
 
                 return (
                   <div className='preview' key={index}>
                     <Hoverable {...neighborhood.mainImage} width={464} height={556} mode='fill' applySize className='with-shadow'>
-                      <div className='title'>
-                        <div className='wrapper'>
-                          <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
-                            {neighborhood.title}
-                          </Link>
-                        </div>
-                      </div>
+                      <h3 className='title'>
+                        <Link to='neighborhoodView' params={{city: city, neighborhood: neighborhood.slug}} className='wrapper link'>
+                          <span>{neighborhood.title}</span>
+                        </Link>
+                      </h3>
 
                       <div className='actions'>
-                        <Link to='neighborhoodView' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodView' params={{city: city, neighborhood: neighborhood.slug}}>
                           Read About
                         </Link>
-                        <Link to='neighborhoodViewHomes' params={{city: 'london', neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodViewHomes' params={{city: city, neighborhood: neighborhood.slug}}>
                           Show Homes
                         </Link>
                       </div>
