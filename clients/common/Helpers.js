@@ -263,8 +263,8 @@ exports.primaryHomeTitle = function primaryHomeTitle(home) {
   }
 
   let parts = [];
-  for (let i = 0; i < home.attributes.length; i++) {
-    let c = home.attributes[i];
+  let attributes = home.attributes || [];
+  for (let c of attributes) {
     switch (c.name) {
       case 'rooms':
         parts.push(`${exports.literals(c.value)} room apartment`);
