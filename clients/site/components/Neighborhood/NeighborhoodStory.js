@@ -72,12 +72,6 @@ export default class NeighborhoodStory extends React.Component {
             if (index >= 3) {
               return null;
             }
-            let rooms = null;
-            for (let attribute of home.attributes) {
-              if (attribute.name === 'rooms') {
-                rooms = (<li>{attribute.value} rooms</li>);
-              }
-            }
 
             return (
               <div className='home' key={index}>
@@ -86,10 +80,7 @@ export default class NeighborhoodStory extends React.Component {
                     {home.homeTitle}
                   </Link>
                 </h3>
-                <ul>
-                  {rooms}
-                  <li>{home.fomattedPrice}</li>
-                </ul>
+
               </div>
             );
           })

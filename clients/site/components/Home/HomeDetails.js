@@ -21,16 +21,17 @@ export default class HomeDetails extends StoryBlocks {
   }
 
   getSecondaryTitle() {
-    let content = this.props.home.attributes.map(function(c) {
-      // Add the items that should be included in the secondary title
-      let rval = null;
-      switch (c.name) {
-        case 'rooms':
-          rval = (c.value === 1) ? (<span>1 room</span>) : (<span>{c.value} rooms</span>);
-          break;
-      }
-      return rval;
-    });
+    let content = [];
+    // let content = this.props.home.attributes.map(function(c) {
+    //   // Add the items that should be included in the secondary title
+    //   let rval = null;
+    //   switch (c.name) {
+    //     case 'rooms':
+    //       rval = (c.value === 1) ? (<span>1 room</span>) : (<span>{c.value} rooms</span>);
+    //       break;
+    //   }
+    //   return rval;
+    // });
 
     content.push((<span>{this.props.home.formattedPrice}</span>));
     return content;
