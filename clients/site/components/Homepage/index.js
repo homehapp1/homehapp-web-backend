@@ -213,7 +213,7 @@ export default class Homepage extends React.Component {
 
     return (
       <div id='mainpage' className='mainpage'>
-        <BigImage className='masked full-height fixed' image={mainImage} proportion={0.9} align='center' valign='middle'>
+        <BigImage className='masked full-height' image={mainImage} proportion={0.9} align='center' valign='middle'>
           <LargeText align='center' valign='middle' proportion={0.9} className='full-height'>
             <div className='splash'>
               <h1>Find the home<br />you belong to</h1>
