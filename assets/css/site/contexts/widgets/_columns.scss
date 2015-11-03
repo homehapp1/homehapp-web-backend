@@ -35,6 +35,11 @@
           padding-left: 0.5 * $padding;
           padding-right: 0.5 * $padding;
 
+          @include medium() {
+            padding-left: $padding;
+            padding-right: $padding;
+          }
+
           @include small() {
             width: 100% !important;
             display: block;
