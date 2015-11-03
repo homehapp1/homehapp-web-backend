@@ -94,7 +94,7 @@ export default class Neighborhoods extends React.Component {
                 let storyBlocks = neighborhood.story.blocks.length || null;
                 let city = null;
 
-                if (neighborhood.location && typeof neighborhood.location.city === 'object') {
+                if (neighborhood.location && neighborhood.location.city && neighborhood.location.city.title) {
                   city = neighborhood.location.city.title;
                 }
 
