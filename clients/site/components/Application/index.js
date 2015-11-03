@@ -41,7 +41,7 @@ export default class Application extends React.Component {
           <RouteHandler />
         </div>
         <Footer {...this.props} />
-        <GoogleAnalytics router={this.context.router} />
+        <GoogleAnalytics />
         <CookiePolicy />
       </Layout>
     );
