@@ -224,12 +224,12 @@ export default class Homepage extends React.Component {
         <ContentBlock className='with-gradient'>
           <h2 className='block-title'>Why homehapp?</h2>
           <div className='narrow-text emphasize'>
-            <p>
+            <p className='hyphenate-small'>
               ”We believe there’s a better way to help people find the homes
               they belong to. It’s an idea whose time has come, and we at
               homehapp are making it happen.”
             </p>
-            <p>
+            <p className='hyphenate-small'>
               Home is more than a place. It’s a feeling – a sense of belonging.
               A home isn’t just the four walls we live in – it’s
               our street, our neighborhood and our town.
@@ -244,7 +244,7 @@ export default class Homepage extends React.Component {
             </div>
             <div data-valign='middle'>
               <h3>Capture your moments</h3>
-              <p>
+              <p className='hyphenate-small'>
                 You can upload your home photos and videos, and write about your
                 home life in a few clicks from your phone. Add insights or news
                 on your neighbourhood and share with friends.
@@ -252,7 +252,7 @@ export default class Homepage extends React.Component {
                 renovations. Organise information, floor plans, EPC – all in
                 one place.
               </p>
-              <p>
+              <p className='hyphenate-small'>
                 On homehapp, every home can have a digital identity
               – which can be kept private or published to the open community.
               </p>
@@ -262,19 +262,19 @@ export default class Homepage extends React.Component {
           <Columns cols={2} className='table rearrange emphasize' valign='middle'>
             <div data-valign='middle'>
               <h3>We serve you when letting or renting</h3>
-              <p>
+              <p className='hyphenate-small'>
                 When you wish to let or sell your home, you can do so
                 exactly in the ways that suit you.
               </p>
-              <p>
+              <p className='hyphenate-small'>
                 You may wish to deal directly, and publish your offer to the
                 entire homehapp community.
               </p>
-              <p>
+              <p className='hyphenate-small'>
                 You can engage pro services – Photographer,
                 Surveyor, Legal et al
               </p>
-              <p>
+              <p className='hyphenate-small'>
                 You can appoint an Estate Agent of your choice
                 to provide transaction management services
               </p>
@@ -289,7 +289,7 @@ export default class Homepage extends React.Component {
           <hr className='spacer' />
           <h2 className='block-title'>Partner with us</h2>
           <div className='center emphasize narrow-text'>
-            <p>
+            <p className='hyphenate-small'>
               homehapp is a platform for buyers and sellers, landlords and
               tenants, Estate agents, legal conveyancers, chartered surveyors.
               Expand your reach and increase your sales.
@@ -304,13 +304,12 @@ export default class Homepage extends React.Component {
           <hr className='spacer' />
           <h2>Our Mission</h2>
           <div className='center emphasize narrow-text'>
-            <p>
+            <p className='hyphenate-small'>
               homehapp aims to serve an entire community of browsers and
               storytellers who wish to create and consume home and
               neighbourhood moments, which go beyond sales and lettings.
-              It’s a platform to provide an online identity and life to
-              <Link to='homes'>homes</Link> and
-              <Link to='neighborhoodList' params={{city: 'london'}}>neighborhoods.</Link>
+              It’s a platform to provide an online identity and life
+              to <Link to='homes'>homes</Link> and <Link to='neighborhoodList' params={{city: 'london'}}>neighborhoods.</Link>
             </p>
             <hr className='spacer' />
           </div>
