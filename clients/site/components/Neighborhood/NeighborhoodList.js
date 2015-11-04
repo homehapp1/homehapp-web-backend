@@ -92,25 +92,29 @@ export default class NeighborhoodList extends React.Component {
           {
             neighborhoods.map((neighborhood, index) => {
               let image = merge({}, neighborhood.mainImage);
+              let city = 'london';
+              if (neighborhood.location.city && neighborhood.location.city.slug) {
+                city = neighborhood.location.city.slug;
+              }
               return (
                 <div className='neighborhood' key={index}>
-                  <Link className='image-wrapper' to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                  <Link className='image-wrapper' to='neighborhoodView' params={{city: city, neighborhood: neighborhood.slug}}>
                     <Hoverable className='with-shadow' {...image} width={1200} height={680} mode='fill' />
                   </Link>
                   <ContentBlock valign='center'>
                     <h2 className='block-title'>
-                      <Link to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                      <Link to='neighborhoodView' params={{city: city, neighborhood: neighborhood.slug}}>
                         {neighborhood.title}
                       </Link>
                     </h2>
                     <ul className='buttons'>
                       <li>
-                        <Link to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodView' params={{city: city, neighborhood: neighborhood.slug}}>
                           Read about
                         </Link>
                       </li>
                       <li>
-                        <Link to='neighborhoodViewHomes' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodViewHomes' params={{city: city, neighborhood: neighborhood.slug}}>
                           Show homes
                         </Link>
                       </li>
