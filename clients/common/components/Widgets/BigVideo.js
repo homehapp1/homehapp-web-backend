@@ -474,12 +474,12 @@ export default class BigVideo extends BigBlock {
     return (
       <div className='bigvideo-wrapper' ref='container'>
         <div {...props} ref='wrapper'>
-          <div className='mobile-icons hide-for-large'>
+          <div className='mobile-icons hidden'>
             <i className='fa fa-play' ref='mobilePlay'></i>
             <i className='fa fa-pause show-for-small' ref='mobilePause'></i>
           </div>
           <div className='image-content'>
-            <Image {...image} className='show-for-small' width={600} height={400} />
+            <Image {...image} className='show-for-small' width={640} />
             <Video {...video} className='big-video hide-for-small' ref='video' />
           </div>
           {author}
@@ -489,15 +489,15 @@ export default class BigVideo extends BigBlock {
           <div className='loader hide-for-small' ref='loader'>
             <div className='bar'></div>
           </div>
-          <div className='controls hide-for-small'>
+          <div className='controls'>
             <div className='position' ref='position'>
               <div className='bar'></div>
             </div>
             <i className='controller fa fa-play play' ref='play'></i>
             <i className='controller fa fa-pause pause' ref='pause'></i>
-            <i className='controller fa fa-volume-up volume mute' ref='mute'></i>
-            <i className='controller fa fa-volume-off volume unmute' ref='unmute'></i>
-            <i className='controller fullscreen' ref='fullscreen'>
+            <i className='controller fa fa-volume-up volume mute hide-for-small' ref='mute'></i>
+            <i className='controller fa fa-volume-off volume unmute hide-for-small' ref='unmute'></i>
+            <i className='controller fullscreen hide-for-small' ref='fullscreen'>
               <i className='fa enter fa-arrows-alt'></i>
               <i className='fa exit fa-compress'></i>
             </i>

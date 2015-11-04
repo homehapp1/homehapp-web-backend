@@ -190,3 +190,14 @@
   background-position: center center;
   background-size: contain;
 }
+
+@mixin grayGradient() {
+  $d: top;
+  $g1: rgba(0, 0, 0, 0.05);
+  $g2: rgba(0, 0, 0, 0.0);
+  background-image: -webkit-linear-gradient($d, $g1, $g2);
+  background-image: -moz-linear-gradient($d, $g1, $g2);
+  background-image: -ms-linear-gradient($d, $g1, $g2);
+  background-image: -o-linear-gradient($d, $g1, $g2);
+  background-image: linear-gradient($d, $g1, $g2);
+}
