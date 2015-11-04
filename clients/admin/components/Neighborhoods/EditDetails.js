@@ -138,7 +138,7 @@ export default class NeighborhoodsEditDetails extends EditDetails {
   }
 
   getPreviewLink(neighborhood) {
-    if (!neighborhood || typeof neighborhood.location.city !== 'object' || !neighborhood.location.city) {
+    if (!neighborhood || typeof neighborhood.location.city !== 'object' || !neighborhood.location.city || !neighborhood.location.city.slug) {
       return null;
     }
     return (

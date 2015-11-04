@@ -20,13 +20,17 @@ export default class StoryBlocks extends React.Component {
     let storyUrl = this.context.router.makeHref('home', {slug: home.slug});
     let detailsUrl = this.context.router.makeHref('homeDetails', {slug: home.slug});
     let neighborhood = null;
+    let city = 'london';
 
     if (home.location && home.location.neighborhood) {
       debug('home.location.neighborhood.city', home.location.neighborhood);
+      if (home.location.neighborhood.location.city && home.location.neighborhood.location.city.slug) {
+        city = this.props.neighborhood.location.city.slug;
+      }
       neighborhood = (
         <li>
           <Link to='neighborhoodView' params={{
-            city: home.location.neighborhood.location.city.slug,
+            city: city,
             neighborhood: home.location.neighborhood.slug}
           }>
             Neighborhood
