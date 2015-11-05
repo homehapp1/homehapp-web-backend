@@ -24,8 +24,8 @@ export default class StoryBlocks extends React.Component {
 
     if (home.location && home.location.neighborhood) {
       debug('home.location.neighborhood.city', home.location.neighborhood);
-      if (home.location.neighborhood.location.city && home.location.neighborhood.location.city.slug) {
-        city = this.props.neighborhood.location.city.slug;
+      if (home.location.neighborhood && home.location.neighborhood.location && home.location.neighborhood.location.city && home.location.neighborhood.location.city.slug) {
+        city = home.location.neighborhood.location.city.slug;
       }
       neighborhood = (
         <li>

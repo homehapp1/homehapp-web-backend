@@ -32,6 +32,10 @@ export default class NeighborhoodStory extends React.Component {
 
     for (let home of homes) {
       debug('Add', home.title, home);
+      if (!home.location || !home.location.coordinates) {
+        continue;
+      }
+      
       markers.push({
         location: home.location.coordinates,
         title: home.homeTitle,
@@ -52,7 +56,15 @@ export default class NeighborhoodStory extends React.Component {
 
     let markers = this.getMarkers(homes);
     debug('Set markers', markers);
-    debug('Homes', homes, this.props.neighborhood.location.coordinates);
+
+    if (!this.props.neighborhood || !this.props.neighborhood.location || !this.props.neighborhood.location.coordinates || !Array.isArray(this.props.neighborhood.location.coordinates)) {
+      if (this.props.neighborhood.area) {
+        return (
+          <Map markers={markers} area={area} />
+        );
+      }
+      return null;
+    }
 
     if (!homes.length) {
       return (
