@@ -9,6 +9,7 @@
   z-index: $zCookie;
   font-weight: $defaultWeight;
   text-align: center;
+  display: none !important;
 
   @include medium() {
     top: auto;
