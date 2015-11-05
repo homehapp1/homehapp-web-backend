@@ -68,6 +68,10 @@
     padding-left: $contentPadding;
     padding-right: $contentPadding;
     text-align: justify;
+
+    h1, h2, h3 {
+      text-align: center;
+    }
   }
 }
 
