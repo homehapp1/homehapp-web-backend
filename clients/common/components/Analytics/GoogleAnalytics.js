@@ -17,8 +17,8 @@ export default class GoogleAnalytics extends React.Component {
     debug('componentDidMount');
   }
 
-  componentShouldUpdate() {
-    debug('componentShouldUpdate');
+  shouldComponentUpdate() {
+    debug('shouldComponentUpdate');
     return false;
   }
 
