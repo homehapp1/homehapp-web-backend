@@ -4,10 +4,6 @@ import React from 'react';
 let debug = require('debug')('GoogleAnalytics');
 
 export default class GoogleAnalytics extends React.Component {
-  static propTypes = {
-    router: React.PropTypes.func.isRequired
-  }
-
   constructor() {
     super();
     this.init = false;
@@ -17,10 +13,10 @@ export default class GoogleAnalytics extends React.Component {
     debug('componentDidMount');
   }
 
-  shouldComponentUpdate() {
-    debug('shouldComponentUpdate');
-    return false;
-  }
+  // shouldComponentUpdate() {
+  //   debug('shouldComponentUpdate');
+  //   return false;
+  // }
 
   render() {
     if (typeof ga !== 'undefined' && typeof window !== 'undefined') {
