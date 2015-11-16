@@ -96,7 +96,21 @@ exports.registerRoutes = (app) => {
    * @apiVersion 0.1.0
    *
    * @apiSuccess {String} id                Uuid of the home
-   * @apiSuccess {String} title             Title of the Home
+   * @apiSuccess {String} slug              URL Slug of the Home
+   * @apiSuccess {String} announcementType  Wether this home is for rent or for buy. Enum ['buy', 'rent']
+   * @apiSuccess {String} description       Description of the Home
+   * @apiSuccess {Object} details           Home details
+   * @apiSuccess {Number} details.area      Area in square meters
+   * @apiSuccess {String} details.freeform  Freeform description
+   * @apiSuccess {Object} location                  Location details
+   * @apiSuccess {Object} location.address          Location address details
+   * @apiSuccess {String} location.address.street   Street address
+   * @apiSuccess {String} location.address.apartment   Apartment
+   * @apiSuccess {String} location.address.city     City
+   * @apiSuccess {String} location.address.zipcode   zipcode
+   * @apiSuccess {String} location.address.country   Country
+   * @apiSuccess {Array}  location.coordinates   Map coordinates. [LAT, LON]
+   * @apiSuccess {Object} location.neighborhood   Neighborhood object TODO: Define
    * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
    * @apiSuccess {Datetime} updatedAt       ISO-8601 Formatted Updation Datetime
    * @apiSuccess {Integer} createdAtTS      EPOCH formatted timestamp of the creation time
