@@ -3,10 +3,18 @@
   background-color: $extraLightGray;
   padding: $contentPadding / 2;
 
+  @include small() {
+    padding: $contentPadding / 4;
+  }
+
   img {
     display: block;
     float: left;
     padding: $contentPadding / 2;
+
+    @include small() {
+      padding: $contentPadding / 4;
+    }
   }
 
   &.tight {

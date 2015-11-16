@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { merge } from '../../../common/Helpers';
+let debug = require('debug')('StoryBlocks');
 
 export default class StoryBlocks extends React.Component {
   static propTypes = {
@@ -17,6 +19,25 @@ export default class StoryBlocks extends React.Component {
 
     let storyUrl = this.context.router.makeHref('home', {slug: home.slug});
     let detailsUrl = this.context.router.makeHref('homeDetails', {slug: home.slug});
+    let neighborhood = null;
+    let city = 'london';
+
+    if (home.location && home.location.neighborhood) {
+      debug('home.location.neighborhood.city', home.location.neighborhood);
+      if (home.location.neighborhood && home.location.neighborhood.location && home.location.neighborhood.location.city && home.location.neighborhood.location.city.slug) {
+        city = home.location.neighborhood.location.city.slug;
+      }
+      neighborhood = (
+        <li>
+          <Link to='neighborhoodView' params={{
+            city: city,
+            neighborhood: home.location.neighborhood.slug}
+          }>
+            Neighborhood
+          </Link>
+        </li>
+      );
+    }
 
     return (
       <ul className='home-links'>
@@ -27,9 +48,10 @@ export default class StoryBlocks extends React.Component {
         </li>
         <li className={(detailsUrl === window.location.pathname) ? 'active' : ''}>
           <a href={detailsUrl}>
-            Facts
+            Info
           </a>
         </li>
+        {neighborhood}
       </ul>
     );
   }
@@ -57,11 +79,16 @@ export default class StoryBlocks extends React.Component {
 
     // Add location
     if (this.props.home.location.coordinates && this.props.home.location.coordinates[0] && this.props.home.location.coordinates[1]) {
+      let area = null;
+      if (this.props.home.location.neighborhood && this.props.home.location.neighborhood.area) {
+        area = this.props.home.location.neighborhood.area;
+      }
       blocks.push({
         template: 'Map',
         properties: {
           center: this.props.home.location.coordinates,
           zoom: 12,
+          area: area,
           markers: [{
             location: this.props.home.location.coordinates,
             title: this.props.home.homeTitle

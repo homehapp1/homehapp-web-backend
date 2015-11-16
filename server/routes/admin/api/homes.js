@@ -7,7 +7,7 @@ exports.registerRoutes = (app) => {
 
   let populate = {
     'location.neighborhood': {
-      select: 'uuid title slug'
+      select: 'uuid title slug area'
     },
     agents: {},
     createdBy: {},
@@ -81,7 +81,6 @@ exports.registerRoutes = (app) => {
       createHome(data);
     }
   });
-
 
   app.get('/api/homes/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API fetch home with uuid', req.params.uuid);

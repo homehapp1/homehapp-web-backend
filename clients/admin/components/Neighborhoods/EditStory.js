@@ -80,7 +80,7 @@ export default class NeighborhoodsEditStory extends React.Component {
     debug('Neighborhood', this.props.neighborhood);
 
     let previewLink = null;
-    if (this.props.neighborhood && typeof this.props.neighborhood.location.city === 'object') {
+    if (this.props.neighborhood && this.props.neighborhood.location.city && this.props.neighborhood.location.city.slug) {
       previewLink = (
         <a href={`${ApplicationStore.getState().config.siteHost}/neighborhoods/${this.props.neighborhood.location.city.slug}/${this.props.neighborhood.slug}`}
           target='_blank'

@@ -140,7 +140,7 @@
         height: $sThumb;
 
         .label {
-          font-weight: 500;
+          font-weight: $boldWeight;
         }
 
         @include small() {
@@ -175,7 +175,7 @@
         .address {
           line-height: $sPrice;
           margin: 0;
-          font-weight: 500;
+          font-weight: $boldWeight;
 
           span + span {
             &:before {
@@ -194,7 +194,7 @@
           text-align: center;
           color: white;
           background-color: $orange;
-          font-weight: 500;
+          font-weight: $boldWeight;
           margin: 0;
           border-radius: $sPrice;
         }
@@ -203,7 +203,7 @@
           margin: 1em 0;
 
           span.label {
-            font-weight: 500;
+            font-weight: $boldWeight;
             display: inline;
           }
 

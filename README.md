@@ -87,6 +87,13 @@ export PROJECT_ID=homehappweb
 gcloud config set project $PROJECT_ID
 ```
 
+You need to have the gcloud crendentials also set. To list the available
+clusters
+
+gcloud container clusters list
+gcloud container clusters get-credentials homehapp-prod
+gcloud container clusters get-credentials homehapp-stg
+
 ## Initial steps before creating clusters
 
 Following are only done if creating the clusters for first time.

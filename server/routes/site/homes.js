@@ -42,7 +42,7 @@ exports.registerRoutes = (app) => {
         debug(`Got ${result.models.length} homes`);
         initMetadata(res);
         res.locals.data.HomeListStore = {
-          items: result.models
+          homes: result.models
         };
         setLastMod(result.models, res);
         resolve(result.models);
@@ -67,19 +67,19 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  app.get('/homes/:story(stories)', function(req, res, next) {
-    debug('GET /homes/stories');
-
-    listHomes(req, res, next)
-    .then(() => {
-      res.locals.page = {
-        title: 'Storified homes',
-        description: 'Our storified homes'
-      };
-      next();
-    })
-    .catch(next);
-  });
+  // app.get('/homes/:story(stories)', function(req, res, next) {
+  //   debug('GET /homes/stories');
+  //
+  //   listHomes(req, res, next)
+  //   .then(() => {
+  //     res.locals.page = {
+  //       title: 'Storified homes',
+  //       description: 'Our storified homes'
+  //     };
+  //     next();
+  //   })
+  //   .catch(next);
+  // });
 
   app.get('/search', function(req, res, next) {
     debug('GET /search');
@@ -97,19 +97,53 @@ exports.registerRoutes = (app) => {
 
   app.get('/search/:type', function(req, res, next) {
     debug(`GET /search/${req.params.type}`);
+    let types = ['buy', 'rent', 'story'];
+    let titles = {
+      buy: 'Homes for sale',
+      rent: 'Homes for rent',
+      story: 'Our storified homes'
+    };
 
-    let title = (req.params.type === 'buy') ? 'sell' : 'rent';
+    if (types.indexOf(req.params.type) === -1) {
+      return next();
+    }
 
     listHomes(req, res, next)
     .then(() => {
       res.locals.page = {
-        title: 'Homes',
-        description: `Our exclusive homes for ${title}`
+        title: titles[req.params.type],
+        description: titles[req.params.type]
       };
       next();
     })
     .catch(next);
   });
+
+  let populateCity = (home) => {
+    if (!home.location.neighborhood || !home.location.neighborhood.location || !home.location.neighborhood.location.city) {
+      debug('No city defined');
+      return new Promise().resolve();
+    }
+    debug('City defined');
+
+    return new Promise((resolve, reject) => {
+      QB
+      .forModel('City')
+      .findById(home.location.neighborhood.location.city)
+      .fetch()
+      .then((result) => {
+        debug('City available', result.model);
+        home.location.neighborhood.location.city = result.model;
+        resolve(home);
+      })
+      .catch((err) => {
+        // Do not populate city if it was not found from the database
+        debug('City not available', err);
+        home.location.neighborhood.location.city = null;
+        resolve(home);
+      });
+    });
+  };
 
   let returnHomeBySlug = (req, res, next) => {
     let home = null;
@@ -156,10 +190,13 @@ exports.registerRoutes = (app) => {
       };
 
       setLastMod([home, neighborhood], res);
-      res.locals.data.HomeStore = {
-        home: home
-      };
-      next();
+      populateCity(home)
+      .then((home) => {
+        res.locals.data.HomeStore = {
+          home: home
+        };
+        next();
+      });
     })
     .catch(() => {
       debug('Home not found by slug, try if the identifier was its UUID', slug);

@@ -5,13 +5,13 @@ import Agents from '../Widgets/Agents';
 import Attachments from '../Widgets/Attachments';
 import BigImage from '../Widgets/BigImage';
 import BigVideo from '../Widgets/BigVideo';
-import Columns from '../Widgets/Columns';
 import ContentBlock from '../Widgets/ContentBlock';
 import ContentImage from '../Widgets/ContentImage';
 import Gallery from '../Widgets/Gallery';
 import HTMLContent from '../Widgets/HTMLContent';
 import LargeText from '../Widgets/LargeText';
 import Map from '../Widgets/Map';
+import Markdown from '../Widgets/Markdown';
 import Neighborhood from '../Widgets/Neighborhood';
 import Separator from '../Widgets/Separator';
 
@@ -21,6 +21,60 @@ export default class StoryLayout extends React.Component {
   static propTypes = {
     blocks: React.PropTypes.array.isRequired
   };
+
+
+  setZ(item, index) {
+    item.properties.zIndex = -1 * (this.props.blocks.length - index);
+  }
+
+  getPrevTemplate(index) {
+    if (!index) {
+      return null;
+    }
+
+    return this.props.blocks[index - 1].template;
+  }
+
+  getPrevTemplateClass(index) {
+    return 'prev-' + this.normalizeTemplateName(this.getPrevTemplate(index));
+  }
+
+  getNextTemplate(index) {
+    if (index >= this.props.blocks.length - 1) {
+      return null;
+    }
+
+    return this.props.blocks[index + 1].template;
+  }
+
+  getNextTemplateClass(index) {
+    return 'next-' + this.normalizeTemplateName(this.getNextTemplate(index));
+  }
+
+  setClasses(item, index) {
+    if (!index || index >= this.props.blocks.length - 1) {
+      return null;
+    }
+
+    let prev = this.getPrevTemplateClass(index);
+    let next = this.getNextTemplateClass(index);
+
+    if (!item.properties.className) {
+      item.properties.className = '';
+    }
+
+    item.properties.className += ` ${prev} ${next}`;
+  }
+
+  normalizeTemplateName(name) {
+    return name.replace(/([A-Z])/g, function(match, char, index) {
+      if (!index) {
+        return char.toLowerCase();
+      }
+
+      return `-${char.toLowerCase()}`;
+    });
+  }
 
   getAgents(item, index) {
     return (<Agents {...item.properties} key={index} />);
@@ -37,6 +91,7 @@ export default class StoryLayout extends React.Component {
     let primary = null;
     let secondary = null;
     let description = null;
+    this.setZ(item, index);
 
     if (!item.properties.image) {
       console.warn('Tried to display a BigImage without any image', item);
@@ -78,6 +133,7 @@ export default class StoryLayout extends React.Component {
     let primary = null;
     let secondary = null;
     let description = null;
+    this.setZ(item, index);
 
     // Is this the primary title?
     if (item.properties.isPageTitle || !index) {
@@ -204,41 +260,29 @@ export default class StoryLayout extends React.Component {
   }
 
   getDetails(item, index) {
+    if (!item.properties.home) {
+      console.warn('No home delivered to getDetails, return null', item);
+      return null;
+    }
+
+    let home = item.properties.home;
+    let details = null;
+    if (home.properties) {
+      details = home.properties;
+    }
+    if (!details && home.amenities && Array.isArray(home.amenities)) {
+      details = home.amenities.join(`\n* `);
+    }
+
+    if (!details) {
+      return null;
+    }
+
+    debug('use details', details);
     return (
       <ContentBlock key={index} className='details-view'>
         <h2>Home details</h2>
-        <Columns cols={2}>
-          <div className='first'>
-            <h3>Accommodation</h3>
-            <ul>
-              <li>Room list</li>
-              <li>lorem ipsum</li>
-            </ul>
-            <h3>Type</h3>
-            <ul>
-              <li>Apartment</li>
-            </ul>
-            <h3>Plot holding type</h3>
-            <ul>
-              <li>Own</li>
-            </ul>
-          </div>
-          <div className='second'>
-            <h3>Amenities</h3>
-            <ul>
-              <li>List of amenities</li>
-              <li>lorem ipsum</li>
-            </ul>
-            <h3>Construction finished</h3>
-            <ul>
-              <li>1850</li>
-            </ul>
-            <h3>Recent renovations</h3>
-            <ul>
-              <li>Full renovation, 2011</li>
-            </ul>
-          </div>
-        </Columns>
+        <Markdown className='auto-columns'>{details}</Markdown>
       </ContentBlock>
     );
   }
@@ -253,6 +297,7 @@ export default class StoryLayout extends React.Component {
         {
           this.props.blocks.map((item, index) => {
             let method = `get${item.template}`;
+            this.setClasses(item, index);
 
             if (typeof this[method] === 'function') {
               debug('Render with', method);

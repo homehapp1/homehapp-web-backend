@@ -5,6 +5,19 @@ exports.registerRoutes = (app) => {
     return;
   }
 
+  let authError = (req, res, next) => {
+    res.status(403);
+    app.getLocals(req, res, {
+      includeClient: false,
+      bodyClass: 'adminLogin',
+      csrfToken: req.csrfToken()
+    })
+    .then((locals) => {
+      //locals.layout = null;
+      res.render('login', locals);
+    });
+  };
+
   app.post('/auth/login', function(req, res, next) {
     let loginMethod = app.authentication.resolveLoginMethod(req);
 
@@ -18,18 +31,21 @@ exports.registerRoutes = (app) => {
 
     app.authentication.authenticate(loginMethod, function(err, user, info) {
       if (err) {
-        return next(err);
+        return authError(req, res, next);
       }
+
       if (!user) {
         if (info.message === 'user not active') {
+          authError(req, res, next);
           return next(new Forbidden('Account not active'));
         }
-        return next(new Forbidden('Invalid credentials'));
+        return authError(req, res, next);
+        // return next(new Forbidden('Invalid credentials'));
       }
 
       req.logIn(user, function(loginErr) {
         if (loginErr) {
-          return next(loginErr);
+          return authError(req, res, next);
         }
 
         if (req.xhr) {

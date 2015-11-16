@@ -9,12 +9,14 @@ export default class PropertyCards extends React.Component {
   static propTypes = {
     items: React.PropTypes.array.isRequired,
     cols: React.PropTypes.number,
-    max: React.PropTypes.number
+    max: React.PropTypes.number,
+    className: React.PropTypes.string
   }
 
   static defaultProps = {
     cols: 4,
-    max: Infinity
+    max: Infinity,
+    className: null
   };
 
   constructor() {
@@ -108,8 +110,14 @@ export default class PropertyCards extends React.Component {
   }
 
   render() {
+    let classes = ['widget', 'cards'];
+
+    if (this.props.className) {
+      classes.push(this.props.className);
+    }
+
     return (
-      <div ref='cards' className='widget cards'>
+      <div ref='cards' className={classes.join(' ')}>
       {
         this.props.items.map((item, index) => {
           if (this.props.max <= index) {

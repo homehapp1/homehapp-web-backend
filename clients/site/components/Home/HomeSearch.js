@@ -9,7 +9,8 @@ import ErrorPage from '../../../common/components/Layout/ErrorPage';
 import HomeList from './HomeList';
 
 // Story widgets
-import ContentBlock from '../../../common/components/Widgets/ContentBlock';
+import BigImage from '../../../common/components/Widgets/BigImage';
+import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
 
 import { setPageTitle } from '../../../common/Helpers';
@@ -96,11 +97,20 @@ export default class HomeSearch extends React.Component {
     let label = (this.state.type === 'buy') ? 'sale' : 'rent';
     setPageTitle(`Select homes for ${label} in London’s finest neighourhoods`);
 
+    let placeholder = {
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
+      alt: ''
+    };
+
     return (
       <div id='propertyFilter'>
-        <ContentBlock className='padded'>
-          <h1>Select homes for {label} in London’s finest neighourhoods</h1>
-        </ContentBlock>
+        <BigImage gradient='green' fixed image={placeholder} proportion={0.8}>
+          <LargeText align='center' valign='middle' proportion={0.8}>
+            <div className='splash'>
+              <h1>Select homes for {label} in London’s finest neighourhoods</h1>
+            </div>
+          </LargeText>
+        </BigImage>
         <HomeList items={homes} />
       </div>
     );

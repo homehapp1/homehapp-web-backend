@@ -20,8 +20,8 @@ export default class Gallery extends React.Component {
   static defaultProps = {
     images: [],
     title: '',
-    columns: 10,
-    imageWidth: 400,
+    columns: 8,
+    imageWidth: 200,
     fullscreen: true,
     className: null
   };
@@ -388,10 +388,13 @@ export default class Gallery extends React.Component {
   // Update the gallery view by setting the width and height as linear
   // partition suggests
   updateGallery() {
-    let columns = Math.min(Math.round(this.gallery.width() / this.props.imageWidth), this.props.columns);
+    let width = this.gallery.width();
+    let columns = 4;
+    if (width < 900) {
+      columns = 3;
+    }
 
     let rows = Math.ceil(this.images.length / columns);
-    let width = this.gallery.width();
     let aspectRatios = [];
 
     for (let i = 0; i < this.images.length; i++) {

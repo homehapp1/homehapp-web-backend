@@ -124,7 +124,6 @@ exports.scrollTop = function scrollTop(offset = null, speed = 500) {
 };
 
 exports.setFullHeight = function setFullHeight() {
-  let items = document.getElementsByClassName('full-height');
   let height = window.innerHeight;
 
   let setHeight = function(item, strict = false) {
@@ -155,14 +154,40 @@ exports.setFullHeight = function setFullHeight() {
     }
   };
 
-  for (let i = 0; i < items.length; i++) {
-    setHeight(items[i], false);
+  let items = document.getElementsByClassName('aspect-ratio');
+  for (let item of items) {
+    let ar = Number(item.getAttribute('data-aspect-ratio'));
+    if (!ar) {
+      continue;
+    }
+
+    item.style.height = `${Math.round(window.innerWidth / ar)}px`;
+  }
+
+  if (window && window.innerWidth <= 640) {
+    items = document.getElementsByClassName('full-height');
+    for (let item of items) {
+      item.style.height = null;
+      item.style.minHeight = null;
+    }
+
+    items = document.getElementsByClassName('full-height-strict');
+    for (let item of items) {
+      item.style.height = null;
+      item.style.minHeight = null;
+    }
+
+    return null;
+  }
+
+  items = document.getElementsByClassName('full-height');
+  for (let item of items) {
+    setHeight(item, false);
   }
 
   items = document.getElementsByClassName('full-height-strict');
-
-  for (let i = 0; i < items.length; i++) {
-    setHeight(items[i], true);
+  for (let item of items) {
+    setHeight(item, true);
   }
 };
 
@@ -238,8 +263,8 @@ exports.primaryHomeTitle = function primaryHomeTitle(home) {
   }
 
   let parts = [];
-  for (let i = 0; i < home.attributes.length; i++) {
-    let c = home.attributes[i];
+  let attributes = home.attributes || [];
+  for (let c of attributes) {
     switch (c.name) {
       case 'rooms':
         parts.push(`${exports.literals(c.value)} room apartment`);

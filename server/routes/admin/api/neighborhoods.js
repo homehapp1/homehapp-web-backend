@@ -96,7 +96,7 @@ exports.registerRoutes = (app) => {
 
   });
 
-  let updateNeighborhood = function updateNeighborhood(req, res) {
+  let updateNeighborhood = function updateNeighborhood(req) {
     let data = req.body.neighborhood;
     debug('data', data);
 

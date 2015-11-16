@@ -11,7 +11,8 @@ export default class ContentImage extends React.Component {
       React.PropTypes.null,
       React.PropTypes.object,
       React.PropTypes.array
-    ])
+    ]),
+    className: React.PropTypes.string
   };
 
   static defaultProps = {
@@ -61,6 +62,10 @@ export default class ContentImage extends React.Component {
           {image}
         </ContentBlock>
       );
+    }
+
+    if (this.props.className) {
+      classes.push(this.props.className);
     }
 
     // Determine the content locations

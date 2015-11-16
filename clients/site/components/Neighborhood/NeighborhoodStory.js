@@ -32,6 +32,10 @@ export default class NeighborhoodStory extends React.Component {
 
     for (let home of homes) {
       debug('Add', home.title, home);
+      if (!home.location || !home.location.coordinates) {
+        continue;
+      }
+      
       markers.push({
         location: home.location.coordinates,
         title: home.homeTitle,
@@ -52,7 +56,15 @@ export default class NeighborhoodStory extends React.Component {
 
     let markers = this.getMarkers(homes);
     debug('Set markers', markers);
-    debug('Homes', homes, this.props.neighborhood.location.coordinates);
+
+    if (!this.props.neighborhood || !this.props.neighborhood.location || !this.props.neighborhood.location.coordinates || !Array.isArray(this.props.neighborhood.location.coordinates)) {
+      if (this.props.neighborhood.area) {
+        return (
+          <Map markers={markers} area={area} />
+        );
+      }
+      return null;
+    }
 
     if (!homes.length) {
       return (
@@ -60,18 +72,17 @@ export default class NeighborhoodStory extends React.Component {
       );
     }
 
+    let area = [];
+    if (this.props.neighborhood.area) {
+      area = this.props.neighborhood.area;
+    }
+
     return (
-      <Map center={this.props.neighborhood.location.coordinates} markers={markers}>
+      <Map center={this.props.neighborhood.location.coordinates} markers={markers} area={area}>
         {
           homes.map((home, index) => {
             if (index >= 3) {
               return null;
-            }
-            let rooms = null;
-            for (let attribute of home.attributes) {
-              if (attribute.name === 'rooms') {
-                rooms = (<li>{attribute.value} rooms</li>);
-              }
             }
 
             return (
@@ -81,10 +92,7 @@ export default class NeighborhoodStory extends React.Component {
                     {home.homeTitle}
                   </Link>
                 </h3>
-                <ul>
-                  {rooms}
-                  <li>{home.fomattedPrice}</li>
-                </ul>
+
               </div>
             );
           })
@@ -144,11 +152,16 @@ export default class NeighborhoodStory extends React.Component {
       secondaryImage = this.props.neighborhood.images[1];
     }
 
+    let city = 'london';
+    if (this.props.neighborhood.location.city && this.props.neighborhood.location.city.slug) {
+      city = this.props.neighborhood.location.city.slug;
+    }
+
     return (
-      <div class='neighborhood-home-blocks'>
+      <div className='neighborhood-home-blocks'>
         <ContentBlock className='with-gradient padded'>
           <p className='call-to-action'>
-            <Link className='button' to='neighborhoodViewHomes' params={{city: this.props.neighborhood.location.city.slug, neighborhood: this.props.neighborhood.slug}}>Show homes</Link>
+            <Link className='button' to='neighborhoodViewHomes' params={{city: city, neighborhood: this.props.neighborhood.slug}}>Show homes</Link>
           </p>
         </ContentBlock>
 
@@ -162,7 +175,7 @@ export default class NeighborhoodStory extends React.Component {
         {this.getMap()}
 
         <ContentBlock align='center'>
-          <Link className='button' to='neighborhoodViewHomes' params={{city: this.props.neighborhood.location.city.slug, neighborhood: this.props.neighborhood.slug}}>Show more homes</Link>
+          <Link className='button' to='neighborhoodViewHomes' params={{city: city, neighborhood: this.props.neighborhood.slug}}>Show more homes</Link>
         </ContentBlock>
       </div>
     );

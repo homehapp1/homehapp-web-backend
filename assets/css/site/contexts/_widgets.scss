@@ -42,14 +42,11 @@
   // }
 
   &.with-gradient {
-    $d: top;
-    $g1: rgba(0, 0, 0, 0.05);
-    $g2: rgba(0, 0, 0, 0.0);
-    background-image: -webkit-linear-gradient($d, $g1, $g2);
-    background-image: -moz-linear-gradient($d, $g1, $g2);
-    background-image: -ms-linear-gradient($d, $g1, $g2);
-    background-image: -o-linear-gradient($d, $g1, $g2);
-    background-image: linear-gradient($d, $g1, $g2);
+    @include grayGradient();
+  }
+
+  h2 {
+    margin-top: 0.5em;
   }
 
   &.item-separator {
@@ -79,6 +76,11 @@
 
     & + .pattern {
       background-position: left top;
+      &:before {
+        display: block;
+        content: ' ';
+        padding-top: 1px;
+      }
     }
   }
 
@@ -113,6 +115,7 @@
   @import "contexts/widgets/large-text";
   @import "contexts/widgets/loading";
   @import "contexts/widgets/map";
+  @import "contexts/widgets/markdown";
   @import "contexts/widgets/separator";
 }
 

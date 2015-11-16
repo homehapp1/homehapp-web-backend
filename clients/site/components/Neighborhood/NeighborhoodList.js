@@ -4,38 +4,36 @@ import { Link } from 'react-router';
 // Widgets
 import BigImage from '../../../common/components/Widgets/BigImage';
 import ContentBlock from '../../../common/components/Widgets/ContentBlock';
-import Image from '../../../common/components/Widgets/Image';
+import Hoverable from '../../../common/components/Widgets/Hoverable';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
 
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 import ErrorPage from '../../../common/components/Layout/ErrorPage';
 
-import { setPageTitle } from '../../../common/Helpers';
-let debug = require('../../../common/debugger')('NeighborhoodList');
+import { setPageTitle, merge } from '../../../common/Helpers';
+// let debug = require('debug')('NeighborhoodList');
 
 export default class NeighborhoodList extends React.Component {
   static propTypes = {
     params: React.PropTypes.object.isRequired
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.city = props.params.city;
     this.storeListener = this.onChange.bind(this);
   }
 
   state = {
     error: null,
-    neighborhoods: NeighborhoodListStore.getState().neighborhoods
+    neighborhoods: NeighborhoodListStore.getState().items || NeighborhoodListStore.getState().neighborhoods
   }
 
   componentDidMount() {
     setPageTitle(`Neighbourhoods of ${this.city.substr(0, 1).toUpperCase()}${this.city.substr(1)}`);
     NeighborhoodListStore.listen(this.storeListener);
-
-    if (!NeighborhoodListStore.getState().neighborhoods) {
-      NeighborhoodListStore.fetchItems({city: this.city});
-    }
+    NeighborhoodListStore.fetchItems({city: this.city});
   }
 
   componentWillUnmount() {
@@ -44,10 +42,9 @@ export default class NeighborhoodList extends React.Component {
   }
 
   onChange(state) {
-    debug('set state', state);
     this.setState({
       error: state.error,
-      neighborhoods: state.neighborhoods
+      neighborhoods: state.items
     });
   }
 
@@ -78,18 +75,8 @@ export default class NeighborhoodList extends React.Component {
       type: 'asset'
     };
 
-    this.city = 'london';
-
-    if (typeof this.props.params !== 'undefined' && typeof this.props.params.city !== 'undefined') {
-      this.city = this.props.params.city;
-    }
-
     if (this.state.error) {
       return this.handleErrorState();
-    }
-
-    if (NeighborhoodListStore.isLoading()) {
-      return this.handlePendingState();
     }
 
     let neighborhoods = this.state.neighborhoods || [];
@@ -104,25 +91,30 @@ export default class NeighborhoodList extends React.Component {
         <ContentBlock className='neighborhoods-list'>
           {
             neighborhoods.map((neighborhood, index) => {
+              let image = merge({}, neighborhood.mainImage);
+              let city = 'london';
+              if (neighborhood.location.city && neighborhood.location.city.slug) {
+                city = neighborhood.location.city.slug;
+              }
               return (
                 <div className='neighborhood' key={index}>
-                  <Link className='image-wrapper' to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
-                    <Image {...neighborhood.mainImage} width={1200} height={680} mode='fill' />
+                  <Link className='image-wrapper' to='neighborhoodView' params={{city: city, neighborhood: neighborhood.slug}}>
+                    <Hoverable className='with-shadow' {...image} width={1200} height={680} mode='fill' />
                   </Link>
                   <ContentBlock valign='center'>
                     <h2 className='block-title'>
-                      <Link to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                      <Link to='neighborhoodView' params={{city: city, neighborhood: neighborhood.slug}}>
                         {neighborhood.title}
                       </Link>
                     </h2>
                     <ul className='buttons'>
                       <li>
-                        <Link to='neighborhoodView' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodView' params={{city: city, neighborhood: neighborhood.slug}}>
                           Read about
                         </Link>
                       </li>
                       <li>
-                        <Link to='neighborhoodViewHomes' params={{city: neighborhood.location.city.slug, neighborhood: neighborhood.slug}}>
+                        <Link to='neighborhoodViewHomes' params={{city: city, neighborhood: neighborhood.slug}}>
                           Show homes
                         </Link>
                       </li>

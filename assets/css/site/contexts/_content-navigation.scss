@@ -1,33 +1,24 @@
 #contentNavigation {
   $iconSize: $navigationIconSize + 14px;
   position: fixed;
-  top: $contentPadding / 2;
-  right: $contentPadding * 1.5 + $navigationIconSize;
+  top: $contentPadding * 1.5 + $navigationIconSize;
+  right: 15px;
   z-index: $zNavigation - 1;
-
-  @include small() {
-    right: 15px;
-    top: $contentPadding * 1.5 + $navigationIconSize;
-  }
 
   ul {
     margin: 0;
     padding: 0;
 
     li {
-      display: inline-block;
+      display: block;
       height: $iconSize;
       line-height: $iconSize;
-      font-size: $iconSize * 0.8;
+      font-size: $iconSize * 0.7;
       margin-right: $contentPadding;
-      vertical-align: middle;
+      text-align: center;
+      width: 30px;
 
       @include small() {
-        font-size: $iconSize * 0.7;
-        margin-top: 2px;
-        display: block;
-        text-align: center;
-        width: 30px;
         margin-right: 0;
       }
 
@@ -39,47 +30,6 @@
           color: $turquoise;
           text-shadow: $textShadowWhite;
         }
-      }
-    }
-
-    &.init {
-      $max: 6;
-      $duration: $transitionDurationSlow;
-      $w: 26px;
-
-      li {
-        display: block;
-        position: absolute;
-        text-align: center;
-        right: -1 * $navigationIconSize;
-        @include vendors(transition-duration, $duration);
-        @include vendors(transition-property, all);
-
-        @include small() {
-          position: static;
-
-          &.details {
-            position: absolute;
-            top: -40px;
-            right: 35px;
-          }
-
-          &.story {
-            position: absolute;
-            top: -40px;
-            right: 65px;
-          }
-        }
-      }
-
-      &.animate {
-         @for $i from 0 through $max {
-           li[data-index="#{$i}"] {
-             @include notSmall() {
-               right: $i * ($w + 10px);
-             }
-           }
-         }
       }
     }
   }

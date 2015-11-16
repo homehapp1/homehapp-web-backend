@@ -18,6 +18,7 @@ import EditDetails from '../Shared/EditDetails';
 import PlacePicker from '../../../common/components/Widgets/PlacePicker';
 
 let debug = require('../../../common/debugger')('HomesEditDetails');
+let marked = require('marked');
 
 export default class HomesEditDetails extends EditDetails {
   static propTypes = {
@@ -71,6 +72,9 @@ export default class HomesEditDetails extends EditDetails {
   componentWillReceiveProps(props) {
     debug('componentWillReceiveProps', props);
     if (props.home) {
+      if (props.home.location.neighborhood) {
+        this.onNeighborhoodChange(props.home.location.neighborhood);
+      }
       this.setState({
         currentAttributes: props.home.attributes || {},
         images: props.home.images || []
@@ -105,6 +109,18 @@ export default class HomesEditDetails extends EditDetails {
     // TODO: Validation could be done here
     //debug('onFormChange', event, type, target);
     //this.props.home.facilities = this.refs.facilities.getValue().split("\n");
+  }
+
+  onNeighborhoodChange(neighborhood) {
+    debug('this.home', this.home);
+    if (!this.home) {
+      return null;
+    }
+
+    if (!this.refs.placePicker) {
+      return null;
+    }
+    this.refs.placePicker.setArea(neighborhood.area);
   }
 
   onSave() {
@@ -178,9 +194,7 @@ export default class HomesEditDetails extends EditDetails {
       details: {
         area: Number(this.refs.detailsArea.getValue())
       },
-      amenities: this.refs.amenities.getValue().split('\n'),
-      facilities: this.refs.facilities.getValue().split('\n'),
-      attributes: this.state.currentAttributes,
+      properties: this.refs.properties.getValue(),
       images: images,
       brochures: brochures
     };
@@ -296,10 +310,18 @@ export default class HomesEditDetails extends EditDetails {
     );
   }
 
+  propertiesChange(event) {
+    // debug('event', event.target.value);
+    let markdown = marked(event.target.value);
+    let node = React.findDOMNode(this.refs.propertiesPreview);
+    node.innerHTML = marked(markdown);
+  }
+
   changeStatus(event) {
     debug('changeStatus', event.target.value);
     // this.onFormChange(event);
-    let home = this.state.home || this.props.home;
+    this.home = this.state.home || this.props.home;
+    let home = this.home;
     home.announcementType = event.target.value;
     this.setState({
       home: home
@@ -319,11 +341,8 @@ export default class HomesEditDetails extends EditDetails {
       costs: {
         currency: 'GBP'
       },
-      details: {
-        area: null
-      },
-      amenities: [],
-      facilities: []
+      details: '',
+      properties: ''
     }, this.state.home || this.props.home || {});
     let homeLocation = merge({
       address: {
@@ -337,6 +356,7 @@ export default class HomesEditDetails extends EditDetails {
       neighborhood: null
     }, home.location || {});
 
+    this.home = home;
     if (this.props.home) {
       home.title = this.props.home.homeTitle;
     }
@@ -349,7 +369,16 @@ export default class HomesEditDetails extends EditDetails {
 
     let lat = this.state.lat || 0;
     let lng = this.state.lng || 0;
-    debug('lat', lat, 'lng', lng);
+    let area = null;
+    if (home.location.neighborhood && home.location.neighborhood.area) {
+      area = home.location.neighborhood.area;
+      if (!lat && home.location.neighborhood.location.coordinates && home.location.neighborhood.location.coordinates.length >= 2) {
+        lat = home.location.neighborhood.location.coordinates[0];
+        lng = home.location.neighborhood.location.coordinates[1];
+      }
+    }
+
+    debug('lat', lat, 'lng', lng, 'area', area);
 
     let deleteLink = null;
     let previewLink = null;
@@ -363,8 +392,27 @@ export default class HomesEditDetails extends EditDetails {
         </a>
       );
     }
+
+    let propertiesPreview = marked(home.properties);
+    let properties = home.properties;
+    if (!properties && home.amenities && home.amenities.length) {
+      properties = home.amenities.join(`\n`);
+    }
+
     debug('Render', home);
     //debug('Neighborhood of this home', this.props.homeLocation.neighborhood);
+    let markdownExample = (
+      <p>Building<br />
+        <br />
+        - built in 1823<br />
+        - solid brick walls<br />
+        <br />
+        Amenities<br />
+        <br />
+        - sauna<br />
+        - gym<br />
+      </p>
+    );
 
     return (
       <Row>
@@ -387,6 +435,7 @@ export default class HomesEditDetails extends EditDetails {
                 defaultValue={home.announcementType}
                 onChange={this.changeStatus.bind(this)}
               >
+                <option value='story'>This home has a story, but is not for sale or rent</option>
                 <option value='buy'>This home is for sale</option>
                 <option value='rent'>This home is for rent</option>
               </InputWidget>
@@ -420,6 +469,7 @@ export default class HomesEditDetails extends EditDetails {
               <NeighborhoodSelect
                 ref='addressNeighborhood'
                 selected={homeLocation.neighborhood}
+                onChange={this.onNeighborhoodChange.bind(this)}
               />
               <InputWidget
                 type='text'
@@ -448,7 +498,7 @@ export default class HomesEditDetails extends EditDetails {
                 {countrySelections}
               </InputWidget>
 
-              <PlacePicker lat={this.state.lat} lng={this.state.lng} onChange={this.setCoordinates} />
+              <PlacePicker lat={this.state.lat} lng={this.state.lng} area={area} onChange={this.setCoordinates} ref='placePicker' />
 
               <InputWidget
                 label='Coordinates'
@@ -475,7 +525,7 @@ export default class HomesEditDetails extends EditDetails {
                 </Row>
               </InputWidget>
             </Panel>
-            <Panel header='General specifications'>
+            <Panel header='Specifications'>
               <InputWidget
                 type='text'
                 ref='detailsArea'
@@ -486,8 +536,28 @@ export default class HomesEditDetails extends EditDetails {
                 pattern='([0-9]*)(\.[0-9]+)?'
                 patternError='Please enter a valid number (e.g. 123.45) without any units'
               />
+              <InputWidget
+                type='textarea'
+                ref='properties'
+                label='Amenities'
+                placeholder='(optional)'
+                className='xlarge'
+                defaultValue={properties}
+                onInput={this.propertiesChange.bind(this)}
+                onChange={this.onFormChange.bind(this)}
+              />
+              <Row>
+                <Col md={6}>
+                  <p>Preview:</p>
+                  <div ref='propertiesPreview' className='markdown-preview' dangerouslySetInnerHTML={{__html: propertiesPreview}}></div>
+                </Col>
+                <Col md={6}>
+                  <p>Example</p>
+                  <code className='preline markdown-example'>{markdownExample}</code>
+                </Col>
+              </Row>
             </Panel>
-            <Panel header='Pricing information'>
+            <Panel header='Pricing information' className={(home.announcementType === 'story') ? 'hidden' : ''}>
               <InputWidget
                 type='select'
                 ref='costsCurrency'
@@ -532,37 +602,6 @@ export default class HomesEditDetails extends EditDetails {
                 pattern='([0-9]*)(\.[0-9]+)?'
                 patternError='Please enter a valid number (e.g. 123.45) without any units'
               />
-            </Panel>
-            <Panel header='Amenities'>
-              <InputWidget
-                type='textarea'
-                ref='amenities'
-                label='Input Amenities (one per line)'
-                placeholder='(optional)'
-                defaultValue={home.amenities.join(`\n`)}
-                onChange={this.onFormChange.bind(this)}
-              />
-            </Panel>
-            <Panel header='Facilities'>
-              <InputWidget
-                type='textarea'
-                ref='facilities'
-                label='Input Facilities (one per line)'
-                placeholder='(optional)'
-                defaultValue={home.facilities.join(`\n`)}
-                onChange={this.onFormChange.bind(this)}
-              />
-            </Panel>
-            <Panel header='Other Attributes'>
-              {
-                this.state.currentAttributes.map((attr, index) => {
-                  let isLast = false;
-                  if (index === this.state.currentAttributes.length - 1) {
-                    isLast = true;
-                  }
-                  return this.renderAttributeRow(index, attr, isLast);
-                })
-              }
             </Panel>
             <Panel header='Images'>
               <Row>

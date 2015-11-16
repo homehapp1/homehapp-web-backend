@@ -9,12 +9,12 @@ import ErrorPage from '../../../common/components/Layout/ErrorPage';
 import HomeList from './HomeList';
 
 // Story widgets
-import ContentBlock from '../../../common/components/Widgets/ContentBlock';
-import Loading from '../../../common/components/Widgets/Loading';
+import BigImage from '../../../common/components/Widgets/BigImage';
+import LargeText from '../../../common/components/Widgets/LargeText';
 
 import { setPageTitle } from '../../../common/Helpers';
 
-// let debug = require('debug')('HomeSearch');
+let debug = require('debug')('HomeSearch');
 
 export default class HomeSearch extends React.Component {
   static propTypes = {
@@ -28,16 +28,12 @@ export default class HomeSearch extends React.Component {
 
   state = {
     error: null,
-    homes: HomeListStore.getState().items
+    homes: HomeListStore.getState().homes
   }
 
   componentDidMount() {
     HomeListStore.listen(this.storeListener);
-
-    if (!HomeListStore.getState().items) {
-      HomeListStore.fetchItems({story: true});
-    }
-
+    HomeListStore.fetchItems({type: 'story'});
     setPageTitle(`Our home stories`);
   }
 
@@ -46,18 +42,11 @@ export default class HomeSearch extends React.Component {
   }
 
   onChange(state) {
+    debug('onChange', state);
     this.setState({
       error: state.error,
       homes: state.items
     });
-  }
-
-  handlePendingState() {
-    return (
-      <Loading>
-        <p>Loading homes...</p>
-      </Loading>
-    );
   }
 
   handleErrorState() {
@@ -73,20 +62,25 @@ export default class HomeSearch extends React.Component {
 
   render() {
     if (this.state.error) {
-      return this.handleErrorState();
-    }
-
-    if (HomeListStore.isLoading()) {
-      return this.handlePendingState();
+      return handleErrorState();
     }
 
     let homes = this.state.homes || [];
 
+    let placeholder = {
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
+      alt: ''
+    };
+
     return (
       <div id='propertyFilter'>
-        <ContentBlock className='padded'>
-          <h1>Our home stories</h1>
-        </ContentBlock>
+        <BigImage gradient='green' fixed image={placeholder} proportion={0.8}>
+          <LargeText align='center' valign='middle' proportion={0.8}>
+            <div className='splash'>
+              <h1>Our home stories</h1>
+            </div>
+          </LargeText>
+        </BigImage>
         <HomeList items={homes} />
       </div>
     );

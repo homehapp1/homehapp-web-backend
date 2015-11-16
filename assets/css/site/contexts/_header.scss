@@ -30,7 +30,7 @@
   }
 
   &.away {
-    @include vendors(transform, translateY(-100%));
+    // @include vendors(transform, translateY(-100%));
     // @include vendors(filter, blur(2px));
     // opacity: 0.3;
   }

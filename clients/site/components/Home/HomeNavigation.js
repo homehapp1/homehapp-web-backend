@@ -35,7 +35,6 @@ export default class HomeNavigation extends React.Component {
     em.addEventListener('click', this.displayForm, true);
 
     let navi = new DOMManipulator(this.refs.navi);
-    navi.addClass('init');
     let items = navi.getByTagName('li');
     for (let i = 0; i < items.length; i++) {
       items[i].attr('data-index', items.length - i - 1);
@@ -50,10 +49,6 @@ export default class HomeNavigation extends React.Component {
     }
 
     this.bindPhoneToAgents();
-
-    setTimeout(function() {
-      navi.addClass('animate');
-    });
   }
 
   componentWillUnmount() {
@@ -114,7 +109,6 @@ export default class HomeNavigation extends React.Component {
     e.stopPropagation();
     this.modal = this.createModal();
     this.modalContainer = null;
-    this.preloaded = {};
 
     // Create the modal
     React.render(this.modal, document.getElementById('modals'));

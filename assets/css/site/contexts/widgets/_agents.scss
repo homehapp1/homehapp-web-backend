@@ -1,21 +1,14 @@
 &.agents {
+  $imageWidth: 240px;
   padding-top: 5 * $contentPadding;
   padding-bottom: 5 * $contentPadding;
   text-align: center;
-
-  h2 {
-    font-size: 56px;
-  }
-
-  h3 {
-    font-size: 46px;
-  }
 
   p.title {
     font-size: 24px;
     text-transform: uppercase;
     color: $fontMediumGray;
-    font-weight: 400;
+    font-weight: $boldWeight;
     margin: 0;
 
     & + h3 {
@@ -27,23 +20,39 @@
     color: black;
   }
 
-  .phone a, .email a {
-    padding-left: 60px;
-    min-height: 40px;
-    line-height: 40px;
-    min-width: 120px;
-    background-position: left center;
-    background-size: auto 40px;
-    display: inline-block;
-    font-weight: 400;
-  }
+  p.has-icon {
+    font-size: $fontSizeSecondary;
+    white-space: nowrap;
+    font-weight: $boldWeight;
 
-  .phone a {
-    background-image: url('../images/icons/phone.svg');
-  }
+    .icon {
+      display: block;
 
-  .email a {
-    background-image: url('../images/icons/mail.svg');
+      &:before {
+        display: block;
+        content: ' ';
+        width: 80px;
+        height: 70px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 10px;
+        background-size: contain;
+        background-position: center bottom;
+
+        @include small() {
+          width: 40px;
+          margin-bottom: 18px;
+        }
+      }
+    }
+
+    &.phone .icon:before {
+      background-image: url('../images/icons/phone.svg');
+    }
+
+    &.email .icon:before {
+      background-image: url('../images/icons/mail.svg');
+    }
   }
 
   .agents-list {
@@ -51,15 +60,15 @@
     margin: 0;
     padding: $contentPadding 0;
     text-align: center;
-    font-weight: 400;
+    font-weight: $boldWeight;
 
     & > .agent {
-      display: inline-block;
-      width: 320px;
+      display: block;
       margin-left: auto;
       margin-right: auto;
       vertical-align: top;
       text-align: center;
+      position: relative;
 
       @include small() {
         width: 100%;
@@ -69,6 +78,41 @@
         min-height: 1.5em;
         line-height: 1.5em;
         margin: 0;
+
+        &.has-icon {
+          $w: 200px;
+          $h: 120px;
+          width: $w;
+          height: $h;
+          position: absolute;
+          top: 50%;
+          margin-top: -20px;
+
+          @include small() {
+            width: 120px;
+            margin-top: -15px;
+          }
+
+          &.phone {
+            margin-left: -1 * ($w + $imageWidth / 2);
+            left: 50%;
+
+            @include small() {
+              left: 0;
+              margin-left: 0;
+            }
+          }
+
+          &.email {
+            margin-right: -1 * ($w + $imageWidth / 2);
+            right: 50%;
+
+            @include small() {
+              right: 0;
+              margin-right: 0;
+            }
+          }
+        }
       }
 
       .title {
@@ -83,15 +127,13 @@
         background-image: url('../images/masks/hexagon-white-bordered.svg');
         background-size: contain;
         background-position: center center;
-        min-width: 120px;
+        width: $imageWidth;
+        height: auto;
         display: block;
         margin: $contentPadding auto;
 
-        img {
-          @include small() {
-            width: 100%;
-            height: auto;
-          }
+        @include small() {
+          width: 120px;
         }
       }
     }

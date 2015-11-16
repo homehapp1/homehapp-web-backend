@@ -10,6 +10,7 @@ import TabPane from 'react-bootstrap/lib/TabPane';
 import SubNavigationWrapper from '../Navigation/SubNavigationWrapper';
 import NavItemLink from 'react-router-bootstrap/lib/NavItemLink';
 import EditDetails from './EditDetails';
+import EditArea from './EditArea';
 import EditStory from './EditStory';
 import EditModel from '../Shared/EditModel';
 import ViewMetadata from '../Shared/ViewMetadata';
@@ -37,6 +38,14 @@ export default class NeighborhoodsEdit extends EditModel {
     setPageTitle([`Edit ${this.props.neighborhood.title}`, 'Neighborhoods']);
   }
 
+  refreshTab(tab) {
+    debug('refreshTab', arguments);
+    this.setState({tab: tab});
+    if (tab === 4 && this.refs.areaSelector && typeof this.refs.areaSelector.updateMap === 'function') {
+      this.refs.areaSelector.updateMap();
+    }
+  }
+
   render() {
     let openTab = this.resolveOpenTab();
     debug('openTab', openTab);
@@ -50,12 +59,15 @@ export default class NeighborhoodsEdit extends EditModel {
         </Nav>
         <Row>
           <h1>Edit {this.props.neighborhood.title}</h1>
-          <TabbedArea defaultActiveKey={openTab}>
+          <TabbedArea defaultActiveKey={openTab} onSelect={this.refreshTab.bind(this)} activeKey={openTab}>
             <TabPane eventKey={1} tab='Details'>
               <EditDetails neighborhood={this.props.neighborhood} />
             </TabPane>
             <TabPane eventKey={2} tab='Story'>
               <EditStory neighborhood={this.props.neighborhood} />
+            </TabPane>
+            <TabPane eventKey={4} tab='Area'>
+              <EditArea neighborhood={this.props.neighborhood} ref='areaSelector' />
             </TabPane>
             <TabPane eventKey={3} tab='Metadata'>
               <ViewMetadata object={this.props.neighborhood} store={NeighborhoodStore} actions={NeighborhoodActions} />

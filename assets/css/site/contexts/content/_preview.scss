@@ -3,217 +3,229 @@
   text-align: center;
   padding-top: 5 * $contentPadding;
   padding-bottom: 5 * $contentPadding;
-  max-width: 3.5 * $previewWidth;
-  margin-left: auto;
-  margin-right: auto;
 
-  @include small() {
-    padding: $contentPadding;
+  &.mainpage-list {
+    padding-top: 1px;
   }
 
-  .preview {
+  &.home-list {
     background-color: white;
-    border: solid 1px $borderGray;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0 $contentPadding / 2 $contentPadding;
-    text-align: left;
-    width: $previewWidth;
-    position: relative;
+  }
 
-    @include small() {
-      display: block;
-      max-width: 100%;
-      margin: 0 0 $contentPadding;
-      border-style: none none solid;
-    }
+  @include small() {
+    padding: $contentPadding / 2;
+  }
 
-    .thumbnail {
-      &, & > .hoverable {
+  .list-container {
+    max-width: 3.5 * $previewWidth;
+    margin-left: auto;
+    margin-right: auto;
+
+    .preview {
+      background-color: white;
+      border: solid 1px $borderGray;
+      display: inline-block;
+      vertical-align: top;
+      margin: 0 $contentPadding / 2 $contentPadding;
+      text-align: left;
+      width: $previewWidth;
+      position: relative;
+
+      @include small() {
         display: block;
-        min-height: 200px;
-        position: relative;
-      }
-    }
-
-    a {
-      color: black;
-      text-decoration: none;
-    }
-
-    .title {
-      display: block;
-      height: 556px;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 1;
-
-      @include small() {
-        height: 100%;
-      }
-
-      & > .wrapper {
-        display: table;
-        width: 100%;
-        height: 100%;
-
-        @include verySmall() {
-          padding-top: $contentPadding;
-          height: auto;
-        }
-
-        & > * {
-          &, h2 {
-            font-size: $fontSizeHeading25;
-
-            @include small() {
-              font-size: $fontSizeHeading3;
-            }
-          }
-
-          display: table-cell;
-          width: 100%;
-          height: 100%;
-          vertical-align: middle;
-          text-align: center;
-          font-family: $highlightFont;
-          font-weight: 400;
-        }
-      }
-    }
-
-    .actions, .description {
-      position: absolute;
-      bottom: $contentPadding;
-      left: $contentPadding * 2;
-      right: $contentPadding * 2;
-      z-index: 2;
-      font-size: $fontSizeSecondary;
-
-      @include small() {
-        left: $contentPadding / 2;
-        right: $contentPadding / 2;
-        bottom: $contentPadding / 2;
-        font-size: $fontSizeSmall;
+        max-width: 100%;
+        margin: 0 auto $contentPadding / 2;
+        border-style: none none solid;
       }
 
       a {
+        color: black;
+        text-decoration: none;
+      }
+
+      .title {
         display: block;
-        border: solid 1px white;
-        padding: 0.5em 1em;
+        height: 556px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        margin: 0;
+        padding: 0;
 
-        & + a {
-          margin-top: $contentPadding;
+        @include small() {
+          height: 100%;
+        }
 
-          @include small() {
-            margin-top: $contentPadding / 2;
+        & > .wrapper {
+          display: table;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+
+          @include verySmall() {
+            padding-top: $contentPadding;
+            height: auto;
+          }
+
+          & > * {
+            &, h2 {
+              font-size: $fontSizeHeading25;
+
+              @include small() {
+                font-size: $fontSizeHeading3;
+              }
+            }
+
+            display: table-cell;
+            width: 100%;
+            height: 100%;
+            vertical-align: middle;
+            text-align: center;
+            font-family: $highlightFont;
+            font-weight: $boldWeight;
           }
         }
       }
-    }
 
-    .title, .actions, .description {
-      &, * {
-        color: white;
-        text-shadow: $textShadow;
-      }
-    }
-
-    .actions {
-      text-align: center;
-    }
-
-    .description {
-      left: $contentPadding;
-      right: $contentPadding;
-
-      h3 {
-        font-weight: 400;
-      }
-
-      h3, p {
-        line-height: 1em;
-        margin: 0;
-      }
-
-      p {
+      .actions, .description {
+        position: absolute;
+        bottom: $contentPadding;
+        left: $contentPadding * 2;
+        right: $contentPadding * 2;
+        z-index: 2;
         font-size: $fontSizeSecondary;
 
-        span + span:before {
-          content: ', ';
+        @include small() {
+          left: $contentPadding / 2;
+          right: $contentPadding / 2;
+          bottom: $contentPadding / 2;
+          font-size: $fontSizeSmall;
+        }
+
+        a {
+          display: block;
+          border: solid 1px white;
+          padding: 0.5em 1em;
+
+          & + a {
+            margin-top: $contentPadding;
+
+            @include small() {
+              margin-top: $contentPadding / 2;
+            }
+          }
         }
       }
 
-      font-size: $fontSize;
-    }
-
-    .actions a {
-      background-color: rgba(0, 0, 0, $maskOpacity);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 3 * $maskOpacity);
-      @include vendors(transition-property, all);
-      @include vendors(transition-duration, $transitionDuration);
-
-      &:hover, &:active {
-        background-color: $buttonBackgroundHover;
+      .title, .actions, .description {
+        &, * {
+          color: $fontWhite;
+          text-shadow: $textShadow;
+        }
       }
-    }
 
-    h3 {
-      margin-bottom: 0;
-    }
-
-    p {
-      margin: 1em 0;
-
-      &.details > * + *:before {
-        content: ' | ';
+      .actions {
+        text-align: center;
       }
+
+      .description {
+        left: $contentPadding + 3px;
+        right: $contentPadding;
+
+        h3 {
+          font-weight: $titleWeight;
+          font-size: 32px;
+          margin-top: 0;
+          margin-bottom: 4px;
+        }
+
+        h3, p {
+          line-height: 1em;
+        }
+
+        p {
+          margin-top: 0;
+          margin-bottom: 0;
+          // font-size: $fontSizeSecondary;
+          font-weight: $boldWeight;
+
+          span + span:before {
+            content: ', ';
+          }
+        }
+
+        font-size: $fontSize;
+      }
+
+      .actions a {
+        background-color: rgba(0, 0, 0, $maskOpacity);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 3 * $maskOpacity);
+        @include vendors(transition-property, all);
+        @include vendors(transition-duration, $transitionDuration);
+
+        &:hover, &:active {
+          background-color: $buttonBackgroundHover;
+        }
+      }
+
+      h3 {
+        margin-bottom: 0;
+      }
+
+      p {
+        margin: 1em 0;
+
+        &.details > * + *:before {
+          content: ' | ';
+        }
+      }
+
+      // .description {
+      //   padding: $contentPadding;
+      //   font-size: $fontSizeSecondary;
+      //   height: 7em;
+      //   overflow: hidden;
+      //   position: absolute;
+      //   bottom: $contentPadding;
+      //   left: $contentPadding;
+      //   right: $contentPadding;
+      //   z-index:
+      //
+      //   @include small() {
+      //     padding: $contentPadding / 2 0;
+      //     height: auto;
+      //   }
+      //
+      //   p {
+      //     margin: 0;
+      //   }
+      //
+      //   p.address {
+      //     span:after {
+      //       content: ', ';
+      //     }
+      //
+      //     span:last-child:after {
+      //       content: '';
+      //     }
+      //
+      //     .city:before {
+      //       content: ' ';
+      //       display: block;
+      //     }
+      //   }
+      // }
     }
 
-    // .description {
-    //   padding: $contentPadding;
-    //   font-size: $fontSizeSecondary;
-    //   height: 7em;
-    //   overflow: hidden;
-    //   position: absolute;
-    //   bottom: $contentPadding;
-    //   left: $contentPadding;
-    //   right: $contentPadding;
-    //   z-index:
-    //
-    //   @include small() {
-    //     padding: $contentPadding / 2 0;
-    //     height: auto;
-    //   }
-    //
-    //   p {
-    //     margin: 0;
-    //   }
-    //
-    //   p.address {
-    //     span:after {
-    //       content: ', ';
-    //     }
-    //
-    //     span:last-child:after {
-    //       content: '';
-    //     }
-    //
-    //     .city:before {
-    //       content: ' ';
-    //       display: block;
-    //     }
-    //   }
-    // }
-  }
-
-  h2, h2.block-title {
-    &:first-child {
-      margin-top: 0;
-      margin-bottom: 3 * $contentPadding;
+    h2, h2.block-title {
+      &:first-child {
+        margin-top: 0;
+        margin-bottom: 3 * $contentPadding;
+      }
     }
   }
 

@@ -8,8 +8,13 @@ import Hoverable from './Hoverable';
 
 export default class Card extends React.Component {
   static propTypes = {
-    item: React.PropTypes.object.isRequired
-  };
+    item: React.PropTypes.object.isRequired,
+    className: React.PropTypes.string
+  }
+
+  static defaultProps = {
+    className: null
+  }
 
   mainImage() {
     if (!this.props.item.images.length) {
@@ -30,6 +35,10 @@ export default class Card extends React.Component {
 
     if (this.props.item.story.enabled) {
       classes.push('storified');
+    }
+
+    if (this.props.className) {
+      classes.push(this.props.className);
     }
 
     let image = this.mainImage();

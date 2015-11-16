@@ -1,0 +1,9 @@
+&.markdown {
+  & > .fluid {
+    display: inline-block;
+
+    & > *:first-child {
+      margin-top: 0;
+    }
+  }
+}

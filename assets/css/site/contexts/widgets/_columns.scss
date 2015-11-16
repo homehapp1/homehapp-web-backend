@@ -3,6 +3,11 @@
   padding-top: $padding;
   padding-bottom: $padding;
 
+  @include small() {
+    padding-top: $contentPadding;
+    padding-bottom: $contentPadding;
+  }
+
   & > .columns-container {
     margin-left: -0.5 * $padding;
     margin-right: -0.5 * $padding;
@@ -29,6 +34,11 @@
           float: left;
           padding-left: 0.5 * $padding;
           padding-right: 0.5 * $padding;
+
+          @include medium() {
+            padding-left: $padding;
+            padding-right: $padding;
+          }
 
           @include small() {
             width: 100% !important;
@@ -91,6 +101,24 @@
 
           @include small() {
             display: block;
+            padding-left: $contentPadding;
+            padding-right: $contentPadding;
+          }
+        }
+      }
+    }
+
+    @include small() {
+      &.rearrange {
+        & > .columns-container > .row {
+          display: table;
+
+          & > * {
+            display: table-row;
+
+            &.row-end {
+              display: table-caption;
+            }
           }
         }
       }
@@ -107,5 +135,11 @@
         vertical-align: bottom;
       }
     }
+  }
+}
+
+&.content-block {
+  .widget-columns:first-child {
+    padding-top: 0;
   }
 }

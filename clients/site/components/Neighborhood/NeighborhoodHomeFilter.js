@@ -20,7 +20,9 @@ export default class NeighborhoodHomeFilter extends React.Component {
   };
 
   componentDidMount() {
-    setPageTitle(`Homes in ${this.props.neighborhood.title} | Neighbourhoods of ${this.props.neighborhood.location.city.title}`);
+    if (this.props.neighborhood && this.props.neighborhood.location && this.props.neighborhood.location.city && this.props.neighborhood.location.city.title) {
+      setPageTitle(`Homes in ${this.props.neighborhood.title} | Neighbourhoods of ${this.props.neighborhood.location.city.title}`);
+    }
   }
 
   componentWillUnmount() {

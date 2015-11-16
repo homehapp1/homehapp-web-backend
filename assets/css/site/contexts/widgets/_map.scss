@@ -4,6 +4,11 @@
   padding-bottom: $contentPadding * 5;
   background-color: white;
 
+  @include small() {
+    padding-top: $contentPadding;
+    padding-bottom: $contentPadding * 3;
+  }
+
   & > .width-wrapper {
     display: table;
     min-height: $s;
@@ -11,6 +16,7 @@
 
     @include medium() {
       display: block;
+      min-height: 0;
     }
 
     & > * {

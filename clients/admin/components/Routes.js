@@ -63,10 +63,10 @@ let routes = (
     <Route name='pages' path='/pages'>
       <DefaultRoute handler={PagesIndex} />
       <Route name='pageCreate' path='create' handler={PagesCreate} />
+      <Route name='pageDelete' path=':id/delete' handler={PagesDelete} />
       <Route name='pageEdit' path=':id' handler={PagesEdit}>
         <Route name='pageEditTab' path=':tab' handler={PagesEdit} />
       </Route>
-      <Route name='pageDelete' path=':id/delete' handler={PagesDelete} />
     </Route>
     <Route name='contacts' path='/contacts'>
       <DefaultRoute handler={Contacts}/>

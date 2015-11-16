@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 import DOMManipulator from '../../../common/DOMManipulator';
+import SocialMedia from '../Navigation/SocialMedia';
 
-let debug = require('debug')('Navigation');
+// let debug = require('debug')('Navigation');
 
 export default class Navigation extends React.Component {
   constructor() {
@@ -15,6 +16,7 @@ export default class Navigation extends React.Component {
     this.hideNavigation = this.hideNavigation.bind(this);
     this.showNavigation = this.showNavigation.bind(this);
     this.onDocumentClick = this.onDocumentClick.bind(this);
+    this.onResize = this.onResize.bind(this);
   }
 
   componentDidMount() {
@@ -28,8 +30,8 @@ export default class Navigation extends React.Component {
 
     // Navigation actions
     this.navigation = new DOMManipulator(this.refs.navigation);
-    this.navigation.addEvent('mouseover', this.showNavigation, true);
-    this.navigation.addEvent('mouseout', this.hideNavigation, false);
+    // this.navigation.addEvent('mouseover', this.showNavigation, true);
+    // this.navigation.addEvent('mouseout', this.hideNavigation, false);
 
     // Navigation links
     this.links = this.navigation.getByTagName('a');
@@ -39,6 +41,7 @@ export default class Navigation extends React.Component {
     }
 
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
+    window.addEventListener('resize', this.onResize);
   }
 
   componentWillUnmount() {
@@ -47,6 +50,23 @@ export default class Navigation extends React.Component {
     this.icon.removeEvent('click', this.click, true);
     this.navigation.removeEvent('mouseover', this.showNavigation, true);
     this.navigation.removeEvent('mouseout', this.hideNavigation, false);
+    window.removeEventListener('resize', this.onResize);
+    this.onResize();
+  }
+
+  onResize() {
+    if (!window || !this.container) {
+      return null;
+    }
+    if (window.innerWidth <= 640) {
+      this.container.css({
+        height: `${window.innerHeight}px`
+      });
+    } else {
+      this.container.css({
+        height: 'auto'
+      });
+    }
   }
 
   onDocumentClick(event) {
@@ -121,6 +141,7 @@ export default class Navigation extends React.Component {
             <li className='secondary'><Link to='page' params={{slug: 'why-homehapp'}}>Why Homehapp</Link></li>
             <li className='secondary'><Link to='page' params={{slug: 'careers'}}>Careers</Link></li>
           </ul>
+          <SocialMedia className='secondary' />
         </div>
       </div>
     );

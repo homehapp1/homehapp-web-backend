@@ -22,6 +22,9 @@ exports.registerRoutes = (app) => {
         return QB
         .forModel('Neighborhood')
         .findBySlug(req.params.neighborhood)
+        .query({
+          enabled: true
+        })
         .fetch();
       })
       .then((result) => {

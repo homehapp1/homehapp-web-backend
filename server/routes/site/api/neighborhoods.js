@@ -13,6 +13,9 @@ exports.registerRoutes = (app) => {
     .sort({
       title: 1
     })
+    .query({
+      enabled: true
+    })
     .findAll()
     .fetch()
     .then((result) => {
@@ -20,7 +23,8 @@ exports.registerRoutes = (app) => {
         status: 'ok',
         items: result.models
       });
-    });
+    })
+    .catch(next);
   });
 
   app.get('/api/neighborhoods/:city', function(req, res, next) {
@@ -46,6 +50,9 @@ exports.registerRoutes = (app) => {
       .fetch();
     })
     .then((result) => {
+      for (let neighborhood of result.models) {
+        neighborhood.location.city = city;
+      }
       res.json({
         status: 'ok',
         items: result.models

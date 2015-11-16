@@ -19,7 +19,6 @@ exports.registerRoutes = (app) => {
     .findBySlug(req.params.slug)
     .fetch()
     .then((result) => {
-      debug('Page fetched', result.model);
       let page = result.model;
       res.locals.data.title = [page.title];
       res.locals.page = {
@@ -29,8 +28,6 @@ exports.registerRoutes = (app) => {
       res.locals.data.PageStore = {
         model: page
       };
-      debug('res.locals.data', res.locals.data);
-      debug('Set local data', res.locals.page, res.locals.data);
       initMetadata(res);
       setLastMod([page], res);
       next();

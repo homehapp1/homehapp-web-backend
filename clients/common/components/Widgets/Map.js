@@ -18,8 +18,10 @@ export default class Map extends React.Component {
     ]),
     context: React.PropTypes.object,
     lat: React.PropTypes.number,
-    lng: React.PropTypes.number
-  };
+    lng: React.PropTypes.number,
+    className: React.PropTypes.string,
+    area: React.PropTypes.array
+  }
 
   static contextTypes = {
     router: React.PropTypes.func
@@ -29,7 +31,9 @@ export default class Map extends React.Component {
     zoom: 10,
     minZoom: 6,
     maxZoom: 20,
-    markers: []
+    markers: [],
+    className: null,
+    area: null
   };
 
   constructor() {
@@ -42,6 +46,7 @@ export default class Map extends React.Component {
     this.resize();
 
     this.map = null;
+    this.area = null;
     this.mapContainer = new DOMManipulator(this.refs.map);
     this.loadGoogleMaps();
     window.addEventListener('resize', this.resize);
@@ -90,6 +95,42 @@ export default class Map extends React.Component {
 
     this.map = new google.maps.Map(this.mapContainer.node, options);
     this.setInitialMarkers();
+    this.setArea();
+  }
+
+  setArea() {
+    if (!this.props.area || !this.props.area.length) {
+      return null;
+    }
+
+    // Delete the old map
+    if (this.area) {
+      this.area.setMap(null);
+    }
+
+    this.area = new google.maps.Polygon({
+      paths: this.props.area,
+      strokeColor: '#9dc1fd',
+      fillColor: '#9dc1fd',
+      strokeOpacity: 0.8,
+      strokeWeight: 1,
+      fillOpacity: 0.2
+    });
+    this.area.setMap(this.map);
+
+    this.fitToBounds();
+  }
+
+  fitToBounds() {
+    if (!this.props.area || !this.props.area.length) {
+      return false;
+    }
+    let bounds = new google.maps.LatLngBounds();
+    for (let pos of this.props.area) {
+      bounds.extend(new google.maps.LatLng(pos.lat, pos.lng));
+    }
+    this.map.fitBounds(bounds);
+    return true;
   }
 
   setInitialMarkers() {
@@ -248,6 +289,10 @@ export default class Map extends React.Component {
       );
     } else {
       classes.push('no-aux-content');
+    }
+
+    if (this.props.className) {
+      classes.push(this.props.className);
     }
 
     return (

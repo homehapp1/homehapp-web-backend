@@ -64,7 +64,11 @@ export default class ContentPartners extends React.Component {
           <Icon type='clipboard' className='large' />
         </div>
         <h1>Why Homehapp?</h1>
-        <p>We believe there is better way to help people find homes they belong to. Its an idea whose time has come, and we at homehapp are making it happen.</p>
+        <p>
+          Homehapp is a platform for buyers and sellers, landlords and
+          tenants, Estate agents, legal conveyancers, chartered surveyors.
+          Expand your reach and increase your sales.
+        </p>
         <div className='centered'>
           <Image {...image} />
         </div>

@@ -40,3 +40,20 @@
     background-color: rgba(217, 237, 247, 0);
   }
 }
+
+textarea.form-control {
+  height: 20em;
+}
+
+.markdown-preview, .markdown-example {
+  display: block;
+  width: 100%;
+  border-top: solid 1px #dddddd;
+  border-bottom: solid 1px #dddddd;
+  margin-bottom: 1em;
+  padding: 1em 0.5em;
+}
+
+.preline {
+  white-space: pre-line;
+}

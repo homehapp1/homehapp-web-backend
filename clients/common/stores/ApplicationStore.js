@@ -5,7 +5,8 @@ let debug = require('../debugger')('ApplicationStore');
 class ApplicationStore {
   constructor() {
     this.on('bootstrap', () => {
-      debug('bootstrapping', this.csrf, this.config);
+      // debug('bootstrapping', this.csrf, this.config);
+      debug('bootstrapping', this.csrf);
     });
     this.csrf = null;
     this.config = {

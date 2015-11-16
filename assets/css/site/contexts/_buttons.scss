@@ -13,7 +13,8 @@ button, .button, .btn {
   padding: 0.6em 3em;
   text-decoration: none !important;
   font-size: $fontSizeButton;
-  font-weight: 400;
+  font-weight: $buttonFontWeight;
+  font-style: normal;
   @include vendors(transition-property, all);
   @include vendors(transition-duration, $transitionDuration);
 

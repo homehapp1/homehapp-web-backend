@@ -30,8 +30,8 @@
         line-height: (99 / 115) * $w;
         text-align: center;
         z-index: 1;
-        font-family: "Roboto Slab", monospace, serif;
-        font-weight: 500;
+        font-family: $highlightFont;
+        font-weight: $titleWeight;
         font-size: 90%;
       }
     }

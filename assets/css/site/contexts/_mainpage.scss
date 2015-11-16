@@ -1,5 +1,9 @@
 #mainpage {
   .splash {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 45%;
     $q: 14px;
 
     img {
@@ -69,5 +73,26 @@
         border: solid 1px $mediumGray;
       }
     }
+  }
+
+  .hovering {
+    @include vendors(animation-name, hovering);
+    @include vendors(animation-duration, 7000ms);
+    @include vendors(animation-iteration-count, infinite);
+  }
+}
+
+@include animate(hovering) {
+  $s: 1.05;
+  0% {
+    @include vendors(transform, scaleX(1));
+  }
+
+  50% {
+    @include vendors(transform, scaleX($s));
+  }
+
+  100% {
+    @include vendors(transform, scaleX(1));
   }
 }
