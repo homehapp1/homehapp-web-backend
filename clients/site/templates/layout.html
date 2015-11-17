@@ -42,56 +42,50 @@ for (var key in openGraph) {
   <meta http-equiv="X-UA-Compatible" content="IE=EDGE, IE=10, IE=9, IE=8" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<% if (env !== 'development') { %>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/all.min.css" />
+<% } else { %>
+  <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/vendor.css" />
+  <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/site.css" />
+<% }
 
-  <% if (env !== 'development') { %>
-    <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/all.min.css">
-  <% } else { %>
-    <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/vendor.css">
-    <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/site.css">
-  <% } %>
-  <% if (styleSheets.length) { %>
-    <% for (var i = 0; i < styleSheets.length; i++) { %>
-      <link rel="stylesheet" href="<%- styleSheets[i] %>">
-    <% } %>
-  <% } %>
-
-<%
-    if (metadatas.length) {
-      var tags = [];
-      for (var i = 0; i < metadatas.length; i++) {
-        var tag = [];
-        for (var k in metadatas[i]) {
-          var value = metadatas[i][k].replace(/"/, '”');
-          tag.push(k + '="' + value + '"');
-        }
-        var str = tag.join(' ');
-        if (tags.indexOf(str) === -1) {
-          tags.push(str);
-        }
-      }
-
-      for (var i = 0; i < tags.length; i++) {
-      %>  <meta <%- tags[i] %> />
-<%
-      }
+if (styleSheets.length) {
+  for (var i = 0; i < styleSheets.length; i++) { %>
+  <link rel="stylesheet" href="<%- styleSheets[i] %>">
+  <% }
+}
+if (metadatas.length) {
+  var tags = [];
+  for (var i = 0; i < metadatas.length; i++) {
+    var tag = [];
+    for (var k in metadatas[i]) {
+      var value = metadatas[i][k].replace(/"/, '”');
+      tag.push(k + '="' + value + '"');
     }
-  %>
+    var str = tag.join(' ');
+    if (tags.indexOf(str) === -1) {
+      tags.push(str);
+    }
+  }
 
-  <!-- !Favicons -->
+  for (var i = 0; i < tags.length; i++) {
+  %>  <meta <%- tags[i] %> />
+<%
+  }
+}
+%>
   <link rel="shortcut icon" type="image/x-icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
   <link rel="icon" type="image/png" href="<%= revisionedStaticPath %>/images/favicon-64.png" />
   <link rel="shortcut icon"  type="image/png" href="<%= revisionedStaticPath %>/images/favicon-64.png" />
   <link rel="icon" type="image/vnd.microsoft.icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
-
   <link rel="apple-touch-icon-precomposed" sizes="152x152" href="<%= revisionedStaticPath %>/images/favicon-152.png" />
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<%= revisionedStaticPath %>/images/favicon-144.png" />
   <link rel="apple-touch-icon-precomposed" sizes="120x120" href="<%= revisionedStaticPath %>/images/favicon-120.png" />
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<%= revisionedStaticPath %>/images/favicon-114.png" />
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%= revisionedStaticPath %>/images/favicon-72.png" />
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="<%= revisionedStaticPath %>/images/favicon-57.png" />
-
   <script src="https://maps.googleapis.com/maps/api/js?v=3.2&libraries=geometry,drawing"></script>
   <% if (env !== 'development') { %>
     <script type="text/javascript" src="https://cdn.raygun.io/raygun4js/raygun.min.js"></script>
@@ -114,7 +108,6 @@ for (var key in openGraph) {
     ga('send', 'pageview');
   </script>
   <%- body %>
-
   <% if (env !== 'development') { %>
     <script src="<%= revisionedStaticPath %>/js/vendor.bundle.min.js"></script>
     <script src="<%= revisionedStaticPath %>/js/client.min.js"></script>
