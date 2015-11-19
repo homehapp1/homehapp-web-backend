@@ -42,6 +42,10 @@ export default class HomesEditStory extends React.Component {
     this.setState(state);
   }
 
+  onChange(blocks) {
+    debug('onInput', blocks);
+  }
+
   onSave() {
     debug('onSave');
     debug('blocks', this.refs.storyBlocks.getBlocks());
@@ -52,7 +56,6 @@ export default class HomesEditStory extends React.Component {
         enabled: this.props.home.story.enabled
       }
     };
-    console.log('homeProps', homeProps);
     this.saveHome(homeProps);
   }
 
@@ -104,7 +107,7 @@ export default class HomesEditStory extends React.Component {
                 onChange={this.toggleEnabled.bind(this)}
               />
             </Panel>
-            <StoryEditBlocks parent={this.props.home} blocks={blocks} disabled={['HTMLContent']} ref='storyBlocks' />
+            <StoryEditBlocks parent={this.props.home} blocks={blocks} disabled={['HTMLContent']} ref='storyBlocks' onChange={this.onChange.bind(this)} />
             <Well>
               <Row>
                 <Col md={6}>
