@@ -185,6 +185,56 @@ class DOMManipulator {
     );
   }
 
+  offset() {
+    let el = this.node;
+    var top = el.offsetTop;
+    var left = el.offsetLeft;
+    var height = el.offsetHeight;
+    var width = el.offsetWidth;
+
+    while(el.offsetParent) {
+      el = el.offsetParent;
+      top += el.offsetTop;
+      left += el.offsetLeft;
+    }
+
+    return {
+      top: top,
+      left: left
+    };
+  }
+
+  scrollTo(speed = 400, offset = 0) {
+    let f = 5;
+    let init = document.documentElement.scrollTop + document.body.scrollTop;
+    let c = Math.ceil(speed / f);
+    let i = 0;
+
+    // Invalid count
+    if (c <= 0) {
+      return null;
+    }
+
+    if (speed < 10) {
+      window.scrollTo(0, init + dy * i);
+      return null;
+    }
+
+    let target = Math.max(this.offset().top + offset, 0);
+
+    let dy = (target - init) / c;
+    let nextHop = function() {
+      i++;
+      window.scrollTo(0, init + dy * i);
+
+      if (i < c) {
+        setTimeout(nextHop, f);
+      }
+    };
+
+    nextHop();
+  }
+
   isFullscreen() {
     return !(!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement);
   }
