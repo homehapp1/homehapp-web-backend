@@ -1,7 +1,7 @@
 import React from 'react';
 import AgentListStore from '../../stores/AgentListStore';
 import Loading from '../../../common/components/Widgets/Loading';
-let debug = require('debug')('ChooseAgents');
+// let debug = require('debug')('ChooseAgents');
 
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -49,7 +49,7 @@ export default class ChooseAgents extends React.Component {
   }
 
   onChange(state) {
-    debug('onChange', state);
+    // debug('onChange', state);
     this.setState({
       error: AgentListStore.getState().error,
       agents: AgentListStore.getState().items
@@ -57,7 +57,7 @@ export default class ChooseAgents extends React.Component {
   }
 
   onFormChange(event) {
-    debug('Event', event, event.target, event.target.checked);
+    // debug('Event', event, event.target, event.target.checked);
     let id = event.target.value;
     if (typeof this.agents[id] === 'undefined') {
       return true;
@@ -69,7 +69,7 @@ export default class ChooseAgents extends React.Component {
     setTimeout(() => {
       target.checked = checked;
       if (checked) {
-        debug(target.parentNode.className);
+        // debug(target.parentNode.className);
         target.parentNode.parentNode.className += ' selected';
       } else {
         target.parentNode.parentNode.className = target.parentNode.parentNode.className.replace(/ ?selected/g, '');
@@ -86,7 +86,7 @@ export default class ChooseAgents extends React.Component {
 
   removeAgent(agent) {
     let index = this.indexOfAgent(agent);
-    debug('Remove agent', agent, index);
+    // debug('Remove agent', agent, index);
     if (index !== -1) {
       this.props.home.agents.splice(index, 1);
     }
@@ -110,10 +110,10 @@ export default class ChooseAgents extends React.Component {
   }
 
   onSave() {
-    debug('Saving agent list', this.refs);
+    // debug('Saving agent list', this.refs);
     let agents = [];
     for (let key in this.refs) {
-      debug('Ref', key);
+      // debug('Ref', key);
       let node = React.findDOMNode(this.refs[key]);
       if (node.checked && typeof this.agents[node.value] !== 'undefined') {
         agents.push(this.agents[node.value].id);
@@ -123,21 +123,21 @@ export default class ChooseAgents extends React.Component {
       id: this.props.home.id,
       agents: agents
     };
-    debug('Update props', homeProps);
+    // debug('Update props', homeProps);
     return HomeActions.updateItem(homeProps);
   }
 
   indexOfAgent(agent) {
-    debug('indexOfAgent', this.props.home, agent);
+    // debug('indexOfAgent', this.props.home, agent);
     if (!this.props.home.agents || !this.props.home.agents.length) {
       return -1;
     }
 
     for (let i in this.props.home.agents) {
       let a = this.props.home.agents[i];
-      debug('Check', agent, a);
+      // debug('Check', agent, a);
       if (agent.id === a.id) {
-        debug('Agent is selected', agent, i);
+        // debug('Agent is selected', agent, i);
         return i;
       }
     }
@@ -154,7 +154,7 @@ export default class ChooseAgents extends React.Component {
     }
 
     if (AgentListStore.isLoading()) {
-      debug('Pending...');
+      // debug('Pending...');
       return this.handlePendingState();
     }
 

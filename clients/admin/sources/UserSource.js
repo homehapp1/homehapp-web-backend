@@ -1,13 +1,12 @@
 import request from '../../common/request';
 import UserActions from '../actions/UserActions';
 
-let debug = require('../../common/debugger')('UserSource');
+// let debug = require('../../common/debugger')('UserSource');
 
 let UserSource = {
   createItem: function () {
     return {
       remote(storeState, data) {
-        debug('createItem:remote', arguments, data);
         let postData = {
           user: data
         };
@@ -19,7 +18,6 @@ let UserSource = {
         }
         return request.post(`/api/users`, postData)
           .then((response) => {
-            debug('got response', response);
             if (!response.data || response.data.status !== 'ok') {
               let err = new Error(response.data.error || 'Invalid response');
               return Promise.reject(err);
@@ -40,11 +38,9 @@ let UserSource = {
           });
       },
       local(storeState, data) {
-        debug('createItem:local', arguments, data);
         return null;
       },
       shouldFetch(state) {
-        debug('createItem:shouldFetch', arguments, state);
         return true;
       },
       success: UserActions.createSuccess,
@@ -55,7 +51,6 @@ let UserSource = {
   updateItem: function () {
     return {
       remote(storeState, data) {
-        debug('updateItem:remote', arguments, data);
         let putData = {
           user: data
         };
@@ -64,7 +59,6 @@ let UserSource = {
         delete data.uuid;
         return request.put(`/api/users/${id}`, putData)
           .then((response) => {
-            debug('got response', response);
             if (!response.data || response.data.status !== 'ok') {
               let err = new Error(response.data.error || 'Invalid response');
               return Promise.reject(err);
@@ -85,11 +79,9 @@ let UserSource = {
           });
       },
       local(storeState, data) {
-        debug('createItem:local', arguments, data);
         return null;
       },
       shouldFetch(state) {
-        debug('createItem:shouldFetch', arguments, state);
         return true;
       },
       success: UserActions.updateSuccess,
@@ -98,14 +90,11 @@ let UserSource = {
     };
   },
   deleteItem: function() {
-    debug('deleteItem', arguments);
     return {
       remote(storeState, data) {
-        debug('deleteItem:remote', arguments, data);
         let id = data.id;
         return request.delete(`/api/users/${id}`)
         .then((response) => {
-          debug('Got response when deleting', response);
           if (!response.data || response.data.status !== 'deleted') {
             let err = new Error(response.data.error || 'Invalid response');
             return Promise.reject(err);
@@ -126,10 +115,9 @@ let UserSource = {
         });
       },
       local(storeState, data) {
-        debug('deleteItem:local', arguments, data);
+        return null;
       },
       shouldFetch() {
-        debug('deleteItem should always fetch from the server side');
         return true;
       },
       success: UserActions.deleteSuccess,

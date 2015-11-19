@@ -3,13 +3,13 @@ import HomeActions from '../actions/HomeActions';
 import HomeSource from '../sources/HomeSource';
 // import Cache from '../../common/Cache';
 
-let debug = require('../../common/debugger')('HomeStore');
+// let debug = require('../../common/debugger')('HomeStore');
 
 @alt.createStore
 class HomeStore {
   constructor() {
     this.on('bootstrap', () => {
-      debug('bootstrapping', this.home);
+      // debug('bootstrapping', this.home);
     });
 
     this.bindListeners({
@@ -29,7 +29,7 @@ class HomeStore {
   }
 
   handleCreateItem(item) {
-    debug('handleCreateItem', item);
+    // debug('handleCreateItem', item);
     this.error = null;
     this.home = null;
     if (!this.getInstance().isLoading()) {
@@ -39,14 +39,14 @@ class HomeStore {
     }
   }
   handleCreateSuccess(home) {
-    debug('handleCreateSuccess', home);
+    // debug('handleCreateSuccess', home);
     this.error = null;
     this.home = home;
     this.emitChange();
   }
 
   handleUpdateItem(item) {
-    debug('handleUpdateItem', item);
+    // debug('handleUpdateItem', item);
     this.error = null;
     if (!this.getInstance().isLoading()) {
       setTimeout(() => {
@@ -55,24 +55,24 @@ class HomeStore {
     }
   }
   handleUpdateSuccess(home) {
-    debug('handleUpdateSuccess', home);
+    // debug('handleUpdateSuccess', home);
     this.error = null;
     this.home = home;
     this.emitChange();
   }
   handleDeleteItem(item) {
-    debug('handleDeleteItem', item);
+    // debug('handleDeleteItem', item);
     this.error = null;
     this.deleted = false;
     if (!this.getInstance().isLoading()) {
       setTimeout(() => {
-        debug('instance', this.getInstance());
+        // debug('instance', this.getInstance());
         this.getInstance().deleteItem(item);
       });
     }
   }
   handleDeleteSuccess(home) {
-    debug('handleDeleteSuccess', home);
+    // debug('handleDeleteSuccess', home);
     this.error = null;
     this.home = null;
     this.deleted = true;
@@ -80,7 +80,7 @@ class HomeStore {
   }
 
   handleRequestFailed(error) {
-    debug('handleRequestFailed', error);
+    // debug('handleRequestFailed', error);
     this.error = error;
   }
 }

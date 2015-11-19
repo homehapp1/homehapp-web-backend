@@ -3,15 +3,11 @@ import UserListActions from '../actions/UserListActions';
 import UserListSource from '../sources/UserListSource';
 // import Cache from '../../common/Cache';
 
-let debug = require('../../common/debugger')('UserListStore');
+// let debug = require('../../common/debugger')('UserListStore');
 
 @alt.createStore
 class UserListStore {
   constructor() {
-    this.on('bootstrap', () => {
-      debug('bootstrapping', this.users);
-    });
-
     this.bindListeners({
       handleUpdateUsers: UserListActions.UPDATE_USERS,
       handleFetchUsers: UserListActions.FETCH_USERS,
@@ -29,7 +25,6 @@ class UserListStore {
   }
 
   getUser(id) {
-    debug('getUser', id);
     let { users } = this.getState();
     for (let user of users) {
       if (!id) {
@@ -39,22 +34,18 @@ class UserListStore {
         return user;
       }
     }
-    debug('No matching id found in users');
     this.error = 'No matching id found in users';
   }
 
   handleUpdateUsers(users) {
-    debug('handleUpdateUsers', users);
     this.users = users;
     this.error = null;
   }
   handleFetchUsers() {
-    debug('handleFetchUsers');
     this.users = [];
     this.error = null;
   }
   handleFetchFailed(error) {
-    debug('handleFetchFailed', error);
     this.error = error;
   }
 }
