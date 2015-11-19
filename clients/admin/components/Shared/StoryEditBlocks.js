@@ -10,7 +10,8 @@ import AdminBigVideo from '../Widgets/BigVideo';
 import AdminGallery from '../Widgets/Gallery';
 import AdminLargeText from '../Widgets/LargeText';
 import AdminHTMLContent from '../Widgets/HTMLContent';
-import {moveToIndex} from '../../../common/Helpers';
+import { moveToIndex } from '../../../common/Helpers';
+import DOMManipulator from '../../../common/DOMManipulator';
 
 let debug = require('debug')('StoryEditBlocks');
 
@@ -29,19 +30,14 @@ export default class StoryEditBlocks extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state.blocks = props.blocks;
+    this.blocks = props.blocks;
     this.iterator = 0;
     //console.log('StoryEditBlocks', props);
   }
 
-  state = {
-    blocks: []
-  }
-
   getBlocks() {
-    let updatedBlocks = this.state.blocks;
-    debug('this.state.blocks', this.state.blocks, this.refs);
-    this.state.blocks.map((item, index) => {
+    let updatedBlocks = this.blocks;
+    this.blocks.map((item, index) => {
       debug('Read block', index);
       if (typeof this.refs[`block${index}`] === 'undefined') {
         return null;
@@ -49,10 +45,7 @@ export default class StoryEditBlocks extends React.Component {
       let newProps = this.refs[`block${index}`].getValues();
       updatedBlocks[index].properties = newProps;
     });
-
-    this.setState({
-      blocks: updatedBlocks
-    });
+    debug('getBlocks', updatedBlocks);
 
     return updatedBlocks;
   }
@@ -62,18 +55,16 @@ export default class StoryEditBlocks extends React.Component {
     if (!blockTemplate) {
       return;
     }
-    this.state.blocks.push({
+    this.blocks.push({
       template: blockTemplate,
       properties: {}
-    });
-    this.setState({
-      blocks: this.state.blocks
     });
     try {
       this.refs.blockTemplate.getInputDOMNode().value = '';
     } catch (error) {
       debug('Failed to set the option to empty after the template was selected');
     }
+    this.forceUpdate();
   }
 
   onReArrangeItem(index, dir) {
@@ -84,23 +75,35 @@ export default class StoryEditBlocks extends React.Component {
       newIndex -= 1;
     }
 
-    this.state.blocks = moveToIndex(this.state.blocks, index, newIndex);
+    this.blocks = moveToIndex(this.blocks, index, newIndex);
+    this.forceUpdate();
 
-    this.setState({
-      blocks: this.state.blocks
-    });
+    setTimeout(() => {
+      try {
+        let node = new DOMManipulator(this.refs[`block${newIndex}`]);
+        node.scrollTo(500, -150);
+      } catch (error) {
+        debug('Failed to scroll to the new location', error.toString());
+      }
+    }, 100);
+  }
+
+  onInput(index) {
+    return (key, value) => {
+      this.blocks = [].concat(this.blocks);
+      this.blocks[index].properties[key] = value;
+    };
   }
 
   onRemoveBlock(index) {
     let newBlocks = [];
-    this.state.blocks.forEach((block, idx) => {
+    this.blocks.forEach((block, idx) => {
       if (idx !== index) {
         newBlocks.push(block);
       }
     });
-    this.setState({
-      blocks: newBlocks
-    });
+    this.blocks = newBlocks;
+    this.forceUpdate();
   }
 
   getSortingButtons(index) {
@@ -120,7 +123,7 @@ export default class StoryEditBlocks extends React.Component {
       );
     }
 
-    if (index < this.state.blocks.length - 1) {
+    if (index < this.blocks.length - 1) {
       downButton = (
         <Button
           bsSize='small'
@@ -164,43 +167,43 @@ export default class StoryEditBlocks extends React.Component {
 
   getBigImage(item, index) {
     return (
-      <AdminBigImage {...item.properties} ref={'block' + index} />
+      <AdminBigImage {...item.properties} ref={'block' + index} onChange={this.onInput(index)} />
     );
   }
 
   getContentImage(item, index) {
     return (
-      <AdminContentImage {...item.properties} ref={'block' + index} />
+      <AdminContentImage {...item.properties} ref={'block' + index} onChange={this.onInput(index)} />
     );
   }
 
   getContentBlock(item, index) {
     return (
-      <AdminContentBlock {...item.properties} ref={'block' + index} />
+      <AdminContentBlock {...item.properties} ref={'block' + index} onChange={this.onInput(index)} />
     );
   }
 
   getGallery(item, index) {
     return (
-      <AdminGallery {...item.properties} ref={'block' + index} parent={this.props.parent} />
+      <AdminGallery {...item.properties} ref={'block' + index} parent={this.props.parent}  onChange={this.onInput(index)}/>
     );
   }
 
   getBigVideo(item, index) {
     return (
-      <AdminBigVideo {...item.properties} ref={'block' + index} />
+      <AdminBigVideo {...item.properties} ref={'block' + index} onChange={this.onInput(index)} />
     );
   }
 
   getLargeText(item, index) {
     return (
-      <AdminLargeText {...item.properties} ref={'block' + index} />
+      <AdminLargeText {...item.properties} ref={'block' + index} onChange={this.onInput(index)} />
     );
   }
 
   getHTMLContent(item, index) {
     return (
-      <AdminHTMLContent {...item.properties} ref={'block' + index} />
+      <AdminHTMLContent {...item.properties} ref={'block' + index} onChange={this.onInput(index)} />
     );
   }
 
@@ -235,7 +238,7 @@ export default class StoryEditBlocks extends React.Component {
     return (
       <div className='edit-story'>
         {
-          this.state.blocks.map((item, index) => {
+          this.blocks.map((item, index) => {
             let method = `get${item.template}`;
 
             if (typeof this[method] === 'function') {

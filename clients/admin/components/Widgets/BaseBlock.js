@@ -29,11 +29,15 @@ export default class WidgetsBaseBlock extends React.Component {
     parent: React.PropTypes.oneOfType([
       React.PropTypes.object,
       React.PropTypes.func
-    ])
+    ]),
+    onChange: React.PropTypes.func
   }
 
   static defaultProps = {
-    parent: null
+    parent: null,
+    onChange: (e) => {
+      debug('Default onChange', e);
+    }
   }
 
   constructor(props) {
@@ -75,8 +79,8 @@ export default class WidgetsBaseBlock extends React.Component {
     });
   }
 
-  onImageUpload(key, file) {
-    debug('onImageUpload', key, file);
+  onFileUpload(key, file) {
+    debug('onFileUpload', key, file);
     //console.log('b this.props[key]', this.props[key]);
     if (!this.state.uploads) {
       return;
@@ -93,6 +97,7 @@ export default class WidgetsBaseBlock extends React.Component {
           height: imageData.height,
           aspectRatio: (imageData.width / imageData.height)
         });
+        this.onFormChange(key, null, imageData);
       }
     } else if (this.blockProperties[key].type === 'images') {
       if (!Array.isArray(this.props[key])) {
@@ -113,15 +118,21 @@ export default class WidgetsBaseBlock extends React.Component {
           return true;
         }
       });
+      this.onFormChange(key, null, this.props[key]);
     }
 
     this.forceUpdate();
     //console.log('a this.props[key]', this.props[key]);
   }
 
+  onImageUpload(key, file) {
+    debug('onVideoUpload', key, file);
+    this.onFileUpload(key, file);
+  }
+
   onVideoUpload(key, file) {
     debug('onVideoUpload', key, file);
-    this.onImageUpload(key, file);
+    this.onFileUpload(key, file);
   }
 
   onRemoveImageClicked(index, key) {
@@ -135,16 +146,23 @@ export default class WidgetsBaseBlock extends React.Component {
     this.forceUpdate();
   }
 
-  onFormChange(/*key, event, prop*/) {
-    // console.log('onFormChange event', key, event, prop);
+  onFormChange(key, event, prop) {
+    let ref = `${key}Ref`;
+    if (typeof this.refs[ref] === 'undefined' || typeof this.refs[ref].getValue !== 'function') {
+      debug('No getValue available, use the passed property');
+      this.props.onChange(key, prop);
+      return null;
+    }
+    debug('onFormChange', key, this.refs[ref].getValue());
+    this.props.onChange(key, this.refs[ref].getValue());
   }
 
   onImageChange(event) {
-    console.log('onImageChange event', event);
+    debug('onImageChange event', event);
   }
 
   onVideoChange(event) {
-    console.log('onVideoChange event', event);
+    debug('onVideoChange event', event);
   }
 
   renderPropertyRow(key, prop) {
@@ -161,6 +179,7 @@ export default class WidgetsBaseBlock extends React.Component {
       placeholder: prop.placeholder || '',
       name: key
     };
+    let ref = `${key}Ref`;
 
     if (prop.pattern) {
       inputProps.pattern = prop.pattern;
@@ -168,7 +187,6 @@ export default class WidgetsBaseBlock extends React.Component {
     if (prop.validate) {
       inputProps.validate = prop.validate;
     }
-
     switch(prop.type) {
       case 'text':
       case 'textarea':
@@ -199,7 +217,7 @@ export default class WidgetsBaseBlock extends React.Component {
           <InputWidget
             type={prop.type}
             label={prop.label}
-            ref={key + 'Ref'}
+            ref={ref}
             onChange={(e) => {
               if (prop.type === 'checkbox') {
                 this.props[key] = !(this.props[key]);
@@ -256,7 +274,6 @@ export default class WidgetsBaseBlock extends React.Component {
         <caption><strong>{prop.label}</strong></caption>
       );
     }
-    debug('image input props', prop);
 
     return (
       <Table>
