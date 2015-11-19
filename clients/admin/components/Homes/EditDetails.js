@@ -370,11 +370,11 @@ export default class HomesEditDetails extends EditDetails {
     let lat = this.state.lat || 0;
     let lng = this.state.lng || 0;
     let area = null;
-    if (home.location.neighborhood && home.location.neighborhood.area) {
-      area = home.location.neighborhood.area;
-      if (!lat && home.location.neighborhood.location.coordinates && home.location.neighborhood.location.coordinates.length >= 2) {
-        lat = home.location.neighborhood.location.coordinates[0];
-        lng = home.location.neighborhood.location.coordinates[1];
+    if (homeLocation.neighborhood && homeLocation.neighborhood.area) {
+      area = homeLocation.neighborhood.area;
+      if (!lat && homeLocation.neighborhood.location.coordinates && homeLocation.neighborhood.location.coordinates.length >= 2) {
+        lat = homeLocation.neighborhood.location.coordinates[0];
+        lng = homeLocation.neighborhood.location.coordinates[1];
       }
     }
 
