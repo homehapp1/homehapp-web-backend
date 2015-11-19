@@ -381,15 +381,15 @@ exports.run = function(projectName, afterRun) {
 
             let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
             alt.bootstrap(JSON.stringify(res.locals.data));
-            debug('Local data', res.locals.data);
+            let flushedState = alt.flush();
 
             Router.run(routes, req.url, function (Handler) {
-              let flushedState = alt.flush();
+              debug('flushedState', flushedState);
               let content = React.renderToString(React.createElement(Handler));
+              debug('React.renderToString', content);
 
-              // debug('flushedState', flushedState);
+              debug('flushedState', flushedState);
               iso.add(content, flushedState);
-
               let html = iso.render();
 
               app.getLocals(req, res, {
@@ -425,7 +425,8 @@ exports.run = function(projectName, afterRun) {
           let handleUnauthenticatedGetRequest = function() {
             if ([403].indexOf(code) !== -1) {
               if (app.authenticationRoutes) {
-                let redirectUrl = `${app.authenticationRoutes.login}?message=${msg}`;
+                let url = encodeURIComponent(req.url);
+                let redirectUrl = `${app.authenticationRoutes.login}?message=${msg}&redirectUrl=${url}`;
                 res.redirect(redirectUrl);
                 return true;
               }
