@@ -357,6 +357,7 @@ exports.run = function(projectName, afterRun) {
             }
 
             let alt = require(path.join(COMMON_CLIENT_ROOT, 'alt.js'));
+            alt.foo = 'bar';
             var iso = new Iso();
 
             if (!res.locals.data.ApplicationStore) {
@@ -381,15 +382,11 @@ exports.run = function(projectName, afterRun) {
 
             let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
             alt.bootstrap(JSON.stringify(res.locals.data));
-            let flushedState = alt.flush();
+            let snapshot = alt.takeSnapshot();
 
             Router.run(routes, req.url, function (Handler) {
-              debug('flushedState', flushedState);
               let content = React.renderToString(React.createElement(Handler));
-              debug('React.renderToString', content);
-
-              debug('flushedState', flushedState);
-              iso.add(content, flushedState);
+              iso.add(content, snapshot);
               let html = iso.render();
 
               app.getLocals(req, res, {
