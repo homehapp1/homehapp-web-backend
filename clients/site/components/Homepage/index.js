@@ -16,7 +16,7 @@ import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Loading from '../../../common/components/Widgets/Loading';
 import { setPageTitle } from '../../../common/Helpers';
 
-let debug = require('../../../common/debugger')('Homepage');
+// let debug = require('../../../common/debugger')('Homepage');
 
 export default class Homepage extends React.Component {
   constructor() {
@@ -52,7 +52,6 @@ export default class Homepage extends React.Component {
   }
 
   onHomeListChange(state) {
-    debug('onHomeListChange', state);
     this.setState({
       status: state.error,
       homes: state.items
@@ -60,7 +59,6 @@ export default class Homepage extends React.Component {
   }
 
   onNeighborhoodListChange(state) {
-    debug('onNeighborhoodListChange', state);
     this.setState({
       status: state.error,
       neighborhoods: state.items
@@ -182,7 +180,6 @@ export default class Homepage extends React.Component {
 
     let homes = [].concat(this.state.homes) || [];
     let neighborhoods = [].concat(this.state.neighborhoods) || [];
-    debug('Neighborhoods', neighborhoods, 'Homes', homes);
 
     // Match the original proportions for the phone images
     let w = 180;
