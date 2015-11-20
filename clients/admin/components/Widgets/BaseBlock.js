@@ -105,7 +105,6 @@ export default class WidgetsBaseBlock extends React.Component {
       }
 
       for (let [k, imageData] of enumerate(uploads)) {
-        debug(k, 'data:', imageData);
         this.props[key].push({
           url: imageData.url,
           width: imageData.width,
@@ -126,12 +125,10 @@ export default class WidgetsBaseBlock extends React.Component {
   }
 
   onImageUpload(key, file) {
-    debug('onVideoUpload', key, file);
     this.onFileUpload(key, file);
   }
 
   onVideoUpload(key, file) {
-    debug('onVideoUpload', key, file);
     this.onFileUpload(key, file);
   }
 
@@ -149,11 +146,9 @@ export default class WidgetsBaseBlock extends React.Component {
   onFormChange(key, event, prop) {
     let ref = `${key}Ref`;
     if (typeof this.refs[ref] === 'undefined' || typeof this.refs[ref].getValue !== 'function') {
-      debug('No getValue available, use the passed property');
       this.props.onChange(key, prop);
       return null;
     }
-    debug('onFormChange', key, this.refs[ref].getValue());
     this.props.onChange(key, this.refs[ref].getValue());
   }
 
