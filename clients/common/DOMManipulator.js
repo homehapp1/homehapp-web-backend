@@ -189,8 +189,6 @@ class DOMManipulator {
     let el = this.node;
     var top = el.offsetTop;
     var left = el.offsetLeft;
-    var height = el.offsetHeight;
-    var width = el.offsetWidth;
 
     while(el.offsetParent) {
       el = el.offsetParent;

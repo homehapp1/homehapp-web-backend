@@ -61,7 +61,7 @@ class UserStore {
       });
     }
   }
-  handleDeleteSuccess(user) {
+  handleDeleteSuccess() {
     this.error = null;
     this.user = null;
     this.deleted = true;

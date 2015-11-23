@@ -1,4 +1,4 @@
-let debug = require('debug')('/auth/login');
+// let debug = require('debug')('/auth/login');
 
 exports.registerRoutes = (app) => {
 

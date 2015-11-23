@@ -37,10 +37,10 @@ let UserSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState, data) {
+      local(storeState/*, data*/) {
         return null;
       },
-      shouldFetch(state) {
+      shouldFetch(/*state*/) {
         return true;
       },
       success: UserActions.createSuccess,
@@ -78,10 +78,10 @@ let UserSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState, data) {
+      local(storeState/*, data*/) {
         return null;
       },
-      shouldFetch(state) {
+      shouldFetch(/*state*/) {
         return true;
       },
       success: UserActions.updateSuccess,
@@ -114,7 +114,7 @@ let UserSource = {
           return Promise.reject(response);
         });
       },
-      local(storeState, data) {
+      local(/*storeState, data*/) {
         return null;
       },
       shouldFetch() {

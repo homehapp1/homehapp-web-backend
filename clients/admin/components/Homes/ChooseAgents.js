@@ -48,7 +48,7 @@ export default class ChooseAgents extends React.Component {
     AgentListStore.unlisten(this.storeListener);
   }
 
-  onChange(state) {
+  onChange() {
     // debug('onChange', state);
     this.setState({
       error: AgentListStore.getState().error,

@@ -71,8 +71,7 @@ class HomeStore {
       });
     }
   }
-  handleDeleteSuccess(home) {
-    // debug('handleDeleteSuccess', home);
+  handleDeleteSuccess() {
     this.error = null;
     this.home = null;
     this.deleted = true;
