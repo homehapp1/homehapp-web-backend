@@ -5,7 +5,7 @@ exports.registerRoutes = (app) => {
     return;
   }
 
-  let authError = (req, res, next) => {
+  let authError = (req, res) => {
     res.status(403);
     app.getLocals(req, res, {
       includeClient: false,

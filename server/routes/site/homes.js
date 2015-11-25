@@ -42,7 +42,7 @@ exports.registerRoutes = (app) => {
         debug(`Got ${result.models.length} homes`);
         initMetadata(res);
         res.locals.data.HomeListStore = {
-          homes: result.models
+          items: result.models
         };
         setLastMod(result.models, res);
         resolve(result.models);
@@ -126,7 +126,7 @@ exports.registerRoutes = (app) => {
     }
     debug('City defined');
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       QB
       .forModel('City')
       .findById(home.location.neighborhood.location.city)

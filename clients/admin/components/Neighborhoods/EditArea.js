@@ -9,7 +9,7 @@ import NeighborhoodStore from '../../stores/NeighborhoodStore';
 import NeighborhoodActions from '../../actions/NeighborhoodActions';
 
 import InputWidget from '../Widgets/Input';
-import { createNotification, merge } from '../../../common/Helpers';
+import { createNotification } from '../../../common/Helpers';
 
 let debug = require('../../../common/debugger')('NeighborhoodsEditArea');
 // const countries = require('../../../common/lib/Countries').forSelect();

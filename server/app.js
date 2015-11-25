@@ -357,6 +357,7 @@ exports.run = function(projectName, afterRun) {
             }
 
             let alt = require(path.join(COMMON_CLIENT_ROOT, 'alt.js'));
+            alt.foo = 'bar';
             var iso = new Iso();
 
             if (!res.locals.data.ApplicationStore) {
@@ -381,15 +382,11 @@ exports.run = function(projectName, afterRun) {
 
             let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
             alt.bootstrap(JSON.stringify(res.locals.data));
-            debug('Local data', res.locals.data);
+            let snapshot = alt.takeSnapshot();
 
             Router.run(routes, req.url, function (Handler) {
-              let flushedState = alt.flush();
               let content = React.renderToString(React.createElement(Handler));
-
-              // debug('flushedState', flushedState);
-              iso.add(content, flushedState);
-
+              iso.add(content, snapshot);
               let html = iso.render();
 
               app.getLocals(req, res, {
@@ -425,7 +422,8 @@ exports.run = function(projectName, afterRun) {
           let handleUnauthenticatedGetRequest = function() {
             if ([403].indexOf(code) !== -1) {
               if (app.authenticationRoutes) {
-                let redirectUrl = `${app.authenticationRoutes.login}?message=${msg}`;
+                let url = encodeURIComponent(req.url);
+                let redirectUrl = `${app.authenticationRoutes.login}?message=${msg}&redirectUrl=${url}`;
                 res.redirect(redirectUrl);
                 return true;
               }

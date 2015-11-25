@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 import { Link } from 'react-router';
 import { merge } from '../../../common/Helpers';
@@ -39,14 +40,21 @@ export default class StoryBlocks extends React.Component {
       );
     }
 
+    let currentPath = null;
+    try {
+      currentPath = window.location.pathname;
+    } catch (error) {
+      debug('window is not defined, most likely due to the server side rendering');
+    }
+
     return (
       <ul className='home-links'>
-        <li className={(storyUrl === window.location.pathname) ? 'active' : ''}>
+        <li className={(storyUrl === currentPath) ? 'active' : ''}>
           <a href={storyUrl}>
             Story
           </a>
         </li>
-        <li className={(detailsUrl === window.location.pathname) ? 'active' : ''}>
+        <li className={(detailsUrl === currentPath) ? 'active' : ''}>
           <a href={detailsUrl}>
             Info
           </a>

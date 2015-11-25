@@ -1,16 +1,14 @@
 import request from '../../common/request';
 import UserListActions from '../actions/UserListActions';
 
-let debug = require('../../common/debugger')('UserListSource');
+// let debug = require('../../common/debugger')('UserListSource');
 
 let UserListSource = {
   fetchUsers: () => {
     return {
       remote(/*storeState*/) {
-        debug('fetchUsers:remote', arguments);
         return request.get(`/api/users`)
           .then((response) => {
-            debug('got response', response);
             if (!response.data || !response.data.users) {
               let err = new Error('Invalid response');
               return Promise.reject(err);

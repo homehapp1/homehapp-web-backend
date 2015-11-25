@@ -3,15 +3,11 @@ import UserActions from '../actions/UserActions';
 import UserSource from '../sources/UserSource';
 // import Cache from '../../common/Cache';
 
-let debug = require('../../common/debugger')('UserStore');
+// let debug = require('../../common/debugger')('UserStore');
 
 @alt.createStore
 class UserStore {
   constructor() {
-    this.on('bootstrap', () => {
-      debug('bootstrapping', this.user);
-    });
-
     this.bindListeners({
       handleCreateItem: UserActions.CREATE_ITEM,
       handleUpdateItem: UserActions.UPDATE_ITEM,
@@ -29,7 +25,6 @@ class UserStore {
   }
 
   handleCreateItem(item) {
-    debug('handleCreateItem', item);
     this.error = null;
     this.user = null;
     if (!this.getInstance().isLoading()) {
@@ -39,14 +34,12 @@ class UserStore {
     }
   }
   handleCreateSuccess(user) {
-    debug('handleCreateSuccess', user);
     this.error = null;
     this.user = user;
     this.emitChange();
   }
 
   handleUpdateItem(item) {
-    debug('handleUpdateItem', item);
     this.error = null;
     if (!this.getInstance().isLoading()) {
       setTimeout(() => {
@@ -55,24 +48,20 @@ class UserStore {
     }
   }
   handleUpdateSuccess(user) {
-    debug('handleUpdateSuccess', user);
     this.error = null;
     this.user = user;
     this.emitChange();
   }
   handleDeleteItem(item) {
-    debug('handleDeleteItem', item);
     this.error = null;
     this.deleted = false;
     if (!this.getInstance().isLoading()) {
       setTimeout(() => {
-        debug('instance', this.getInstance());
         this.getInstance().deleteItem(item);
       });
     }
   }
-  handleDeleteSuccess(user) {
-    debug('handleDeleteSuccess', user);
+  handleDeleteSuccess() {
     this.error = null;
     this.user = null;
     this.deleted = true;
@@ -80,7 +69,6 @@ class UserStore {
   }
 
   handleRequestFailed(error) {
-    debug('handleRequestFailed', error);
     this.error = error;
   }
 }

@@ -79,9 +79,10 @@ exports.register = function (parent, app, config) {
   }));
 
   app.authenticatedRoute.push(function(req, res, next) {
-    if (!req.isAuthenticated()) {
-      return next(new Forbidden('not enough permissions'));
+    if (!req.url.toString().match(/^\/auth/) && !req.isAuthenticated()) {
+      return next(new Forbidden('Not enough permissions'));
     }
+
     next();
   });
 

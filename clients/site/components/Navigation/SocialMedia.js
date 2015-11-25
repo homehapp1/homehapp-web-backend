@@ -19,17 +19,23 @@ export default class SocialMedia extends React.Component {
       <ul className={classes.join(' ')}>
         <li>
           <a href='https://www.facebook.com/homehapp' target='_blank'>
-            <i className='fa fa-facebook-square'></i>
+            <i className='fa fa-facebook-square'>
+              <span className='alt'>Facebook</span>
+            </i>
           </a>
         </li>
         <li>
           <a href='https://www.twitter.com/homehapp' target='_blank'>
-            <i className='fa fa-twitter'></i>
+            <i className='fa fa-twitter'>
+              <span className='alt'>Twitter</span>
+            </i>
           </a>
         </li>
         <li>
           <a href='https://www.instagram.com/homehapp' target='_blank'>
-            <i className='fa fa-instagram'></i>
+            <i className='fa fa-instagram'>
+              <span className='alt'>Instagram</span>
+            </i>
           </a>
         </li>
       </ul>
