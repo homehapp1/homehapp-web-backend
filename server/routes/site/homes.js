@@ -1,9 +1,11 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 import { setLastMod, initMetadata } from '../../../clients/common/Helpers';
+import HomesAPI from '../../api/HomesAPI';
 let debug = require('debug')('/homes');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+  let api = new HomesAPI(app, QB);
 
   app.get('/home', function(req, res) {
     debug('Redirecting the GUI call to deprecated /home');
@@ -15,48 +17,10 @@ exports.registerRoutes = (app) => {
     return res.redirect(301, `/homes/${req.params.slug}`);
   });
 
-  let listHomes = (req, res) => {
-    let query = {};
-
-    if (req.params.type) {
-      query.announcementType = req.params.type;
-    }
-    if (req.params.story) {
-      query['story.enabled'] = true;
-    }
-
-    return new Promise((resolve, reject) => {
-      QB
-      .forModel('Home')
-      .parseRequestArguments(req)
-      .query(query)
-      .populate({
-        'location.neighborhood': {}
-      })
-      .sort({
-        'metadata.score': -1
-      })
-      .findAll()
-      .fetch()
-      .then((result) => {
-        debug(`Got ${result.models.length} homes`);
-        initMetadata(res);
-        res.locals.data.HomeListStore = {
-          items: result.models
-        };
-        setLastMod(result.models, res);
-        resolve(result.models);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-    });
-  };
-
   app.get('/homes', function(req, res, next) {
     debug('GET /homes');
 
-    listHomes(req, res, next)
+    api.listHomes(req, res, next)
     .then(() => {
       res.locals.page = {
         title: 'Homes',
@@ -67,24 +31,10 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  // app.get('/homes/:story(stories)', function(req, res, next) {
-  //   debug('GET /homes/stories');
-  //
-  //   listHomes(req, res, next)
-  //   .then(() => {
-  //     res.locals.page = {
-  //       title: 'Storified homes',
-  //       description: 'Our storified homes'
-  //     };
-  //     next();
-  //   })
-  //   .catch(next);
-  // });
-
   app.get('/search', function(req, res, next) {
     debug('GET /search');
 
-    listHomes(req, res, next)
+    api.listHomes(req, res, next)
     .then(() => {
       res.locals.page = {
         title: 'Homes',
@@ -108,7 +58,7 @@ exports.registerRoutes = (app) => {
       return next();
     }
 
-    listHomes(req, res, next)
+    api.listHomes(req, res, next)
     .then(() => {
       res.locals.page = {
         title: titles[req.params.type],
@@ -119,45 +69,12 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
-  let populateCity = (home) => {
-    if (!home.location.neighborhood || !home.location.neighborhood.location || !home.location.neighborhood.location.city) {
-      debug('No city defined');
-      return new Promise().resolve();
-    }
-    debug('City defined');
-
-    return new Promise((resolve) => {
-      QB
-      .forModel('City')
-      .findById(home.location.neighborhood.location.city)
-      .fetch()
-      .then((result) => {
-        debug('City available', result.model);
-        home.location.neighborhood.location.city = result.model;
-        resolve(home);
-      })
-      .catch((err) => {
-        // Do not populate city if it was not found from the database
-        debug('City not available', err);
-        home.location.neighborhood.location.city = null;
-        resolve(home);
-      });
-    });
-  };
-
   let returnHomeBySlug = (req, res, next) => {
     let home = null;
     let neighborhood = null;
     let slug = req.params.slug;
 
-    QB
-    .forModel('Home')
-    .populate({
-      'location.neighborhood': {},
-      agents: {}
-    })
-    .findBySlug(req.params.slug)
-    .fetch()
+    api.getHome(req, res, next)
     .then((result) => {
       home = result.home;
       if (home.location.neighborhood) {
@@ -190,7 +107,7 @@ exports.registerRoutes = (app) => {
       };
 
       setLastMod([home, neighborhood], res);
-      populateCity(home)
+      api.populateCityForHome(home)
       .then((home) => {
         res.locals.data.HomeStore = {
           home: home
