@@ -6,11 +6,22 @@ exports.registerRoutes = (app) => {
   }
 
   let authError = (req, res) => {
+    let redirectTo = '/';
+
+    if (req.query.redirectTo) {
+      redirectTo = req.query.redirectTo;
+    }
+
+    if (req.body.redirectTo) {
+      redirectTo = req.body.redirectTo;
+    }
+
     res.status(403);
     app.getLocals(req, res, {
       includeClient: false,
       bodyClass: 'adminLogin',
-      csrfToken: req.csrfToken()
+      csrfToken: req.csrfToken(),
+      redirectUrl: redirectTo
     })
     .then((locals) => {
       //locals.layout = null;
