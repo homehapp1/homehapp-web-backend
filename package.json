@@ -90,7 +90,7 @@
     "distribute-site": "PROJECT_NAME=site NODE_ENV=production gulp dist-clients",
     "distribute-admin": "PROJECT_NAME=admin NODE_ENV=production gulp dist-clients",
     "migrate": "DEBUG=*,-babel node init.js migrate",
-    "test": "NODE_ENV=test mocha --compilers js:babel/register --timeout 50000 --reporter dot test/**/**",
+    "test": "NODE_ENV=test mocha --compilers js:babel/register --timeout 50000 --reporter dot test/**/** test/**/**/**",
     "apidoc": "gulp apidoc",
     "server": "node init.js"
   },
