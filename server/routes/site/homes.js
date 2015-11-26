@@ -21,11 +21,16 @@ exports.registerRoutes = (app) => {
     debug('GET /homes');
 
     api.listHomes(req, res, next)
-    .then(() => {
+    .then((homes) => {
+      initMetadata(res);
       res.locals.page = {
         title: 'Homes',
         description: 'Our exclusive homes'
       };
+      res.locals.data.HomeListStore = {
+        items: homes
+      };
+      setLastMod(homes, res);
       next();
     })
     .catch(next);
@@ -35,10 +40,14 @@ exports.registerRoutes = (app) => {
     debug('GET /search');
 
     api.listHomes(req, res, next)
-    .then(() => {
+    .then((homes) => {
+      initMetadata(res);
       res.locals.page = {
         title: 'Homes',
         description: 'Our exclusive homes'
+      };
+      res.locals.data.HomeListStore = {
+        items: homes
       };
       next();
     })
@@ -59,10 +68,13 @@ exports.registerRoutes = (app) => {
     }
 
     api.listHomes(req, res, next)
-    .then(() => {
+    .then((homes) => {
       res.locals.page = {
         title: titles[req.params.type],
         description: titles[req.params.type]
+      };
+      res.locals.data.HomeListStore = {
+        items: homes
       };
       next();
     })
@@ -75,8 +87,7 @@ exports.registerRoutes = (app) => {
     let slug = req.params.slug;
 
     api.getHome(req, res, next)
-    .then((result) => {
-      home = result.home;
+    .then((home) => {
       if (home.location.neighborhood) {
         neighborhood = home.location.neighborhood;
       }
@@ -105,10 +116,12 @@ exports.registerRoutes = (app) => {
         title: title.join(' | '),
         description: description
       };
+      debug('use home', home.homeTitle);
 
       setLastMod([home, neighborhood], res);
       api.populateCityForHome(home)
-      .then((home) => {
+      .then(() => {
+        debug('Got home', home.homeTitle);
         res.locals.data.HomeStore = {
           home: home
         };
