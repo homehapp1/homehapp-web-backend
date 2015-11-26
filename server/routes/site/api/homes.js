@@ -19,9 +19,9 @@ exports.registerRoutes = (app) => {
 
   app.get('/api/homes/:slug', function(req, res, next) {
     api.getHome(req, res, next)
-    .then((result) => {
-      debug('Home fetched', result);
-      api.populateCityForHome(result.home)
+    .then((home) => {
+      debug('Home fetched', home.homeTitle);
+      api.populateCityForHome(home)
       .then((home) => {
         res.json({
           status: 'ok',
@@ -32,14 +32,25 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
+  app.get('/api/homes/:slug/story', function(req, res, next) {
+    api.getHome(req, res, next)
+    .then((home) => {
+      res.json({
+        status: 'ok',
+        story: (home.story && home.story.blocks) ? home.story.blocks : []
+      });
+    })
+    .catch(next);
+  });
+
   app.get('/api/homes', function(req, res, next) {
     let parts = url.parse(req.url, true);
     api.listHomes(req, res, next)
-    .then((result) => {
-      app.log.debug(`/api/homes Got ${result.models.length} homes`);
+    .then((homes) => {
+      app.log.debug(`/api/homes Got ${homes.length} homes`);
       res.json({
         status: 'ok',
-        homes: result.models
+        homes: homes
       });
     })
     .catch(next);
