@@ -5,7 +5,7 @@ export default class NeighborhoodsAPI {
     this.QB = qb;
   }
 
-  listNeighborhoodsByCity(req, res, next) {
+  listNeighborhoodsByCity(req) {
     let city = null;
     return new Promise((resolve, reject) => {
       this.QB
@@ -40,7 +40,7 @@ export default class NeighborhoodsAPI {
     });
   }
 
-  listNeighborhoods(req, res, next) {
+  listNeighborhoods(req) {
     return new Promise((resolve, reject) => {
       this.QB
       .forModel('Neighborhood')
@@ -65,7 +65,7 @@ export default class NeighborhoodsAPI {
     });
   }
 
-  getNeighborhoodBySlug(req, res, next) {
+  getNeighborhoodBySlug(req) {
     let city = null;
     let neighborhood = null;
 
