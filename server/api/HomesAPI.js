@@ -5,7 +5,7 @@ export default class HomesAPI {
     this.QB = qb;
   }
 
-  listHomes(req, res, next) {
+  listHomes(req) {
     let query = {};
 
     if (req.params.type) {
@@ -17,7 +17,7 @@ export default class HomesAPI {
     }
 
     return new Promise((resolve, reject) => {
-      QB
+      this.QB
       .forModel('Home')
       .parseRequestArguments(req)
       .query(query)
@@ -30,12 +30,6 @@ export default class HomesAPI {
       .findAll()
       .fetch()
       .then((result) => {
-        debug(`Got ${result.models.length} homes`);
-        initMetadata(res);
-        res.locals.data.HomeListStore = {
-          items: result.models
-        };
-        setLastMod(result.models, res);
         resolve(result.models);
       })
       .catch((err) => {
@@ -44,19 +38,28 @@ export default class HomesAPI {
     });
   }
 
-  getHome(req, res, next) {
-    return this.QB
-    .forModel('Home')
-    .populate({
-      'location.neighborhood': {},
-      agents: {}
-    })
-    .findBySlug(req.params.slug)
-    .fetch();
+  getHome(req) {
+    return new Promise((resolve, reject) => {
+      this.QB
+      .forModel('Home')
+      .populate({
+        'location.neighborhood': {},
+        agents: {}
+      })
+      .findBySlug(req.params.slug)
+      .fetch()
+      .then((result) => {
+        resolve(result.model);
+      })
+      .catch((err) => {
+        reject(err);
+      });;
+    });
   }
 
   populateCityForHome(home) {
-    if (!home.location.neighborhood || !home.location.neighborhood.location || !home.location.neighborhood.location.city) {
+    debug('populateCityForHome', home);
+    if (!home.location || !home.location.neighborhood || !home.location.neighborhood.location || !home.location.neighborhood.location.city) {
       debug('No city defined');
       return Promise.resolve(home);
     }
