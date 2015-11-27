@@ -16,7 +16,7 @@ describe('Home API paths', () => {
     testUtils.createApp((err, appInstance) => {
       app = appInstance;
       mockup = new MockupData(app);
-      mockup.removeHomes()
+      mockup.removeAll('Home')
       .then(() => {
         done(err);
       })
@@ -28,6 +28,7 @@ describe('Home API paths', () => {
   });
 
   let body = null;
+  let home = null;
 
   it('Should respond to /api/homes with correct structure', (done) => {
     request(app)
@@ -49,8 +50,10 @@ describe('Home API paths', () => {
   });
 
   it('Response of /api/homes should have the mockup home', (done) => {
-    mockup.createHome()
-    .then((home) => {
+    console.log('/api/homes');
+    mockup.createModel('Home')
+    .then((rval) => {
+      home = rval;
       request(app)
       .get('/api/homes')
       .expect(200)
@@ -61,12 +64,10 @@ describe('Home API paths', () => {
         should(body).have.property('homes');
         should(body.homes).be.instanceof(Array);
         should(body.homes).not.be.empty;
+        expect(body.homes.length).to.eql(1);
 
         body.homes.map((item) => {
-          should(item).have.property('slug');
-          should(item).have.property('story');
-          should(item).have.property('location');
-          expect(item.slug).to.be(home.slug);
+          mockup.verify('Home', item);
         });
 
         done();
@@ -74,6 +75,48 @@ describe('Home API paths', () => {
     })
     .catch((err) => {
       done(err);
+    });
+  });
+
+  it('Response of /api/homes/:slug gives the correct object', (done) => {
+    request(app)
+    .get(`/api/homes/${home.slug}`)
+    .expect(200)
+    .end((err, res) => {
+      body = res.body;
+      should(body).have.property('status', 'ok');
+      should(body).have.property('home');
+      mockup.verifyHome(body.home);
+      done();
+    });
+  });
+
+  it('Check the URL space', (done) => {
+    let urls = [
+      '/homes',
+      `/homes/${home.slug}`,
+      `/homes/${home.slug}/story`,
+      `/homes/${home.slug}/details`,
+      `/homes/${home.slug}/contact`,
+      '/search'
+    ];
+    let promises = urls.map((url) => {
+      return new Promise((resolve, reject) => {
+        console.log(`Check '${url}'`);
+        request(app)
+        .get(url)
+        .expect(200)
+        .end((err, res) => {
+          should.not.exist(err);
+          body = res.text;
+          resolve();
+        });
+      });
+    });
+
+    Promise.all(promises)
+    .then(() => {
+      done();
     });
   });
 });
