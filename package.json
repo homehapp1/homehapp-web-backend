@@ -21,6 +21,7 @@
     "csurf": "1.8.3",
     "debug": "2.2.0",
     "ejs": "2.3.4",
+    "expect.js": "^0.3.1",
     "express": "4.13.3",
     "express-layout": "0.1.0",
     "express-partials": "0.3.0",

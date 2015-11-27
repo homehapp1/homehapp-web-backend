@@ -15,10 +15,10 @@ describe("Default routes without authentication", () => {
     });
   });
 
-  it("Should respond to /health path", (done) => {
+  it("Should find path /", (done) => {
     request(app)
-    .get("/health")
-    .expect(200, "OK")
+    .get("/")
+    .expect(200)
     .end((err, res) => {
       should.not.exist(err);
       done();
