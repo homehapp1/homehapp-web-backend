@@ -169,7 +169,7 @@ exports.loadSchemas = function (mongoose, next) {
     return suffix;
   });
 
-  schemas.Home.virtual('fomattedPrice').get(function() {
+  schemas.Home.virtual('formattedPrice').get(function() {
     if (!this.costs.sellingPrice) {
       return '';
     }
