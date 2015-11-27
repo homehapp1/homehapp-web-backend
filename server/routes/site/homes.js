@@ -156,12 +156,7 @@ exports.registerRoutes = (app) => {
     returnHomeBySlug(req, res, next);
   });
 
-  app.get('/homes/:slug/details', function(req, res, next) {
-    debug(`GET /homes/${req.params.slug}/details`);
-    returnHomeBySlug(req, res, next);
-  });
-  app.get('/homes/:slug/story', function(req, res, next) {
-    debug(`GET /homes/${req.params.slug}/story`);
+  app.get('/homes/:slug/(details|story|contact)', function(req, res, next) {
     returnHomeBySlug(req, res, next);
   });
 };
