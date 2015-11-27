@@ -26,7 +26,6 @@ export default class HomeStory extends StoryBlocks {
     blocks = this.prependBlocks(blocks, this.props.home);
     blocks = this.appendBlocks(blocks, this.props.home);
 
-    console.log('Render blocks', blocks, this.props.home);
     return (
       <div className='home-view'>
         <HomeNavigation home={this.props.home} />
