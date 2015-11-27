@@ -11,7 +11,11 @@ export default class BigImage extends BigBlock {
     gradient: React.PropTypes.string,
     proportion: React.PropTypes.number,
     aspectRatio: React.PropTypes.number,
-    children: React.PropTypes.object,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.null,
+      React.PropTypes.array,
+      React.PropTypes.object
+    ]),
     align: React.PropTypes.string,
     valign: React.PropTypes.string,
     className: React.PropTypes.string
