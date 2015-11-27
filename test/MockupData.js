@@ -1,5 +1,7 @@
 import QueryBuilder from '../server/lib/QueryBuilder';
 import app from "../server/app";
+import should from 'should';
+import expect from 'expect.js';
 
 export default class MockupData {
   constructor(app) {
@@ -7,29 +9,45 @@ export default class MockupData {
   }
 
   home = {
+    slug: 'TESTHOME',
     title: 'Test home',
     story: {
-      enabled: true,
-      blocks: []
+      blocks: [],
+      enabled: true
+    },
+    location: {
+      coordinates: [0, 0],
+      neighborhood: null
     }
   }
 
   neighborhood = {
     title: 'Test neighborhood',
     story: {
-      enabled: true,
-      blocks: []
-    }
+      blocks: [],
+      enabled: true
+    },
+    area: [],
   }
 
-  createHome() {
+  city = {
+    title: 'London',
+    slug: 'london'
+  }
+
+  createModel(model) {
+    if (typeof this[model.toLowerCase()] === 'undefined') {
+      throw new Error(`Trying to create a mockup object '${model}' but it is not available`);
+    }
+    let data = this[model.toLowerCase()];
+
     return new Promise((resolve, reject) => {
       this.qb
-      .forModel('Home')
-      .createNoMultiset(this.home)
-      .then((model) => {
-        this.home = model;
-        resolve(model);
+      .forModel(model)
+      .createNoMultiset(data)
+      .then((obj) => {
+        this[model] = obj;
+        resolve(obj);
       })
       .catch((err) => {
         reject(err);
@@ -37,10 +55,64 @@ export default class MockupData {
     });
   }
 
-  removeHomes() {
+  verify(model, object) {
+    if (typeof this[model.toLowerCase()] === 'undefined') {
+      throw new Error(`Trying to verify a mockup object '${model}' but it is not available`);
+    }
+    let data = this[model.toLowerCase()];
+    this.compare(data, object);
+  }
+
+  /**
+   * Deep check for source that has to include all the target properties
+   */
+  compare(source, target) {
+    for (let key in source) {
+      should(target).have.property(key);
+      let value = source[key];
+      switch (typeof value) {
+        case 'object':
+          if (Array.isArray(value)) {
+            expect(value).to.eql(target[key]);
+          } else {
+            this.compare(value, target[key]);
+          }
+          break;
+        default:
+          expect(value).to.eql(target[key]);
+      }
+    }
+  }
+
+  verifyHome(object) {
+    this.verify('Home', object);
+    should(object).have.property('location');
+    should(object.location).have.property('coordinates');
+    should(object.location).have.property('neighborhood');
+
+    if (object.location && object.location.neighborhood) {
+      verifyNeighborhood(object.location.neighborhood);
+    }
+  }
+
+  verifyNeighborhood(object) {
+    this.verify('Neighborhood', object);
+    should(object).have.property('location');
+    should(object.location).have.property('city');
+
+    if (object.location && object.location.city) {
+      verifyCity(object.location.city);
+    }
+  }
+
+  verifyCity(object) {
+    this.verify('City', object);
+  }
+
+  removeAll(model) {
     return new Promise((resolve, reject) => {
       this.qb
-      .forModel('Home')
+      .forModel(model)
       .findAll()
       .fetch()
       .then((result) => {
@@ -67,5 +139,17 @@ export default class MockupData {
         reject(err);
       });
     });
+  }
+
+  removeHomes() {
+    return this.removeAll('Home');
+  }
+
+  removeNeighborhoods() {
+    return this.removeAll('Neighborhood');
+  }
+
+  removeCities() {
+    return this.removeAll('City');
   }
 }
