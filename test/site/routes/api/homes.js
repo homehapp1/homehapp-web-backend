@@ -91,7 +91,7 @@ describe('Home API paths', () => {
     });
   });
 
-  it('Check the URL space', (done) => {
+  it('Check the URL space to verify that the newly created home is available', (done) => {
     let urls = [
       '/homes',
       `/homes/${home.slug}`,
@@ -100,14 +100,53 @@ describe('Home API paths', () => {
       `/homes/${home.slug}/contact`,
       '/search'
     ];
+
     let promises = urls.map((url) => {
       return new Promise((resolve, reject) => {
-        console.log(`Check '${url}'`);
         request(app)
         .get(url)
         .expect(200)
         .end((err, res) => {
-          should.not.exist(err);
+          should.not.exist(err, `URL '${url}' should exist`);
+          body = res.text;
+          resolve();
+        });
+      });
+    });
+
+    Promise.all(promises)
+    .then(() => {
+      done();
+    });
+  });
+
+  it('Home can be deleted', (done) => {
+    mockup
+    .remove(home)
+    .then(() => {
+      done();
+    })
+    .catch((err) => {
+      done(err);
+    });
+  });
+
+  it('Check the URL space to verify that the deleted home is no longer available', (done) => {
+    let urls = [
+      `/homes/${home.slug}`,
+      `/homes/${home.slug}/story`,
+      `/homes/${home.slug}/details`,
+      `/homes/${home.slug}/contact`
+    ];
+
+    let promises = urls.map((url) => {
+      return new Promise((resolve, reject) => {
+        request(app)
+        .get(url)
+        .expect(404)
+        .end((err, res) => {
+          // console.log('err', err);
+          should.not.exist(err, `URL '${url}' should not exist anymore`);
           body = res.text;
           resolve();
         });
