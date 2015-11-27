@@ -109,6 +109,16 @@ export default class MockupData {
     this.verify('City', object);
   }
 
+  remove(model) {
+    return new Promise((resolve, reject) => {
+      model
+      .remove()
+      .then((data) => {
+        resolve(data);
+      });
+    });
+  }
+
   removeAll(model) {
     return new Promise((resolve, reject) => {
       this.qb
