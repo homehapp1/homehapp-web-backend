@@ -8,12 +8,17 @@ import {Forbidden} from '../../../Errors';
 let debug = require('debug')('Authentication:LocalAdapter');
 
 /*, config*/
-let initSessionStore = function(app) {
+let initSessionStore = function(app, _, session) {
   let store = null;
 
   if (app.config.database.adapter === 'mongoose') {
-    let MongoStore = require('connect-mongodb');
-    store = new MongoStore({ db: app.db.connection.db });
+    let MongoStore = require('connect-mongo')(session);
+    store = new MongoStore({
+      mongooseConnection: app.db.connection,
+      ttl: 14 * 24 * 60 * 60, // 14 days
+      autoRemove: 'interval',
+      autoRemoveInterval: 5 // 5 minutes
+    });
   }
 
   return store;
@@ -28,7 +33,7 @@ exports.register = function (parent, app, config) {
     let session = require('express-session');
 
     if (app.config.env !== 'test') {
-      parent.sessionStore = initSessionStore(app, config.session);
+      parent.sessionStore = initSessionStore(app, config.session, session);
     }
 
     let sessionConfig = {
