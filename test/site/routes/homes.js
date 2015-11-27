@@ -4,8 +4,8 @@ import should from 'should';
 import expect from 'expect.js';
 import request from 'supertest';
 
-import testUtils from '../../utils';
-import MockupData from '../../../MockupData';
+import testUtils from '../utils';
+import MockupData from '../../MockupData';
 
 let app = null;
 let debug = require('debug')('Home API paths');
