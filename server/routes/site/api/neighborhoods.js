@@ -1,104 +1,36 @@
 import QueryBuilder from '../../../lib/QueryBuilder';
+import NeighborhoodsAPI from '../../../api/NeighborhoodsAPI';
 let debug = require('debug')('app');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+  let api = new NeighborhoodsAPI(app, QB);
+
   app.get('/api/neighborhoods', function(req, res, next) {
-    QB
-    .forModel('Neighborhood')
-    .parseRequestArguments(req)
-    .populate({
-      'location.city': 'slug title'
-    })
-    .sort({
-      title: 1
-    })
-    .query({
-      enabled: true
-    })
-    .findAll()
-    .fetch()
-    .then((result) => {
+    api.listNeighborhoods(req, res, next)
+    .then((neighborhoods) => {
       res.json({
         status: 'ok',
-        items: result.models
+        items: neighborhoods
       });
     })
     .catch(next);
   });
 
   app.get('/api/neighborhoods/:city', function(req, res, next) {
-    let city = null;
-
-    QB
-    .forModel('City')
-    .findBySlug(req.params.city)
-    .fetch()
-    .then((result) => {
-      city = result.city;
-      return QB
-      .forModel('Neighborhood')
-      .parseRequestArguments(req)
-      .query({
-        enabled: true,
-        'location.city': city
-      })
-      .sort({
-        title: 1
-      })
-      .findAll()
-      .fetch();
-    })
-    .then((result) => {
-      for (let neighborhood of result.models) {
-        neighborhood.location.city = city;
-      }
+    api.listNeighborhoodsByCity(req, res, next)
+    .then((neighborhoods) => {
       res.json({
         status: 'ok',
-        items: result.models
+        items: neighborhoods
       });
     })
     .catch(next);
   });
 
   app.get('/api/neighborhoods/:city/:neighborhood', function(req, res, next) {
-    let city = null;
-    let neighborhood = null;
-
-    QB
-    .forModel('City')
-    .findBySlug(req.params.city)
-    .parseRequestArguments(req)
-    .fetch()
-    .then((result) => {
-      city = result.city;
-      return QB
-      .forModel('Neighborhood')
-      .query({
-        // 'location.city': city,
-        slug: req.params.neighborhood
-      })
-      .findAll()
-      .fetch();
-    })
-    .then((result) => {
-      if (result.models.length !== 1) {
-        throw new Error('Neighborhood not found');
-      }
-
-      neighborhood = result.models[0];
-      neighborhood.location.city = city;
-
-      return QB
-      .forModel('Home')
-      .findByNeighborhood(neighborhood)
-      .sort({
-        'metadata.score': -1
-      })
-      .fetch();
-    })
-    .then((result) => {
-      neighborhood.homes = result.models;
+    api.getNeighborhoodBySlug(req, res, next)
+    .then((neighborhood) => {
       res.json({
         status: 'ok',
         neighborhood: neighborhood

@@ -21,6 +21,7 @@
     "csurf": "1.8.3",
     "debug": "2.2.0",
     "ejs": "2.3.4",
+    "expect.js": "^0.3.1",
     "express": "4.13.3",
     "express-layout": "0.1.0",
     "express-partials": "0.3.0",
@@ -90,7 +91,7 @@
     "distribute-site": "PROJECT_NAME=site NODE_ENV=production gulp dist-clients",
     "distribute-admin": "PROJECT_NAME=admin NODE_ENV=production gulp dist-clients",
     "migrate": "DEBUG=*,-babel node init.js migrate",
-    "test": "NODE_ENV=test mocha --compilers js:babel/register --timeout 50000 --reporter dot test/**/**",
+    "test": "NODE_ENV=test mocha --compilers js:babel/register --timeout 50000 --reporter dot test/**/** test/**/**/**",
     "apidoc": "gulp apidoc",
     "server": "node init.js"
   },

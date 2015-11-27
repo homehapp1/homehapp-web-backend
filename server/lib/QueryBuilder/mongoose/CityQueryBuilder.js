@@ -15,7 +15,6 @@ export default class CityQueryBuilder extends BaseQueryBuilder {
       });
       this._configurePopulationForCursor(cursor);
       cursor.exec((err, city) => {
-        debug('findBySlug', city.title);
         if (err) {
           debug('Got error', err);
           return callback(err);
