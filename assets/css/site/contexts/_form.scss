@@ -25,6 +25,12 @@ form {
 
   .widget.columns {
     padding: 0;
+
+    .columns-container > .row > * + * {
+      @include small() {
+        padding-top: 0 !important;
+      }
+    }
   }
 
   .buttons {

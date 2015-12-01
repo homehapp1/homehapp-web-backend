@@ -48,7 +48,7 @@
             padding-right: 0;
 
             & + * {
-              padding-top: $contentPadding * 2;
+              padding-top: $contentPadding;
             }
           }
 
