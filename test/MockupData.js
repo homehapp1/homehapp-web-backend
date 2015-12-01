@@ -3,6 +3,8 @@ import app from "../server/app";
 import should from 'should';
 import expect from 'expect.js';
 
+let debug = require('debug')('MockupData');
+
 export default class MockupData {
   constructor(app) {
     this.qb = new QueryBuilder(app);
@@ -27,12 +29,13 @@ export default class MockupData {
       blocks: [],
       enabled: true
     },
-    area: [],
+    enabled: true,
+    area: []
   }
 
   city = {
-    title: 'London',
-    slug: 'london'
+    title: 'Testoborough',
+    slug: 'testoborough'
   }
 
   createModel(model) {
@@ -48,6 +51,27 @@ export default class MockupData {
       .then((obj) => {
         this[model] = obj;
         resolve(obj);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    });
+  }
+
+  updateModel(model, data) {
+    if (typeof this[model.toLowerCase()] === 'undefined') {
+      throw new Error(`Trying to create a mockup object '${model}' but it is not available`);
+    }
+    console.log('Update with data', data);
+
+    return new Promise((resolve, reject) => {
+      this.qb
+      .forModel(model)
+      .findByUuid(data.uuid || data.id)
+      .updateNoMultiset(data)
+      .then((result) => {
+        console.log('Updated model', result);
+        resolve(result);
       })
       .catch((err) => {
         reject(err);
@@ -91,7 +115,7 @@ export default class MockupData {
     should(object.location).have.property('neighborhood');
 
     if (object.location && object.location.neighborhood) {
-      verifyNeighborhood(object.location.neighborhood);
+      this.verifyNeighborhood(object.location.neighborhood);
     }
   }
 
@@ -101,7 +125,7 @@ export default class MockupData {
     should(object.location).have.property('city');
 
     if (object.location && object.location.city) {
-      verifyCity(object.location.city);
+      this.verifyCity(object.location.city);
     }
   }
 
