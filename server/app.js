@@ -382,11 +382,11 @@ exports.run = function(projectName, afterRun) {
 
             let routes = require(path.join(CLIENT_ROOT, 'components/Routes'));
             alt.bootstrap(JSON.stringify(res.locals.data));
-            let snapshot = alt.takeSnapshot();
+            // let snapshot = alt.takeSnapshot();
 
             Router.run(routes, req.url, function (Handler) {
               let content = React.renderToString(React.createElement(Handler));
-              iso.add(content, snapshot);
+              iso.add(content, alt.flush());
               let html = iso.render();
 
               app.getLocals(req, res, {
