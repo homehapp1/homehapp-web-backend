@@ -21,7 +21,10 @@ exports.registerRoutes = (app) => {
         cities: result.models
       };
     })
-    .catch(next);
+    .catch((err) => {
+      res.status(404);
+      next();
+    });
   });
 
   app.get('/neighborhoods/:city', function(req, res, next) {
@@ -52,7 +55,10 @@ exports.registerRoutes = (app) => {
       };
       next();
     })
-    .catch(next);
+    .catch((err) => {
+      res.status(404);
+      next();
+    });
   });
 
   app.get('/neighborhoods/:city/:neighborhood', function(req, res, next) {
