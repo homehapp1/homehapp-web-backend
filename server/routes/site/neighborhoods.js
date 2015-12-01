@@ -77,7 +77,10 @@ exports.registerRoutes = (app) => {
       };
       next();
     })
-    .catch(next);
+    .catch((err) => {
+      res.status(404);
+      next();
+    });
   });
 
   app.get('/neighborhoods/:city/:neighborhood/homes', function(req, res, next) {
