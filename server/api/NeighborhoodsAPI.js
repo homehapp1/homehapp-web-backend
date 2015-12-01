@@ -69,7 +69,7 @@ export default class NeighborhoodsAPI {
     let city = null;
     let neighborhood = null;
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this.QB
       .forModel('City')
       .findBySlug(req.params.city)
@@ -102,7 +102,9 @@ export default class NeighborhoodsAPI {
         neighborhood.homes = result.models;
         resolve(neighborhood);
       })
-      .catch(next);
+      .catch((err) => {
+        reject(err);
+      });
     });
   };
 
