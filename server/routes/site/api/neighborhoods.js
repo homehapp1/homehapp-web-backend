@@ -36,7 +36,10 @@ exports.registerRoutes = (app) => {
         neighborhood: neighborhood
       });
     })
-    .catch(next);
+    .catch((err) => {
+      res.status(404);
+      next();
+    });
   });
 
   app.get('/api/neighborhoods/:city/:neighborhood/homes', function(req, res, next) {
