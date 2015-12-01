@@ -13,6 +13,11 @@
     padding: $contentPadding 0;
   }
 
+  img.loading {
+    background-image: none;
+    background-color: transparent;
+  }
+
   h3 {
     margin-bottom: 0.4 * $w;
 
