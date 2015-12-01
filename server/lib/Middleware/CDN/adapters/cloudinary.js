@@ -28,14 +28,25 @@ class CloudinaryAdapter {
   }
 
   sendResponse(body, res) {
+    debug('sendResponse', body);
     let transformation = this.config.transformations.default;
     if (this.config.transformations[body.folder]) {
       transformation = this.config.transformations[body.folder];
     }
+
     let signData = {
       folder: body.folder || '',
       timestamp: Math.floor(new Date().getTime() / 1000)
     };
+
+    // Allowed optional extra params
+    let opts = ['eager', 'eager_async', 'eager_notification_url'];
+    for (let k of opts) {
+      if (typeof body[k] !== 'undefined') {
+        signData[k] = body[k];
+      }
+    }
+
     if (transformation) {
       signData.transformation = transformation;
     }
