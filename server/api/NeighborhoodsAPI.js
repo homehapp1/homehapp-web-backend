@@ -75,6 +75,10 @@ export default class NeighborhoodsAPI {
       .findBySlug(req.params.city)
       .fetch()
       .then((result) => {
+        if (!result.model) {
+          return reject(`City '${req.params.city}' does not exist`);
+        }
+
         debug('Got city', result.model.title);
         city = result.model;
         debug('Search for neighborhood', req.params.neighborhood);
@@ -82,7 +86,11 @@ export default class NeighborhoodsAPI {
         return this.QB
         .forModel('Neighborhood')
         .findBySlug(req.params.neighborhood)
+        .populate({
+          'location.city': {}
+        })
         .query({
+          'location.city': city,
           enabled: true
         })
         .fetch();
@@ -90,7 +98,10 @@ export default class NeighborhoodsAPI {
       .then((result) => {
         debug('Got neighborhood', result.model.title);
         neighborhood = result.model;
-        neighborhood.location.city = city;
+
+        if (!neighborhood.location || !neighborhood.location.city || !neighborhood.location.city.slug || neighborhood.location.city.slug !== req.params.city) {
+          return reject();
+        }
 
         return this.QB
         .forModel('Home')
