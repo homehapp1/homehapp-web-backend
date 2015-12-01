@@ -86,17 +86,26 @@ class UploadArea extends React.Component {
     this.dropzone = null;
   }
 
-  static fetchCloudinarySignature(folder) {
-    debug('fetchCloudinarySignature', folder);
-    let data = {
+  static fetchCloudinarySignature(folder, params = {}) {
+    let data = Helpers.merge({}, {
       folder: folder
-    };
+    }, params);
+    debug('fetchCloudinarySignature', data);
     let reqPath = ApplicationStore.getState().config.cloudinary.signatureRoute;
     return request.post(reqPath, data);
   }
 
   _fetchCloudinarySignature() {
-    return UploadArea.fetchCloudinarySignature(this.props.signatureFolder)
+    let params = {};
+    if (this.props.useCloudinary && this.props.isVideo) {
+      params = {
+        notification_type: 'eager',
+        eager_async: true,
+        eager: 'f_mp4|f_webm'
+      };
+    }
+
+    return UploadArea.fetchCloudinarySignature(this.props.signatureFolder, params)
     .then((result) => {
       this.setState({
         signatureData: result.data.signed
