@@ -31,8 +31,9 @@ describe('Neighborhood API paths', () => {
   });
 
   let body = null;
-  let neighborhood = null;
+  let home = null;
   let city = null;
+  let neighborhood = null;
 
   it('Should respond to /api/neighborhoods with correct structure', (done) => {
     request(app)
@@ -54,7 +55,6 @@ describe('Neighborhood API paths', () => {
   });
 
   it('Response of /api/neighborhoods should have the mockup neighborhood', (done) => {
-    console.log('/api/neighborhoods');
     mockup.createModel('Neighborhood')
     .then((rval) => {
       neighborhood = rval;
@@ -64,6 +64,12 @@ describe('Neighborhood API paths', () => {
     })
     .then((rval) => {
       city = rval;
+
+      // Create the home
+      return mockup.createModel('Home')
+    })
+    .then((rval) => {
+      home = rval;
 
       request(app)
       .get('/api/neighborhoods')
@@ -112,22 +118,24 @@ describe('Neighborhood API paths', () => {
   });
 
   it('Response of /api/neighborhoods/:city/:slug gives the correct object', (done) => {
-    neighborhood.location.city = city._id;
     let url = `/api/neighborhoods/${city.slug}/${neighborhood.slug}`;
 
     mockup
-    .updateModel('Neighborhood', neighborhood)
+    .updateModel('Neighborhood', neighborhood, {
+      location: {
+        city: city.id
+      }
+    })
     .then((model) => {
       request(app)
       .get(url)
       .expect(200)
       .end((err, res) => {
         body = res.body;
-        // should.not.exist(err, `'${url}' should exist`);
-        console.log(`'${url}' response:`, body);
-        // should(body).have.property('status', 'ok');
-        // should(body).have.property('neighborhood');
-        // mockup.verifyNeighborhood(body.neighborhood);
+        should.not.exist(err, `'${url}' should exist`);
+        should(body).have.property('status', 'ok');
+        should(body).have.property('neighborhood');
+        mockup.verifyNeighborhood(body.neighborhood);
         done();
       });
     })
@@ -136,41 +144,86 @@ describe('Neighborhood API paths', () => {
     });
   });
 
-  // it('Check the URL space to verify that the newly created neighborhood is available', (done) => {
-  //   let urls = [
-  //     `/neighborhoods/${city.slug}/${neighborhood.slug}`,
-  //     `/neighborhoods/${city.slug}/${neighborhood.slug}/homes`
-  //   ];
-  //
-  //   let promises = urls.map((url) => {
-  //     return new Promise((resolve, reject) => {
-  //       request(app)
-  //       .get(url)
-  //       .expect(200)
-  //       .end((err, res) => {
-  //         should.not.exist(err, `URL '${url}' should exist`);
-  //         resolve();
-  //       });
-  //     });
-  //   });
-  //
-  //   Promise.all(promises)
-  //   .then(() => {
-  //     done();
-  //   });
-  // });
+  it('Should not exist any homes in the newly created neighborhood', (done) => {
+    let url = `/api/neighborhoods/${city.slug}/${neighborhood.slug}/homes`;
+    request(app)
+    .get(url)
+    .expect(200)
+    .end((err, res) => {
+      should.not.exist(err, `'${url}' should exist`);
+      should(res.body).have.property('status', 'ok');
+      should(res.body).have.property('homes');
+      should(res.body.homes).be.instanceof(Array);
+      expect(res.body.homes.length).to.eql(0);
+      done();
+    });
+  });
+
+
+  it('Check the URL space to verify that the newly created neighborhood is available', (done) => {
+    let urls = [
+      `/neighborhoods/${city.slug}/${neighborhood.slug}`,
+      `/neighborhoods/${city.slug}/${neighborhood.slug}/homes`
+    ];
+
+    let promises = urls.map((url) => {
+      return new Promise((resolve, reject) => {
+        request(app)
+        .get(url)
+        .expect(200)
+        .end((err, res) => {
+          should.not.exist(err, `URL '${url}' should exist`);
+          resolve();
+        });
+      });
+    });
+
+    Promise.all(promises)
+    .then(() => {
+      done();
+    });
+  });
+
+  it('Should have a home in the neighborhood listing', (done) => {
+    mockup
+    .updateModel('Home', home, {
+      location: {
+        neighborhood: neighborhood.id
+      }
+    })
+    .then((rval) => {
+      let url = `/api/neighborhoods/${city.slug}/${neighborhood.slug}/homes`;
+      request(app)
+      .get(url)
+      .expect(200)
+      .end((err, res) => {
+        should.not.exist(err, `URL '${url}' should exist`);
+        should(res.body).have.property('homes');
+        expect(res.body.homes.length).to.eql(1);
+        console.log('res.body', res.body.homes[0].slug, home.slug);
+        expect(res.body.homes[0].slug).to.eql(home.slug);
+        done();
+      });
+    })
+    .catch((err) => {
+      done(err);
+    });
+  });
 
   it('Neighborhood should not be listed when it is not enabled', (done) => {
-    neighborhood.enabled = false;
+    let url = `/api/neighborhoods/${city.slug}`;
     mockup
-    .updateModel('Neighborhood', neighborhood)
+    .updateModel('Neighborhood', neighborhood, {
+      enabled: false
+    })
     .then((rval) => {
       neighborhood = rval;
 
       request(app)
-      .get(`/api/neighborhoods/${city.slug}`)
+      .get(url)
       .expect(200)
       .end((err, res) => {
+        should.not.exist(err, `'${url}' should exist`);
         expect(res.body.items.length).to.be(0);
         done();
       });
@@ -203,7 +256,6 @@ describe('Neighborhood API paths', () => {
         .get(url)
         .expect(404)
         .end((err, res) => {
-          // console.log('err', err);
           should.not.exist(err, `URL '${url}' should not exist anymore`);
           body = res.text;
           resolve();
