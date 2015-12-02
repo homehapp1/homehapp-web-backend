@@ -38,6 +38,15 @@ export default class MockupData {
     slug: 'testoborough'
   }
 
+  populate = {
+    neighborhood: {
+      'location.city': {}
+    },
+    home: {
+      'location.neighborhood': {}
+    }
+  }
+
   createModel(model) {
     if (typeof this[model.toLowerCase()] === 'undefined') {
       throw new Error(`Trying to create a mockup object '${model}' but it is not available`);
@@ -58,19 +67,26 @@ export default class MockupData {
     });
   }
 
-  updateModel(model, data) {
+  getPopulateData(model) {
+    if (typeof this.populate[model.toLowerCase()] !== 'undefined') {
+      return this.populate[model.toLowerCase()];
+    }
+
+    return {};
+  }
+
+  updateModel(model, obj, data) {
     if (typeof this[model.toLowerCase()] === 'undefined') {
       throw new Error(`Trying to create a mockup object '${model}' but it is not available`);
     }
-    console.log('Update with data', data);
 
     return new Promise((resolve, reject) => {
       this.qb
       .forModel(model)
-      .findByUuid(data.uuid || data.id)
-      .updateNoMultiset(data)
+      .findByUuid(obj.uuid || obj.id)
+      .populate(this.getPopulateData(model))
+      .update(data)
       .then((result) => {
-        console.log('Updated model', result);
         resolve(result);
       })
       .catch((err) => {
