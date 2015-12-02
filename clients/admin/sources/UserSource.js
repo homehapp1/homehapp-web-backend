@@ -37,7 +37,7 @@ let UserSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState/*, data*/) {
+      local(/*storeState, data*/) {
         return null;
       },
       shouldFetch(/*state*/) {
@@ -78,7 +78,7 @@ let UserSource = {
             return Promise.reject(response);
           });
       },
-      local(storeState/*, data*/) {
+      local(/*storeState, data*/) {
         return null;
       },
       shouldFetch(/*state*/) {

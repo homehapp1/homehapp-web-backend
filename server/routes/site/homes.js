@@ -82,7 +82,6 @@ exports.registerRoutes = (app) => {
   });
 
   let returnHomeBySlug = (req, res, next) => {
-    let home = null;
     let neighborhood = null;
     let slug = req.params.slug;
 
