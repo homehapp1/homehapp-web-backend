@@ -18,27 +18,95 @@ export default class HomeList extends React.Component {
       React.PropTypes.object,
       React.PropTypes.array
     ]),
-    page: React.PropTypes.number
+    page: React.PropTypes.number,
+    maxCols: React.PropTypes.number
   };
 
   static defaultProps = {
     max: Infinity,
     className: null,
-    page: 1
+    page: 1,
+    maxCols: 5
   };
 
   constructor() {
     super();
     this.onClick = this.onClick.bind(this);
+    this.updateView = this.updateView.bind(this);
+    this.container = null;
+    this.list = null;
   }
 
   componentDidMount() {
     this.container = new DOMManipulator(this.refs.container);
+    this.list = new DOMManipulator(this.refs.list);
     this.updateEvents();
+
+    if (window) {
+      window.addEventListener('resize', this.updateView);
+      this.updateView();
+      this.container.addClass('init');
+    }
   }
 
   componentDidUpdate() {
     this.updateEvents();
+  }
+
+  componentWillUnmount() {
+    if (window) {
+      window.removeEventListener('resize', this.updateView);
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    this.updateView();
+  }
+
+  updateView() {
+    if (!this.container) {
+      return null;
+    }
+
+    let cards = this.list.children();
+    if (!cards.length) {
+      return null;
+    }
+
+    let d = cards[0].width() || 424;
+    let w = this.list.width();
+
+    let cols = Math.min(Math.floor(w / d), this.props.maxCols) || 1;
+
+    let heights = [];
+    for (let i = 0; i < cols; i++) {
+      heights.push(0);
+    }
+
+    cards.map((card, index) => {
+      if (cols < 2) {
+        card.css({
+          marginLeft: 0,
+          marginTop: 0
+        });
+
+        return card;
+      }
+
+      let col = Math.max(0, heights.indexOf(Math.min(...heights)));
+      let h = card.height();
+
+      card.css({
+        marginLeft: `${(col - cols / 2) * d}px`,
+        marginTop: `${heights[col]}px`
+      });
+
+      heights[col] += h;
+      return card;
+    });
+
+    let height = Math.max(...heights);
+    this.list.css('min-height', `${height}px`);
   }
 
   updateEvents() {
@@ -46,7 +114,7 @@ export default class HomeList extends React.Component {
       return false;
     }
 
-    let cards = this.container.getByClass('preview');
+    let cards = this.container.getByClass('card');
     for (let card of cards) {
       card.removeEvent('click', this.onClick, true);
       card.addEvent('click', this.onClick, true);
@@ -91,6 +159,7 @@ export default class HomeList extends React.Component {
     }
     return null;
   }
+
   getCity(home) {
     if (home.location.neighborhood && home.location.neighborhood.city && home.location.neighborhood.city.title) {
       return (<span className='neighborhood'>{home.location.neighborhood.city.title}</span>);
@@ -98,9 +167,16 @@ export default class HomeList extends React.Component {
     return null;
   }
 
+  getCurrencySymbol(currency) {
+    if (currency.toLowerCase() === 'eur') {
+      return (<span className='currency eur'>€</span>);
+    }
+
+    return (<span className='currency gbp'>£</span>);
+  }
+
   render() {
-    debug('Render');
-    let containerClass = ['home-list', 'preview-list'];
+    let containerClass = ['home-list'];
 
     if (this.props.className) {
       containerClass.push(this.props.className);
@@ -120,14 +196,14 @@ export default class HomeList extends React.Component {
     return (
       <div className={containerClass.join(' ')} ref='container'>
         {this.props.children}
-        <div className='clearfix list-container'>
+        <div className='clearfix list-container' ref='list'>
           {
             homes.map((home, index) => {
               if (!home) {
                 return null;
               }
 
-              let classes = ['preview'];
+              let classes = ['card'];
 
               if (index === this.props.max) {
                 classes.push('last');
@@ -150,24 +226,86 @@ export default class HomeList extends React.Component {
 
               let mainImage = {
                 url: home.mainImage.url,
-                alt: home.mainImage.alt
+                alt: home.mainImage.alt,
+                width: 424,
+                aspectRatio: home.mainImage.aspectRatio || 1,
+                applySize: true,
+                className: 'with-shadow',
+                mode: 'fit'
               };
+
+              let neighborhood = null;
+              let city = (<span className='city default'>London</span>);
+
+              if (home.location && home.location.address && home.location.address.city) {
+                city = (<span className='city manual'>{home.location.address.city}</span>);
+              }
+
+              if (home.location.neighborhood && home.location.neighborhood.title) {
+                neighborhood = (<span className='neighborhood'>{home.location.neighborhood.title}</span>);
+
+                if (home.location.neighborhood.location && home.location.neighborhood.location.city && home.location.neighborhood.location.city.title) {
+                  city = (<span className='city from-neighborhood'>{home.location.neighborhood.location.city.title}</span>);
+                }
+              }
+
+              let description = home.description;
+              let maxChars = 200;
+
+              if (description.length > maxChars) {
+                description = description.substr(0, maxChars).replace(/[\., \-]*$/, '...');
+              }
+
+              let price = null;
+              debug('home', home);
+
+              switch (home.announcementType) {
+                case 'buy':
+                  if (home.formattedPrice) {
+                    price = (
+                      <p className='price'>
+                        {this.getCurrencySymbol(home.costs.currency)}
+                        {home.formattedPrice}
+                      </p>
+                    );
+                  }
+                  break;
+                case 'rent':
+                  if (home.formattedPrice) {
+                    price = (
+                      <p className='price'>
+                        {this.getCurrencySymbol(home.costs.currency)}
+                        {home.formattedPrice}
+                        <span className='per-month'>/ month</span>
+                      </p>
+                    );
+                  }
+                  break;
+              }
 
               return (
                 <div className={classes.join(' ')} key={`containerItem${index}`}>
                   <Link {...link} className='thumbnail'>
-                    <Hoverable {...mainImage} width={464} height={556} mode='fill' applySize className='with-shadow'>
-                      <div className='description'>
-                        <h3><span>{home.homeTitle}</span></h3>
-                        <p className='price'>{home.formattedPrice}</p>
-                        <p className='address'>
-                          {this.getStreet(home)}
-                          {this.getNeighborhood(home)}
-                          {this.getCity(home)}
-                        </p>
-                      </div>
+                    <Hoverable {...mainImage}>
+                      <span className='shares'>
+                        <i className='fa fa-heart'>312</i>
+                        <i className='fa fa-share-alt'>12</i>
+                      </span>
                     </Hoverable>
                   </Link>
+                  <div className='details'>
+                    <p className='location'>
+                      {neighborhood}
+                      {city}
+                    </p>
+                    <h3>
+                      <Link {...link} className='thumbnail'>
+                        {home.homeTitle}
+                      </Link>
+                    </h3>
+                    <p className='description'>{description}</p>
+                    {price}
+                  </div>
                 </div>
               );
             })
