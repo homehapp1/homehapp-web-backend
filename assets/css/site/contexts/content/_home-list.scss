@@ -1,0 +1,103 @@
+.home-list {
+  $p: $contentPadding / 2;
+  $w: 424px + $p;
+  text-align: center;
+
+  .list-container {
+    position: relative;
+
+    .card {
+      width: $w;
+      display: inline-block;
+      float: left;
+      position: relative;
+      text-align: left;
+      padding: $contentPadding / 2;
+
+      .hoverable {
+        min-height: 100px;
+      }
+
+      .shares {
+        color: white;
+        position: absolute;
+        left: $contentPadding;
+        bottom: $contentPadding;
+        z-index: 1;
+        font-size: $fontSizeSmall;
+
+        i:before {
+          font-size: $fontSize;
+          margin-right: 0.5em;
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        & > * + * {
+          margin-left: 1.5em;
+        }
+      }
+
+      @include medium() {
+        width: $w / 2;
+      }
+
+      @media only screen and (max-width: $w) {
+        width: 50%;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      .details {
+        padding: $contentPadding;
+        background-color: white;
+
+        .location > * + *:before {
+          content: ', ';
+        }
+
+        & > * {
+          margin: 0;
+        }
+
+        h3 {
+          margin-bottom: 5px;
+          font-weight: $defaultWeight;
+        }
+
+        .location {
+          font-style: italic;
+          font-weight: $defaultWeight;
+          color: $fontGoldDark;
+        }
+
+        .price {
+          font-size: $fontSizeSmall;
+          font-weight: $titleWeight;
+
+          .currency {
+            display: inline-block;
+            margin-right: 1em;
+            font-size: $fontSize;
+          }
+        }
+      }
+    }
+  }
+
+  &.init {
+    .card {
+      float: none;
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, $transitionDuration);
+      @include vendors(transition-timing-function, ease-out);
+    }
+  }
+}
