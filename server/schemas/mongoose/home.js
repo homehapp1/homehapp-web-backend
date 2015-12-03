@@ -170,11 +170,21 @@ exports.loadSchemas = function (mongoose, next) {
   });
 
   schemas.Home.virtual('formattedPrice').get(function() {
-    if (!this.costs.sellingPrice) {
-      return '';
+    let price = null;
+
+    if (this.costs.sellingPrice) {
+      price = this.costs.sellingPrice;
     }
 
-    return `£${String(Math.round(this.costs.sellingPrice)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
+    if (this.costs.rentalPrice) {
+      price = this.costs.rentalPrice;
+    }
+
+    if (!price) {
+      return null;
+    }
+
+    return `${String(Math.round(price)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
   });
 
   schemas.Home.virtual('mainImage').get(function() {
