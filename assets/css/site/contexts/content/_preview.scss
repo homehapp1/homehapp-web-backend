@@ -8,10 +8,6 @@
     padding-top: 1px;
   }
 
-  &.home-list {
-    background-color: white;
-  }
-
   @include small() {
     padding: $contentPadding / 2;
   }
