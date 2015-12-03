@@ -1,5 +1,6 @@
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
+import {merge} from '../../Helpers';
 import async from 'async';
 
 class UserQueryBuilder extends BaseQueryBuilder {
@@ -158,7 +159,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
   }
 
   findByDeviceId(deviceId) {
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       let findQuery = {
         $or: [
           {'deviceId.ios': deviceId},
@@ -166,6 +167,37 @@ class UserQueryBuilder extends BaseQueryBuilder {
         ],
         deletedAt: null
       };
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
+      }
+
+      this.Model.findOne(findQuery).exec((err, user) => {
+        if (err) {
+          return callback(err);
+        }
+
+        if (!user) {
+          return callback(new NotFound('user not found'));
+        }
+
+        this.result.user = user;
+        this.result.userJson = user.toJSON();
+        this._loadedModel = user;
+
+        callback();
+      });
+    });
+
+    return this;
+  }
+
+  findByServiceId(service, id) {
+    this._queries.push((callback) => {
+      let findQuery = {
+        deletedAt: null
+      };
+      findQuery[`_service.${service}.id`] = id;
+
       if (this._opts.query) {
         findQuery = merge(findQuery, this._opts.query);
       }
