@@ -11,6 +11,8 @@ $linkGray: #666666;
 $darkGray: #2b3b3d;
 $extraDarkGray: #111111;
 $linkBlue: #000088;
+$gold: #e0ac5a;
+$goldDark: #948369;
 
 $buttonBackground: $darkGray;
 $buttonBackgroundHover: darken($buttonBackground, 10%);
@@ -20,6 +22,8 @@ $fontMediumGray: $linkGray;
 $fontLightGray: #aaaaaa;
 $fontDarkGray: $fontGray;
 $fontWhite: #f1f1f1;
+$fontGold: $gold;
+$fontGoldDark: $goldDark;
 
 // Measurements
 $headerHeight: 60px;
