@@ -5,7 +5,7 @@ export default class HomesAPI {
     this.QB = qb;
   }
 
-  listHomes(req) {
+  listHomes(req, opts = {}) {
     let query = {};
 
     if (req.params.type) {
@@ -16,14 +16,24 @@ export default class HomesAPI {
       query['story.enabled'] = true;
     }
 
+    let populate = {
+      'location.neighborhood': {}
+    };
+
+    if (opts.populate) {
+      populate = opts.populate;
+    }
+
+    query.enabled = {
+      $in: [true, null]
+    };
+
     return new Promise((resolve, reject) => {
       this.QB
       .forModel('Home')
       .parseRequestArguments(req)
       .query(query)
-      .populate({
-        'location.neighborhood': {}
-      })
+      .populate(populate)
       .sort({
         'metadata.score': -1
       })
