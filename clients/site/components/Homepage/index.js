@@ -8,6 +8,7 @@ import HomeList from '../Home/HomeList';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 
 import BigImage from '../../../common/components/Widgets/BigImage';
+import Hoverable from '../../../common/components/Widgets/Hoverable';
 import LargeText from '../../../common/components/Widgets/LargeText';
 import Loading from '../../../common/components/Widgets/Loading';
 import { setPageTitle } from '../../../common/Helpers';
@@ -23,8 +24,8 @@ export default class Homepage extends React.Component {
 
   state = {
     error: null,
-    homes: HomeListStore.getState().items,
-    neighborhoods: NeighborhoodListStore.getState().items
+    homes: HomeListStore.getState().items
+    // neighborhoods: NeighborhoodListStore.getState().items
   }
 
   componentDidMount() {
@@ -33,9 +34,9 @@ export default class Homepage extends React.Component {
     document.getElementsByTagName('body')[0].setAttribute('data-handler', 'homepage');
 
     HomeListStore.listen(this.homeStoreListener);
-    NeighborhoodListStore.listen(this.neighborhoodStoreListener);
+    // NeighborhoodListStore.listen(this.neighborhoodStoreListener);
     HomeListStore.fetchItems();
-    NeighborhoodListStore.fetchItems();
+    // NeighborhoodListStore.fetchItems();
 
     setPageTitle('Discover y');
   }
@@ -43,7 +44,7 @@ export default class Homepage extends React.Component {
   componentWillUnmount() {
     document.getElementsByTagName('body')[0].removeAttribute('data-handler');
     HomeListStore.unlisten(this.homeStoreListener);
-    NeighborhoodListStore.unlisten(this.neighborhoodStoreListener);
+    // NeighborhoodListStore.unlisten(this.neighborhoodStoreListener);
     setPageTitle();
   }
 
@@ -75,12 +76,8 @@ export default class Homepage extends React.Component {
     }
 
     return (
-      <div className='mainpage-list clearfix widget pattern'>
-        <hr className='spacer' />
+      <div className='mainpage-list clearfix widget pattern padded'>
         <HomeList items={homes} />
-        <p className='call-to-action'>
-          <Link to='search' className='button'>Find more</Link>
-        </p>
       </div>
     );
   }
@@ -151,6 +148,7 @@ export default class Homepage extends React.Component {
             }
           </div>
         </div>
+        <hr className='spacer clearfix' />
         <p className='call-to-action'>
           <Link to='neighborhoodList' params={{city: 'london'}} className='button'>Find more</Link>
         </p>
@@ -180,20 +178,20 @@ export default class Homepage extends React.Component {
     let w = 180;
     let h = Math.round(856 / 300 * w);
 
-    let leftImage = {
-      src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213568/site/images/content/homehapp_web_phone_left.png',
-      alt: '',
-      width: w,
-      height: h,
-      className: 'hovering'
-    };
-    let rightImage = {
-      src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213569/site/images/content/homehapp_web_phone_right.png',
-      alt: '',
-      width: w,
-      height: h,
-      className: 'hovering'
-    };
+    // let leftImage = {
+    //   src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213568/site/images/content/homehapp_web_phone_left.png',
+    //   alt: '',
+    //   width: w,
+    //   height: h,
+    //   className: 'hovering'
+    // };
+    // let rightImage = {
+    //   src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213569/site/images/content/homehapp_web_phone_right.png',
+    //   alt: '',
+    //   width: w,
+    //   height: h,
+    //   className: 'hovering'
+    // };
 
     return (
       <div id='mainpage' className='mainpage'>
