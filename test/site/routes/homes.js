@@ -50,7 +50,6 @@ describe('Home API paths', () => {
   });
 
   it('Response of /api/homes should have the mockup home', (done) => {
-    console.log('/api/homes');
     mockup.createModel('Home')
     .then((rval) => {
       home = rval;
@@ -120,6 +119,30 @@ describe('Home API paths', () => {
     });
   });
 
+  it('Home should be hidden after enabled is set to false', (done) => {
+    mockup
+    .updateModel('Home', home, {
+      enabled: false
+    })
+    .then((model) => {
+      request(app)
+      .get('/api/homes')
+      .expect(200)
+      .end((err, res) => {
+        should.not.exist(err);
+        let found = false;
+        res.body.homes.map((h) => {
+          if (h.id === home.id) {
+            found = true;
+          }
+        });
+
+        expect(found).to.be(false);
+        done();
+      });
+    })
+  });
+
   it('Home can be deleted', (done) => {
     mockup
     .remove(home)
@@ -145,7 +168,6 @@ describe('Home API paths', () => {
         .get(url)
         .expect(404)
         .end((err, res) => {
-          // console.log('err', err);
           should.not.exist(err, `URL '${url}' should not exist anymore`);
           body = res.text;
           resolve();
