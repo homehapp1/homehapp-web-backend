@@ -294,9 +294,11 @@ export default class HomeList extends React.Component {
               }
 
               let price = null;
+              let badge = null;
 
               switch (home.announcementType) {
                 case 'buy':
+                  badge = (<span className='badge dark'>Buy now</span>);
                   if (home.formattedPrice) {
                     price = (
                       <p className='price'>
@@ -307,6 +309,7 @@ export default class HomeList extends React.Component {
                   }
                   break;
                 case 'rent':
+                  badge = (<span className='badge medium'>Let for rent</span>);
                   if (home.formattedPrice) {
                     price = (
                       <p className='price'>
@@ -329,6 +332,7 @@ export default class HomeList extends React.Component {
                       </span>
                     </Hoverable>
                   </Link>
+                  <Link {...link}>{badge}</Link>
                   <div className='details'>
                     <p className='location'>
                       {neighborhood}
