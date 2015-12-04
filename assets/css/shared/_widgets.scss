@@ -74,6 +74,10 @@
     background-repeat: repeat;
     background-position: left bottom;
 
+    & > .pattern {
+      background-image: none;
+    }
+
     & + .pattern {
       background-position: left top;
       &:before {
