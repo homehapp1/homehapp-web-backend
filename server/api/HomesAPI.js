@@ -9,7 +9,11 @@ export default class HomesAPI {
     let query = {};
 
     if (req.params.type) {
-      query.announcementType = req.params.type;
+      if (req.params.type === 'story' || req.params.type === 'stories') {
+        query['story.enabled'] = true;
+      } else {
+        query.announcementType = req.params.type;
+      }
     }
 
     if (req.params.story) {
