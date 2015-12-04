@@ -80,10 +80,20 @@ export default class HomeList extends React.Component {
       return null;
     }
 
+    if (cards.length === 1) {
+      cards[0].css({
+        marginLeft: '',
+        marginTop: ''
+      });
+      this.list.addClass('single');
+      return null;
+    }
+
+    this.list.removeClass('single');
     let d = cards[0].width() || 424;
     let w = this.list.width();
 
-    let cols = Math.min(Math.floor(w / d), this.props.maxCols) || 1;
+    let cols = Math.min(Math.floor(w / d), this.props.maxCols, cards.length) || 1;
 
     let heights = [];
     for (let i = 0; i < cols; i++) {
@@ -91,6 +101,7 @@ export default class HomeList extends React.Component {
     }
 
     cards.map((card) => {
+      card.removeClass('single');
       if (cols < 2) {
         card.css({
           marginLeft: 0,

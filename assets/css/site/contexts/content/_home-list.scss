@@ -5,6 +5,7 @@
 
   .list-container {
     position: relative;
+    text-align: center;
 
     .card {
       width: $w;
@@ -94,7 +95,6 @@
   &.init {
     .card {
       float: none;
-      display: block;
       position: absolute;
       left: 50%;
       top: 0;
@@ -109,6 +109,23 @@
         z-index: 0;
         margin-top: 0;
         margin-left: -0.5 * $w !important;
+      }
+    }
+  }
+
+  .single {
+    text-align: center;
+    .card {
+      position: static;
+      margin-left: auto;
+      margin-right: auto;
+
+      @include medium() {
+        width: $w;
+      }
+
+      @include small() {
+        width: 100%;
       }
     }
   }
