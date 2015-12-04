@@ -210,6 +210,62 @@ describe('Home API paths', () => {
     });
   });
 
+  it('Check that the storified home is displayed in the story API', (done) => {
+    mockup
+    .updateModel('Home', home, {
+      story: {
+        enabled: true
+      }
+    })
+    .then((model) => {
+      request(app)
+      .get('/api/homes?type=story')
+      .expect(200)
+      .end((err, res) => {
+        should.not.exist(err);
+        should(res.body).have.property('status', 'ok');
+        should(res.body).have.property('homes');
+        let ids = res.body.homes.map((h) => {
+          return h.id;
+        });
+
+        expect(ids.indexOf(home.uuid)).not.to.be(-1);
+        done();
+      });
+    })
+    .catch((err) => {
+      done(err);
+    });
+  });
+
+  it('Check that the storified home is displayed in the story API', (done) => {
+    mockup
+    .updateModel('Home', home, {
+      story: {
+        enabled: false
+      }
+    })
+    .then((model) => {
+      request(app)
+      .get('/api/homes?type=story')
+      .expect(200)
+      .end((err, res) => {
+        should.not.exist(err);
+        should(res.body).have.property('status', 'ok');
+        should(res.body).have.property('homes');
+        let ids = res.body.homes.map((h) => {
+          return h.id;
+        });
+
+        expect(ids.indexOf(home.uuid)).to.be(-1);
+        done();
+      });
+    })
+    .catch((err) => {
+      done(err);
+    });
+  });
+
   it('Home should be hidden after enabled is set to false', (done) => {
     mockup
     .updateModel('Home', home, {
