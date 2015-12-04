@@ -6,7 +6,7 @@ import SocialMedia from '../Navigation/SocialMedia';
 export default class Footer extends React.Component {
   render() {
     return (
-      <div id='footer' className='clearfix' ref='footer'>
+      <div id='footer' className='clearfix full-height' ref='footer'>
         <div className='width-wrapper'>
           <Image src='images/homehapp-logotype-gray.svg' alt='Homehapp' type='asset' className='logotype' />
           <ul className='footer-links main'>
