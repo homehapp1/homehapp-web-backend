@@ -77,11 +77,14 @@
         .price {
           font-size: $fontSizeSmall;
           font-weight: $titleWeight;
+          margin-top: 0.5em;
 
           .currency {
             display: inline-block;
-            margin-right: 1em;
+            vertical-align: baseline;
+            margin-right: 0.2em;
             font-size: $fontSize;
+            color: $fontGoldDark;
           }
         }
       }
@@ -95,9 +98,18 @@
       position: absolute;
       left: 50%;
       top: 0;
-      @include vendors(transition-property, all);
+      $props: margin-left, margin-top;
+      @include vendors(transition-property, $props);
       @include vendors(transition-duration, $transitionDuration);
       @include vendors(transition-timing-function, ease-out);
+      z-index: 1;
+
+      &.invisible {
+        opacity: 0;
+        z-index: 0;
+        margin-top: 0;
+        margin-left: -0.5 * $w !important;
+      }
     }
   }
 }
