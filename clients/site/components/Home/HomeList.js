@@ -65,7 +65,9 @@ export default class HomeList extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    this.updateView();
+    setTimeout(() => {
+      this.updateView();
+    }, 100);
   }
 
   updateView() {
@@ -214,6 +216,7 @@ export default class HomeList extends React.Component {
 
     return (
       <div className={containerClass.join(' ')} ref='container'>
+        <hr className='spacer' />
         {this.props.children}
         <div className='clearfix list-container' ref='list'>
           {
@@ -333,6 +336,7 @@ export default class HomeList extends React.Component {
             })
           }
         </div>
+        <hr className='spacer' />
       </div>
     );
   }
