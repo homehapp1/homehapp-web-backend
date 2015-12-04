@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import Hoverable from '../../../common/components/Widgets/Hoverable';
 import DOMManipulator from '../../../common/DOMManipulator';
 
-let debug = require('../../../common/debugger')('HomeList');
+// let debug = require('../../../common/debugger')('HomeList');
 
 export default class HomeList extends React.Component {
   static propTypes = {
@@ -19,14 +19,18 @@ export default class HomeList extends React.Component {
       React.PropTypes.array
     ]),
     page: React.PropTypes.number,
-    maxCols: React.PropTypes.number
+    maxCols: React.PropTypes.number,
+    filter: React.PropTypes.func
   };
 
   static defaultProps = {
     max: Infinity,
     className: null,
     page: 1,
-    maxCols: 5
+    maxCols: 5,
+    filter: (home) => {
+      return null;
+    }
   };
 
   constructor() {
@@ -35,6 +39,7 @@ export default class HomeList extends React.Component {
     this.updateView = this.updateView.bind(this);
     this.container = null;
     this.list = null;
+    this.lastWidth = 0;
   }
 
   componentDidMount() {
@@ -83,7 +88,7 @@ export default class HomeList extends React.Component {
       heights.push(0);
     }
 
-    cards.map((card, index) => {
+    cards.map((card) => {
       if (cols < 2) {
         card.css({
           marginLeft: 0,
@@ -93,6 +98,20 @@ export default class HomeList extends React.Component {
         return card;
       }
 
+      for (let img of card.getByTagName('img')) {
+        let ar = Number(img.attr('data-aspect-ratio'));
+        if (!ar) {
+          continue;
+        }
+        let height = Math.round(img.width() / ar);
+        img.height(height);
+      }
+
+      if (card.hasClass('invisible')) {
+        return card;
+      }
+
+      // Get the shortest column
       let col = Math.max(0, heights.indexOf(Math.min(...heights)));
       let h = card.height();
 
@@ -176,7 +195,7 @@ export default class HomeList extends React.Component {
   }
 
   render() {
-    let containerClass = ['home-list'];
+    let containerClass = ['home-list', 'widget', 'pattern'];
 
     if (this.props.className) {
       containerClass.push(this.props.className);
@@ -204,6 +223,10 @@ export default class HomeList extends React.Component {
               }
 
               let classes = ['card'];
+              let filterClass = (typeof this.props.filter === 'function') ? this.props.filter(home) : '';
+              if (filterClass) {
+                classes.push(filterClass);
+              }
 
               if (index === this.props.max) {
                 classes.push('last');
@@ -257,7 +280,6 @@ export default class HomeList extends React.Component {
               }
 
               let price = null;
-              debug('home', home);
 
               switch (home.announcementType) {
                 case 'buy':
