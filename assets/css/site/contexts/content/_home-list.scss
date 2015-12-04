@@ -19,6 +19,25 @@
         min-height: 100px;
       }
 
+      .badge {
+        $s: 46px;
+        position: absolute;
+        right: $contentPadding;
+        margin-top: -0.5 * $s;
+        z-index: 1;
+        font-size: $badgeSize;
+        text-align: center;
+        color: white;
+        font-weight: $titleWeight;
+        padding: 10px 5px 0;
+
+        @include diamond($s, $brown);
+
+        &.medium {
+          @include diamond($s, $gold);
+        }
+      }
+
       .shares {
         color: white;
         position: absolute;

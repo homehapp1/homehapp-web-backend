@@ -201,3 +201,12 @@
   background-image: -o-linear-gradient($d, $g1, $g2);
   background-image: linear-gradient($d, $g1, $g2);
 }
+
+@mixin diamond($s, $color) {
+  width: $s;
+  height: $s;
+  display: block;
+  background-image: url("data:image/svg+xml,<?xml version='1.0'?><svg width='100%' height='100%' viewBox='0 0 90 90' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xml:space='preserve' style='fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;'><g transform='matrix(0.991655,0,0,0.991655,-0.616122,-0.731814)'><g id='diamond'><clipPath id='_clip1'><path d='M34.685,5.432C40.934,-0.817 51.069,-0.815 57.315,5.432L86.685,34.801C92.934,41.051 92.931,51.185 86.685,57.432L57.315,86.801C51.066,93.051 40.931,93.048 34.685,86.801L5.315,57.432C-0.934,51.183 -0.931,41.048 5.315,34.801L34.685,5.432Z'/></clipPath><g clip-path='url(#_clip1)'><rect x='0' y='0' width='92' height='92' style='fill:#{$color};fill-rule:nonzero;'/></g></g></g></svg>");
+  background-position: center center;
+  background-size: contain;
+}

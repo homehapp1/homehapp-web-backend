@@ -13,6 +13,7 @@ $extraDarkGray: #111111;
 $linkBlue: #000088;
 $gold: #e0ac5a;
 $goldDark: #948369;
+$brown: #3b3031;
 
 $buttonBackground: $darkGray;
 $buttonBackgroundHover: darken($buttonBackground, 10%);
@@ -44,6 +45,7 @@ $maskOpacity: 0.1;
 // Fonts
 $cols: 12;
 $baseSize: 20px;
+$badgeSize: 0.5 * $baseSize;
 $fontSize: $baseSize;
 $fontSizeInput: $baseSize;
 $fontSizeHeading1: 3.5 * $baseSize;
