@@ -5,25 +5,39 @@ export default class HomesAPI {
     this.QB = qb;
   }
 
-  listHomes(req) {
+  listHomes(req, opts = {}) {
     let query = {};
 
     if (req.params.type) {
-      query.announcementType = req.params.type;
+      if (req.params.type === 'story' || req.params.type === 'stories') {
+        query['story.enabled'] = true;
+      } else {
+        query.announcementType = req.params.type;
+      }
     }
 
     if (req.params.story) {
       query['story.enabled'] = true;
     }
 
+    let populate = {
+      'location.neighborhood': {}
+    };
+
+    if (opts.populate) {
+      populate = opts.populate;
+    }
+
+    query.enabled = {
+      $in: [true, null]
+    };
+
     return new Promise((resolve, reject) => {
       this.QB
       .forModel('Home')
       .parseRequestArguments(req)
       .query(query)
-      .populate({
-        'location.neighborhood': {}
-      })
+      .populate(populate)
       .sort({
         'metadata.score': -1
       })

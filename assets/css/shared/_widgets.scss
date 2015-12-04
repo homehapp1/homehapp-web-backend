@@ -74,6 +74,10 @@
     background-repeat: repeat;
     background-position: left bottom;
 
+    & > .pattern {
+      background-image: none;
+    }
+
     & + .pattern {
       background-position: left top;
       &:before {
@@ -101,24 +105,24 @@
     padding-right: 0;
   }
 
-  @import "contexts/widgets/agents";
-  @import "contexts/widgets/attachments";
-  @import "contexts/widgets/big-image";
-  @import "contexts/widgets/big-video";
-  @import "contexts/widgets/cards";
-  @import "contexts/widgets/columns";
-  @import "contexts/widgets/content-block";
-  @import "contexts/widgets/content-image";
-  @import "contexts/widgets/gallery";
-  @import "contexts/widgets/hoverable";
-  @import "contexts/widgets/icon";
-  @import "contexts/widgets/large-text";
-  @import "contexts/widgets/loading";
-  @import "contexts/widgets/map";
-  @import "contexts/widgets/markdown";
-  @import "contexts/widgets/separator";
+  @import "widgets/agents";
+  @import "widgets/attachments";
+  @import "widgets/big-image";
+  @import "widgets/big-video";
+  @import "widgets/cards";
+  @import "widgets/columns";
+  @import "widgets/content-block";
+  @import "widgets/content-image";
+  @import "widgets/gallery";
+  @import "widgets/hoverable";
+  @import "widgets/icon";
+  @import "widgets/large-text";
+  @import "widgets/loading";
+  @import "widgets/map";
+  @import "widgets/markdown";
+  @import "widgets/separator";
 }
 
 // External component overrides
-@import "contexts/widgets/tabs";
-@import "contexts/widgets/image";
+@import "widgets/tabs";
+@import "widgets/image";

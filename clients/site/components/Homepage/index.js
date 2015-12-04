@@ -8,11 +8,8 @@ import HomeList from '../Home/HomeList';
 import NeighborhoodListStore from '../../stores/NeighborhoodListStore';
 
 import BigImage from '../../../common/components/Widgets/BigImage';
-import Columns from '../../../common/components/Widgets/Columns';
 import Hoverable from '../../../common/components/Widgets/Hoverable';
-import Image from '../../../common/components/Widgets/Image';
 import LargeText from '../../../common/components/Widgets/LargeText';
-import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 import Loading from '../../../common/components/Widgets/Loading';
 import { setPageTitle } from '../../../common/Helpers';
 
@@ -27,8 +24,8 @@ export default class Homepage extends React.Component {
 
   state = {
     error: null,
-    homes: HomeListStore.getState().items,
-    neighborhoods: NeighborhoodListStore.getState().items
+    homes: HomeListStore.getState().items
+    // neighborhoods: NeighborhoodListStore.getState().items
   }
 
   componentDidMount() {
@@ -37,9 +34,9 @@ export default class Homepage extends React.Component {
     document.getElementsByTagName('body')[0].setAttribute('data-handler', 'homepage');
 
     HomeListStore.listen(this.homeStoreListener);
-    NeighborhoodListStore.listen(this.neighborhoodStoreListener);
-    HomeListStore.fetchItems({limit: 4});
-    NeighborhoodListStore.fetchItems({limit: 4});
+    // NeighborhoodListStore.listen(this.neighborhoodStoreListener);
+    HomeListStore.fetchItems();
+    // NeighborhoodListStore.fetchItems();
 
     setPageTitle('Discover y');
   }
@@ -47,7 +44,7 @@ export default class Homepage extends React.Component {
   componentWillUnmount() {
     document.getElementsByTagName('body')[0].removeAttribute('data-handler');
     HomeListStore.unlisten(this.homeStoreListener);
-    NeighborhoodListStore.unlisten(this.neighborhoodStoreListener);
+    // NeighborhoodListStore.unlisten(this.neighborhoodStoreListener);
     setPageTitle();
   }
 
@@ -79,13 +76,8 @@ export default class Homepage extends React.Component {
     }
 
     return (
-      <div className='mainpage-list clearfix'>
-        <HomeList items={homes} max={4} className='mainpage-list short-list'>
-          <h2 className='block-title'>Exclusively for homehapp</h2>
-        </HomeList>
-        <p className='call-to-action'>
-          <Link to='search' className='button'>Find more</Link>
-        </p>
+      <div className='mainpage-list clearfix widget pattern padded'>
+        <HomeList items={homes} />
       </div>
     );
   }
@@ -156,6 +148,7 @@ export default class Homepage extends React.Component {
             }
           </div>
         </div>
+        <hr className='spacer clearfix' />
         <p className='call-to-action'>
           <Link to='neighborhoodList' params={{city: 'london'}} className='button'>Find more</Link>
         </p>
@@ -179,34 +172,26 @@ export default class Homepage extends React.Component {
     // let mainImageAspectRatio = 4828 / 3084;
 
     let homes = [].concat(this.state.homes) || [];
-    let neighborhoods = [].concat(this.state.neighborhoods) || [];
+    // let neighborhoods = [].concat(this.state.neighborhoods) || [];
 
     // Match the original proportions for the phone images
     let w = 180;
     let h = Math.round(856 / 300 * w);
 
-    let leftImage = {
-      src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213568/site/images/content/homehapp_web_phone_left.png',
-      alt: '',
-      width: w,
-      height: h,
-      className: 'hovering'
-    };
-    let rightImage = {
-      src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213569/site/images/content/homehapp_web_phone_right.png',
-      alt: '',
-      width: w,
-      height: h,
-      className: 'hovering'
-    };
-
-    // <BigImage className='masked' image={mainImage} aspectRatio={mainImageAspectRatio} align='center' valign='middle'>
-    //   <LargeText align='center' valign='middle' aspectRatio={mainImageAspectRatio}>
-    //     <div className='splash'>
-    //       <h1>Find the home<br />you belong to</h1>
-    //     </div>
-    //   </LargeText>
-    // </BigImage>
+    // let leftImage = {
+    //   src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213568/site/images/content/homehapp_web_phone_left.png',
+    //   alt: '',
+    //   width: w,
+    //   height: h,
+    //   className: 'hovering'
+    // };
+    // let rightImage = {
+    //   src: 'https://res.cloudinary.com/homehapp/image/upload/v1446213569/site/images/content/homehapp_web_phone_right.png',
+    //   alt: '',
+    //   width: w,
+    //   height: h,
+    //   className: 'hovering'
+    // };
 
     return (
       <div id='mainpage' className='mainpage'>
@@ -218,100 +203,6 @@ export default class Homepage extends React.Component {
           </LargeText>
         </BigImage>
         {this.renderHomeList(homes)}
-        <ContentBlock className='with-gradient'>
-          <h2 className='block-title'>Why homehapp?</h2>
-          <div className='narrow-text emphasize'>
-            <p className='hyphenate-small'>
-              ”We believe there’s a better way to help people find the homes
-              they belong to. It’s an idea whose time has come, and we at
-              homehapp are making it happen.”
-            </p>
-            <p className='hyphenate-small'>
-              Home is more than a place. It’s a feeling – a sense of belonging.
-              A home isn’t just the four walls we live in – it’s
-              our street, our neighborhood and our town.
-            </p>
-          </div>
-        </ContentBlock>
-        <ContentBlock className='with-gradient'>
-          <hr className='spacer' />
-          <Columns cols={2} className='table emphasize' valign='middle'>
-            <div className='centered' data-valign='middle'>
-              <Image {...leftImage} />
-            </div>
-            <div data-valign='middle'>
-              <h3>Capture your moments</h3>
-              <p className='hyphenate-small'>
-                You can upload your home photos and videos, and write about your
-                home life in a few clicks from your phone. Add insights or news
-                on your neighbourhood and share with friends.
-                Keep a history of your house, record repairs and
-                renovations. Organise information, floor plans, EPC – all in
-                one place.
-              </p>
-              <p className='hyphenate-small'>
-                On homehapp, every home can have a digital identity
-              – which can be kept private or published to the open community.
-              </p>
-            </div>
-          </Columns>
-          <hr className='spacer' />
-          <Columns cols={2} className='table rearrange emphasize' valign='middle'>
-            <div data-valign='middle'>
-              <h3>We serve you when letting or renting</h3>
-              <p className='hyphenate-small'>
-                When you wish to let or sell your home, you can do so
-                exactly in the ways that suit you.
-              </p>
-              <p className='hyphenate-small'>
-                You may wish to deal directly, and publish your offer to the
-                entire homehapp community.
-              </p>
-              <p className='hyphenate-small'>
-                You can engage pro services – Photographer,
-                Surveyor, Legal et al
-              </p>
-              <p className='hyphenate-small'>
-                You can appoint an Estate Agent of your choice
-                to provide transaction management services
-              </p>
-            </div>
-            <div className='centered' data-valign='middle'>
-              <Image {...rightImage} />
-            </div>
-          </Columns>
-          <hr className='spacer' />
-        </ContentBlock>
-        <ContentBlock className='with-gradient'>
-          <hr className='spacer' />
-          <h2 className='block-title'>Partner with us</h2>
-          <div className='center emphasize narrow-text'>
-            <p className='hyphenate-small'>
-              homehapp is a platform for buyers and sellers, landlords and
-              tenants, Estate agents, legal conveyancers, chartered surveyors.
-              Expand your reach and increase your sales.
-            </p>
-            <hr className='spacer' />
-            <p className='call-to-action'>
-              <Link to='partners' className='button white'>Contact</Link>
-            </p>
-          </div>
-        </ContentBlock>
-        <ContentBlock className='with-gradient'>
-          <hr className='spacer' />
-          <h2>Our Mission</h2>
-          <div className='center emphasize narrow-text'>
-            <p className='hyphenate-small'>
-              homehapp aims to serve an entire community of browsers and
-              storytellers who wish to create and consume home and
-              neighbourhood moments, which go beyond sales and lettings.
-              It’s a platform to provide an online identity and life
-              to <Link to='homes'>homes</Link> and <Link to='neighborhoodList' params={{city: 'london'}}>neighborhoods.</Link>
-            </p>
-            <hr className='spacer' />
-          </div>
-        </ContentBlock>
-        {this.renderNeighborhoods(neighborhoods)}
       </div>
     );
   }

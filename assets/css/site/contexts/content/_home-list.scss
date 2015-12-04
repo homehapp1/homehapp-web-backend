@@ -1,0 +1,115 @@
+.home-list {
+  $p: $contentPadding / 2;
+  $w: 424px + $p;
+  text-align: center;
+
+  .list-container {
+    position: relative;
+
+    .card {
+      width: $w;
+      display: inline-block;
+      float: left;
+      position: relative;
+      text-align: left;
+      padding: $contentPadding / 2;
+
+      .hoverable {
+        min-height: 100px;
+      }
+
+      .shares {
+        color: white;
+        position: absolute;
+        left: $contentPadding;
+        bottom: $contentPadding;
+        z-index: 1;
+        font-size: $fontSizeSmall;
+
+        i:before {
+          font-size: $fontSize;
+          margin-right: 0.5em;
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        & > * + * {
+          margin-left: 1.5em;
+        }
+      }
+
+      @include medium() {
+        width: $w / 2;
+      }
+
+      @media only screen and (max-width: $w) {
+        width: 50%;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      .details {
+        padding: $contentPadding;
+        background-color: white;
+
+        .location > * + *:before {
+          content: ', ';
+        }
+
+        & > * {
+          margin: 0;
+        }
+
+        h3 {
+          margin-bottom: 5px;
+          font-weight: $defaultWeight;
+        }
+
+        .location {
+          font-style: italic;
+          font-weight: $defaultWeight;
+          color: $fontGoldDark;
+        }
+
+        .price {
+          font-size: $fontSizeSmall;
+          font-weight: $titleWeight;
+          margin-top: 0.5em;
+
+          .currency {
+            display: inline-block;
+            vertical-align: baseline;
+            margin-right: 0.2em;
+            font-size: $fontSize;
+            color: $fontGoldDark;
+          }
+        }
+      }
+    }
+  }
+
+  &.init {
+    .card {
+      float: none;
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      $props: margin-left, margin-top;
+      @include vendors(transition-property, $props);
+      @include vendors(transition-duration, $transitionDuration);
+      @include vendors(transition-timing-function, ease-out);
+      z-index: 1;
+
+      &.invisible {
+        opacity: 0;
+        z-index: 0;
+        margin-top: 0;
+        margin-left: -0.5 * $w !important;
+      }
+    }
+  }
+}

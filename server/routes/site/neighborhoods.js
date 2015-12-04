@@ -21,7 +21,7 @@ exports.registerRoutes = (app) => {
         cities: result.models
       };
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404);
       next();
     });
@@ -55,7 +55,7 @@ exports.registerRoutes = (app) => {
       };
       next();
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404);
       next();
     });
@@ -83,7 +83,7 @@ exports.registerRoutes = (app) => {
       };
       next();
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404);
       next();
     });

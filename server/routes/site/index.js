@@ -1,9 +1,11 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 import { setLastMod, initMetadata } from '../../../clients/common/Helpers';
+import HomesAPI from '../../api/HomesAPI';
 let debug = require('debug')('/');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+  let api = new HomesAPI(app, QB);
 
   // Remove the trailing slash as React
   app.get('*/', function(req, res, next) {
@@ -17,45 +19,39 @@ exports.registerRoutes = (app) => {
 
   app.get('/', function(req, res, next) {
     debug('GET /');
-    QB
-    .forModel('Home')
-    .parseRequestArguments(req)
-    .populate({
-      'location.neighborhood': {}
+    api.listHomes(req, {
+      populate: {}
     })
-    .sort({
-      'metadata.score': -1
-    })
-    .limit(4)
-    .findAll()
-    .fetch()
-    .then((result) => {
-      debug(`Got ${result.models.length} homes`);
+    .then((homes) => {
+      debug(`Got ${homes.length} homes`);
       initMetadata(res);
       res.locals.data.HomeListStore = {
-        items: result.models
+        items: homes
       };
       res.locals.page = {
         title: 'Discover y',
         description: 'Homehapp - discover y'
       };
 
-      return QB
-      .forModel('Neighborhood')
-      .query({
-        enabled: true
-      })
-      .findAll()
-      .fetch();
-    })
-    .then((result) => {
-      res.locals.data.NeighborhoodListStore = {
-        items: result.models
-      };
-      setLastMod([].concat(result.models).concat(res.locals.data.HomeListStore), res);
-
-      // return res.json(res.locals.data);
+      setLastMod([].concat(homes).concat(res.locals.data.HomeListStore), res);
       next();
+    //
+    //   return QB
+    //   .forModel('Neighborhood')
+    //   .query({
+    //     enabled: true
+    //   })
+    //   .findAll()
+    //   .fetch();
+    // })
+    // .then((result) => {
+    //   res.locals.data.NeighborhoodListStore = {
+    //     items: result.models
+    //   };
+    //   setLastMod([].concat(result.models).concat(res.locals.data.HomeListStore), res);
+    //
+    //   // return res.json(res.locals.data);
+    //   next();
     });
   });
 };

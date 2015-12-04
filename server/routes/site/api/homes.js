@@ -44,7 +44,6 @@ exports.registerRoutes = (app) => {
   });
 
   app.get('/api/homes', function(req, res, next) {
-    let parts = url.parse(req.url, true);
     api.listHomes(req, res, next)
     .then((homes) => {
       app.log.debug(`/api/homes Got ${homes.length} homes`);

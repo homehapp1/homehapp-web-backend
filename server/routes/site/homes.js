@@ -56,11 +56,12 @@ exports.registerRoutes = (app) => {
 
   app.get('/search/:type', function(req, res, next) {
     debug(`GET /search/${req.params.type}`);
-    let types = ['buy', 'rent', 'story'];
+    let types = ['buy', 'rent', 'story', 'stories'];
     let titles = {
       buy: 'Homes for sale',
       rent: 'Homes for rent',
-      story: 'Our storified homes'
+      story: 'Our storified homes',
+      stories: 'Our storified homes'
     };
 
     if (types.indexOf(req.params.type) === -1) {
@@ -82,7 +83,6 @@ exports.registerRoutes = (app) => {
   });
 
   let returnHomeBySlug = (req, res, next) => {
-    let home = null;
     let neighborhood = null;
     let slug = req.params.slug;
 
@@ -116,12 +116,10 @@ exports.registerRoutes = (app) => {
         title: title.join(' | '),
         description: description
       };
-      debug('use home', home.homeTitle);
 
       setLastMod([home, neighborhood], res);
       api.populateCityForHome(home)
       .then(() => {
-        debug('Got home', home.homeTitle);
         res.locals.data.HomeStore = {
           home: home
         };

@@ -169,6 +169,7 @@ class HomesIndex extends React.Component {
             <thead>
               <tr>
                 <th>Title</th>
+                <th>Published</th>
                 <th>Neighborhood</th>
                 <th>Story blocks</th>
                 <th>Enabled</th>
@@ -200,8 +201,16 @@ class HomesIndex extends React.Component {
                 }
 
                 let enabled = null;
+                let published = null;
+
                 if (home.story.enabled) {
                   enabled = (
+                    <span>yes</span>
+                  );
+                }
+
+                if (home.enabled) {
+                  published = (
                     <span>yes</span>
                   );
                 }
@@ -215,6 +224,7 @@ class HomesIndex extends React.Component {
                         {home.homeTitle}
                       </Link>
                     </td>
+                    <td>{published}</td>
                     <td>
                       {neighborhood}
                     </td>

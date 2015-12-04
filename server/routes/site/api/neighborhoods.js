@@ -36,7 +36,7 @@ exports.registerRoutes = (app) => {
         neighborhood: neighborhood
       });
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(404);
       next();
     });

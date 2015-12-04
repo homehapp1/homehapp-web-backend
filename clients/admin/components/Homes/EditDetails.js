@@ -173,6 +173,7 @@ export default class HomesEditDetails extends EditDetails {
     let homeProps = {
       id: id,
       title: this.refs.title.getValue(),
+      enabled: this.state.home.enabled,
       announcementType: this.refs.announcementType.getValue(),
       description: this.refs.description.getValue(),
       location: {
@@ -329,6 +330,17 @@ export default class HomesEditDetails extends EditDetails {
     return true;
   }
 
+  toggleEnabled(event) {
+    this.home = this.state.home || this.props.home;
+    let home = this.home;
+    home.enabled = !(home.enabled);
+
+    this.setState({
+      home: home
+    });
+    return true;
+  }
+
   render() {
     debug('this.brochureTypes', this.brochureTypes);
     this.handleErrorState();
@@ -414,6 +426,11 @@ export default class HomesEditDetails extends EditDetails {
       </p>
     );
 
+    let enabled = {};
+    if (home.enabled) {
+      enabled.checked = true;
+    }
+
     return (
       <Row>
         <form name='homeDetails' ref='homeDetailsForm' method='POST'>
@@ -439,6 +456,13 @@ export default class HomesEditDetails extends EditDetails {
                 <option value='buy'>This home is for sale</option>
                 <option value='rent'>This home is for rent</option>
               </InputWidget>
+              <InputWidget
+                type='checkbox'
+                ref='enabled'
+                label='Is the story published'
+                {...enabled}
+                onChange={this.toggleEnabled.bind(this)}
+              />
               <InputWidget
                 type='textarea'
                 ref='description'
