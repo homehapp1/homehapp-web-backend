@@ -9,6 +9,17 @@ exports.registerRoutes = (app) => {
     return new Promise((resolve, reject) => {
       let tokenData = app.authentication.createTokenForUser(user);
 
+      let userJson = user.toJSON();
+      delete userJson.username;
+      delete userJson.metadata;
+      delete userJson.name;
+      delete userJson.rname;
+      delete userJson.deviceId;
+      delete userJson.active;
+      if (userJson.displayName === user.username || userJson.displayName === user.email) {
+        userJson.displayName = '';
+      }
+
       QB
       .forModel('User')
       .findById(user.id)
@@ -22,8 +33,8 @@ exports.registerRoutes = (app) => {
           session: {
             token: tokenData.token,
             expiresIn: tokenData.expiresIn,
-            expiresAt: tokenData.expiresAt,
-            user: user
+            expiresAt: tokenData.expiresAt || '',
+            user: userJson
           }
         });
       })
@@ -40,7 +51,10 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {Datetime} expiresAt       ISO-8601 Formatted Expiration Datetime
    * @apiSuccess {Object} user              User details
    * @apiSuccess {String} user.id           Internal Id of the user
-   * @apiSuccess {String} user.username     Username for the user, used in login
+   * @apiSuccess {String} user.email        Users email
+   * @apiSuccess {String} user.displayName  Users fullname
+   * @apiSuccess {String} user.firstname    Users firstname
+   * @apiSuccess {String} user.lastname     Users lastname
    *
    */
 
@@ -51,8 +65,12 @@ exports.registerRoutes = (app) => {
    * @apiGroup Authentication
    *
    * @apiUse MobileRequestHeaders
-   * @apiParam {String} username    Username of the user
-   * @apiParam {String} password    Password for the user (Mobile Device Id)
+   * @apiParam {String} service     Name of the external service. Enum[facebook, google]
+   * @apiParam {Object} user        Details of the user
+   * @apiParam {String} user.id              Users Id from the service
+   * @apiParam {String} user.email           Users email from the service
+   * @apiParam {String} user.token           Users token from the service
+   * @apiParam {String} user.displayName     Users Fullname from the service
    * @apiUse AuthSuccessResponse
    *
    * @apiSuccessExample {json} Success-Response:
@@ -72,56 +90,15 @@ exports.registerRoutes = (app) => {
    *     }
    */
   app.post('/api/auth/login', function(req, res, next) {
-    if (!req.body.username || !req.body.password) {
-      return next(new BadRequest('invalid request body'));
+    //console.log('login/register', req.clientInfo, req.body);
+
+    let data = req.body.user;
+
+    if (!req.clientInfo || !req.clientInfo.deviceID) {
+      return next(new BadRequest('invalid request, no device info found'));
     }
 
-    QB
-    .forModel('User')
-    .findByUsername(req.body.username)
-    .fetch()
-    .then((result) => {
-      if (!result.user.active) {
-        return next(new Forbidden('account disabled'));
-      }
-
-      if (!result.user.isValidPassword(req.body.password)) {
-        return next(new Forbidden('invalid credentials'));
-      }
-
-      generateTokenAndRespond(res, result.user);
-    })
-    .catch(next);
-  });
-
-  /**
-   * @api {post} /api/auth/register Register the Mobile User
-   * @apiVersion 0.1.0
-   * @apiName UserRegister
-   * @apiGroup Authentication
-   *
-   * @apiUse MobileRequestHeaders
-   * @apiParam {String} deviceId    Mobile Device Id
-   * @apiUse AuthSuccessResponse
-   *
-   * @apiSuccessExample {json} Success-Response:
-   *     HTTP/1.1 200 OK
-   *     {
-   *       'status': 'ok',
-   *       'session': {...}
-   *     }
-   *
-   * @apiError (400) BadRequest Invalid request body, missing parameters.
-   * @apiError (403) Forbidden  User account has been disabled
-   * @apiErrorExample Error-Response:
-   *     HTTP/1.1 403 Forbidden
-   *     {
-   *       'status': 'failed',
-   *       'error': 'account disabled'
-   *     }
-   */
-  app.post('/api/auth/register', function(req, res, next) {
-    if (!req.body.deviceId) {
+    if (!req.body.service || !data.email || !data.id || !data.token) {
       return next(new BadRequest('invalid request body'));
     }
 
@@ -130,11 +107,16 @@ exports.registerRoutes = (app) => {
     if (req.clientInfo.platform) {
       deviceType = req.clientInfo.platform.toLowerCase();
     }
-    deviceIdData[deviceType] = req.body.deviceId;
+    deviceIdData[deviceType] = req.clientInfo.deviceID;
+
+    let query = {};
+    // Add this query to bound the user to current device
+    //query[`deviceId.${deviceType}`] = req.clientInfo.deviceID;
 
     QB
     .forModel('User')
-    .findByDeviceId(req.body.deviceId)
+    .query(query)
+    .findByServiceId(req.body.service, data.id)
     .fetch()
     .then((result) => {
       if (!result.user.active) {
@@ -144,14 +126,35 @@ exports.registerRoutes = (app) => {
     })
     .catch((err) => {
       if (err instanceof NotFound) {
-        let username = randomString(12);
+        let serviceData = {};
+        serviceData[req.body.service] = {
+          id: data.id,
+          token: data.token
+        };
+
+        let userData = {
+          username: `${req.body.service}${data.id}`,
+          email: data.email,
+          //password: `${req.body.service}${data.id}`,
+          deviceId: deviceIdData,
+          _service: serviceData
+        };
+
+        if (data.displayName) {
+          let firstname = '';
+          let lastname = '';
+          let parts = data.displayName.split(' ');
+          firstname = parts[0];
+          if (parts.length > 1) {
+            lastname = data.displayName.substr(firstname.length + 1);
+          }
+          userData.firstname = firstname;
+          userData.lastname = lastname;
+        }
+
         QB
         .forModel('User')
-        .createNoMultiset({
-          username: username,
-          password: req.body.deviceId,
-          deviceId: deviceIdData
-        })
+        .createNoMultiset(userData)
         .then((model) => {
           generateTokenAndRespond(res, model);
         })
@@ -277,6 +280,38 @@ exports.registerRoutes = (app) => {
       });
     })
     .catch(next);
+  });
+
+  /**
+   * @api {get} /api/auth/check Check session validity
+   * @apiVersion 0.1.0
+   * @apiName CheckSessionValidity
+   * @apiGroup Authentication
+   *
+   * @apiDescription Allows for checking wether the session is valid or not
+   *
+   * @apiPermission authenticated
+   * @apiUse MobileRequestHeaders
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {
+   *       'status': 'ok'
+   *     }
+   *
+   * @apiError (403) Forbidden  User account has been disabled
+   * @apiErrorExample Error-Response:
+   *     HTTP/1.1 403 Forbidden
+   *     {
+   *       'status': 'failed',
+   *       'error': 'account disabled'
+   *     }
+   */
+  app.get('/api/auth/check', app.authenticatedRoute, function(req, res, next) {
+    if (!req.user) {
+      return next(new Forbidden('invalid request'));
+    }
+    res.json({status: 'ok'});
   });
 
 };

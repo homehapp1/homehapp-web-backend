@@ -65,6 +65,23 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: ''
     },
+    // Service authentication related
+    _service: {
+      facebook: {
+        id: {
+          type: String,
+          index: true
+        },
+        token: String
+      },
+      google: {
+        id: {
+          type: String,
+          index: true
+        },
+        token: String
+      }
+    },
     active: {
       type: Boolean,
       index: true,
@@ -92,11 +109,11 @@ exports.loadSchemas = function (mongoose, next) {
       displayName.push(this.lastname);
     }
     if (!displayName.length) {
-      debug('populate with email');
+      //debug('populate with email');
       displayName.push(this._email);
     }
     if (!displayName.length) {
-      debug('populate with username');
+      //debug('populate with username');
       displayName.push(this.username);
     }
 

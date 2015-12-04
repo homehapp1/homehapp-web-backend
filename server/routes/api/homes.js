@@ -1,8 +1,21 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 let debug = require('debug')('/api/homes');
 
+import {BadRequest} from '../../lib/Errors';
+
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+
+  let checkAuthenticationNeed = [
+    function(req, res, next) {
+      if (req.headers['x-homehapp-auth-token']) {
+        return app.authenticatedRoute.forEach((handler) => {
+          handler(req, res, next);
+        });
+      }
+      return next();
+    }
+  ];
 
   let updateHome = function updateHome(uuid, data) {
     debug('Update home with data', data);
@@ -151,13 +164,26 @@ exports.registerRoutes = (app) => {
    *     }
    *
    */
-  app.get('/api/homes', function(req, res, next) {
+  app.get('/api/homes', checkAuthenticationNeed, function(req, res, next) {
+    let query = {
+      enabled: {
+        $ne: false
+      }
+    };
+
+    if (req.user) {
+      query.createdBy = {
+        $ne: req.user.id
+      };
+    }
+
     QB
     .forModel('Home')
     .parseRequestArguments(req)
     .populate({
       'location.neighborhood': {}
     })
+    .query(query)
     .findAll()
     .fetch()
     .then((result) => {
@@ -232,9 +258,11 @@ exports.registerRoutes = (app) => {
    *     }
    *
    */
-  app.put('/api/homes/:uuid', function(req, res, next) {
+  app.put('/api/homes/:uuid', app.authenticatedRoute, function(req, res, next) {
     debug('API update home with uuid', req.params.uuid);
     debug('req.body', req.body);
+
+    return next(new BadRequest('invalid request body'));
 
     let data = req.body.home;
 
@@ -267,46 +295,21 @@ exports.registerRoutes = (app) => {
    *     }
    *
    */
-  app.post('/api/homes', function(req, res, next) {
+  app.post('/api/homes', app.authenticatedRoute, function(req, res, next) {
     debug('API create home');
-    debug('req.body', req.body);
 
-    let data = req.body.home;
-
-    function createHome() {
-      return QB
-      .forModel('Home')
-      .populate({
-        'location.neighborhood': {}
-      })
-      .createNoMultiset(data)
-      .then((model) => {
-        res.json({
-          status: 'ok', home: model
-        });
-      })
-      .catch(next);
-    }
-
-    if (data.location && data.location.neighborhood) {
-      let neighborhoodUuid = data.location.neighborhood;
-      data.location.neighborhood = null;
-      QB
-      .forModel('Neighborhood')
-      .findByUuid(neighborhoodUuid)
-      .fetch()
-      .then((result) => {
-        debug('Got neighborhood', result.model.title, result.model.id);
-        data.location.neighborhood = result.model.id;
-        createHome(data);
-      })
-      .catch((nhError) => {
-        app.log.error(`Error fetching Neighborhood: ${nhError.message}`);
-        createHome(data);
+    QB
+    .forModel('Home')
+    .createNoMultiset({
+      enabled: false,
+      createdBy: req.user
+    })
+    .then((model) => {
+      res.json({
+        status: 'ok', home: model
       });
-    } else {
-      createHome(data);
-    }
+    })
+    .catch(next);
   });
 
   /**
@@ -329,7 +332,7 @@ exports.registerRoutes = (app) => {
    *       'home': {...}
    *     }
    */
-  app.delete('/api/homes/:uuid', function(req, res, next) {
+  app.delete('/api/homes/:uuid', app.authenticatedRoute, function(req, res, next) {
     QB
     .forModel('Home')
     .findByUuid(req.params.uuid)
