@@ -195,7 +195,7 @@ exports.loadSchemas = function (mongoose, next) {
     return [
       'title', 'description', 'location', 'costs', 'story', 'amenities',
       'facilities', 'attributes', 'images', 'announcementType', 'brochures',
-      'properties'
+      'properties', 'enabled'
     ];
   };
 
