@@ -116,6 +116,97 @@ describe('Home API paths', () => {
     Promise.all(promises)
     .then(() => {
       done();
+    })
+    .catch((err) => {
+      done(err);
+    });
+  });
+
+  it('Check that the home is found with the flag "buy"', (done) => {
+    mockup
+    .updateModel('Home', home, {
+      announcementType: 'buy'
+    })
+    .then((model) => {
+      return new Promise((resolve, reject) => {
+        request(app)
+        .get(`/api/homes?type=buy`)
+        .expect(200)
+        .end((err, res) => {
+          should.not.exist(err);
+          should(res.body).have.property('status', 'ok');
+          should(res.body).have.property('homes');
+          let ids = res.body.homes.map((h) => {
+            return h.id;
+          });
+
+          expect(ids.indexOf(home.uuid)).not.to.be(-1);
+          resolve();
+        })
+      });
+    })
+    .then(() => {
+      request(app)
+      .get(`/api/homes?type=rent`)
+      .expect(200)
+      .end((err, res) => {
+        should.not.exist(err);
+        should(res.body).have.property('status', 'ok');
+        should(res.body).have.property('homes');
+        let ids = res.body.homes.map((h) => {
+          return h.id;
+        });
+
+        expect(ids.indexOf(home.uuid)).to.be(-1);
+        done();
+      });
+    })
+    .catch((err) => {
+      done(err);
+    });
+  });
+
+  it('Check that the home is found with the flag "rent"', (done) => {
+    mockup
+    .updateModel('Home', home, {
+      announcementType: 'rent'
+    })
+    .then((model) => {
+      return new Promise((resolve, reject) => {
+        request(app)
+        .get(`/api/homes?type=rent`)
+        .expect(200)
+        .end((err, res) => {
+          should.not.exist(err);
+          should(res.body).have.property('status', 'ok');
+          should(res.body).have.property('homes');
+          let ids = res.body.homes.map((h) => {
+            return h.id;
+          });
+
+          expect(ids.indexOf(home.uuid)).not.to.be(-1);
+          resolve();
+        })
+      });
+    })
+    .then(() => {
+      request(app)
+      .get(`/api/homes?type=buy`)
+      .expect(200)
+      .end((err, res) => {
+        should.not.exist(err);
+        should(res.body).have.property('status', 'ok');
+        should(res.body).have.property('homes');
+        let ids = res.body.homes.map((h) => {
+          return h.id;
+        });
+
+        expect(ids.indexOf(home.uuid)).to.be(-1);
+        done();
+      });
+    })
+    .catch((err) => {
+      done(err);
     });
   });
 
@@ -174,10 +265,12 @@ describe('Home API paths', () => {
         });
       });
     });
-
     Promise.all(promises)
     .then(() => {
       done();
+    })
+    .catch((err) => {
+      done(err);
     });
   });
 });

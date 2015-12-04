@@ -7,12 +7,21 @@ export default class HomesAPI {
 
   listHomes(req, opts = {}) {
     let query = {};
+    let type = null;
 
-    if (req.params.type) {
-      if (req.params.type === 'story' || req.params.type === 'stories') {
+    if (req.params && req.params.type) {
+      type = req.params.type.replace(/^stories$/, 'story');
+    }
+
+    if (req.query && req.query.type) {
+      type = req.query.type.replace(/^stories$/, 'story');
+    }
+
+    if (type) {
+      if (type === 'story') {
         query['story.enabled'] = true;
       } else {
-        query.announcementType = req.params.type;
+        query.announcementType = type;
       }
     }
 
