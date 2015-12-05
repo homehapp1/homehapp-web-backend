@@ -6,7 +6,7 @@ CWD=`pwd`
 CONTAINER_REGISTRY_HOST=eu.gcr.io
 PNAME=$1
 ENV=$2
-CLUSTER_NAME="homehapp-$PNAME-$ENV"
+CLUSTER_NAME="homehapp-$ENV"
 CLUSTER_GOOGLE_NAME=""
 NODE_GOOGLE_NAME=""
 
@@ -42,6 +42,7 @@ fi
 
 function removeService() {
   if [ "$CLUSTER_GOOGLE_NAME" = "" ]; then
+    echo "Execute: kubectl config view | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1"
     CLUSTER_GOOGLE_NAME=`kubectl config view | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1`
   fi
 
@@ -53,8 +54,9 @@ function removeService() {
 }
 
 function removeController() {
-  local CONTROLLER_NAME=`kubectl get rc | grep $PROJECT_ID | awk '{print $1}' | grep "$PNAME-controller"`
+  local CONTROLLER_NAME=`kubectl get rc | grep $PROJECT_ID | awk '{print $1}' | grep "$PNAME-$ENV-controller"`
   if [ "$1" = "-d" ]; then
+    echo "Execute: kubectl get rc | grep $PROJECT_ID | awk '{print $1}' | grep '$PNAME-$ENV-controller'"
     echo "Execute: 'kubectl stop rc $CONTROLLER_NAME'"
   else
     kubectl stop rc $CONTROLLER_NAME
