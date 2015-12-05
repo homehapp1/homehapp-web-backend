@@ -3,7 +3,7 @@
   $w: 424px + $p;
   $wMedium: $w / 2;
   $wSmall: 160px;
-  $wTolerance: 400px;
+  $wTolerance: 319px;
 
   text-align: center;
 
@@ -29,7 +29,7 @@
       }
 
       .hoverable {
-        min-height: 100px;
+        min-height: 90px;
       }
 
       .badge {
@@ -82,6 +82,8 @@
       @media only screen and (max-width: $wTolerance) {
         width: 100%;
         float: none;
+        padding-left: 0;
+        padding-right: 0;
       }
 
       img {

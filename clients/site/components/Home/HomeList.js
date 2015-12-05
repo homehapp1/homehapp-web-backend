@@ -80,7 +80,7 @@ export default class HomeList extends React.Component {
       return null;
     }
 
-    if (cards.length === 1 || window.innerWidth < 400) {
+    if (cards.length === 1 || window.innerWidth < 320) {
       debug('trap');
       cards.map((card) => {
         card.css({
