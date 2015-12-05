@@ -1,5 +1,5 @@
 .home-list {
-  $p: $contentPadding / 2;
+  $p: $contentPadding / 4;
   $w: 424px + $p;
   $wMedium: $w / 2;
   $wSmall: 160px;
@@ -28,8 +28,8 @@
       text-align: left;
       padding: $p;
 
-      @include small() {
-        padding: $p / 2;
+      h3 {
+        font-size: 32px;
       }
 
       .hoverable {
@@ -37,18 +37,34 @@
       }
 
       .badge {
-        $s: 46px;
+        $s: 60px;
+        display: table;
         position: absolute;
         right: $contentPadding;
         margin-top: -0.5 * $s;
         z-index: 1;
-        font-size: $badgeSize;
+        font-size: $s * 0.22;
         text-align: center;
         color: white;
         font-weight: $titleWeight;
-        padding: 10px 5px 0;
+        line-height: 1.2em;
+
+        & > * {
+          display: table-cell;
+          width: 100%;
+          height: 100%;
+          padding-left: 0.6em;
+          padding-right: 0.6em;
+          vertical-align: middle;
+          text-align: center;
+        }
 
         @include diamond($s, $brown);
+
+        @include medium() {
+          width: $s * 0.8;
+          height: $s * 0.8;
+        }
 
         &.medium {
           @include diamond($s, $gold);
@@ -98,9 +114,14 @@
       .details {
         padding: $contentPadding;
         background-color: white;
+        font-size: 26px;
 
-        .location > * + *:before {
-          content: ', ';
+        .location {
+          font-size: 24px;
+
+          & > * + *:before {
+            content: ', ';
+          }
         }
 
         & > * {
@@ -119,7 +140,7 @@
         }
 
         .price {
-          font-size: $fontSizeSmall;
+          font-size: 28px;
           font-weight: $titleWeight;
           margin-top: 0.5em;
 
@@ -127,7 +148,7 @@
             display: inline-block;
             vertical-align: baseline;
             margin-right: 0.2em;
-            font-size: $fontSize;
+            font-size: 30px;
             color: $fontGoldDark;
           }
         }

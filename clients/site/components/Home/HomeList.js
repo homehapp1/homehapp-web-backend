@@ -302,7 +302,7 @@ export default class HomeList extends React.Component {
 
               switch (home.announcementType) {
                 case 'buy':
-                  badge = (<span className='badge dark'>Buy now</span>);
+                  badge = (<span className='badge dark'><span>Buy now</span></span>);
                   if (home.formattedPrice) {
                     price = (
                       <p className='price'>
@@ -313,7 +313,7 @@ export default class HomeList extends React.Component {
                   }
                   break;
                 case 'rent':
-                  badge = (<span className='badge medium'>Let for rent</span>);
+                  badge = (<span className='badge medium'><span>Let for rent</span></span>);
                   if (home.formattedPrice) {
                     price = (
                       <p className='price'>
