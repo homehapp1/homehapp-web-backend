@@ -1,7 +1,16 @@
 .home-list {
   $p: $contentPadding / 2;
   $w: 424px + $p;
+  $wMedium: $w / 2;
+  $wSmall: 160px;
+  $wTolerance: 400px;
+
   text-align: center;
+
+  @include medium() {
+    padding-left: $p / 2;
+    padding-right: $p / 2;
+  }
 
   .list-container {
     position: relative;
@@ -13,7 +22,11 @@
       float: left;
       position: relative;
       text-align: left;
-      padding: $contentPadding / 2;
+      padding: $p;
+
+      @include small() {
+        padding: $p / 2;
+      }
 
       .hoverable {
         min-height: 100px;
@@ -66,6 +79,11 @@
         width: 50%;
       }
 
+      @media only screen and (max-width: $wTolerance) {
+        width: 100%;
+        float: none;
+      }
+
       img {
         width: 100%;
         height: auto;
@@ -111,29 +129,32 @@
     }
   }
 
-  &.init {
-    .card {
-      float: none;
-      position: absolute;
-      left: 50%;
-      top: 0;
-      $props: margin-left, margin-top;
-      @include vendors(transition-property, $props);
-      @include vendors(transition-duration, $transitionDuration);
-      @include vendors(transition-timing-function, ease-out);
-      z-index: 1;
+  @media only screen and (min-width: $wTolerance) {
+    &.init {
+      .card {
+        float: none;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        $props: margin-left, margin-top;
+        @include vendors(transition-property, $props);
+        @include vendors(transition-duration, $transitionDuration);
+        @include vendors(transition-timing-function, ease-out);
+        z-index: 1;
 
-      &.invisible {
-        opacity: 0;
-        z-index: 0;
-        margin-top: 0;
-        margin-left: -0.5 * $w !important;
+        &.invisible {
+          opacity: 0;
+          z-index: 0;
+          margin-top: 0;
+          margin-left: -0.5 * $w !important;
+        }
       }
     }
   }
 
-  .single {
+  & > .single {
     text-align: center;
+
     .card {
       position: static;
       margin-left: auto;
@@ -143,7 +164,7 @@
         width: $w;
       }
 
-      @include small() {
+      @media only screen and (max-width: $wSmall * 2) {
         width: 100%;
       }
     }

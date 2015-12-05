@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import Hoverable from '../../../common/components/Widgets/Hoverable';
 import DOMManipulator from '../../../common/DOMManipulator';
 
-// let debug = require('../../../common/debugger')('HomeList');
+let debug = require('../../../common/debugger')('HomeList');
 
 export default class HomeList extends React.Component {
   static propTypes = {
@@ -80,11 +80,15 @@ export default class HomeList extends React.Component {
       return null;
     }
 
-    if (cards.length === 1) {
-      cards[0].css({
-        marginLeft: '',
-        marginTop: ''
+    if (cards.length === 1 || window.innerWidth < 400) {
+      debug('trap');
+      cards.map((card) => {
+        card.css({
+          marginLeft: '',
+          marginTop: ''
+        });
       });
+
       this.list.addClass('single');
       return null;
     }
@@ -93,7 +97,8 @@ export default class HomeList extends React.Component {
     let d = cards[0].width() || 424;
     let w = this.list.width();
 
-    let cols = Math.min(Math.floor(w / d), this.props.maxCols, cards.length) || 1;
+    let cols = Math.max(2, Math.min(Math.floor(w / d), this.props.maxCols, cards.length) || 1);
+    debug('Cols', cols);
 
     let heights = [];
     for (let i = 0; i < cols; i++) {
@@ -101,7 +106,6 @@ export default class HomeList extends React.Component {
     }
 
     cards.map((card) => {
-      card.removeClass('single');
       if (cols < 2) {
         card.css({
           marginLeft: 0,
