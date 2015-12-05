@@ -88,4 +88,6 @@ $navigationIconSize: 20px;
 $fontSizeButton: $fontSize;
 
 $defaultFont: "Roboto", Helvetica, Arial, sans-serif;
-$highlightFont: "Roboto Slab", monospace, serif;
+$titleFont: "FjallaOne", Helvetica, Arial, sans-serif;
+// $highlightFont: "Roboto Slab", monospace, serif;
+$highlightFont: $titleFont;
