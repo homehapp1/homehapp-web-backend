@@ -25,6 +25,7 @@
       float: left;
       position: relative;
       text-align: left;
+      font-size: 26 * $fs;
       padding: $p;
 
       h3 {
@@ -49,6 +50,10 @@
         line-height: 1.2em;
         width: $s;
         height: $s;
+
+        @include small() {
+          right: 0;
+        }
 
         & > * {
           display: table-cell;
@@ -79,6 +84,10 @@
         bottom: $contentPadding;
         z-index: 2;
         font-size: $fs * 22;
+
+        @include small() {
+          font-size: $fs * 20;
+        }
 
         &, .fa {
           font-weight: bold;
@@ -122,7 +131,6 @@
       .details {
         padding: $contentPadding;
         background-color: white;
-        font-size: 26 * $fs;
 
         .location {
           font-size: 24 * $fs;
@@ -138,7 +146,7 @@
 
         h3 {
           margin-bottom: 5px;
-          font-weight: $defaultWeight;
+          font-weight: 600;
         }
 
         .location {
