@@ -78,7 +78,7 @@
         left: $contentPadding;
         bottom: $contentPadding;
         z-index: 2;
-        font-size: $fontSizeSmall;
+        font-size: $fs * 22;
 
         &, .fa {
           font-weight: bold;
@@ -86,10 +86,11 @@
 
         i {
           &:before {
-            font-size: $fs * 22;
-            margin-right: 0.5em;
+            font-size: $fs * 30;
+            margin-right: 0.2em;
             display: inline-block;
-            vertical-align: middle;
+            vertical-align: baseline;
+            font-weight: 200;
           }
         }
 
