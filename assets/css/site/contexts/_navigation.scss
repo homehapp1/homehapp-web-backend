@@ -145,7 +145,7 @@
 
         a {
           display: block;
-          padding: $contentPadding / 2 0;
+          padding: 12px 0 2px;
           color: black;
           // font-style: italic;
           text-decoration: none;
@@ -198,6 +198,8 @@
       box-shadow: none;
       position: absolute;
       overflow: visible;
+      left: 220px;
+      letter-spacing: 0.14em;
 
       .secondary {
         display: none !important;
@@ -218,10 +220,12 @@
             color: white;
             font-style: normal;
             font-weight: $navigationWeight;
+          }
 
-            &:hover, &.active {
-              color: $turquoise;
-            }
+          a:hover, a.active {
+            // color: $turquoise;
+            color: white;
+            border-bottom: solid 2px white;
           }
 
           ul {
@@ -250,7 +254,7 @@
           }
 
           & + li {
-            margin-left: 1em;
+            margin-left: 1.5em;
           }
         }
       }

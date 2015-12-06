@@ -5,6 +5,11 @@
   right: 15px;
   z-index: $zNavigation - 1;
 
+  @include notSmall() {
+    top: $contentPadding;
+    right: $contentPadding / 2;
+  }
+
   ul {
     margin: 0;
     padding: 0;
