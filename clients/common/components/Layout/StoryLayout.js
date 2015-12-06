@@ -22,9 +22,25 @@ export default class StoryLayout extends React.Component {
     blocks: React.PropTypes.array.isRequired
   };
 
+  constructor(props) {
+    super(props);
+    this.blocks = this.validatedBlocks(props.blocks);;
+  }
+
+  validatedBlocks(blocks) {
+    let validated = [];
+
+    for (let block of blocks) {
+      if (!block || !block.template || !block.properties) {
+        continue;
+      }
+      validated.push(block);
+    }
+    return validated;
+  }
 
   setZ(item, index) {
-    item.properties.zIndex = -1 * (this.props.blocks.length - index);
+    item.properties.zIndex = -1 * (this.blocks.length - index);
   }
 
   getPrevTemplate(index) {
@@ -32,7 +48,7 @@ export default class StoryLayout extends React.Component {
       return null;
     }
 
-    return this.props.blocks[index - 1].template;
+    return this.blocks[index - 1].template;
   }
 
   getPrevTemplateClass(index) {
@@ -40,11 +56,11 @@ export default class StoryLayout extends React.Component {
   }
 
   getNextTemplate(index) {
-    if (index >= this.props.blocks.length - 1) {
+    if (index >= this.blocks.length - 1) {
       return null;
     }
 
-    return this.props.blocks[index + 1].template;
+    return this.blocks[index + 1].template;
   }
 
   getNextTemplateClass(index) {
@@ -52,7 +68,7 @@ export default class StoryLayout extends React.Component {
   }
 
   setClasses(item, index) {
-    if (!index || index >= this.props.blocks.length - 1) {
+    if (!index || index >= this.blocks.length - 1) {
       return null;
     }
 
@@ -295,7 +311,11 @@ export default class StoryLayout extends React.Component {
     return (
       <div className='story'>
         {
-          this.props.blocks.map((item, index) => {
+          this.blocks.map((item, index) => {
+            if (!item || !item.template) {
+              return null;
+            }
+
             let method = `get${item.template}`;
             this.setClasses(item, index);
 
