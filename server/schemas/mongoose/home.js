@@ -95,6 +95,9 @@ exports.loadSchemas = function (mongoose, next) {
       sellingPrice: {
         type: Number
       },
+      rentalPrice: {
+        type: Number
+      },
       councilTax: {
         type: Number
       }
