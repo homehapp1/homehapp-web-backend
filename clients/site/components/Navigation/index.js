@@ -120,6 +120,9 @@ export default class Navigation extends React.Component {
   }
 
   render() {
+    let onClick = (event) => {
+      event.preventDefault();
+    };
     return (
       <div id='navigation' ref='navigation'>
         <div ref='icon' className='icon'>
@@ -133,6 +136,7 @@ export default class Navigation extends React.Component {
             <li>
               <Link to='neighborhoodList' params={{city: 'london'}}>Neighbourhoods</Link>
             </li>
+            <li><a href="#" onClick={onClick.bind(this)}>Your home</a></li>
             <li><Link to='page' params={{slug: 'about'}}>About</Link></li>
           </ul>
           <SocialMedia className='secondary' />
