@@ -161,6 +161,9 @@
 
         .location {
           font-size: 24 * $fs;
+          font-weight: 400;
+          font-style: italic;
+          color: $fontGoldDark;
 
           @include small() {
             font-size: 24 * $fsm;
@@ -187,12 +190,6 @@
           @include small() {
             @include vendors(hyphens, auto);
           }
-        }
-
-        .location {
-          font-style: italic;
-          font-weight: $defaultWeight;
-          color: $fontGoldDark;
         }
 
         .price {
