@@ -17,90 +17,22 @@ exports.registerRoutes = (app) => {
     }
   ];
 
-  let updateHome = function updateHome(uuid, data) {
+  let updateHome = function updateHome(user, uuid, data) {
     debug('Update home with data', data);
 
-    if (data.agents) {
-      //let agents = [];
-      debug('Get agents');
-      let ids = [];
-      let uuids = [];
+    let query = {};
 
-      for (let agent of data.agents) {
-        if (typeof agent === 'object' && agent.id) {
-          agent = agent.id;
-        }
-
-        if (agent.toString().match(/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/)) {
-          // a7b4ca90-6ce4-40a2-bf49-bca9f6219700
-          debug('Matched UUID', agent);
-          uuids.push(agent.toString());
-        } else {
-          debug('Did not match UUID', agent);
-          ids.push(agent);
-        }
-      }
-      debug('Get for', uuids);
-
-      if (uuids.length) {
-        debug('Got UUIDS', uuids);
-        return new Promise((resolve) => {
-          QB.forModel('Agent')
-          .query({
-            uuid: {
-              $in: uuids
-            }
-          })
-          .findAll()
-          .fetch()
-          .then((result) => {
-            for (let agent of result.models) {
-              debug('Got agent', agent);
-              ids.push(agent.id);
-            }
-            data.agents = ids;
-            debug('Update with agents', data.agents);
-            updateHome(uuid, data)
-            .then((model) => {
-              resolve(model);
-            });
-          })
-          .catch((err) => {
-            debug('Failed', err);
-          });
-        });
-      }
-    }
-
-    if (data.location && data.location.neighborhood && String(data.location.neighborhood).match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{8}/)) {
-      debug('Get neighborhood', data.location.neighborhood);
-      return new Promise((resolve) => {
-        QB
-        .forModel('Neighborhood')
-        .findByUuid(data.location.neighborhood)
-        .fetch()
-        .then((result) => {
-          debug('Got neighborhood', result.model.title, result.model.id);
-          data.location.neighborhood = result.model;
-
-          QB
-          .forModel('Home')
-          .findByUuid(uuid)
-          .updateNoMultiset(data)
-          .then((model) => {
-            debug('Updated', model);
-            resolve(model);
-          })
-          .catch((err) => {
-            debug('Failed', err);
-          });
-        });
-      });
+    if (user) {
+      query.createdBy = user.id;
     }
 
     return QB
     .forModel('Home')
+    .query(query)
     .findByUuid(uuid)
+    .populate({
+      'location.neighborhood': {}
+    })
     .updateNoMultiset(data);
   };
 
@@ -262,11 +194,12 @@ exports.registerRoutes = (app) => {
     debug('API update home with uuid', req.params.uuid);
     debug('req.body', req.body);
 
-    return next(new BadRequest('invalid request body'));
-
     let data = req.body.home;
 
-    updateHome(req.params.uuid, data)
+    // Force enable the home for now
+    data.enabled = true;
+
+    updateHome(req.user, req.params.uuid, data)
     .then((model) => {
       res.json({
         status: 'ok',
