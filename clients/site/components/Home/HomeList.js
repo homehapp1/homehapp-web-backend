@@ -313,7 +313,7 @@ export default class HomeList extends React.Component {
                   }
                   break;
                 case 'rent':
-                  badge = (<span className='badge medium'><span>Let for rent</span></span>);
+                  badge = (<span className='badge medium'><span>For rent</span></span>);
                   if (home.formattedPrice) {
                     price = (
                       <p className='price'>
