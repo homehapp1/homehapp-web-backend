@@ -1,5 +1,7 @@
 import BaseQueryBuilder from './BaseQueryBuilder';
 import {NotFound} from '../../Errors';
+import {merge} from '../../Helpers';
+
 let debug = require('debug')('HomeQueryBuilder');
 
 export default class HomeQueryBuilder extends BaseQueryBuilder {
@@ -67,10 +69,16 @@ export default class HomeQueryBuilder extends BaseQueryBuilder {
 
   findByUuid(uuid) {
     this._queries.push((callback) => {
-      let cursor = this.Model.findOne({
+      let findQuery = {
         uuid: uuid,
         deletedAt: null
-      });
+      };
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
+      }
+
+      let cursor = this.Model.findOne(findQuery);
+
       this._configurePopulationForCursor(cursor);
       cursor.exec((err, model) => {
         if (err) {
