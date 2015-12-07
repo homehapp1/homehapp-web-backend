@@ -35,7 +35,7 @@ $contentPadding: 20px;
 $pageWidth: 1200px;
 $largeWidth: $pageWidth;
 $mediumWidth: $pageWidth;
-$smallWidth: 640px;
+$smallWidth: 700px;
 
 $navigationOffset: 65%;
 
@@ -88,4 +88,6 @@ $navigationIconSize: 20px;
 $fontSizeButton: $fontSize;
 
 $defaultFont: "Roboto", Helvetica, Arial, sans-serif;
-$highlightFont: "Roboto Slab", monospace, serif;
+$titleFont: "Fjalla One", "FjallaOne", Helvetica, Arial, sans-serif;
+// $highlightFont: "Roboto Slab", monospace, serif;
+$highlightFont: $titleFont;
