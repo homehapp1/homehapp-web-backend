@@ -186,7 +186,7 @@
   }
 }
 
-@include notSmall() {
+@media only screen and (min-width: 900px) {
   #navigation {
     .icon {
       display: none;
