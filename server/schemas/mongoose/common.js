@@ -35,6 +35,12 @@ exports.getImageSchema = function getImageSchema(Schema) {
     author: {
       type: String,
       default: ''
+    },
+    thumbnail: {
+      url: {
+        type: String
+      },
+      data: String
     }
   });
   image.virtual('aspectRatio').get(function() {
