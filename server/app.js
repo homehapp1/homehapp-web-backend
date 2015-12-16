@@ -424,7 +424,7 @@ exports.run = function(projectName, afterRun) {
               if (app.authenticationRoutes) {
                 let url = encodeURIComponent(req.url);
                 let redirectUrl = `${app.authenticationRoutes.login}?message=${msg}&redirectUrl=${url}`;
-                res.redirect(302, redirectUrl);
+                res.redirect(redirectUrl);
                 return true;
               }
             }
@@ -476,7 +476,7 @@ exports.run = function(projectName, afterRun) {
           if (isJSONRequest) {
             payload = prepareJSONError();
           } else if (handleUnauthenticatedGetRequest()) {
-            return resolve();
+            return next();
           }
 
           if (err.stack && app.config.env !== 'production') {
