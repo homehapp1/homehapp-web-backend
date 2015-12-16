@@ -9,6 +9,20 @@ module.exports = (projectRoot) => {
   let host = `http://${hostname}:${port}`;
 
   let config = {
+    authentication: {
+      adapters: ["local"],
+      adapterConfigs: {
+        local: {
+          cookie: {
+            maxAge: 86000
+          },
+          session: {
+            name: "homehapp:login",
+            secret: "really-secret-string-here"
+          }
+        }
+      }
+    },
     security: {
       csrfSkipRoutes: [
         /api\/twilio/
