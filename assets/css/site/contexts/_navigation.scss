@@ -19,6 +19,31 @@
     @include vendors(transition-timing-function, ease-out);
   }
 
+  .login {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: $contentPadding;
+    background-color: $darkBrown;
+    padding: $contentPadding / 2;
+    color: white;
+    background-image: url('../images/user-profile.svg');
+    background-position: center 25%;
+    background-size: 50% auto;
+    width: 121px * 0.8;
+    height: 127px * 0.8;
+    padding-top: 85px * 0.8;
+    font-weight: 400;
+    text-align: center;
+
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, $transitionDurationFast);
+
+    &:hover {
+      background-color: $gold;
+    }
+  }
+
   .icon {
     display: block;
     width: $navigationIconSize;
