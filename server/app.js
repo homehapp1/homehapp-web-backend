@@ -476,7 +476,7 @@ exports.run = function(projectName, afterRun) {
           if (isJSONRequest) {
             payload = prepareJSONError();
           } else if (handleUnauthenticatedGetRequest()) {
-            return next();
+            return resolve();
           }
 
           if (err.stack && app.config.env !== 'production') {
