@@ -9,9 +9,9 @@ exports.registerRoutes = (app) => {
     debug(`/${req.params.slug}`);
 
     // Restrict immediately some keywords out
-    if (['home', 'homes', 'search', 'neighborhoods', 'api'].indexOf(req.params.slug) !== -1) {
+    if (['home', 'homes', 'search', 'neighborhoods', 'api', 'auth'].indexOf(req.params.slug) !== -1) {
       debug('Reserved keyword, pass through');
-      next();
+      return next();
     }
 
     QB
@@ -34,6 +34,7 @@ exports.registerRoutes = (app) => {
     })
     .catch(() => {
       // Pass the 404 headers, but allow React to render an error page
+      debug('page not found');
       res.status(404);
       next();
     });
