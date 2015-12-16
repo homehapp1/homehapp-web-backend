@@ -75,6 +75,7 @@ const paths = {
       images: ['assets/images/**/*'],
       fonts: 'assets/fonts/**/*',
       statics: './build/statics/admin',
+      migrators: 'assets/js/admin/migrators/**/*.js',
       distBase: './dist/admin'
     },
     build: './build/clients'
@@ -231,6 +232,19 @@ gulp.task('copy-client-images', () => {
     .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].statics, 'images')))
     .pipe(g.size({title: 'Client images'}));
 });
+gulp.task('copy-client-migrators', () => {
+  if (!paths.clients[PROJECT_NAME].migrators) {
+    return;
+  }
+
+  if (!DEBUG) {
+    return gulp.src(paths.clients[PROJECT_NAME].migrators)
+      .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].distBase, 'js', 'migrators')));
+  }
+  return gulp.src(paths.clients[PROJECT_NAME].migrators)
+    .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].statics, 'js', 'migrators')))
+    .pipe(g.size({title: 'Client migrator scripts'}));
+});
 gulp.task('copy-client-min-js', () => {
   return gulp.src(path.join(paths.clients[PROJECT_NAME].statics, 'js', '*.min.js'))
     .pipe(gulp.dest(path.join(paths.clients[PROJECT_NAME].distBase, 'js')));
@@ -257,9 +271,9 @@ gulp.task('webpack:build-admin-client', (callback) => {
   });
 });
 
-gulp.task('compile-site', ['compile-client-styles', 'copy-client-fonts', 'copy-client-images', 'webpack:build-site-client']);
+gulp.task('compile-site', ['copy-client-migrators', 'compile-client-styles', 'copy-client-fonts', 'copy-client-images', 'webpack:build-site-client']);
 
-gulp.task('compile-admin', ['compile-client-styles', 'copy-client-fonts', 'copy-client-images', 'webpack:build-admin-client']);
+gulp.task('compile-admin', ['copy-client-migrators', 'compile-client-styles', 'copy-client-fonts', 'copy-client-images', 'webpack:build-admin-client']);
 
 gulp.task('copy-client-templates', () => {
   return gulp.src('./clients/**/*.html')
@@ -279,7 +293,7 @@ gulp.task('build-clients', clientBuildDependencies, () => {
     .pipe(g.size({title: 'Clients'}));
 });
 
-gulp.task('minify-clients', ['minify-client-styles', 'copy-client-fonts', 'copy-client-images', 'copy-client-min-js'], () => {
+gulp.task('minify-clients', ['minify-client-styles', 'copy-client-migrators', 'copy-client-fonts', 'copy-client-images', 'copy-client-min-js'], () => {
 });
 
 gulp.task('clean-dist', cb => del(['dist/*', '!dist/.git'], {dot: true}, cb));
