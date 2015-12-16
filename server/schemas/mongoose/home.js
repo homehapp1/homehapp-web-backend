@@ -118,6 +118,8 @@ exports.loadSchemas = function (mongoose, next) {
       blocks: [schemas.HomeStoryBlock]
     },
     images: [schemas.HomeImage],
+    epc: [schemas.HomeImage],
+    floorplans: [schemas.HomeImage],
     brochures: [schemas.HomeImage],
     // Flags
     visible: {
