@@ -85,7 +85,7 @@ exports.register = function (parent, app, config) {
 
   app.authenticatedRoute.push(function(req, res, next) {
     if (!req.url.toString().match(/^\/auth/) && !req.isAuthenticated()) {
-      return next(new Forbidden('Not enough permissions'));
+      return next(new Forbidden('Not authenticated'));
     }
 
     next();
