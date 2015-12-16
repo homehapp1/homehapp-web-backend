@@ -1,11 +1,12 @@
 /*eslint-env es6 */
 
-
 import React from 'react';
 import Router from 'react-router';
 let {Route, DefaultRoute, NotFoundRoute} = Router;
 
 import Application from './Application';
+
+import Lander from './Homepage/Lander';
 import Homepage from './Homepage';
 
 // Home handlers
@@ -26,6 +27,8 @@ import NeighborhoodList from './Neighborhood/NeighborhoodList';
 import NeighborhoodContainer from './Neighborhood/NeighborhoodContainer';
 import NeighborhoodHomeFilterContainer from './Neighborhood/NeighborhoodHomeFilterContainer';
 
+import Login from './User/Login';
+
 import Partners from './Partners';
 import PartnersContact from './Partners/Contact';
 
@@ -34,7 +37,14 @@ import Page from './Page';
 
 module.exports = (
   <Route name='app' path='/' handler={Application}>
-    <DefaultRoute handler={Homepage}/>
+    <DefaultRoute handler={Lander}/>
+    <Route name='homepage' path='/mainpage' handler={Homepage} />
+    <Route name='user' path='/user'>
+      <Route name='login' path='login' handler={Login} />
+    </Route>
+    <Route name='auth' path='/auth'>
+      <Route name='authLogin' path='login' handler={Login} />
+    </Route>
     <Route name='homes' path='/homes'>
       <Route name='contactLetting' path='letting' handler={HomeOwner} />
       <Route name='contactSelling' path='selling' handler={HomeOwner} />
