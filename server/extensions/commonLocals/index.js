@@ -22,6 +22,15 @@ export function register(app) {
     let appLocals = JSON.parse(JSON.stringify(app.locals)) || {};
     let resLocals = JSON.parse(JSON.stringify(res.locals)) || {};
 
+    let jsIncludeHtml = '';
+
+    if (ext.includeJS && ext.includeJS.length) {
+      ext.includeJS.forEach((path) => {
+        let tag = `<script type="text/javascript" src="${path}"></script>`;
+        jsIncludeHtml += tag;
+      });
+    }
+
     let opts = merge({
       layout: 'layout',
       staticPath: app.staticPath,
@@ -35,7 +44,7 @@ export function register(app) {
       env: app.config.env,
       html: '',
       cssIncludeHtml: '',
-      jsIncludeHtml: '',
+      jsIncludeHtml: jsIncludeHtml,
       bodyClass: '',
       metadatas: [],
       openGraph: {}
