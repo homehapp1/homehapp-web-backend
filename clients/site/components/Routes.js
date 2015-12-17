@@ -28,6 +28,7 @@ import NeighborhoodContainer from './Neighborhood/NeighborhoodContainer';
 import NeighborhoodHomeFilterContainer from './Neighborhood/NeighborhoodHomeFilterContainer';
 
 import Login from './User/Login';
+import Logout from './User/Logout';
 
 import Partners from './Partners';
 import PartnersContact from './Partners/Contact';
@@ -39,8 +40,9 @@ module.exports = (
   <Route name='app' path='/' handler={Application}>
     <DefaultRoute handler={Lander}/>
     <Route name='homepage' path='/mainpage' handler={Homepage} />
-    <Route name='user' path='/user'>
+    <Route name='user' path='/auth'>
       <Route name='login' path='login' handler={Login} />
+      <Route name='logout' path='logout' handler={Logout} />
     </Route>
     <Route name='auth' path='/auth'>
       <Route name='authLogin' path='login' handler={Login} />
