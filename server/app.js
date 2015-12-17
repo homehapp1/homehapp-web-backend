@@ -368,6 +368,16 @@ exports.run = function(projectName, afterRun) {
               res.locals.data.ApplicationStore.csrf = req.csrfToken();
             }
 
+            if (req.query.redirectUrl) {
+              res.locals.data.ApplicationStore.redirectUrl = req.query.redirectUrl;
+            }
+
+            if (req.body && req.body.redirectUrl) {
+              res.locals.data.ApplicationStore.redirectUrl = req.body.redirectUrl;
+            }
+
+            debug('ApplicationStore', res.locals.data.ApplicationStore);
+
             let clientConfig = app.config.clientConfig || {};
             // Extra configs could be defined here
             clientConfig = Helpers.merge(clientConfig, {
