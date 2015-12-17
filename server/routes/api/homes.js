@@ -17,6 +17,36 @@ exports.registerRoutes = (app) => {
     }
   ];
 
+  let populateAttributes = {
+    'location.neighborhood': {},
+    createdBy: 'uuid',
+    updatedBy: 'uuid'
+  };
+
+  let getId = function getId(obj) {
+    if (typeof obj === 'string' || !obj) {
+      return obj;
+    }
+
+    if (typeof obj.uuid === 'string') {
+      return obj.uuid;
+    }
+
+    if (typeof obj.id === 'string') {
+      return obj.id;
+    }
+
+    return obj;
+  };
+
+  // Strip the model from Mongoose features and normalize UUIDs
+  let normalizeHome = function normalizeHome(home) {
+    home = JSON.parse(JSON.stringify(home));
+    home.createdBy = getId(home.createdBy);
+    home.updatedBy = getId(home.updatedBy);
+    return home;
+  };
+
   let updateHome = function updateHome(user, uuid, data) {
     debug('Update home with data', data);
 
@@ -30,9 +60,7 @@ exports.registerRoutes = (app) => {
     .forModel('Home')
     .query(query)
     .findByUuid(uuid)
-    .populate({
-      'location.neighborhood': {}
-    })
+    .populate(populateAttributes)
     .updateNoMultiset(data);
   };
 
@@ -112,16 +140,17 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Home')
     .parseRequestArguments(req)
-    .populate({
-      'location.neighborhood': {}
-    })
+    .populate(populateAttributes)
     .query(query)
     .findAll()
     .fetch()
     .then((result) => {
+      let homes = result.models.map((home) => {
+        return normalizeHome(home);
+      });
       res.json({
         status: 'ok',
-        homes: result.models
+        homes: homes
       });
     })
     .catch(next);
@@ -157,15 +186,13 @@ exports.registerRoutes = (app) => {
   app.get('/api/homes/:uuid', function(req, res, next) {
     QB
     .forModel('Home')
-    .populate({
-      'location.neighborhood': {}
-    })
+    .populate(populateAttributes)
     .findByUuid(req.params.uuid)
     .fetch()
     .then((result) => {
       res.json({
         status: 'ok',
-        home: result.home
+        home: normalizeHome(result.home)
       });
     })
     .catch(next);
@@ -203,7 +230,7 @@ exports.registerRoutes = (app) => {
     .then((model) => {
       res.json({
         status: 'ok',
-        home: model
+        home: normalizeHome(model)
       });
     })
     .catch(next);
@@ -239,7 +266,8 @@ exports.registerRoutes = (app) => {
     })
     .then((model) => {
       res.json({
-        status: 'ok', home: model
+        status: 'ok',
+        home: normalizeHome(model)
       });
     })
     .catch(next);
@@ -273,7 +301,7 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       res.json({
         status: 'deleted',
-        home: result.model
+        home: normalizeHome(result.model)
       });
     })
     .catch(next);
