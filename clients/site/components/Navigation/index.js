@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import DOMManipulator from '../../../common/DOMManipulator';
 import SocialMedia from '../Navigation/SocialMedia';
+import UserNavigation from '../User/Navigation';
 
 // let debug = require('debug')('Navigation');
 
@@ -125,7 +126,7 @@ export default class Navigation extends React.Component {
     };
     return (
       <div id='navigation' ref='navigation'>
-        <Link to='login' className='login'>Log in</Link>
+        <UserNavigation />
         <div ref='icon' className='icon'>
           <div className='bar top'></div>
           <div className='bar middle'></div>
