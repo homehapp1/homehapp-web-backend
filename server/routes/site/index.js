@@ -2,6 +2,7 @@ import QueryBuilder from '../../lib/QueryBuilder';
 import { setLastMod, initMetadata } from '../../../clients/common/Helpers';
 import HomesAPI from '../../api/HomesAPI';
 let debug = require('debug')('/');
+import {Forbidden} from '../../lib/Errors';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -14,6 +15,15 @@ exports.registerRoutes = (app) => {
       let url = req.url.replace(/\/($|\?)/, '$1');
       return res.redirect(301, url);
     }
+    next();
+  });
+
+  app.get('*', function(req, res, next) {
+    if (req.url.toString() !== '/' && !req.url.toString().match(/^\/auth/) && !req.isAuthenticated()) {
+      debug('Authentication required');
+      return next(new Forbidden('Not authenticated'));
+    }
+
     next();
   });
 
