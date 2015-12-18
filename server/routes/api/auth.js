@@ -67,10 +67,12 @@ exports.registerRoutes = (app) => {
    * @apiUse MobileRequestHeaders
    * @apiParam {String} service     Name of the external service. Enum[facebook, google]
    * @apiParam {Object} user        Details of the user
-   * @apiParam {String} user.id              Users Id from the service
-   * @apiParam {String} user.email           Users email from the service
-   * @apiParam {String} user.token           Users token from the service
-   * @apiParam {String} user.displayName     Users Fullname from the service
+   * @apiParam {String} user.id              User's Id from the service
+   * @apiParam {String} user.email           User's email from the service
+   * @apiParam {String} user.token           User's token from the service
+   * @apiParam {String} [user.displayName]   User's full name from the service
+   * @apiParam {String} [user.firstname]     User's first name from the service
+   * @apiParam {String} [user.lastname]      User's last name from the service
    * @apiUse AuthSuccessResponse
    *
    * @apiSuccessExample {json} Success-Response:
@@ -150,6 +152,14 @@ exports.registerRoutes = (app) => {
           }
           userData.firstname = firstname;
           userData.lastname = lastname;
+        }
+
+        if (data.firstname) {
+          userData.firstname = data.firstname;
+        }
+
+        if (data.lastname) {
+          userData.lastname = data.lastname;
         }
 
         QB
@@ -240,8 +250,8 @@ exports.registerRoutes = (app) => {
    *
    * @apiPermission authenticated
    * @apiUse MobileRequestHeaders
-   * @apiParam {Object} user              User details
-   * @apiParam {String} user.nickname    Nickname for user
+   * @apiParam {Object} user             User details
+   * @apiParam {String} user.nickname    Nickname for the user
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
