@@ -118,6 +118,52 @@ exports.registerRoutes = (app) => {
     * @apiParam {Object} [home.story]                   Story block container object
     * @apiParam {Boolean} [home.story.enabled=false]    Switch to determine if the story is public
     * @apiParam {Array} [home.story.blocks]             An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
+    *
+    * @apiParamExample {json} Example
+    * {
+    *   "title": "Home sweet home",
+    *   "announcementType": "story",
+    *   "description": "I am an example",
+    *   "location": {
+    *     "address": "221B Baker Street",
+    *     "city": "Exampleby",
+    *     "country": "Great Britain",
+    *     "coordinates": [
+    *       51.4321,
+    *       -0.1234
+    *     ],
+    *     "neighborhood": "00000000-0000-0000-0000-000000000000"
+    *   },
+    *   "images": [
+    *     {
+    *       "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+    *       "alt": "View towards the sunset",
+    *       "width": 4200,
+    *       "height": 2500
+    *     },
+    *     {
+    *       ...
+    *     }
+    *   ],
+    *   "story": {
+    *     "enabled": true,
+    *     "blocks": [
+    *       {
+    *         "template": "BigImage",
+    *         "properties": {
+    *           "image": {
+    *             "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+    *             "alt": "View towards the sunset",
+    *             "width": 4200,
+    *             "height": 2500
+    *           },
+    *           "title": "A great spectacle",
+    *           "description": "The evening routines of the Sun"
+    *         }
+    *       }
+    *     ]
+    *   }
+    * }
     */
 
   /**
@@ -139,8 +185,8 @@ exports.registerRoutes = (app) => {
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'ok',
-   *       'homes': [...]
+   *       "status": "ok",
+   *       "homes": [...]
    *     }
    *
    */
@@ -191,16 +237,16 @@ exports.registerRoutes = (app) => {
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'ok',
-   *       'home': {...}
+   *       "status": "ok",
+   *       "home": {...}
    *     }
    *
    * @apiError (404) NotFound   Home with given id was not found
    * @apiErrorExample Error-Response:
    *     HTTP/1.1 404 Not Found
    *     {
-   *       'status': 'failed',
-   *       'error': 'model not found'
+   *       "status": "failed",
+   *       "error": "model not found"
    *     }
    */
   app.get('/api/homes/:uuid', function(req, res, next) {
@@ -232,8 +278,8 @@ exports.registerRoutes = (app) => {
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'ok',
-   *       'home': {...}
+   *       "status": "ok",
+   *       "home": {...}
    *     }
    *
    */
@@ -270,8 +316,8 @@ exports.registerRoutes = (app) => {
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'ok',
-   *       'home': {...}
+   *       "status": "ok",
+   *       "home": {...}
    *     }
    *
    */
@@ -303,14 +349,13 @@ exports.registerRoutes = (app) => {
    * @apiParam {String} id Home's internal id
    *
    * @apiUse MobileRequestHeaders
-   * @apiUse HomeBody
    * @apiUse HomeSuccessResponse
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'deleted',
-   *       'home': {...}
+   *       "status": "deleted",
+   *       "home": {...}
    *     }
    */
   app.delete('/api/homes/:uuid', app.authenticatedRoute, function(req, res, next) {
