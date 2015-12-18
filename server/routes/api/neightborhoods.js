@@ -40,8 +40,8 @@ exports.registerRoutes = (app) => {
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'ok',
-   *       'neighborhoods': [...]
+   *       "status": "ok",
+   *       "neighborhoods": [...]
    *     }
    *
    */
@@ -135,5 +135,4 @@ exports.registerRoutes = (app) => {
     })
     .catch(next);
   });
-
 };
