@@ -225,5 +225,6 @@ admin@homehapp.com / ekb7iLMGQsHYL2nr5OMnf88+IuHn5jDg
 - Production site: https://www.homehapp.com/
 - Production admin: https://admin.homehapp.com/
 - Production mobile API: https://mobile-api.homehapp.com/
+- Production mobile API documentation: https://mobile-api.homehapp.com/api-docs/
 - Staging site: http://alpha.homehapp.com:8080/
 - Staging admin: http://staging-admin.homehapp.com:8080/
