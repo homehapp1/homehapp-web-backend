@@ -236,7 +236,7 @@ exports.registerRoutes = (app) => {
    * @apiName UpdateUser
    * @apiGroup Authentication
    *
-   * @apiDescription Possibility to update users nickname only currently.
+   * @apiDescription Possibility to update user's nickname only currently.
    *
    * @apiPermission authenticated
    * @apiUse MobileRequestHeaders
@@ -288,7 +288,7 @@ exports.registerRoutes = (app) => {
    * @apiName CheckSessionValidity
    * @apiGroup Authentication
    *
-   * @apiDescription Allows for checking wether the session is valid or not
+   * @apiDescription Allows for checking if the session is valid
    *
    * @apiPermission authenticated
    * @apiUse MobileRequestHeaders
