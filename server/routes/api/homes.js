@@ -70,7 +70,7 @@ exports.registerRoutes = (app) => {
    *
    * @apiSuccess {String} id                Uuid of the home
    * @apiSuccess {String} slug              URL Slug of the Home
-   * @apiSuccess {String} announcementType  Wether this home is for rent or for buy. Enum ['buy', 'rent']
+   * @apiSuccess {String} announcementType  Home announcement type. Enum ['buy', 'rent', 'story']
    * @apiSuccess {String} description       Description of the Home
    * @apiSuccess {Object} details           Home details
    * @apiSuccess {Number} details.area      Area in square meters
@@ -95,9 +95,29 @@ exports.registerRoutes = (app) => {
     * @apiDefine HomeBody
     * @apiVersion 0.1.0
     *
-    * @apiParam {Object} home                  Home object
-    * @apiParam {String} home.title            Title of the Home
-    *
+    * @apiParam {Object} home                   Home object
+    * @apiParam {String} [home.title]             Title of the Home
+    * @apiParam {String} home.announcementType  Home announcement type. Enum ['buy', 'rent', 'story']
+    * @apiParam {String} home.description       Textual description of the Home
+    * @apiParam {Object} [home.details]         Location details
+    * @apiParam {Number} [home.details.area]    Numeric surface area
+    * @apiParam {Object} [home.location.address]            Location address details
+    * @apiParam {String} [home.location.address.street]     Street address
+    * @apiParam {String} [home.location.address.apartment]  Apartment
+    * @apiParam {String} [home.location.address.city]       City
+    * @apiParam {String} [home.location.address.zipcode]    zipcode
+    * @apiParam {String} [home.location.address.country]    Country
+    * @apiParam {Array}  [home.location.coordinates]        Map coordinates. [LAT, LON]
+    * @apiParam {String} [home.location.neighborhood]       UUID of the Neighborhood
+    * @apiParam {Object} [home.costs]                   Costs details
+    * @apiParam {String} [home.costs.currency='GBP']    Currency. Enum ['EUR', 'GBP', 'USD']
+    * @apiParam {Number} [home.costs.sellingPrice]      Selling price
+    * @apiParam {Number} [home.costs.rentalPrice]       Rental price
+    * @apiParam {Number} [home.costs.councilTax]        Council tax
+    * @apiParam {Array} [home.images]                   An array of <a href="#api-Shared-Images">Images</a>
+    * @apiParam {Object} [home.story]                   Story block container object
+    * @apiParam {Boolean} [home.story.enabled=false]    Switch to determine if the story is public
+    * @apiParam {Array} [home.story.blocks]             An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
     */
 
   /**
@@ -306,5 +326,4 @@ exports.registerRoutes = (app) => {
     })
     .catch(next);
   });
-
 };
