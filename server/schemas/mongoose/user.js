@@ -125,16 +125,22 @@ exports.loadSchemas = function (mongoose, next) {
     return '<unidentified johndoe>';
   });
   schemas.User.virtual('name').get(function () {
-    if (!this.firstname || !this.lastname) {
+    let firstname = this.firstname || this.givenName || '';
+    let lastname = this.lastname || this.familyName || '';
+
+    if (!firstname && !lastname) {
       return this.username;
     }
-    return [this.firstname, this.lastname].join(' ');
+    return [firstname, lastname].join(' ');
   });
   schemas.User.virtual('rname').get(function () {
-    if (!this.firstname || !this.lastname) {
+    let firstname = this.firstname || this.givenName || '';
+    let lastname = this.lastname || this.familyName || '';
+
+    if (!firstname && !lastname) {
       return this.username;
     }
-    return [this.lastname, this.firstname].join(', ');
+    return [lastname, firstname].join(', ').replace(/^, /, '');
   });
   schemas.User.virtual('password').set(function (password) {
     debug('Set password', password);
@@ -171,6 +177,15 @@ exports.loadSchemas = function (mongoose, next) {
       'firstname', 'lastname', 'email'
     ];
   };
+  schemas.User.virtual('publicData').get(function() {
+    return {
+      firstname: this.firstname || this.givenName || '',
+      lastname: this.lastname || this.familyName || '',
+      email: this.email,
+      name: this.name,
+      rname: this.rname
+    };
+  });
 
   Object.keys(schemas).forEach((name) => {
     loadCommonPlugins(schemas[name], name, mongoose);
