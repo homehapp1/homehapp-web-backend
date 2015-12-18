@@ -219,3 +219,11 @@ admin@homehapp.com / ekb7iLMGQsHYL2nr5OMnf88+IuHn5jDg
 2. For running the site use `npm run dev`
 3. For running the admin interface use `npm run dev-admin`
 4. For running the mobile api use `npm run dev-api`
+
+# Endpoints
+
+- Production site: https://www.homehapp.com/
+- Production admin: https://admin.homehapp.com/
+- Production mobile API: https://mobile-api.homehapp.com/
+- Staging site: http://alpha.homehapp.com:8080/
+- Staging admin: http://staging-admin.homehapp.com:8080/
