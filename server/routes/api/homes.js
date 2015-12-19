@@ -84,6 +84,10 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {String} location.address.country   Country
    * @apiSuccess {Array}  location.coordinates   Map coordinates. [LAT, LON]
    * @apiSuccess {Object} location.neighborhood   Neighborhood object TODO: Define
+   * @apiSuccess {Array} images                   An array of <a href="#api-Shared-Images">Images</a>
+   * @apiSuccess {Array} epc                      An array of <a href="#api-Shared-Images">Images</a>, dedicated to EPC
+   * @apiSuccess {Array} floorplans               An array of <a href="#api-Shared-Images">Images</a>, dedicated to floorplans
+   * @apiSuccess {Array} brochures                An array of <a href="#api-Shared-Images">Images</a>, dedicated to brochures
    * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
    * @apiSuccess {Datetime} updatedAt       ISO-8601 Formatted Updation Datetime
    * @apiSuccess {Integer} createdAtTS      EPOCH formatted timestamp of the creation time
@@ -114,7 +118,10 @@ exports.registerRoutes = (app) => {
     * @apiParam {Number} [home.costs.sellingPrice]      Selling price
     * @apiParam {Number} [home.costs.rentalPrice]       Rental price
     * @apiParam {Number} [home.costs.councilTax]        Council tax
-    * @apiParam {Array} [home.images]                   An array of <a href="#api-Shared-Images">Images</a>
+    * @apiParam {Array}  [home.images]                  An array of <a href="#api-Shared-Images">Images</a>
+    * @apiParam {Array}  [home.epc]                     An array of <a href="#api-Shared-Images">Images</a>, dedicated to EPC
+    * @apiParam {Array}  [home.floorplans]              An array of <a href="#api-Shared-Images">Images</a>, dedicated to floorplans. Set the floorplan name as image.alt for each image.
+    * @apiParam {Array}  [home.brochures]               An array of <a href="#api-Shared-Images">Images</a>, dedicated to brochures. Set the printable brochure name as image.alt for each image.
     * @apiParam {Object} [home.story]                   Story block container object
     * @apiParam {Boolean} [home.story.enabled=false]    Switch to determine if the story is public
     * @apiParam {Array} [home.story.blocks]             An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
