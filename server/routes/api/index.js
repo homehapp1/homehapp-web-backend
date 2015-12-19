@@ -14,6 +14,8 @@ exports.registerRoutes = (app) => {
    *       "X-Homehapp-Client": "IOS/Apple;iPhone Simulator;x86_64;8.4.0/C9853654-3EBF-4BB5-9039-23DD0404A968/en",
    *       "X-Homehapp-Auth-Token": "USER TOKEN (IF APPLICAPLE)"
    *     }
+   * @apiHeaderExample {curl} CURL alternative
+   * curl-X METHOD URL -H "X-X-Homehapp-Api-Key: API KEY" "X-Homehapp-Client: IOS/Apple;iPhone Simulator;x86_64;8.4.0/C9853654-3EBF-4BB5-9039-23DD0404A968/en" -H "X-Homehapp-Auth-Token: USER TOKEN (IF APPLICAPLE)" --data "PAYLOAD"
    */
 
   // perform device info logging
