@@ -91,6 +91,9 @@ exports.registerRoutes = (app) => {
       return next(new Error('no user found from request!'));
     }
 
-    res.send({status: 'ok', user: req.user});
+    res.send({
+      status: 'ok',
+      user: req.user.publicData
+    });
   });
 };

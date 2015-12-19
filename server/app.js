@@ -344,6 +344,9 @@ exports.run = function(projectName, afterRun) {
                 res.locals.data.AuthStore = {};
               }
               res.locals.data.AuthStore.loggedIn = !!(req.user);
+              if (req.user) {
+                res.locals.data.AuthStore.user = req.user.publicData || {};
+              }
             }
             next();
           });
