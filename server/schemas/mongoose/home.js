@@ -1,4 +1,4 @@
-import {loadCommonPlugins, commonJsonTransform, getImageSchema, getStoryBlockSchema, getMainImage, populateMetadata} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageFields, getImageSchema, getStoryBlockSchema, getMainImage, populateMetadata} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -118,7 +118,8 @@ exports.loadSchemas = function (mongoose, next) {
       blocks: [schemas.HomeStoryBlock]
     },
     images: [schemas.HomeImage],
-    epc: [schemas.HomeImage],
+    mainImage: getImageFields(),
+    epc: getImageFields(),
     floorplans: [schemas.HomeImage],
     brochures: [schemas.HomeImage],
     // Flags
@@ -192,15 +193,11 @@ exports.loadSchemas = function (mongoose, next) {
     return `${String(Math.round(price)).replace(/(\d)(?=(\d{3})+$)/g, '$1,')}`;
   });
 
-  schemas.Home.virtual('mainImage').get(function() {
-    return getMainImage(this);
-  });
-
   schemas.Home.statics.editableFields = function () {
     return [
       'title', 'description', 'location', 'costs', 'story', 'amenities',
       'facilities', 'attributes', 'images', 'announcementType', 'brochures',
-      'epc', 'floorplans', 'properties', 'enabled'
+      'mainImage', 'epc', 'floorplans', 'properties', 'enabled'
     ];
   };
 

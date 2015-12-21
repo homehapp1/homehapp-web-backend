@@ -5,9 +5,8 @@ import Mongoose from 'mongoose';
 let Entities = require('html-entities').Html4Entities;
 let entities = new Entities();
 
-
-exports.getImageSchema = function getImageSchema(Schema) {
-  let image = new Schema({
+exports.getImageFields = function getImageFields() {
+  return {
     url: {
       type: String
     },
@@ -41,7 +40,11 @@ exports.getImageSchema = function getImageSchema(Schema) {
       dataVersion: Number,
       url: String
     }
-  });
+  };
+};
+
+exports.getImageSchema = function getImageSchema(Schema) {
+  let image = new Schema(exports.getImageFields());
   image.virtual('aspectRatio').get(function() {
     return this.width / this.height;
   });

@@ -84,8 +84,8 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {String} location.address.country   Country
    * @apiSuccess {Array}  location.coordinates   Map coordinates. [LAT, LON]
    * @apiSuccess {Object} location.neighborhood   Neighborhood object TODO: Define
-   * @apiSuccess {Array} images                   An array of <a href="#api-Shared-Images">Images</a>
-   * @apiSuccess {Array} epc                      An array of <a href="#api-Shared-Images">Images</a>, dedicated to EPC
+   * @apiSuccess {Array} epc                      EPC <a href="#api-Shared-Images">Image</a> or PDF
+   * @apiSuccess {Array} mainImage                Main <a href="#api-Shared-Images">Image</a> of the home
    * @apiSuccess {Array} floorplans               An array of <a href="#api-Shared-Images">Images</a>, dedicated to floorplans
    * @apiSuccess {Array} brochures                An array of <a href="#api-Shared-Images">Images</a>, dedicated to brochures
    * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
@@ -257,6 +257,7 @@ exports.registerRoutes = (app) => {
    *     }
    */
   app.get('/api/homes/:uuid', function(req, res, next) {
+    debug('Try by uuid', req.params.uuid);
     QB
     .forModel('Home')
     .populate(populateAttributes)
@@ -310,11 +311,10 @@ exports.registerRoutes = (app) => {
   });
 
   /**
-   * @api {post} /api/homes Create home
+   * @api {post} /api/homes Create a home
    * @apiVersion 0.1.0
    * @apiName CreateHome
    * @apiGroup Homes
-   * @apiDescription Creates home, currently without authentication
    *
    * @apiUse MobileRequestHeaders
    * @apiUse HomeBody
@@ -351,7 +351,7 @@ exports.registerRoutes = (app) => {
    * @apiVersion 0.1.0
    * @apiName DeleteHome
    * @apiGroup Homes
-   * @apiDescription Deletes given home
+   * @apiDescription Deletes the given home
    *
    * @apiParam {String} id Home's internal id
    *
