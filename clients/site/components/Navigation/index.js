@@ -4,6 +4,8 @@ import DOMManipulator from '../../../common/DOMManipulator';
 import SocialMedia from '../Navigation/SocialMedia';
 import UserNavigation from '../User/Navigation';
 
+import AuthStore from '../../../common/stores/AuthStore';
+
 // let debug = require('debug')('Navigation');
 
 export default class Navigation extends React.Component {
@@ -18,6 +20,14 @@ export default class Navigation extends React.Component {
     this.showNavigation = this.showNavigation.bind(this);
     this.onDocumentClick = this.onDocumentClick.bind(this);
     this.onResize = this.onResize.bind(this);
+
+    this.storeListener = this.onStoreChange.bind(this);
+  }
+
+  state = {
+    user: AuthStore.getState().user,
+    loggedIn: AuthStore.getState().loggedIn,
+    error: AuthStore.getState().error
   }
 
   componentDidMount() {
@@ -43,6 +53,13 @@ export default class Navigation extends React.Component {
 
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
     window.addEventListener('resize', this.onResize);
+
+    AuthStore.listen(this.storeListener);
+
+    // Fetch the user only if the loggedIn status is null, i.e. implicit
+    if (this.state.loggedIn === null) {
+      AuthStore.fetchUser();
+    }
   }
 
   componentWillUnmount() {
@@ -53,6 +70,12 @@ export default class Navigation extends React.Component {
     this.navigation.removeEvent('mouseout', this.hideNavigation, false);
     window.removeEventListener('resize', this.onResize);
     this.onResize();
+
+    AuthStore.unlisten(this.storeListener);
+  }
+
+  onStoreChange(state) {
+    this.setState(state);
   }
 
   onResize() {
@@ -120,10 +143,31 @@ export default class Navigation extends React.Component {
     return false;
   }
 
-  render() {
+  getNavigation() {
+    if (!this.state.loggedIn) {
+      return null;
+    }
+
     let onClick = (event) => {
       event.preventDefault();
     };
+
+    return (
+      <div className='container' ref='container'>
+        <ul>
+          <li><Link to='homeStories'>Home stories</Link></li>
+          <li>
+            <Link to='neighborhoodList' params={{city: 'london'}}>Neighbourhoods</Link>
+          </li>
+          <li><a href='#' onClick={onClick.bind(this)}>Your home</a></li>
+          <li><Link to='page' params={{slug: 'about'}}>About</Link></li>
+        </ul>
+        <SocialMedia className='secondary' />
+      </div>
+    );
+  }
+
+  render() {
     return (
       <div id='navigation' ref='navigation'>
         <UserNavigation />
@@ -132,17 +176,7 @@ export default class Navigation extends React.Component {
           <div className='bar middle'></div>
           <div className='bar bottom'></div>
         </div>
-        <div className='container' ref='container'>
-          <ul>
-            <li><Link to='homeStories'>Home stories</Link></li>
-            <li>
-              <Link to='neighborhoodList' params={{city: 'london'}}>Neighbourhoods</Link>
-            </li>
-            <li><a href='#' onClick={onClick.bind(this)}>Your home</a></li>
-            <li><Link to='page' params={{slug: 'about'}}>About</Link></li>
-          </ul>
-          <SocialMedia className='secondary' />
-        </div>
+        {this.getNavigation()}
       </div>
     );
   }
