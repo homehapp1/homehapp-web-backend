@@ -91,7 +91,10 @@
     "distribute-site": "PROJECT_NAME=site NODE_ENV=production gulp dist-clients",
     "distribute-admin": "PROJECT_NAME=admin NODE_ENV=production gulp dist-clients",
     "migrate": "DEBUG=*,-babel node init.js migrate",
-    "test": "NODE_ENV=test mocha --compilers js:babel/register --timeout 50000 --reporter dot test/**/** test/**/**/**",
+    "test": "npm run test-api && npm run test-admin && npm run test-site",
+    "test-api": "NODE_ENV=test PROJECT_NAME=api mocha --compilers js:babel/register --timeout 50000 --reporter dot test/api/** test/api/**/**",
+    "test-admin": "NODE_ENV=test PROJECT_NAME=admin mocha --compilers js:babel/register --timeout 50000 --reporter dot test/admin/** test/admin/**/**",
+    "test-site": "NODE_ENV=test PROJECT_NAME=site mocha --compilers js:babel/register --timeout 50000 --reporter dot test/site/** test/site/**/**",
     "apidoc": "gulp apidoc",
     "server": "node init.js"
   },
