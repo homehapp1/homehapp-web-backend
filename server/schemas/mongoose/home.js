@@ -118,7 +118,7 @@ exports.loadSchemas = function (mongoose, next) {
       blocks: [schemas.HomeStoryBlock]
     },
     images: [schemas.HomeImage],
-    mainImage: getImageFields(),
+    image: getImageFields(),
     epc: getImageFields(),
     floorplans: [schemas.HomeImage],
     brochures: [schemas.HomeImage],
@@ -135,6 +135,10 @@ exports.loadSchemas = function (mongoose, next) {
       default: null
     }]
   }));
+
+  schemas.Home.virtual('mainImage').get(function() {
+    return getMainImage(this);
+  });
 
   schemas.Home.virtual('homeTitle').get(function () {
     if (this.title && this.title.length) {
@@ -197,7 +201,7 @@ exports.loadSchemas = function (mongoose, next) {
     return [
       'title', 'description', 'location', 'costs', 'story', 'amenities',
       'facilities', 'attributes', 'images', 'announcementType', 'brochures',
-      'mainImage', 'epc', 'floorplans', 'properties', 'enabled'
+      'image', 'epc', 'floorplans', 'properties', 'enabled'
     ];
   };
 
