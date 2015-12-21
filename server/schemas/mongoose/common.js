@@ -114,6 +114,7 @@ exports.getMainImage = function getMainImage(model, placeholder = null) {
     placeholder = {
       url: 'https://res.cloudinary.com/homehapp/image/upload/v1441913472/site/images/content/content-placeholder.jpg',
       alt: 'Placeholder',
+      placeholder: true,
       width: 1920,
       height: 1280,
       aspectRatio: 1920 / 1280
