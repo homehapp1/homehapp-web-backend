@@ -30,18 +30,18 @@ class JWTStrategy extends Strategy {
       this._secretOrKey = fs.readFileSync(options.keys.public);
     }
 
-    this._verifOpts = {};
+    this._verifyOpts = {};
 
     if (options.issuer) {
-      this._verifOpts.issuer = options.issuer;
+      this._verifyOpts.issuer = options.issuer;
     }
 
     if (options.audience) {
-      this._verifOpts.audience = options.audience;
+      this._verifyOpts.audience = options.audience;
     }
 
     if (options.keys.public) {
-      this._verifOpts.algorithm = 'RS256';
+      this._verifyOpts.algorithm = 'RS256';
     }
   }
 
@@ -62,9 +62,9 @@ class JWTStrategy extends Strategy {
       this.success(user, info);
     };
 
-    jwt.verify(token, this._secretOrKey, this._verifOpts, (err, payload) => {
+    jwt.verify(token, this._secretOrKey, this._verifyOpts, (err, payload) => {
       if (err) {
-        return this.fail(err);
+        return this.fail(403);
       }
       if (this._passRequestToCallback) {
         this._verify(req, payload, verified);
