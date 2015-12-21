@@ -18,7 +18,6 @@ export default class Logout extends React.Component {
   }
 
   onStoreChange(state) {
-    debug('Got state', state);
     this.setState(state);
   }
 
@@ -38,7 +37,6 @@ export default class Logout extends React.Component {
 
   componentDidMount() {
     AuthStore.listen(this.storeListener);
-    debug('AuthStore', AuthStore.getState());
     this.logout()
     .then(() => {
       try {
@@ -73,8 +71,10 @@ export default class Logout extends React.Component {
 
     return (
       <ContentBlock className='centered'>
-        <h1>Logged out</h1>
-        <p>You have been successfully logged out</p>
+        <div className='centered'>
+          <h1>Logged out</h1>
+          <p>You have been successfully logged out</p>
+        </div>
       </ContentBlock>
     );
   }
