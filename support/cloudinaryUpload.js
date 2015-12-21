@@ -18,12 +18,23 @@ class ProjectUploader {
     let status = null;
 
     this._configure()
-    .then(() => this._uploadResouces('images'))
-    .then(() => this._uploadResouces('fonts'))
-    .then(() => this._uploadResouces('css'))
-    .then(() => this._uploadResouces('js'))
     .then(() => {
-      debug('Finished Uploading all assets');
+      console.log('Configured, proceed to upload resources');
+      return this._uploadResources('images')
+    })
+    .then(() => {
+      console.log('Images uploaded');
+      return this._uploadResources('fonts')
+    })
+    .then(() => {
+      console.log('Fonts uploaded');
+      return this._uploadResources('css');
+    })
+    .then(() => {
+      return this._uploadResources('js');
+    })
+    .then(() => {
+      console.log('Finished Uploading all assets');
       callback(null, status);
     })
     .catch((err) => {
@@ -31,8 +42,8 @@ class ProjectUploader {
     });
   }
 
-  _uploadResouces(resourceName) {
-    debug(`Uploading ${resourceName} resources`);
+  _uploadResources(resourceName) {
+    console.log(`Uploading ${resourceName} resources`);
     let tasks = [];
 
     let filesPath = path.join(this.sourceFolder, resourceName);
@@ -42,11 +53,20 @@ class ProjectUploader {
       let baseName = path.basename(filePath);
       tasks.push(new Promise((resolve, reject) => {
         let publicId = `${PROJECT_NAME}/${resourceName}/${baseName}`;
-        debug(`Removing old ${baseName}`);
+        console.log(`Removing old ${baseName}`);
         this.cloudinary.uploader.destroy(publicId, () => {
-          debug(`Uploading ${baseName}`);
+          console.log(`Uploading ${baseName}`);
+          let timeout = 30;
+          let t = (new Date()).getTime();
+          let timer = setInterval(() => {
+            let dt = Math.round(((new Date()).getTime() - t) / 1000) / 60;
+            console.log(`Warning! Uploading '${baseName}' has lasted already for ${dt}min...`);
+          }, timeout * 1000);
+
           this.cloudinary.uploader.upload(filePath, (result) => {
-            //console.log(`Upload finished for ${baseName}`);
+            let dt = Math.round(((new Date()).getTime() - t) / 100) / 10;
+            console.log(`Upload finished for ${baseName} in ${dt}s`);
+            clearInterval(timer);
             resolve();
           }, {
             public_id: publicId,
