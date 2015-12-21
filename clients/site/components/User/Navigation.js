@@ -25,7 +25,7 @@ export default class UserNavigation extends React.Component {
     AuthStore.listen(this.storeListener);
     debug('AuthStore', AuthStore.getState());
 
-    if (!this.state.user) {
+    if (this.state.loggedIn === null) {
       AuthStore.fetchUser();
     }
   }
@@ -38,7 +38,7 @@ export default class UserNavigation extends React.Component {
     if (this.state.user) {
       return (
         <div className='user-profile logged-in'>
-          <Link to='logout'>Logged in</Link>
+          <Link to='logout'>Log out</Link>
         </div>
       );
     }
