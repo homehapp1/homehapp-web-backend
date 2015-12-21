@@ -3,7 +3,7 @@
 module.exports = function (projectRoot) {
   var config = {
     authentication: {
-      adapters: ['basic']
+      adapters: ['local']
     }
   };
   return config;
