@@ -465,7 +465,7 @@ export default class Gallery extends React.Component {
               alt: item.alt,
               variant: 'gallery',
               linked: (this.props.fullscreen) ? 'fullscreen' : null,
-              aspectRatio: item.aspectRatio
+              aspectRatio: item.aspectRatio || (item.width / item.height)
             };
 
             return (
