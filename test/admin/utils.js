@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-import app from "../../server/app";
+import app from '../../server/app';
 
 const TEST_USER_DATA = exports.TEST_USER_DATA = {
-  email: "test@qvik.fi",
-  username: "test",
-  password: "test"
+  email: 'test@qvik.fi',
+  username: 'test',
+  password: 'test'
 };
 
 let createApp = exports.createApp = (done) => {
-  app.run("site", (app) => done(null, app));
+  app.run('admin', (app) => done(null, app));
 };
