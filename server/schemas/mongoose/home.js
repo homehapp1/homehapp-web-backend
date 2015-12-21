@@ -118,7 +118,7 @@ exports.loadSchemas = function (mongoose, next) {
       blocks: [schemas.HomeStoryBlock]
     },
     images: [schemas.HomeImage],
-    image: getImageFields(),
+    _image: getImageFields(),
     epc: getImageFields(),
     floorplans: [schemas.HomeImage],
     brochures: [schemas.HomeImage],
@@ -135,6 +135,22 @@ exports.loadSchemas = function (mongoose, next) {
       default: null
     }]
   }));
+
+  schemas.Home.virtual('image').get(function() {
+    if (this._image && this._image.url) {
+      return this._image;
+    }
+
+    return null;
+  });
+
+  schemas.Home.virtual('image').set(function(image) {
+    if (!image.url || !image.width || !image.height) {
+      this._image = null;
+    }
+
+    this._image = image;
+  });
 
   schemas.Home.virtual('mainImage').get(function() {
     return getMainImage(this);
