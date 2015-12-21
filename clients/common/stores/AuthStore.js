@@ -21,10 +21,16 @@ class AuthStore {
   }
 
   handleUpdateUser(user) {
+    if (user) {
+      this.loggedIn = true;
+    } else {
+      this.loggedIn = false;
+    }
     this.user = user;
     this.error = null;
   }
   handleFetchUser(args) {
+    this.loggedIn = false;
     this.user = null;
     this.error = null;
   }
