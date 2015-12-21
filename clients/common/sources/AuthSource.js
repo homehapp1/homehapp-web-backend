@@ -20,14 +20,19 @@ let AuthSource = {
           .catch((response) => {
             if (response instanceof Error) {
               return Promise.reject(response);
-            } else {
-              let msg = 'unexpected error';
-              if (response.data.error) {
-                msg = response.data.error;
-              }
-              return Promise.reject(new Error(msg));
             }
-            return Promise.reject(response);
+
+            if (response.status && response.status === 403) {
+              return Promise.resolve(null);
+            }
+
+            let msg = 'unexpected error';
+            if (response.data.error) {
+              msg = response.data.error;
+            }
+
+            let error = new Error(msg);
+            return Promise.reject(error);
           });
       },
       local(/*storeState*/) {
