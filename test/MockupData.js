@@ -10,6 +10,14 @@ export default class MockupData {
     this.qb = new QueryBuilder(app);
   }
 
+  user = {
+    firstname: 'Test',
+    lastname: 'Testicle',
+    username: 'test@example.com',
+    password: 'testi123',
+    active: true
+  }
+
   home = {
     slug: 'TESTHOME',
     title: 'Test home',
