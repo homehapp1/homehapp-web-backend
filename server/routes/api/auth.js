@@ -64,7 +64,7 @@ exports.registerRoutes = (app) => {
    * @apiName UserLogin
    * @apiGroup Authentication
    *
-   * @apiUse MobileRequestHeaders
+   * @apiUse MobileRequestHeadersUnauthenticated
    * @apiParam {String} service     Name of the external service. Enum[facebook, google]
    * @apiParam {Object} user        Details of the user
    * @apiParam {String} user.id              User's Id from the service
@@ -78,8 +78,20 @@ exports.registerRoutes = (app) => {
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'ok',
-   *       'session': {...}
+   *       "status": "ok",
+   *       "session": {
+   *          "token": "...",
+   *          "expiresIn": ...,
+   *          "expiresAt": '...',
+   *          "user": {
+   *            "id": "...",
+   *            "email": "...",
+   *            "token": "...",
+   *            "displayName": "...",
+   *            "firstname": "...",
+   *            "lastname": "..."
+   *         }
+   *       }
    *     }
    *
    * @apiError (400) BadRequest Invalid request body, missing parameters.
@@ -92,8 +104,6 @@ exports.registerRoutes = (app) => {
    *     }
    */
   app.post('/api/auth/login', function(req, res, next) {
-    //console.log('login/register', req.clientInfo, req.body);
-
     let data = req.body.user;
 
     if (!req.clientInfo || !req.clientInfo.deviceID) {
@@ -184,7 +194,7 @@ exports.registerRoutes = (app) => {
    * @apiDescription When given a valid pushToken, registers the device to receive push notifications. Otherwise unregisters the device.
    *
    * @apiPermission authenticated
-   * @apiUse MobileRequestHeaders
+   * @apiUse MobileRequestHeadersAuthenticated
    * @apiParam {String} pushToken    Push token for mobile client
    *
    * @apiSuccessExample {json} Success-Response:
@@ -249,7 +259,7 @@ exports.registerRoutes = (app) => {
    * @apiDescription Possibility to update user's nickname only currently.
    *
    * @apiPermission authenticated
-   * @apiUse MobileRequestHeaders
+   * @apiUse MobileRequestHeadersAuthenticated
    * @apiParam {Object} user             User details
    * @apiParam {String} user.nickname    Nickname for the user
    *
@@ -301,7 +311,7 @@ exports.registerRoutes = (app) => {
    * @apiDescription Allows for checking if the session is valid
    *
    * @apiPermission authenticated
-   * @apiUse MobileRequestHeaders
+   * @apiUse MobileRequestHeadersAuthenticated
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
