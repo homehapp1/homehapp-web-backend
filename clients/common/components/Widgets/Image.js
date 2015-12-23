@@ -235,7 +235,7 @@ export default class Image extends React.Component {
       return '';
     }
 
-    return regs[1].replace(/\/$/, '');
+    return regs[1].replace(/\/$/, '').replace(/http:\/\//, 'https://');
   }
 
   getPath(src) {
