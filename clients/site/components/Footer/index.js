@@ -8,14 +8,7 @@ export default class Footer extends React.Component {
     return (
       <div id='footer' className='clearfix full-height' ref='footer'>
         <div className='width-wrapper'>
-          <Image src='images/homehapp-logotype-gray.svg' alt='Homehapp' type='asset' className='logotype' />
-          <ul className='footer-links main'>
-            <li><Link to='page' params={{slug: 'about'}}>About us</Link></li>
-            <li><Link to='page' params={{slug: 'terms'}}>Terms & conditions</Link></li>
-            <li><Link to='page' params={{slug: 'privacy'}}>Privacy policy</Link></li>
-            <li><Link to='page' params={{slug: 'careers'}}>Careers</Link></li>
-          </ul>
-          <SocialMedia className='footer-links' />
+          homehapp Limited. All rights reserved 2015. Contact, collaboration and inquiries: <a href='mailto:hello@homehapp.com'>hello@homehapp.com</a>
         </div>
       </div>
     );

@@ -23,7 +23,7 @@
     display: block;
     position: absolute;
     top: 0;
-    right: $contentPadding;
+    right: $contentPadding * 2;
     background-color: $darkBrown;
     padding: $contentPadding / 2;
     background-image: url('../images/user-profile.svg');

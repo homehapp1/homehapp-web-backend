@@ -1,0 +1,53 @@
+&.confirmation {
+  .modal-content {
+    width: 567px;
+    padding: $contentPadding * 2;
+    border-radius: $contentPadding * 2;
+    font-size: 21px * $fontSizeQ;
+
+    h2 {
+      font-size: 40px * $fontSizeQ;
+    }
+
+    .content {
+      & > *:first-child {
+        margin-top: 0;
+      }
+    }
+
+    .form-actions {
+      a {
+        display: block;
+        width: 100%;
+        max-width: 307px * $fontSizeQ;
+        border: solid 1px black;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        font-size: 17.5px * $fontSizeQ;
+        color: $fontDarkGray;
+        border-color: $darkBrown;
+        cursor: pointer;
+
+        & + a {
+          margin-top: $contentPadding / 2;
+        }
+
+        &:hover {
+          background-color: $gold;
+          border-color: $gold;
+          color: white;
+        }
+
+        &.highlight {
+          background-color: $darkBrown;
+          color: white;
+
+          &:hover {
+            background-color: $gold;
+          }
+        }
+      }
+    }
+  }
+}

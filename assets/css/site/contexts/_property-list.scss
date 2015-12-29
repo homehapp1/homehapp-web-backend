@@ -12,7 +12,6 @@
     $maxHeight: 1200px;
     $paddingBottom: 100px;
     $maskHeight: 200px;
-    $q: 0.7;
     $d: top;
     $g1: rgba(241, 241, 241, 0);
     $g2: rgba(241, 241, 241, 1);
@@ -32,8 +31,8 @@
       z-index: 1;
       left: 0;
       right: 0;
-      height: $maskHeight * $q;
-      bottom: $maskHeight * (1 - $q) + $paddingBottom;
+      height: $maskHeight * $fontSizeQ;
+      bottom: $maskHeight * (1 - $fontSizeQ) + $paddingBottom;
       background-image: -webkit-linear-gradient($d, $g1, $g2);
       background-image: -moz-linear-gradient($d, $g1, $g2);
       background-image: -ms-linear-gradient($d, $g1, $g2);
@@ -49,7 +48,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: $maskHeight * (1 - $q) + $paddingBottom;
+      height: $maskHeight * (1 - $fontSizeQ) + $paddingBottom;
       background-color: $g2;
     }
 

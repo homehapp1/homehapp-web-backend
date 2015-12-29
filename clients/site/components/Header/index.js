@@ -47,7 +47,7 @@ export default class Header extends React.Component {
     return (
       <div id='header' ref='header'>
         <Link to='app' className='logo'>
-          <img className='logo' src={this.config.revisionedStaticPath + '/images/homehapp-logo-horizontal.svg'} alt='Homehapp' />
+          <img className='logo' src={this.config.revisionedStaticPath + '/images/homehapp-logo-horizontal-2.svg'} alt='Homehapp' />
         </Link>
       </div>
     );

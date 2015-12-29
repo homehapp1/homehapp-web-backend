@@ -38,6 +38,12 @@ body {
     }
   }
 
+  &.blurred {
+    #container {
+      @include vendors(filter, blur(20px));
+    }
+  }
+
   @include small() {
     overflow-x: hidden;
   }
