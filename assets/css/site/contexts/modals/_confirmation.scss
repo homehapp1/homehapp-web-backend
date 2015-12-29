@@ -9,8 +9,16 @@
     font-size: 21px * $fontSizeQ;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 
+    @include small() {
+      font-size: 21px * $fontSizeQSmall;
+    }
+
     h2 {
       font-size: 40px * $fontSizeQ;
+
+      @include small() {
+        font-size: 40px * $fontSizeQSmall;
+      }
     }
 
     .content {
@@ -24,6 +32,10 @@
       display: block;
       text-align: center;
       margin: 0;
+
+      @include small() {
+        font-size: 48px * $fontSizeQSmall;
+      }
 
       & > li {
         display: inline;
@@ -55,6 +67,10 @@
         color: $fontDarkGray;
         border-color: $darkBrown;
         cursor: pointer;
+
+        @include small() {
+          font-size: 17.5px * $fontSizeQSmall;
+        }
 
         & + a {
           margin-top: $contentPadding / 2;

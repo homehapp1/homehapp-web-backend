@@ -124,7 +124,7 @@ export default class Lander extends React.Component {
     if (!this.email) {
       return null;
     }
-    
+
     let submit = (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -255,7 +255,7 @@ export default class Lander extends React.Component {
       <div id='lander'>
         <BigImage image={image} className='full-height'>
           <LargeText align='center' valign='middle' className='full-height'>
-            <h1 className='pre-line'>WE ARE TRANSFORMING<br className='hide-for-small' /> HOW HOMES ARE PRESENTED.</h1>
+            <h1>WE ARE TRANSFORMING<br /> HOW HOMES ARE PRESENTED.</h1>
             <p className='title-like'>
               Please join our mailing list. We will keep you posted on our progress<br className='hide-for-small' /> and notify you when we go live.
             </p>
