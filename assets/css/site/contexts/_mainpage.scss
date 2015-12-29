@@ -102,6 +102,13 @@
     height: auto;
   }
 
+  .mobile-padded {
+    @include small() {
+      padding-left: $contentPadding;
+      padding-right: $contentPadding;
+    }
+  }
+
   #socialShare {
     position: fixed;
     top: 15px;

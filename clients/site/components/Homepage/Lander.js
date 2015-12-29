@@ -353,13 +353,13 @@ export default class Lander extends React.Component {
             <Image {...appImage} />
           </p>
           <h2>WE BELIEVE EVERY HOME HAS A STORY</h2>
-          <p>
+          <p className='mobile-padded'>
             Homehapp is the place where you can create, store and share your<br className='hide-for-small' /> home
             moments. And when the time comes for you to move on, and<br className='hide-for-small' /> you want
             to sell or let your home, all you have to do is click a button<br className='hide-for-small' /> and
             homehapp helps you find the right buyer or tenant.
           </p>
-          <p className='title-like uppercase'>
+          <p className='title-like uppercase mobile-padded'>
             WE’RE CURRENTLY IN BETA TESTING PHASE. FILL IN YOUR DETAILS <br className='hide-for-small' /> TO JOIN OUR TEST GROUP WITH EARLY ACCESS.
           </p>
           <form method='post' action='/api/contact/beta' onSubmit={this.subscribeAsTester.bind(this)} className='beta-testers'>
