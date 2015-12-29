@@ -67,8 +67,8 @@
     @include small() {
       right: $contentPadding;
       width: 121px * $fontSizeQSmall * 0.8;
-      height: 127px * $fontSizeQSmall * 0.8;
-      padding-top: 85px * $fontSizeQSmall * 0.8;
+      height: 115px * $fontSizeQSmall * 0.8;
+      padding-top: 75px * $fontSizeQSmall * 0.8;
       font-size: $fontSizeSecondary * 0.8;
     }
 

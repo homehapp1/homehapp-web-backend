@@ -295,13 +295,13 @@ export default class Lander extends React.Component {
           </p>
           <form method='post' action='/api/contact/beta' onSubmit={this.subscribeAsTester.bind(this)} className='beta-testers'>
             <div className='form'>
-              <InputWidget type='text' name='name' ref='name' placeholder='Your name' required defaultValue='Arttu Manninen' />
-              <InputWidget type='email' name='email' ref='email' placeholder='Your email address' required defaultValue='arttu@kaktus.cc' />
-              <InputWidget type='select' name='country' ref='country' defaultValue='FI'>
+              <InputWidget type='text' name='name' ref='name' placeholder='Your name' required />
+              <InputWidget type='email' name='email' ref='email' placeholder='Your email address' required  />
+              <InputWidget type='select' name='country' ref='country'>
                 <option value=''>Pick your home country</option>
                 {this.listCountries()}
               </InputWidget>
-              <InputWidget type='select' name='type' ref='type' defaultValue='owner'>
+              <InputWidget type='select' name='type' ref='type'>
                 <option value=''>Are you a home owner or a real estate professional?</option>
                 <option value='owner'>Home owner</option>
                 <option value='professional'>Real estate professional</option>
