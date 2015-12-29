@@ -9,13 +9,13 @@ export default class Modal extends React.Component {
       React.PropTypes.object
     ]).isRequired,
     onclose: React.PropTypes.func,
+    onClose: React.PropTypes.func,
     className: React.PropTypes.string
   }
 
   static defaultProps = {
-    onclose: function() {
-      console.log('default modal onclose');
-    }
+    onclose: null,
+    onClose: null
   }
 
   constructor() {
@@ -62,7 +62,13 @@ export default class Modal extends React.Component {
       target = target.parentNode;
     }
 
-    this.props.onclose();
+    if (typeof this.props.onClose === 'function') {
+      this.props.onClose();
+    }
+
+    if (typeof this.props.onclose === 'function') {
+      this.props.onclose();
+    }
 
     let node = React.findDOMNode(this.refs.modal);
     React.unmountComponentAtNode(node);
@@ -75,6 +81,10 @@ export default class Modal extends React.Component {
 
   closeModal() {
     React.findDOMNode(this.refs.close).click();
+  }
+
+  close() {
+    return this.closeModal();
   }
 
   render() {
