@@ -8,7 +8,8 @@ export default class ContentBlock extends React.Component {
       React.PropTypes.array
     ]),
     className: React.PropTypes.string,
-    fullheight: React.PropTypes.bool
+    fullheight: React.PropTypes.bool,
+    id: React.PropTypes.string
   };
 
   static defaultProps = {
@@ -30,8 +31,16 @@ export default class ContentBlock extends React.Component {
       classes.push('full-height');
     }
 
+    let props = {
+      className: classes.join(' ')
+    };
+
+    if (this.props.id) {
+      props.id = this.props.id;
+    }
+
     return (
-      <div className={classes.join(' ')}>
+      <div {...props}>
         <div className='width-wrapper'>
           {this.props.children}
         </div>
