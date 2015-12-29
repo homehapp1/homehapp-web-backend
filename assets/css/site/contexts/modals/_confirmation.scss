@@ -2,6 +2,7 @@
   .modal-content {
     width: 90%;
     max-width: 567px;
+    min-height: 430px * $fontSizeQ;
     margin-left: auto;
     margin-right: auto;
     padding: $contentPadding * 2;
@@ -11,6 +12,7 @@
 
     @include small() {
       font-size: 21px * $fontSizeQSmall;
+      min-height: 430px * $fontSizeQSmall;
     }
 
     h2 {

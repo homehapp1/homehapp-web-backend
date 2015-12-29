@@ -191,6 +191,9 @@
       padding-left: 1em;
       padding-right: 1em;
       outline: none;
+      border-radius: 0;
+      -webkit-appearance: none;
+      background-color: white;
 
       @include small() {
         font-size: 18px * $fontSizeQSmall;
@@ -202,11 +205,17 @@
         @include vendors(transition-duration, $transitionDuration);
         color: white;
         border-color: transparent;
-
-        &:hover, &:focus, &:active {
-          background-color: $gold;
-        }
+        -webkit-appearance: none;
       }
+    }
+
+    select {
+      $w: 16 * $fontSizeQ;
+      $h: 12 * $fontSizeQ;
+      $o: 8;
+      background-image: url("data:image/svg+xml;utf8,<svg width='100%' height='100%' viewBox='0 0 #{$w + $o} #{$h}' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xml:space='preserve'><path d='M0,0L#{$w},0L#{$w / 2},#{$h}M0,0Z' style='fill:#d8d8d8;'/></svg>");
+      background-position: right 16px;
+      background-size: ($w + $o) * 1px $h * 1px;
     }
 
     &.beta-testers {
