@@ -36,16 +36,23 @@ export default class Lander extends React.Component {
   componentDidMount() {
     let scroller = new DOMManipulator(this.refs.readmore);
     debug('scroller', scroller);
-    let scrollTo = (event) => {
-      event.preventDefault();
-      try {
-        (new DOMManipulator(this.refs.readmore)).scrollTo(400, 160);
-      } catch(error) {
-        debug('error', error);
-      }
-    };
 
-    scroller.addEvent('click', scrollTo);
+    if (jQuery) {
+      jQuery('a.pager').on('click touchstart', function() {
+        let i = Math.floor(jQuery(window).scrollTop() / jQuery(window).height()) + 1;
+        $('body, html').animate({
+          scrollTop: $(window).height() * i + 'px'
+        }, 1000)
+      });
+
+      $('#socialShare').on('click touchstart', (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        this.displaySocial();
+      });
+    } else {
+      debug('no jquery');
+    }
 
     ContactStore.listen(this.contactStateChange);
     NewsletterStore.listen(this.newsletterStateChange);
@@ -75,13 +82,43 @@ export default class Lander extends React.Component {
       this.modal.close();
     }
 
+    let reject = () => {
+      this.modal.close();
+    };
+
     let modal = (
       <Modal className='white with-overflow confirmation' onClose={this.modalClose.bind(this)}>
+        <a className='close' onClick={reject}>✕</a>
         <div className='content center centered'>
           <h2>Thank you!</h2>
           <p>
             We will be in touch with you shortly. In the<br className='hide-for-small' /> meantime, you can check our social media<br className='hide-for-small' /> channels too.
           </p>
+          <SocialMedia />
+        </div>
+      </Modal>
+    );
+
+    // Create the modal
+    this.modal = React.render(modal, document.getElementById('modals'));
+    this.initModal();
+  }
+
+  displaySocial() {
+    if (this.modal && this.modal.closeModal) {
+      this.modal.close();
+    }
+
+    let reject = () => {
+      this.modal.close();
+    };
+
+    let modal = (
+      <Modal className='white with-overflow confirmation confirmation-small' onClose={this.modalClose.bind(this)}>
+        <a className='close' onClick={reject}>✕</a>
+        <div className='content center centered'>
+          <h2>Follow us!</h2>
+          <p className='clearfix'></p>
           <SocialMedia />
         </div>
       </Modal>
@@ -124,7 +161,7 @@ export default class Lander extends React.Component {
     event.preventDefault();
     event.stopPropagation();
 
-    this.email = (new DOMManipulator(this.refs.subscriberEmail)).node.value || '';
+    this.email = (new DOMManipulator(this.refs.subscriberEmail)).node.value || (new DOMManipulator(this.refs.subscriberEmail2)).node.value || '';
 
     if (!this.email) {
       return null;
@@ -157,6 +194,7 @@ export default class Lander extends React.Component {
 
     let modal = (
       <Modal className='white with-overflow confirmation' onClose={this.modalClose.bind(this)}>
+        <a className='close' onClick={reject}>✕</a>
         <div className='content center centered'>
           <h2>Join with address:<br className='hide-for-small' /> {this.email}</h2>
           <p>
@@ -184,7 +222,11 @@ export default class Lander extends React.Component {
 
   }
 
-  modalClose() {
+  modalClose(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
     if (this.modal) {
       React.unmountComponentAtNode(React.findDOMNode(this.modal));
       this.modal = null;
@@ -245,7 +287,8 @@ export default class Lander extends React.Component {
       alt: 'Placeholder',
       width: 1920,
       height: 1280,
-      aspectRatio: 1920 / 1280
+      aspectRatio: 1920 / 1280,
+      align: 'left'
     };
 
     let appImage = {
@@ -258,13 +301,14 @@ export default class Lander extends React.Component {
 
     return (
       <div id='lander'>
-        <BigImage image={image} className='full-height'>
-          <LargeText align='center' valign='middle' className='full-height'>
-            <h1>WE ARE TRANSFORMING<br /> HOW HOMES ARE PRESENTED.</h1>
-            <p className='title-like'>
-              Please join our mailing list. We will keep you posted on our progress<br className='hide-for-small' /> and notify you when we go live.
+        <i className='fa fa-share-alt show-for-small' id='socialShare' ref='socialShare'></i>
+        <BigImage image={image} className='full-height-always' align='left'>
+          <LargeText align='center' valign='middle' className='full-height-always' id='mainContent'>
+            <h1>WE ARE<br className='show-for-small' /> TRANSFORMING<br /> HOW HOMES ARE<br className='show-for-small' /> PRESENTED.</h1>
+            <p className='title-like hide-for-small'>
+              <span>Please join our mailing list.</span> We will keep you posted on our progress and notify you when we go live.
             </p>
-            <form method='post' className='mailchimp' action='/api/contact/mailchimp' onSubmit={this.subscribeToNewsletter.bind(this)}>
+            <form method='post' className='mailchimp hide-for-small' action='/api/contact/mailchimp' onSubmit={this.subscribeToNewsletter.bind(this)}>
               <table className='wrapper'>
                 <tr>
                   <td width='60%' className='email'><input type='email' name='email' ref='subscriberEmail' placeholder='Fill in your email address' /></td>
@@ -275,16 +319,36 @@ export default class Lander extends React.Component {
           </LargeText>
           <div className='secondary centered'>
             <p className='title-like uppercase'>
-              <a href='#readmore' ref='readmore'>
+              <a href='#readmore' ref='readmore' className='pager'>
+                <i className='fa fa-angle-down icon'></i>
+                <span className='hide-for-small'>Want to know more?</span>
+              </a>
+            </p>
+          </div>
+        </BigImage>
+        <ContentBlock className='show-for-small pattern full-height-always mailing-list'>
+          <h2 className='page-title'>Please join<br /> our mailing list.</h2>
+          <p className='title-like centered'>
+            We will keep you posted on our<br /> progress and notify you when<br /> we go live.
+          </p>
+          <form method='post' className='mailchimp' action='/api/contact/mailchimp' onSubmit={this.subscribeToNewsletter.bind(this)}>
+            <table className='wrapper'>
+              <tr>
+                <td width='60%' className='email'><input type='email' name='email' ref='subscriberEmail2' placeholder='Fill in your email address' /></td>
+                <td width='40%' className='submit'><input type='submit' value='Join' /></td>
+              </tr>
+            </table>
+          </form>
+          <div className='secondary centered'>
+            <p className='title-like uppercase'>
+              <a href='#readmore' ref='readmore' className='pager'>
                 <i className='fa fa-angle-down icon'></i>
                 Want to know more?
               </a>
             </p>
           </div>
-        </BigImage>
-        <Separator type='white' />
+        </ContentBlock>
         <ContentBlock className='centered center pattern' ref='target'>
-          <a name='readmore'></a>
           <p>
             <Image {...appImage} />
           </p>

@@ -11,7 +11,8 @@ export default class LargeText extends React.Component {
     ]),
     proportion: React.PropTypes.number,
     className: React.PropTypes.string,
-    aspectRatio: React.PropTypes.number
+    aspectRatio: React.PropTypes.number,
+    id: React.PropTypes.string
   };
 
   static defaultProps = {
@@ -43,8 +44,16 @@ export default class LargeText extends React.Component {
       classes.push('full-height');
     }
 
+    let mainProps = {
+      className: 'widget large-text'
+    };
+
+    if (this.props.id) {
+      mainProps.id = this.props.id;
+    }
+
     return (
-      <div className='widget large-text'>
+      <div {...mainProps}>
         <div className={classes.join(' ')} {...props}>
           <div className='content' {...props}>
             {this.props.children}

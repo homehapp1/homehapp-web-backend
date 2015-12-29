@@ -146,7 +146,7 @@ export default class Navigation extends React.Component {
   getNavigation() {
     if (!this.state.loggedIn) {
       return (
-        <SocialMedia className='primary' />
+        <SocialMedia className='primary hide-for-small' />
       );
     }
 

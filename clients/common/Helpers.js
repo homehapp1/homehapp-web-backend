@@ -126,7 +126,7 @@ exports.scrollTop = function scrollTop(offset = null, speed = 500) {
 exports.setFullHeight = function setFullHeight() {
   let height = window.innerHeight;
 
-  let setHeight = function(item, strict = false) {
+  let setHeight = function(item, strict = false, max = 650) {
     let h = height;
 
     if (item.hasAttribute('data-proportion')) {
@@ -137,7 +137,7 @@ exports.setFullHeight = function setFullHeight() {
       }
     }
 
-    h = Math.max(650, h);
+    h = Math.max(max, h);
     let dh = h / item.offsetHeight;
 
     // Don't change anything, if the changed height differs less
@@ -164,15 +164,26 @@ exports.setFullHeight = function setFullHeight() {
     item.style.height = `${Math.round(window.innerWidth / ar)}px`;
   }
 
+  items = document.getElementsByClassName('full-height-always');
+  for (let item of items) {
+    setHeight(item, false, 0);
+  }
+
   if (window && window.innerWidth <= 640) {
     items = document.getElementsByClassName('full-height');
     for (let item of items) {
+      if (item.className.match(/full-height-always/)) {
+        continue;
+      }
       item.style.height = null;
       item.style.minHeight = null;
     }
 
     items = document.getElementsByClassName('full-height-strict');
     for (let item of items) {
+      if (item.className.match(/full-height-always/)) {
+        continue;
+      }
       item.style.height = null;
       item.style.minHeight = null;
     }

@@ -182,6 +182,18 @@
     @include vendors(transform, translateX(-50%));
   }
 
+  img[data-align="left"], video[data-align="left"] {
+    left: 0;
+    top: 50%;
+    @include vendors(transform, translateY(-50%));
+  }
+
+  img[data-align="right"], video[data-align="right"] {
+    right: 0;
+    top: 50%;
+    @include vendors(transform, translateY(-50%));
+  }
+
   @content;
 }
 

@@ -94,7 +94,82 @@
 }
 
 #lander {
-  & > .full-height:before {
+  .full-height-always {
+    @include vendors(transition-property, none);
+  }
+
+  img {
+    height: auto;
+  }
+
+  #socialShare {
+    position: fixed;
+    top: 15px;
+    right: 100px;
+    z-index: 10000;
+    color: white;
+  }
+
+  .pager {
+    font-size: 18px * $fontSizeQ;
+    letter-spacing: 0;
+    color: $fontGray;
+
+    @include small() {
+      font-size: 18px * $fontSizeQSmall;
+    }
+
+    .icon {
+      @include diamond(98px * $fontSizeQ, $gold);
+      font-size: 70px * $fontSizeQ;
+      line-height: 98px * $fontSizeQ;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 0.2em;
+      text-shadow: none;
+      font-weight: 100;
+      color: white;
+
+      @include vendors(animation-name, hovering);
+      @include vendors(animation-duration, 3000ms);
+      @include vendors(animation-iteration-count, infinite);
+      @include vendors(transition-property, all);
+
+      @include small() {
+        @include diamond(98px * $fontSizeQSmall, $gold);
+        font-size: 70px * $fontSizeQSmall;
+        line-height: 98px * $fontSizeQSmall;
+      }
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  @include small() {
+    .big-image {
+      & > .image-content {
+        background-image: url('https://res.cloudinary.com/homehapp/image/upload/w_1000,h_800,c_fill,g_center,fl_progressive/v1450887451/site/images/content/lander.jpg');
+        background-position: left center;
+        background-size: cover;
+
+        img {
+          display: none;
+        }
+      }
+
+      .secondary {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+
+  & > .big-image:before {
     display: block;
     content: ' ';
     position: absolute;
@@ -119,7 +194,7 @@
       line-height: 1.1em;
 
       @include small() {
-        font-size: 90px * $fontSizeQSmall;
+        font-size: 38px;
       }
     }
 
@@ -135,35 +210,24 @@
 
     .secondary {
       padding-top: $contentPadding;
-      a {
-        font-size: 18px * $fontSizeQ;
-        letter-spacing: 0;
 
-        @include small() {
-          font-size: 18px * $fontSizeQSmall;
-        }
+      .pager {
+        color: white;
+      }
+    }
+  }
 
-        .icon {
-          @include diamond(98px * $fontSizeQ, $gold);
-          font-size: 70px * $fontSizeQ;
-          line-height: 98px * $fontSizeQ;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-          margin-bottom: 0.2em;
-          text-shadow: none;
-          font-weight: 100;
+  .mailing-list {
+    @include small() {
+      display: table;
+      width: 100%;
 
-          @include small() {
-            @include diamond(98px * $fontSizeQSmall, $gold);
-            font-size: 70px * $fontSizeQSmall;
-            line-height: 98px * $fontSizeQSmall;
-          }
-        }
-
-        &:hover {
-          text-decoration: none;
-        }
+      & > * {
+        display: table-cell;
+        width: 100%;
+        height: 100%;
+        vertical-align: middle;
+        padding-top: $contentPadding;
       }
     }
   }
