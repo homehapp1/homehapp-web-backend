@@ -139,6 +139,10 @@ module.exports = (projectRoot) => {
         }
       }
     },
+    mailchimp: {
+      apikey: '9c1a33b75b3198da77528a1eaf139cd4-us12',
+      newsletter: '914a5e94a5'
+    },
     clientConfig: {
       siteHost: 'http://localhost:3001',
       google: {
