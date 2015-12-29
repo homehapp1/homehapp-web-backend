@@ -105,6 +105,11 @@ export default class Lander extends React.Component {
       },
       type: 'email'
     };
+
+    if (!data.sender.email || !data.sender.name) {
+      return null;
+    }
+
     debug('Will send', data);
     this.email = data.sender.email;
 
