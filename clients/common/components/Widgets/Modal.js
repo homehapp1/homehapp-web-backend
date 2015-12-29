@@ -2,6 +2,8 @@ import React from 'react';
 import { setFullHeight } from '../../Helpers';
 import DOMManipulator from '../../DOMManipulator';
 
+let debug = require('debug')('Modal');
+
 export default class Modal extends React.Component {
   static propTypes = {
     children: React.PropTypes.oneOfType([
@@ -70,10 +72,15 @@ export default class Modal extends React.Component {
       this.props.onclose();
     }
 
-    let node = React.findDOMNode(this.refs.modal);
-    React.unmountComponentAtNode(node);
-    this.componentWillUnmount();
-    node.parentNode.removeChild(node);
+    try {
+      let node = React.findDOMNode(this.refs.modal);
+      React.unmountComponentAtNode(node);
+      this.componentWillUnmount();
+      node.parentNode.removeChild(node);
+    } catch (error) {
+      debug('Failed to remove React node', error);
+    }
+
     e.preventDefault();
     e.stopPropagation();
     return false;

@@ -7,15 +7,32 @@ import Separator from '../../../common/components/Widgets/Separator';
 import InputWidget from '../../../admin/components/Widgets/Input';
 import Modal from '../../../common/components/Widgets/Modal';
 
+import SocialMedia from '../Navigation/SocialMedia';
+
 import DOMManipulator from '../../../common/DOMManipulator';
 import { countryMap } from '../../../common/lib/Countries';
 
 import NewsletterStore from '../../stores/NewsletterStore';
 import NewsletterActions from '../../actions/NewsletterActions';
+import ContactStore from '../../stores/ContactStore';
+import ContactActions from '../../actions/ContactActions';
 
 let debug = require('debug')('Lander');
 
 export default class Lander extends React.Component {
+  constructor() {
+    super();
+
+    this.contactStateChange = this.contactStateChange.bind(this);
+    this.newsletterStateChange = this.newsletterStateChange.bind(this);
+  }
+
+  state = {
+    error: null,
+    newsletter: null,
+    contact: null
+  }
+
   componentDidMount() {
     let scroller = new DOMManipulator(this.refs.readmore);
     debug('scroller', scroller);
@@ -29,48 +46,127 @@ export default class Lander extends React.Component {
     };
 
     scroller.addEvent('click', scrollTo);
+
+    ContactStore.listen(this.contactStateChange);
+    NewsletterStore.listen(this.newsletterStateChange);
+  }
+
+  componentWillUnmount() {
+    ContactStore.unlisten(this.contactStateChange);
+    NewsletterStore.unlisten(this.newsletterStateChange);
+  }
+
+  newsletterStateChange(state) {
+    this.setState(state);
+    if (state.newsletter) {
+      this.displayThankYou();
+    }
+  }
+
+  contactStateChange(state) {
+    this.setState(state);
+    if (state.contact) {
+      this.displayThankYou();
+    }
+  }
+
+  displayThankYou() {
+    if (this.modal && this.modal.closeModal) {
+      this.modal.close();
+    }
+
+    let modal = (
+      <Modal className='white with-overflow confirmation' onClose={this.modalClose.bind(this)}>
+        <div className='content center centered'>
+          <h2>Thank you!</h2>
+          <p>
+            We will be in touch with you shortly. In the<br className='hide-for-small' /> meantime, you can check our social media<br className='hide-for-small' /> channels too.
+          </p>
+          <SocialMedia />
+        </div>
+      </Modal>
+    );
+
+    // Create the modal
+    this.modal = React.render(modal, document.getElementById('modals'));
+    this.initModal();
+  }
+
+  subscribeAsTester(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let data = {
+      subType: `Beta testing: ${this.refs.type.getValue()}`,
+      sender: {
+        name: this.refs.name.getValue(),
+        email: this.refs.email.getValue(),
+        country: this.refs.country.getValue(),
+      },
+      type: 'email'
+    };
+    debug('Will send', data);
+    this.email = data.sender.email;
+
+    let submit = (e) => {
+      ContactActions.createItem(data);
+    };
+
+    this.displayConfirmation(submit);
   }
 
   subscribeToNewsletter(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    let email = (new DOMManipulator(this.refs.contactEmail)).node.value || '';
+    this.email = (new DOMManipulator(this.refs.subscriberEmail)).node.value || '';
+
+    if (!this.email) {
+      return null;
+    }
+    
     let submit = (e) => {
       e.preventDefault();
       e.stopPropagation();
       let props = {
-        email: email
+        email: this.email
       };
       NewsletterActions.createItem(props);
     };
 
-    this.modal = (
+    this.displayConfirmation(submit, null);
+  }
+
+  displayConfirmation(resolve, reject) {
+    if (!resolve) {
+      resolve = (event) => {
+        debug('Resolved');
+      };
+    }
+
+    if (!reject) {
+      reject = (event) => {
+        this.modal.close();
+      };
+    }
+
+    let modal = (
       <Modal className='white with-overflow confirmation' onClose={this.modalClose.bind(this)}>
         <div className='content center centered'>
-          <h2>Join with address:<br className='hide-for-small' /> {email}</h2>
+          <h2>Join with address:<br className='hide-for-small' /> {this.email}</h2>
           <p>
             Please confirm that your e-mail address is correct.
           </p>
           <p className='form-actions'>
-            <a className='button highlight' onClick={submit}>Yes, that's right</a>
-            <a className='button' id='wrongAddress'>No, the address is wrong</a>
+            <a className='button highlight' onClick={resolve}>Yes, that's right</a>
+            <a className='button' onClick={reject}>No, the address is wrong</a>
           </p>
         </div>
       </Modal>
     );
 
     // Create the modal
-    let modal = React.render(this.modal, document.getElementById('modals'), () => {
-      try {
-        document.getElementById('wrongAddress').addEventListener('click', (event) => {
-          modal.close();
-        }, true);
-      } catch (error) {
-        debug(error);
-      }
-    });
-
+    this.modal = React.render(modal, document.getElementById('modals'));
     this.initModal();
   }
 
@@ -84,6 +180,11 @@ export default class Lander extends React.Component {
   }
 
   modalClose() {
+    if (this.modal) {
+      React.unmountComponentAtNode(React.findDOMNode(this.modal));
+      this.modal = null;
+    }
+
     let modals = document.getElementById('modals').getElementsByClassName('contact-form');
     for (let modal of modals) {
       if (modal.parentNode) {
@@ -161,7 +262,7 @@ export default class Lander extends React.Component {
             <form method='post' className='mailchimp' action='/api/contact/mailchimp' onSubmit={this.subscribeToNewsletter.bind(this)}>
               <table className='wrapper'>
                 <tr>
-                  <td width='60%' className='email'><input type='email' name='email' defaultValue='arttu@kaktus.cc' ref='contactEmail' placeholder='Fill in your email address' /></td>
+                  <td width='60%' className='email'><input type='email' name='email' ref='subscriberEmail' placeholder='Fill in your email address' /></td>
                   <td width='40%' className='submit'><input type='submit' value='Notify me!' /></td>
                 </tr>
               </table>
@@ -192,15 +293,15 @@ export default class Lander extends React.Component {
           <p className='title-like uppercase'>
             WE’RE CURRENTLY IN BETA TESTING PHASE. FILL IN YOUR DETAILS <br className='hide-for-small' /> TO JOIN OUR TEST GROUP WITH EARLY ACCESS.
           </p>
-          <form method='post' action='/api/contact/beta' onSubmit={this.subscribeToNewsletter.bind(this)} className='beta-testers'>
+          <form method='post' action='/api/contact/beta' onSubmit={this.subscribeAsTester.bind(this)} className='beta-testers'>
             <div className='form'>
-              <InputWidget type='text' name='name' ref='name' placeholder='Your name' required />
-              <InputWidget type='email' name='email' ref='email' placeholder='Your email address' required />
-              <InputWidget type='select' name='country' ref='country'>
+              <InputWidget type='text' name='name' ref='name' placeholder='Your name' required defaultValue='Arttu Manninen' />
+              <InputWidget type='email' name='email' ref='email' placeholder='Your email address' required defaultValue='arttu@kaktus.cc' />
+              <InputWidget type='select' name='country' ref='country' defaultValue='FI'>
                 <option value=''>Pick your home country</option>
                 {this.listCountries()}
               </InputWidget>
-              <InputWidget type='select' name='type' ref='type'>
+              <InputWidget type='select' name='type' ref='type' defaultValue='owner'>
                 <option value=''>Are you a home owner or a real estate professional?</option>
                 <option value='owner'>Home owner</option>
                 <option value='professional'>Real estate professional</option>

@@ -25,9 +25,9 @@ export default class SocialMedia extends React.Component {
           </a>
         </li>
         <li>
-          <a href='https://www.twitter.com/homehapp' target='_blank'>
-            <i className='fa fa-twitter'>
-              <span className='alt'>Twitter</span>
+          <a href='https://www.pinterest.com/homehapp' target='_blank'>
+            <i className='fa fa-pinterest'>
+              <span className='alt'>Pinterest</span>
             </i>
           </a>
         </li>
@@ -35,6 +35,13 @@ export default class SocialMedia extends React.Component {
           <a href='https://www.instagram.com/homehapp' target='_blank'>
             <i className='fa fa-instagram'>
               <span className='alt'>Instagram</span>
+            </i>
+          </a>
+        </li>
+        <li>
+          <a href='https://www.twitter.com/homehapp' target='_blank'>
+            <i className='fa fa-twitter'>
+              <span className='alt'>Twitter</span>
             </i>
           </a>
         </li>

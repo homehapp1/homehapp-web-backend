@@ -21,13 +21,21 @@ exports.registerRoutes = (app) => {
       status: 'subscribed'
     })
     .end((e, r) => {
-      res
-      .status(r.body.status)
-      .json({
+      let rval = {
         status: 'ok',
-        data: r.body
-      });
-      next();
+        message: 'subscribed',
+        newsletter: {}
+      };
+      let status = r.status || 100;
+
+      if (status === 400) {
+        status = 200;
+        rval.message = 'already subscribed';
+      }
+
+      res
+      .status(status)
+      .json(rval);
     });
   });
 };

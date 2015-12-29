@@ -39,6 +39,10 @@ exports.loadSchemas = function (mongoose, next) {
       phone: {
         type: String,
         default: null
+      },
+      country: {
+        type: String,
+        default: null
       }
     },
     home: {
