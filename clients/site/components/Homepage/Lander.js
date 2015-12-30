@@ -38,7 +38,7 @@ export default class Lander extends React.Component {
     debug('scroller', scroller);
 
     if (jQuery) {
-      jQuery('a.pager').on('click touchstart', function() {
+      jQuery('a.pager').on('click touch', function() {
         let i = Math.floor(jQuery(window).scrollTop() / jQuery(window).height()) + 1;
         $('body, html').animate({
           scrollTop: $(window).height() * i + 'px'
