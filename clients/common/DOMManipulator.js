@@ -65,7 +65,7 @@ class DOMManipulator {
       return (this.node.currentStyle) ? this.node.currentStyle[args] : getComputedStyle(this.node, null)[args];
     }
 
-    if (!this.mode.style) {
+    if (!this.node.style) {
       this.node.style = {};
     }
 
