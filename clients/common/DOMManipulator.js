@@ -65,6 +65,10 @@ class DOMManipulator {
       return (this.node.currentStyle) ? this.node.currentStyle[args] : getComputedStyle(this.node, null)[args];
     }
 
+    if (!this.mode.style) {
+      this.node.style = {};
+    }
+
     for (let i in args) {
       this.node.style[i] = args[i];
     }
