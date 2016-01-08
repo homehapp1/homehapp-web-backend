@@ -304,7 +304,7 @@ export default class Lander extends React.Component {
         <i className='fa fa-share-alt show-for-small' id='socialShare' ref='socialShare'></i>
         <BigImage image={image} className='full-height-always' align='left'>
           <LargeText align='center' valign='middle' className='full-height-always' id='mainContent'>
-            <h1>WE ARE<br className='show-for-small' /> TRANSFORMING<br /> HOW HOMES ARE<br className='show-for-small' /> PRESENTED.</h1>
+            <h1>WE ARE<br className='show-for-small' /> TRANSFORMING<br /> HOW HOMES ARE<br className='show-for-small' /> PRESENTED</h1>
             <p className='title-like hide-for-small'>
               <span>Please join our mailing list.</span> We will keep you posted on our progress and notify you when we go live.
             </p>
@@ -327,9 +327,9 @@ export default class Lander extends React.Component {
           </div>
         </BigImage>
         <ContentBlock className='show-for-small pattern full-height-always mailing-list'>
-          <h2 className='page-title'>Please join<br /> our mailing list.</h2>
+          <h2 className='page-title'>Please join<br /> our mailing list</h2>
           <p className='title-like centered'>
-            We will keep you posted on our<br /> progress and notify you when<br /> we go live.
+            We will keep you posted on our<br /> progress and notify you when<br /> we go live
           </p>
           <form method='post' className='mailchimp' action='/api/contact/mailchimp' onSubmit={this.subscribeToNewsletter.bind(this)}>
             <table className='wrapper'>
@@ -360,7 +360,7 @@ export default class Lander extends React.Component {
             homehapp helps you find the right buyer or tenant.
           </p>
           <p className='title-like uppercase mobile-padded'>
-            WE’RE CURRENTLY IN BETA TESTING PHASE. FILL IN YOUR DETAILS <br className='hide-for-small' /> TO JOIN OUR TEST GROUP WITH EARLY ACCESS.
+            WE’RE CURRENTLY IN BETA TESTING PHASE. PLEASE FILL IN YOUR DETAILS <br className='hide-for-small' /> TO JOIN OUR TEST GROUP WITH EARLY ACCESS.
           </p>
           <form method='post' action='/api/contact/beta' onSubmit={this.subscribeAsTester.bind(this)} className='beta-testers'>
             <div className='form'>
