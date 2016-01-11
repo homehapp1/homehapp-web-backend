@@ -102,7 +102,7 @@ exports.loadSchemas = function (mongoose, next) {
         default: false
       },
       blocks: [schemas.HomeStoryBlock]
-    }
+    },
     images: [schemas.HomeImage],
     _image: getImageFields(),
     epc: getImageFields(),
