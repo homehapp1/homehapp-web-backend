@@ -43,6 +43,31 @@ exports.getImageFields = function getImageFields() {
   };
 };
 
+exports.getAddressFields = function getAddressFields() {
+  return {
+    street: {
+      type: String,
+      default: ''
+    },
+    apartment: {
+      type: String,
+      default: ''
+    },
+    city: {
+      type: String,
+      default: ''
+    },
+    zipcode: {
+      type: String,
+      default: ''
+    },
+    country: {
+      type: String,
+      default: ''
+    }
+  };
+}
+
 exports.getImageSchema = function getImageSchema(Schema) {
   let image = new Schema(exports.getImageFields());
   image.virtual('aspectRatio').get(function() {
