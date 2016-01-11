@@ -49,13 +49,6 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {String} token             Authentication token for the user
    * @apiSuccess {Number} expiresIn         Expiration time in seconds
    * @apiSuccess {Datetime} expiresAt       ISO-8601 Formatted Expiration Datetime
-   * @apiSuccess {Object} user              User details
-   * @apiSuccess {String} user.id           Internal Id of the user
-   * @apiSuccess {String} user.email        Users email
-   * @apiSuccess {String} user.displayName  Users fullname
-   * @apiSuccess {String} user.firstname    Users firstname
-   * @apiSuccess {String} user.lastname     Users lastname
-   *
    */
 
   /**
@@ -251,58 +244,6 @@ exports.registerRoutes = (app) => {
   });
 
   /**
-   * @api {put} /api/auth/user Update user details
-   * @apiVersion 0.1.0
-   * @apiName UpdateUser
-   * @apiGroup Authentication
-   *
-   * @apiDescription Possibility to update user's nickname only currently.
-   *
-   * @apiPermission authenticated
-   * @apiUse MobileRequestHeadersAuthenticated
-   * @apiParam {Object} user             User details
-   * @apiParam {String} user.nickname    Nickname for the user
-   *
-   * @apiSuccessExample {json} Success-Response:
-   *     HTTP/1.1 200 OK
-   *     {
-   *       'status': 'ok',
-   *       'user': {...}
-   *     }
-   *
-   * @apiError (400) BadRequest Invalid request body, missing parameters.
-   * @apiError (403) Forbidden  User account has been disabled
-   * @apiErrorExample Error-Response:
-   *     HTTP/1.1 403 Forbidden
-   *     {
-   *       'status': 'failed',
-   *       'error': 'account disabled'
-   *     }
-   */
-  app.put('/api/auth/user', app.authenticatedRoute, function(req, res, next) {
-    if (!req.body.user) {
-      return next(new BadRequest('invalid request body'));
-    }
-
-    let data = req.body.user;
-
-    if (!data.nickname) {
-      return next(new BadRequest('invalid request body'));
-    }
-
-    QB
-    .forModel('User')
-    .findById(req.user.id)
-    .update(data)
-    .then((user) => {
-      res.json({
-        status: 'ok', user: user
-      });
-    })
-    .catch(next);
-  });
-
-  /**
    * @api {get} /api/auth/check Check session validity
    * @apiVersion 0.1.0
    * @apiName CheckSessionValidity
@@ -333,5 +274,4 @@ exports.registerRoutes = (app) => {
     }
     res.json({status: 'ok'});
   });
-
 };
