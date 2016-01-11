@@ -66,7 +66,7 @@ exports.getAddressFields = function getAddressFields() {
       default: ''
     }
   };
-}
+};
 
 exports.getImageSchema = function getImageSchema(Schema) {
   let image = new Schema(exports.getImageFields());
