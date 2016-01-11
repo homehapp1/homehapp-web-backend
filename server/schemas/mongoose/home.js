@@ -1,4 +1,4 @@
-import {loadCommonPlugins, commonJsonTransform, getImageFields, getImageSchema, getStoryBlockSchema, getMainImage, populateMetadata} from './common';
+import {loadCommonPlugins, commonJsonTransform, getImageFields, getAddressFields, getImageSchema, getStoryBlockSchema, getMainImage, populateMetadata} from './common';
 
 exports.loadSchemas = function (mongoose, next) {
   let Schema = mongoose.Schema;
@@ -53,28 +53,7 @@ exports.loadSchemas = function (mongoose, next) {
       },
     },
     location: {
-      address: {
-        street: {
-          type: String,
-          default: ''
-        },
-        apartment: {
-          type: String,
-          default: ''
-        },
-        city: {
-          type: String,
-          default: ''
-        },
-        zipcode: {
-          type: String,
-          default: ''
-        },
-        country: {
-          type: String,
-          default: ''
-        }
-      },
+      address: getAddressFields(),
       coordinates: {
         type: [],
         default: null
