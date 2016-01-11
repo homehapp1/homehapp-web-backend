@@ -42,7 +42,7 @@ export default class Lander extends React.Component {
         let i = Math.floor(jQuery(window).scrollTop() / jQuery(window).height()) + 1;
         $('body, html').animate({
           scrollTop: $(window).height() * i + 'px'
-        }, 1000)
+        }, 1000);
       });
 
       $('#socialShare').on('click touchstart', (event) => {
