@@ -34,6 +34,14 @@ exports.loadSchemas = function (mongoose, next) {
     _email: {
       type: String
     },
+    _lastValidEmail: {
+      type: String,
+      default: null
+    },
+    _emailValidated: {
+      type: Boolean,
+      default: false
+    },
     // Authentication related
     username: {
       type: String,
@@ -100,7 +108,10 @@ exports.loadSchemas = function (mongoose, next) {
     profileImage: getImageFields(),
     contact: {
       address: getAddressFields(),
-      phoneNumber: String
+      phone: {
+        type: String,
+        default: null
+      }
     }
   }));
 
@@ -179,7 +190,7 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.User.statics.editableFields = function () {
     return [
-      'firstname', 'lastname', 'email'
+      'firstname', 'lastname', 'email', 'profileImage', 'contact'
     ];
   };
   schemas.User.virtual('publicData').get(function() {
