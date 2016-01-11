@@ -18,7 +18,6 @@ exports.loadSchemas = function (mongoose, next) {
   //let ObjectId = Schema.Types.ObjectId;
 
   let schemas = {};
-  schemas.UserImage = getImageSchema(Schema);
 
   schemas.User = new Schema(populateMetadata({
     uuid: {
