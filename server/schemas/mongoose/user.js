@@ -1,6 +1,6 @@
 import moment from 'moment';
 import bcrypt from 'bcrypt';
-import { loadCommonPlugins, commonJsonTransform, populateMetadata } from './common';
+import { loadCommonPlugins, getImageFields, getAddressFields, commonJsonTransform, populateMetadata } from './common';
 let debug = require('debug')('UserSchema');
 
 let getSalt = function () {
@@ -18,6 +18,7 @@ exports.loadSchemas = function (mongoose, next) {
   //let ObjectId = Schema.Types.ObjectId;
 
   let schemas = {};
+  schemas.UserImage = getImageSchema(Schema);
 
   schemas.User = new Schema(populateMetadata({
     uuid: {
@@ -96,6 +97,11 @@ exports.loadSchemas = function (mongoose, next) {
     pushToken: {
       ios: String,
       android: String
+    },
+    profileImage: getImageFields(),
+    contact: {
+      address: getAddressFields(),
+      phoneNumber: String
     }
   }));
 
