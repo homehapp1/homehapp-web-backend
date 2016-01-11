@@ -70,6 +70,7 @@ exports.registerRoutes = (app) => {
    *
    * @apiSuccess {String} id                Uuid of the home
    * @apiSuccess {String} slug              URL Slug of the Home
+   * @apiSuccess {Boolean} enabled          Switch for enabling/disabling the public viewing of the home
    * @apiSuccess {String} announcementType  Home announcement type. Enum ['buy', 'rent', 'story']
    * @apiSuccess {String} description       Description of the Home
    * @apiSuccess {Object} details           Home details
@@ -92,19 +93,25 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {Datetime} updatedAt       ISO-8601 Formatted Updation Datetime
    * @apiSuccess {Integer} createdAtTS      EPOCH formatted timestamp of the creation time
    * @apiSuccess {Integer} updatedAtTS      EPOCH formatted timestamp of the updation time
-   *
+   * @apiSuccess {Object} story             Home story blocks
+   * @apiSuccess {Boolean} story.enabled    Switch to determine if the story is public
+   * @apiSuccess {Array} story.blocks       An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
+   * @apiSuccess {Object} neighborhoodStory             Neighborhood story blocks
+   * @apiSuccess {Boolean} neighborhoodStory.enabled    Switch to determine if the story is public
+   * @apiSuccess {Array} neighborhoodStory.blocks       An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
    */
 
   /**
     * @apiDefine HomeBody
     * @apiVersion 0.1.0
     *
-    * @apiParam {Object} home                   Home object
+    * @apiParam {Object} home                     Home object
+    * @apiParam {Boolean} [home.enabled]          Switch for enabling/disabling the public viewing of the home
     * @apiParam {String} [home.title]             Title of the Home
-    * @apiParam {String} home.announcementType  Home announcement type. Enum ['buy', 'rent', 'story']
-    * @apiParam {String} home.description       Textual description of the Home
-    * @apiParam {Object} [home.details]         Location details
-    * @apiParam {Number} [home.details.area]    Numeric surface area
+    * @apiParam {String} [home.announcementType]  Home announcement type. Enum ['buy', 'rent', 'story']
+    * @apiParam {String} home.description         Textual description of the Home
+    * @apiParam {Object} [home.details]           Location details
+    * @apiParam {Number} [home.details.area]      Numeric surface area
     * @apiParam {Object} [home.location.address]            Location address details
     * @apiParam {String} [home.location.address.street]     Street address
     * @apiParam {String} [home.location.address.apartment]  Apartment
@@ -114,6 +121,7 @@ exports.registerRoutes = (app) => {
     * @apiParam {Array}  [home.location.coordinates]        Map coordinates. [LAT, LON]
     * @apiParam {String} [home.location.neighborhood]       UUID of the Neighborhood
     * @apiParam {Object} [home.costs]                   Costs details
+    * @apiParam {String} [home.properties]              Home properties, i.e. list of
     * @apiParam {String} [home.costs.currency='GBP']    Currency. Enum ['EUR', 'GBP', 'USD']
     * @apiParam {Number} [home.costs.sellingPrice]      Selling price
     * @apiParam {Number} [home.costs.rentalPrice]       Rental price
@@ -125,9 +133,13 @@ exports.registerRoutes = (app) => {
     * @apiParam {Object} [home.story]                   Story block container object
     * @apiParam {Boolean} [home.story.enabled=false]    Switch to determine if the story is public
     * @apiParam {Array} [home.story.blocks]             An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
+    * @apiParam {Object} [home.neighborhoodStory]                   Story block container object
+    * @apiParam {Boolean} [home.neighborhoodStory.enabled=false]    Switch to determine if the story is public
+    * @apiParam {Array} [home.neighborhoodStory.blocks]             An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
     *
     * @apiParamExample {json} Example
     * {
+    *   "enabled": true,
     *   "title": "Home sweet home",
     *   "announcementType": "story",
     *   "description": "I am an example",
@@ -153,6 +165,24 @@ exports.registerRoutes = (app) => {
     *     }
     *   ],
     *   "story": {
+    *     "enabled": true,
+    *     "blocks": [
+    *       {
+    *         "template": "BigImage",
+    *         "properties": {
+    *           "image": {
+    *             "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+    *             "alt": "View towards the sunset",
+    *             "width": 4200,
+    *             "height": 2500
+    *           },
+    *           "title": "A great spectacle",
+    *           "description": "The evening routines of the Sun"
+    *         }
+    *       }
+    *     ]
+    *   },
+    *   "neighborhoodStory": {
     *     "enabled": true,
     *     "blocks": [
     *       {
