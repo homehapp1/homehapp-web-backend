@@ -31,7 +31,7 @@ let createApp = exports.createApp = (done) => {
     // Basic mobile request without authentication, but uses the other required headers
     appInstance.mobileRequest = function mobileRequest(method, url) {
       let r = appInstance.basicRequest(method, url)
-      .set('X-Homehapp-Client', 'Test')
+      .set('X-Homehapp-Client', 'IOS/Apple;Tester;x86_64;8.4.0/C9853654-3EBF-4BB5-9039-23DD0404A968/en')
       .set('X-Homehapp-Api-Key', config.security.requiredHeaders.valueMatch['X-Homehapp-Api-Key']);
       return r;
     };
