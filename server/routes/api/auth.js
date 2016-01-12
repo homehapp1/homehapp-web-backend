@@ -1,11 +1,11 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 import {NotFound, BadRequest, Forbidden} from '../../lib/Errors';
-import {randomString} from '../../lib/Helpers';
+import {randomString, normalizeHome} from '../../lib/Helpers';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  function generateTokenAndRespond(res, user) {
+  function generateTokenAndRespond(res, user, home) {
     return new Promise((resolve, reject) => {
       let tokenData = app.authentication.createTokenForUser(user);
 
@@ -18,6 +18,10 @@ exports.registerRoutes = (app) => {
       delete userJson.active;
       if (userJson.displayName === user.username || userJson.displayName === user.email) {
         userJson.displayName = '';
+      }
+
+      if (home) {
+        userJson.home = normalizeHome(home);
       }
 
       QB
@@ -82,7 +86,8 @@ exports.registerRoutes = (app) => {
    *            "token": "...",
    *            "displayName": "...",
    *            "firstname": "...",
-   *            "lastname": "..."
+   *            "lastname": "...",
+   *            "home": {...}
    *         }
    *       }
    *     }
@@ -115,6 +120,7 @@ exports.registerRoutes = (app) => {
     deviceIdData[deviceType] = req.clientInfo.deviceID;
 
     let query = {};
+    let user = null;
     // Add this query to bound the user to current device
     //query[`deviceId.${deviceType}`] = req.clientInfo.deviceID;
 
@@ -169,7 +175,16 @@ exports.registerRoutes = (app) => {
         .forModel('User')
         .createNoMultiset(userData)
         .then((model) => {
-          generateTokenAndRespond(res, model);
+          user = model;
+          return QB
+          .forModel('Home')
+          .createNoMultiset({
+            enabled: false,
+            createdBy: model
+          })
+        })
+        .then((home) => {
+          generateTokenAndRespond(res, user, home);
         })
         .catch(next);
       } else {
