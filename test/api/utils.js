@@ -19,6 +19,8 @@ let createApp = exports.createApp = (done) => {
     appInstance.QB = new QueryBuilder(appInstance);
     let token = null;
 
+    appInstance.userId = null;
+
     // Create a basic request that does not have the expected set of headers
     appInstance.basicRequest = function basicRequest(method, url) {
       if (typeof request(appInstance)[method] !== 'function') {
@@ -52,6 +54,8 @@ let createApp = exports.createApp = (done) => {
     .then((user) => {
       let tokenData = appInstance.authentication.createTokenForUser(user);
       token = tokenData.token;
+
+      appInstance.user = user;
 
       appInstance.QB
       .forModel('User')
