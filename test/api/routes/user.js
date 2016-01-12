@@ -46,4 +46,12 @@ describe('Home API paths', () => {
       done();
     });
   });
+
+  // it('Should be possible to update the user', (done) => {
+  //   app.authRequest('put', '/api/auth/user')
+  //   .expect(200)
+  //   .end((err, res) => {
+  //     done();
+  //   });
+  // });
 });
