@@ -4,6 +4,10 @@
   @import "content/about";
   @import "content/preview";
   @import "content/home-list";
+
+  @include small() {
+    padding-bottom: 0;
+  }
 }
 
 .left {
