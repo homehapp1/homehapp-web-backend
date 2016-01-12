@@ -7,13 +7,22 @@ import testUtils from '../utils';
 import MockupData from '../../MockupData';
 
 let app = null;
-let debug = require('debug')('Home API paths');
+let debug = require('debug')('User/Authentication API paths');
 
-describe('Home API paths', () => {
+describe('User/Authentication API paths', () => {
   before((done) => {
     testUtils.createApp((err, appInstance) => {
       app = appInstance;
-      done(err);
+      app.mockup.removeAll('Home', {
+        '_service.facebook.id': 'vapaaradikaali'
+      })
+      .then(() => {
+        done(err);
+      })
+      .catch((err) => {
+        console.error('Failed to delete homes');
+        done(err);
+      });
     });
   });
 
@@ -43,6 +52,32 @@ describe('Home API paths', () => {
     .expect(200)
     .end((err, res) => {
       should.not.exist(err);
+      done();
+    });
+  });
+
+  it('Should create a new user', (done) => {
+    app.mobileRequest('post', '/api/auth/login')
+    .send({
+      service: 'facebook',
+      user: {
+        id: 'vapaaradikaali',
+        email: 'alerts@kaktus.cc',
+        token: 'test-token',
+        displayName: 'Test Tester'
+      }
+    })
+    .expect(200)
+    .end((err, res) => {
+      should.not.exist(err);
+      should(res.body).have.property('session');
+      should(res.body.session).have.property('user');
+      let user = res.body.session.user;
+      should(user).have.property('id');
+      should(user).have.property('home');
+
+      let home = user.home;
+      expect(home.createdBy).to.be(user.id);
       done();
     });
   });
