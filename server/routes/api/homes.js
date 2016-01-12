@@ -345,6 +345,7 @@ exports.registerRoutes = (app) => {
     .query({
       createdBy: req.user
     })
+    .populate(populateAttributes)
     .findOne()
     .fetch()
     .then((result) => {
@@ -363,6 +364,7 @@ exports.registerRoutes = (app) => {
         enabled: false,
         createdBy: req.user
       })
+      .populate(populateAttributes)
       .then((model) => {
         res.json({
           status: 'ok',
