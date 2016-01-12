@@ -28,6 +28,7 @@ describe('Home API paths', () => {
 
   let body = null;
   let home = null;
+  let id = null;
 
   it('Should deny basic HTTP request without added headers', (done) => {
     app.basicRequest('get', '/api/homes')
@@ -79,6 +80,22 @@ describe('Home API paths', () => {
     .end((err, res) => {
       home = res.body.home;
       should.not.exist(err);
+      id = home.id;
+      done();
+    });
+  });
+
+  it('Should update the home instead of create a new for the authenticated users', (done) => {
+    home = merge({}, app.mockup.home);
+    delete home.slug;
+
+    app.authRequest('post', '/api/homes')
+    .send(home)
+    .expect(200)
+    .end((err, res) => {
+      home = res.body.home;
+      should.not.exist(err);
+      expect(home.id).to.be(id);
       done();
     });
   });
