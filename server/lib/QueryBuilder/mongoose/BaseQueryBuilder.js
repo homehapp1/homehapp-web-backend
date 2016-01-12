@@ -4,6 +4,8 @@ import {NotFound} from '../../Errors';
 import {merge, enumerate} from '../../Helpers';
 import CommonQueryBuilder from '../CommonQueryBuilder';
 
+let debug = require('debug')('BaseQueryBuilder');
+
 /**
  * Base QueryBuilder for Mongoose
  */
@@ -261,6 +263,12 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
         if (err) {
           return callback(err);
         }
+
+        if (!model) {
+          return callback(new NotFound('model not found'));
+        }
+
+        console.log('model', model, findQuery);
 
         this.result.model = model;
         this.result.modelJson = model.toJSON();
