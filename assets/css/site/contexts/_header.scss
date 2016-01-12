@@ -37,11 +37,6 @@
 
   .logo {
     float: left;
-    margin-top: 5px;
-
-    @include small() {
-      margin-top: 0;
-    }
 
     img {
       height: $headerHeight - 2 * $pv;
