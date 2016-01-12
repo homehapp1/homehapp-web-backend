@@ -53,6 +53,7 @@ export default class Navigation extends React.Component {
 
     this.body = new DOMManipulator(document.getElementsByTagName('body')[0]);
     window.addEventListener('resize', this.onResize);
+    this.onResize();
 
     AuthStore.listen(this.storeListener);
 
@@ -82,7 +83,7 @@ export default class Navigation extends React.Component {
     if (!window || !this.container) {
       return null;
     }
-    if (window.innerWidth <= 640) {
+    if (window.innerWidth <= 900) {
       this.container.css({
         height: `${window.innerHeight}px`
       });
@@ -155,7 +156,7 @@ export default class Navigation extends React.Component {
     };
 
     return (
-      <div className='container' ref='container'>
+      <div className='container full-height-small' ref='container'>
         <ul>
           <li><Link to='homeStories'>Home stories</Link></li>
           <li>
@@ -169,15 +170,25 @@ export default class Navigation extends React.Component {
     );
   }
 
+  getNavigationIcon() {
+    if (!this.state.loggedIn) {
+      return null;
+    }
+
+    return (
+      <div ref='icon' className='icon'>
+        <div className='bar top'></div>
+        <div className='bar middle'></div>
+        <div className='bar bottom'></div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div id='navigation' ref='navigation'>
         <UserNavigation />
-        <div ref='icon' className='icon'>
-          <div className='bar top'></div>
-          <div className='bar middle'></div>
-          <div className='bar bottom'></div>
-        </div>
+        {this.getNavigationIcon()}
         {this.getNavigation()}
       </div>
     );
