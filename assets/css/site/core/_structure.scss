@@ -61,7 +61,8 @@ body {
   }
 
   &.away-for-small {
-    @include small() {
+    // @include small() {
+    @media only screen and (max-width: 900px) {
       #header, #container, #footer, #navigation {
         @include vendors(transform, translateX(-1 * $navigationOffset));
       }
