@@ -377,22 +377,22 @@ exports.registerRoutes = (app) => {
       });
     })
     .catch((err) => {
-      if (err instanceof NotFound) {
-        QB
-        .forModel('Home')
-        .createNoMultiset({
-          enabled: false,
-          createdBy: req.user
-        })
-        .then((model) => {
-          res.json({
-            status: 'ok',
-            home: normalizeHome(model)
-          });
-        })
-        .catch(next);
+      if (!err instanceof NotFound) {
+        next(err);
       }
-      next(err);
+      QB
+      .forModel('Home')
+      .createNoMultiset({
+        enabled: false,
+        createdBy: req.user
+      })
+      .then((model) => {
+        res.json({
+          status: 'ok',
+          home: normalizeHome(model)
+        });
+      })
+      .catch(next);
     });
   });
 
