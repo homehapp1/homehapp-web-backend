@@ -6,6 +6,14 @@ import AuthStore from '../../../common/stores/AuthStore';
 let debug = require('debug')('Logout');
 
 export default class Logout extends React.Component {
+  static propTypes = {
+    context: React.PropTypes.object
+  }
+
+  static contextTypes = {
+    router: React.PropTypes.func
+  }
+
   constructor() {
     super();
     this.storeListener = this.onStoreChange.bind(this);
@@ -36,6 +44,8 @@ export default class Logout extends React.Component {
   }
 
   componentDidMount() {
+    this.timer = null;
+
     AuthStore.listen(this.storeListener);
     this.logout()
     .then(() => {
@@ -50,11 +60,21 @@ export default class Logout extends React.Component {
         error: null,
         loggedIn: false
       });
+
+      if (window) {
+        this.timer = window.setTimeout(() => {
+          window.location.href = this.context.router.makeHref('app');
+        }, 2000)
+      }
     });
   }
 
   componentWillUnmount() {
     AuthStore.unlisten(this.storeListener);
+
+    if (this.timer) {
+      window.clearTimeout(this.timer);
+    }
   }
 
   render() {
