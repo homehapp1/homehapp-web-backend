@@ -64,7 +64,7 @@ export default class Logout extends React.Component {
       if (window) {
         this.timer = window.setTimeout(() => {
           window.location.href = this.context.router.makeHref('app');
-        }, 2000)
+        }, 2000);
       }
     });
   }
