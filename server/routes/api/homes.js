@@ -364,7 +364,6 @@ exports.registerRoutes = (app) => {
         enabled: false,
         createdBy: req.user
       })
-      .populate(populateAttributes)
       .then((model) => {
         res.json({
           status: 'ok',
