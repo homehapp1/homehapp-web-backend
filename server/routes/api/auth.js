@@ -181,7 +181,7 @@ exports.registerRoutes = (app) => {
           .createNoMultiset({
             enabled: false,
             createdBy: model
-          })
+          });
         })
         .then((home) => {
           generateTokenAndRespond(res, user, home);
