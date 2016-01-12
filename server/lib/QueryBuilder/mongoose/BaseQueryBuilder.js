@@ -240,6 +240,38 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
     return this;
   }
 
+  findOne() {
+    this._queries.push((callback) => {
+      let findQuery = {
+        deletedAt: null
+      };
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
+      }
+
+      let cursor = this.Model.findOne(findQuery);
+
+      if (this._opts.fields) {
+        cursor.select(this._opts.fields);
+      }
+
+      this._configurePopulationForCursor(cursor);
+
+      cursor.exec((err, model) => {
+        if (err) {
+          return callback(err);
+        }
+
+        this.result.model = model;
+        this.result.modelJson = model.toJSON();
+        this._loadedModel = model;
+        callback();
+      });
+    });
+
+    return this;
+  }
+
   findById(id) {
     this._queries.push((callback) => {
       let cursor = this.Model.findById(id);

@@ -1,7 +1,7 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 let debug = require('debug')('/api/homes');
 
-import {BadRequest} from '../../lib/Errors';
+import {NotFound, BadRequest} from '../../lib/Errors';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -327,8 +327,10 @@ exports.registerRoutes = (app) => {
 
     let data = req.body.home;
 
-    // Force enable the home for now
-    data.enabled = true;
+    // Force enable the home for now, if not set by client
+    if (!data.hasOwnProperty('enabled')) {
+      data.enabled = true;
+    }
 
     updateHome(req.user, req.params.uuid, data)
     .then((model) => {
@@ -363,17 +365,35 @@ exports.registerRoutes = (app) => {
 
     QB
     .forModel('Home')
-    .createNoMultiset({
-      enabled: false,
+    .query({
       createdBy: req.user
     })
-    .then((model) => {
+    .findOne()
+    .fetch()
+    .then((result) => {
       res.json({
         status: 'ok',
-        home: normalizeHome(model)
+        home: normalizeHome(result.model)
       });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err instanceof NotFound) {
+        QB
+        .forModel('Home')
+        .createNoMultiset({
+          enabled: false,
+          createdBy: req.user
+        })
+        .then((model) => {
+          res.json({
+            status: 'ok',
+            home: normalizeHome(model)
+          });
+        })
+        .catch(next);
+      }
+      next(err);
+    });
   });
 
   /**
