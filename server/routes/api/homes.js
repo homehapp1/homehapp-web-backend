@@ -2,6 +2,7 @@ import QueryBuilder from '../../lib/QueryBuilder';
 let debug = require('debug')('/api/homes');
 
 import {NotFound, BadRequest} from '../../lib/Errors';
+import {normalizeHome} from '../../lib/Helpers';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -21,30 +22,6 @@ exports.registerRoutes = (app) => {
     'location.neighborhood': {},
     createdBy: 'uuid',
     updatedBy: 'uuid'
-  };
-
-  let getId = function getId(obj) {
-    if (typeof obj === 'string' || !obj) {
-      return obj;
-    }
-
-    if (typeof obj.uuid === 'string') {
-      return obj.uuid;
-    }
-
-    if (typeof obj.id === 'string') {
-      return obj.id;
-    }
-
-    return obj;
-  };
-
-  // Strip the model from Mongoose features and normalize UUIDs
-  let normalizeHome = function normalizeHome(home) {
-    home = JSON.parse(JSON.stringify(home));
-    home.createdBy = getId(home.createdBy);
-    home.updatedBy = getId(home.updatedBy);
-    return home;
   };
 
   let updateHome = function updateHome(user, uuid, data) {
