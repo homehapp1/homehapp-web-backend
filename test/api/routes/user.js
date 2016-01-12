@@ -10,6 +10,19 @@ let app = null;
 let debug = require('debug')('User/Authentication API paths');
 
 describe('User/Authentication API paths', () => {
+  let body = null;
+  let home = null;
+  let user = null;
+  let userData = {
+    service: 'facebook',
+    user: {
+      id: 'vapaaradikaali',
+      email: 'alerts@kaktus.cc',
+      token: 'test-token',
+      displayName: 'Test Tester'
+    }
+  };
+
   before((done) => {
     testUtils.createApp((err, appInstance) => {
       app = appInstance;
@@ -25,9 +38,6 @@ describe('User/Authentication API paths', () => {
       });
     });
   });
-
-  let body = null;
-  let home = null;
 
   it('Should deny basic HTTP request without added headers', (done) => {
     app.basicRequest('get', '/api/auth/check')
@@ -58,26 +68,36 @@ describe('User/Authentication API paths', () => {
 
   it('Should create a new user', (done) => {
     app.mobileRequest('post', '/api/auth/login')
-    .send({
-      service: 'facebook',
-      user: {
-        id: 'vapaaradikaali',
-        email: 'alerts@kaktus.cc',
-        token: 'test-token',
-        displayName: 'Test Tester'
-      }
-    })
+    .send(userData)
     .expect(200)
     .end((err, res) => {
       should.not.exist(err);
       should(res.body).have.property('session');
       should(res.body.session).have.property('user');
-      let user = res.body.session.user;
+      user = res.body.session.user;
       should(user).have.property('id');
       should(user).have.property('home');
 
-      let home = user.home;
+      home = user.home;
       expect(home.createdBy).to.be(user.id);
+      done();
+    });
+  });
+
+  it('Should not recreate the same user again', (done) => {
+    app.mobileRequest('post', '/api/auth/login')
+    .send(userData)
+    .expect(200)
+    .end((err, res) => {
+      should.not.exist(err);
+      should(res.body).have.property('session');
+      should(res.body.session).have.property('user');
+      expect(res.body.session.user.id).to.be(user.id);
+      should(res.body.session.user).have.property('id');
+      should(res.body.session.user).have.property('home');
+
+      expect(res.body.session.user.home.createdBy).to.be(res.body.session.user.id);
+      expect(res.body.session.user.home.id).to.be(home.id);
       done();
     });
   });

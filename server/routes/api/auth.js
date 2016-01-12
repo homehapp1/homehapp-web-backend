@@ -5,6 +5,12 @@ import {randomString, normalizeHome} from '../../lib/Helpers';
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
+  let populateAttributes = {
+    'location.neighborhood': {},
+    createdBy: 'uuid',
+    updatedBy: 'uuid'
+  };
+
   function generateTokenAndRespond(res, user, home) {
     return new Promise((resolve, reject) => {
       let tokenData = app.authentication.createTokenForUser(user);
@@ -20,9 +26,35 @@ exports.registerRoutes = (app) => {
         userJson.displayName = '';
       }
 
-      if (home) {
-        userJson.home = normalizeHome(home);
+      if (!home) {
+        // No home provided, get by user id or create if not available
+        QB
+        .forModel('Home')
+        .populate(populateAttributes)
+        .query({
+          createdBy: user
+        })
+        .findOne()
+        .fetch()
+        .then((result) => {
+          generateTokenAndRespond(res, user, result.model);
+        })
+        .catch((err) => {
+          QB
+          .forModel('Home')
+          .createNoMultiset({
+            createdBy: user,
+            enabled: false
+          })
+          .then((model) => {
+            generateTokenAndRespond(res, user, model);
+          });
+        });
+
+        return null;
       }
+
+      userJson.home = normalizeHome(home);
 
       QB
       .forModel('User')
@@ -175,16 +207,7 @@ exports.registerRoutes = (app) => {
         .forModel('User')
         .createNoMultiset(userData)
         .then((model) => {
-          user = model;
-          return QB
-          .forModel('Home')
-          .createNoMultiset({
-            enabled: false,
-            createdBy: model
-          });
-        })
-        .then((home) => {
-          generateTokenAndRespond(res, user, home);
+          generateTokenAndRespond(res, model);
         })
         .catch(next);
       } else {
