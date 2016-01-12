@@ -7,6 +7,8 @@ import Separator from '../../../common/components/Widgets/Separator';
 import InputWidget from '../../../admin/components/Widgets/Input';
 import Modal from '../../../common/components/Widgets/Modal';
 
+import AuthStore from '../../../common/stores/AuthStore';
+
 import SocialMedia from '../Navigation/SocialMedia';
 
 import DOMManipulator from '../../../common/DOMManipulator';
@@ -25,12 +27,15 @@ export default class Lander extends React.Component {
 
     this.contactStateChange = this.contactStateChange.bind(this);
     this.newsletterStateChange = this.newsletterStateChange.bind(this);
+    this.authStoreListener = this.onAuthStoreChange.bind(this);
   }
 
   state = {
     error: null,
     newsletter: null,
-    contact: null
+    contact: null,
+    user: AuthStore.getState().user,
+    loggedIn: AuthStore.getState().loggedIn
   }
 
   componentDidMount() {
@@ -56,11 +61,18 @@ export default class Lander extends React.Component {
 
     ContactStore.listen(this.contactStateChange);
     NewsletterStore.listen(this.newsletterStateChange);
+    AuthStore.listen(this.authStoreListener);
   }
 
   componentWillUnmount() {
     ContactStore.unlisten(this.contactStateChange);
     NewsletterStore.unlisten(this.newsletterStateChange);
+    AuthStore.unlisten(this.authStoreListener);
+  }
+
+  onAuthStoreChange(state) {
+    debug('onAuthStoreChange', state);
+    this.setState(state);
   }
 
   newsletterStateChange(state) {
@@ -283,6 +295,22 @@ export default class Lander extends React.Component {
     return countries;
   }
 
+  getSocialIcon() {
+    let classes = [
+      'fa',
+      'fa-share-alt',
+      'show-for-small'
+    ];
+
+    if (this.state.loggedIn) {
+      classes.push('logged-in');
+    }
+
+    return (
+      <i className={classes.join(' ')} id='socialShare' ref='socialShare'></i>
+    );
+  }
+
   render() {
     let images = [
       {
@@ -326,7 +354,7 @@ export default class Lander extends React.Component {
 
     return (
       <div id='lander'>
-        <i className='fa fa-share-alt show-for-small' id='socialShare' ref='socialShare'></i>
+        {this.getSocialIcon()}
         <BigImage image={image} className={classes.join(' ')} align='left'>
           <LargeText align='center' valign='middle' className='full-height-always' id='mainContent'>
             <h1>WE ARE<br className='show-for-small' /> TRANSFORMING<br /> HOW HOMES ARE<br className='show-for-small' /> PRESENTED</h1>
