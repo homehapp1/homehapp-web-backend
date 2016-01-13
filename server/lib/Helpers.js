@@ -184,7 +184,7 @@ exports.getId = function getId(obj) {
 };
 
 // Strip the model from Mongoose features and normalize UUIDs
-exports.normalizeHome = function normalizeHome(home) {
+exports.exposeHome = function exposeHome(home) {
   home = JSON.parse(JSON.stringify(home));
   home.createdBy = exports.getId(home.createdBy);
   home.updatedBy = exports.getId(home.updatedBy);
@@ -196,3 +196,24 @@ let enumerate = exports.enumerate = function* enumerate(obj) {
     yield [key, obj[key]];
   }
 };
+
+// Strip the model from
+exports.exposeUser = function exposeUser(user) {
+  let rval = user;
+
+  if (typeof rval.toJSON === 'function') {
+    rval = rval.toJSON();
+  }
+
+  delete rval.username;
+  delete rval.metadata;
+  delete rval.name;
+  delete rval.rname;
+  delete rval.deviceId;
+  delete rval.active;
+  if (rval.displayName === user.username || rval.displayName === user.email) {
+    rval.displayName = '';
+  }
+
+  return rval;
+}
