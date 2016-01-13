@@ -25,7 +25,7 @@ module.exports = function (projectRoot) {
       enabled: true
     },
     clientConfig: {
-      siteHost: 'https://homehapp:londonhomestory2015@homehapp.com'
+      siteHost: 'https://www.homehapp.com'
     }
   };
   return config;
