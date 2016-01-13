@@ -96,6 +96,13 @@ exports.loadSchemas = function (mongoose, next) {
       },
       blocks: [schemas.HomeStoryBlock]
     },
+    neighborhoodStory: {
+      enabled: {
+        type: Boolean,
+        default: false
+      },
+      blocks: [schemas.HomeStoryBlock]
+    },
     images: [schemas.HomeImage],
     _image: getImageFields(),
     epc: getImageFields(),
@@ -194,9 +201,9 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.Home.statics.editableFields = function () {
     return [
-      'title', 'description', 'location', 'costs', 'story', 'amenities',
-      'facilities', 'attributes', 'images', 'announcementType', 'brochures',
-      'image', 'epc', 'floorplans', 'properties', 'enabled'
+      'title', 'description', 'location', 'costs', 'story', 'neighborhoodStory',
+      'amenities', 'facilities', 'attributes', 'images', 'announcementType',
+      'brochures', 'image', 'epc', 'floorplans', 'properties', 'enabled'
     ];
   };
 

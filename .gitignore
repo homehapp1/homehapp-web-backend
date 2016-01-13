@@ -5,6 +5,5 @@ config/locals.js
 dist/
 tmp/
 logs/
-deploy*.sh
 docs/api
 .firstrun

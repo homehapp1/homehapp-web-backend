@@ -12,6 +12,10 @@ let debug = require('debug')('Home API paths');
 import { merge } from '../../../clients/common/Helpers';
 
 describe('Home API paths', () => {
+  let body = null;
+  let home = null;
+  let id = null;
+
   before((done) => {
     testUtils.createApp((err, appInstance) => {
       app = appInstance;
@@ -25,9 +29,6 @@ describe('Home API paths', () => {
       });
     });
   });
-
-  let body = null;
-  let home = null;
 
   it('Should deny basic HTTP request without added headers', (done) => {
     app.basicRequest('get', '/api/homes')
@@ -79,6 +80,23 @@ describe('Home API paths', () => {
     .end((err, res) => {
       home = res.body.home;
       should.not.exist(err);
+      id = home.id;
+      done();
+    });
+  });
+
+  it('Should update the home instead of create a new for the authenticated users', (done) => {
+    home = merge({}, app.mockup.home);
+    delete home.slug;
+
+    app.authRequest('post', '/api/homes')
+    .send(home)
+    .expect(200)
+    .end((err, res) => {
+      should.not.exist(err);
+      expect(res.body.home.id).to.be(id);
+      home = res.body.home;
+      expect(res.body.home.createdBy).to.be(app.user.uuid);
       done();
     });
   });
@@ -119,6 +137,7 @@ describe('Home API paths', () => {
     .end((err, res) => {
       should.not.exist(err);
       expect(res.body.home.enabled).to.be(true);
+      expect(res.body.home.createdBy).to.be(app.user.uuid);
       done();
     });
   });
@@ -129,6 +148,7 @@ describe('Home API paths', () => {
     .end((err, res) => {
       should.not.exist(err);
       should(res.body).have.property('home');
+      expect(res.body.home.createdBy).to.be(app.user.uuid);
       done();
     });
   });

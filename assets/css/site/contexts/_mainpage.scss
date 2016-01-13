@@ -115,6 +115,12 @@
     right: 100px;
     z-index: 10000;
     color: white;
+
+    @media only screen and (max-width: 900px) {
+      &.logged-in {
+        right: 120px;
+      }
+    }
   }
 
   .pager {
@@ -159,12 +165,19 @@
     .big-image {
       & > .image-content {
         background-image: url('https://res.cloudinary.com/homehapp/image/upload/w_1000,h_800,c_fill,g_center,fl_progressive/v1450887451/site/images/content/lander.jpg');
-        background-position: left center;
         background-size: cover;
 
         img {
           display: none;
         }
+      }
+
+      &.image-1 > .image-content {
+        background-image: url('https://res.cloudinary.com/homehapp/image/upload/w_1000,h_800,c_fill,g_east,fl_progressive/v1450887447/site/images/content/balcony.jpg');
+      }
+
+      &.image-2 > .image-content {
+        background-image: url('https://res.cloudinary.com/homehapp/image/upload/w_1000,h_800,c_fill,g_east,fl_progressive/v1450887437/site/images/content/moving-boxes.jpg');
       }
 
       .secondary {

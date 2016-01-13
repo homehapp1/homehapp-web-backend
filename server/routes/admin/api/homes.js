@@ -32,6 +32,50 @@ exports.registerRoutes = (app) => {
     .catch(next);
   });
 
+  app.get('/api/homes/orphans', app.authenticatedRoute, function(req, res, next) {
+    let rval = [];
+
+    QB
+    .forModel('home')
+    .query({
+      createdBy: null
+    })
+    .findAll()
+    .fetch()
+    .then((result) => {
+      let promises = result.models.map((home) => {
+        let createdBy = home.updatedBy || req.user.id();
+        debug('Update', home.homeTitle, home.slug, home.updatedBy, createdBy);
+
+        return QB
+        .forModel('Home')
+        .populate(populate)
+        .findByUuid(home.uuid)
+        .updateNoMultiset({
+          createdBy: createdBy
+        })
+        .then((model) => {
+          debug('updated');
+          rval.push(model);
+          Promise.resolve();
+        })
+        .catch((err) => {
+          debug('update failed', err);
+          Promise.reject(err);
+        });
+      });
+
+      Promise.all(promises)
+      .then(() => {
+        res.json({
+          status: 'ok',
+          homes: rval
+        });
+      });
+    })
+    .catch(next);
+  });
+
   app.post('/api/homes', app.authenticatedRoute, function(req, res, next) {
     debug('Admin create home');
     //debug('req.body', req.body);

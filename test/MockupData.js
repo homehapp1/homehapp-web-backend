@@ -167,10 +167,15 @@ export default class MockupData {
     });
   }
 
-  removeAll(model) {
+  removeAll(model, query = null) {
+    if (!query) {
+      query = {};
+    }
+
     return new Promise((resolve, reject) => {
       this.qb
       .forModel(model)
+      .query(query)
       .findAll()
       .fetch()
       .then((result) => {

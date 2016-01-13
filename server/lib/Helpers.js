@@ -167,6 +167,30 @@ exports.isEmpty = function isEmpty(val) {
   return false;
 };
 
+exports.getId = function getId(obj) {
+  if (typeof obj === 'string' || !obj) {
+    return obj;
+  }
+
+  if (typeof obj.uuid === 'string') {
+    return obj.uuid;
+  }
+
+  if (typeof obj.id === 'string') {
+    return obj.id;
+  }
+
+  return obj;
+};
+
+// Strip the model from Mongoose features and normalize UUIDs
+exports.normalizeHome = function normalizeHome(home) {
+  home = JSON.parse(JSON.stringify(home));
+  home.createdBy = exports.getId(home.createdBy);
+  home.updatedBy = exports.getId(home.updatedBy);
+  return home;
+};
+
 let enumerate = exports.enumerate = function* enumerate(obj) {
   for (let key of Object.keys(obj)) {
     yield [key, obj[key]];

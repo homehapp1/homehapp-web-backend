@@ -7,6 +7,8 @@ import Separator from '../../../common/components/Widgets/Separator';
 import InputWidget from '../../../admin/components/Widgets/Input';
 import Modal from '../../../common/components/Widgets/Modal';
 
+import AuthStore from '../../../common/stores/AuthStore';
+
 import SocialMedia from '../Navigation/SocialMedia';
 
 import DOMManipulator from '../../../common/DOMManipulator';
@@ -25,12 +27,15 @@ export default class Lander extends React.Component {
 
     this.contactStateChange = this.contactStateChange.bind(this);
     this.newsletterStateChange = this.newsletterStateChange.bind(this);
+    this.authStoreListener = this.onAuthStoreChange.bind(this);
   }
 
   state = {
     error: null,
     newsletter: null,
-    contact: null
+    contact: null,
+    user: AuthStore.getState().user,
+    loggedIn: AuthStore.getState().loggedIn
   }
 
   componentDidMount() {
@@ -56,11 +61,18 @@ export default class Lander extends React.Component {
 
     ContactStore.listen(this.contactStateChange);
     NewsletterStore.listen(this.newsletterStateChange);
+    AuthStore.listen(this.authStoreListener);
   }
 
   componentWillUnmount() {
     ContactStore.unlisten(this.contactStateChange);
     NewsletterStore.unlisten(this.newsletterStateChange);
+    AuthStore.unlisten(this.authStoreListener);
+  }
+
+  onAuthStoreChange(state) {
+    debug('onAuthStoreChange', state);
+    this.setState(state);
   }
 
   newsletterStateChange(state) {
@@ -140,6 +152,7 @@ export default class Lander extends React.Component {
         email: this.refs.email.getValue(),
         country: this.refs.country.getValue(),
       },
+      image: this.imageSeed,
       type: 'email'
     };
 
@@ -171,7 +184,8 @@ export default class Lander extends React.Component {
       e.preventDefault();
       e.stopPropagation();
       let props = {
-        email: this.email
+        email: this.email,
+        image: this.imageSeed
       };
       NewsletterActions.createItem(props);
     };
@@ -281,15 +295,49 @@ export default class Lander extends React.Component {
     return countries;
   }
 
+  getSocialIcon() {
+    let classes = [
+      'fa',
+      'fa-share-alt',
+      'show-for-small'
+    ];
+
+    if (this.state.loggedIn) {
+      classes.push('logged-in');
+    }
+
+    return (
+      <i className={classes.join(' ')} id='socialShare' ref='socialShare'></i>
+    );
+  }
+
   render() {
-    let image = {
-      url: 'https://res.cloudinary.com/homehapp/image/upload/v1450887451/site/images/content/lander.jpg',
-      alt: 'Placeholder',
-      width: 1920,
-      height: 1280,
-      aspectRatio: 1920 / 1280,
-      align: 'left'
-    };
+    let images = [
+      {
+        url: 'https://res.cloudinary.com/homehapp/image/upload/v1450887451/site/images/content/lander.jpg',
+        align: 'left',
+        width: 1920,
+        height: 1280
+      },
+      {
+        url: 'https://res.cloudinary.com/homehapp/image/upload/v1450887447/site/images/content/balcony.jpg',
+        align: 'center',
+        width: 1920,
+        height: 1280
+      },
+      {
+        url: 'https://res.cloudinary.com/homehapp/image/upload/v1450887437/site/images/content/moving-boxes.jpg',
+        align: 'right',
+        valign: 'top',
+        width: 1920,
+        height: 1280
+      }
+    ];
+    this.imageSeed = 2 || Math.floor(Math.random() * images.length);
+
+    let image = images[this.imageSeed];
+    image.aspectRatio = image.width / image.height;
+    image.alt = '';
 
     let appImage = {
       url: 'http://res.cloudinary.com/homehapp/image/upload/v1450903388/site/images/content/responsive-homehapp.png',
@@ -299,10 +347,15 @@ export default class Lander extends React.Component {
       applySize: true
     };
 
+    let classes = [
+      'full-height-always',
+      `image-${this.imageSeed}`
+    ];
+
     return (
       <div id='lander'>
-        <i className='fa fa-share-alt show-for-small' id='socialShare' ref='socialShare'></i>
-        <BigImage image={image} className='full-height-always' align='left'>
+        {this.getSocialIcon()}
+        <BigImage image={image} className={classes.join(' ')} align='left'>
           <LargeText align='center' valign='middle' className='full-height-always' id='mainContent'>
             <h1>WE ARE<br className='show-for-small' /> TRANSFORMING<br /> HOW HOMES ARE<br className='show-for-small' /> PRESENTED</h1>
             <p className='title-like hide-for-small'>

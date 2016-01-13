@@ -108,9 +108,18 @@ export default class BigImage extends BigBlock {
       author = (<div className='image-author'>&copy; {this.props.image.author}</div>);
     }
 
+    let x = this.props.image.align || this.props.align;
+    let y = this.props.image.valign || this.props.valign;
+
+    y = y.replace(/middle/, 'center');
+
+    let imageStyle = {
+      backgroundPosition: `${x} ${y}`
+    };
+
     return (
       <div {...props}>
-        <div className='image-content' ref='container'>
+        <div className='image-content' ref='container' style={imageStyle}>
           {this.getBigImage(image)}
           {this.getMediumImage(image)}
           {this.getSmallImage(image)}

@@ -6,6 +6,14 @@ import ApplicationStore from '../../../common/stores/ApplicationStore';
 let debug = require('debug')('Login');
 
 export default class Login extends React.Component {
+  static propTypes = {
+    context: React.PropTypes.object
+  }
+
+  static contextTypes = {
+    router: React.PropTypes.func
+  }
+
   constructor() {
     super();
     this.stateListener = this.onStateChange.bind(this);
@@ -37,6 +45,10 @@ export default class Login extends React.Component {
 
     if (this.state.redirectUrl) {
       return this.state.redirectUrl;
+    }
+
+    if (this.context && this.context.router) {
+      return this.context.router.makeHref('homepage');
     }
 
     return '/';

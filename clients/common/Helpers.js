@@ -170,9 +170,14 @@ exports.setFullHeight = function setFullHeight() {
   }
 
   if (window && window.innerWidth <= 640) {
+    items = document.getElementsByClassName('full-height-small');
+    for (let item of items) {
+      setHeight(item, false, 0);
+    }
+    
     items = document.getElementsByClassName('full-height');
     for (let item of items) {
-      if (item.className.match(/full-height-always/)) {
+      if (item.className.match(/full-height-(always|small)/)) {
         continue;
       }
       item.style.height = null;

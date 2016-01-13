@@ -1,11 +1,17 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 import {NotFound, BadRequest, Forbidden} from '../../lib/Errors';
-import {randomString} from '../../lib/Helpers';
+import {randomString, normalizeHome} from '../../lib/Helpers';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
-  function generateTokenAndRespond(res, user) {
+  let populateAttributes = {
+    'location.neighborhood': {},
+    createdBy: 'uuid',
+    updatedBy: 'uuid'
+  };
+
+  function generateTokenAndRespond(res, user, home) {
     return new Promise((resolve, reject) => {
       let tokenData = app.authentication.createTokenForUser(user);
 
@@ -19,6 +25,36 @@ exports.registerRoutes = (app) => {
       if (userJson.displayName === user.username || userJson.displayName === user.email) {
         userJson.displayName = '';
       }
+
+      if (!home) {
+        // No home provided, get by user id or create if not available
+        QB
+        .forModel('Home')
+        .populate(populateAttributes)
+        .query({
+          createdBy: user
+        })
+        .findOne()
+        .fetch()
+        .then((result) => {
+          generateTokenAndRespond(res, user, result.model);
+        })
+        .catch((err) => {
+          QB
+          .forModel('Home')
+          .createNoMultiset({
+            createdBy: user,
+            enabled: false
+          })
+          .then((model) => {
+            generateTokenAndRespond(res, user, model);
+          });
+        });
+
+        return null;
+      }
+
+      userJson.home = normalizeHome(home);
 
       QB
       .forModel('User')
@@ -82,7 +118,8 @@ exports.registerRoutes = (app) => {
    *            "token": "...",
    *            "displayName": "...",
    *            "firstname": "...",
-   *            "lastname": "..."
+   *            "lastname": "...",
+   *            "home": {...}
    *         }
    *       }
    *     }
@@ -115,6 +152,7 @@ exports.registerRoutes = (app) => {
     deviceIdData[deviceType] = req.clientInfo.deviceID;
 
     let query = {};
+    let user = null;
     // Add this query to bound the user to current device
     //query[`deviceId.${deviceType}`] = req.clientInfo.deviceID;
 

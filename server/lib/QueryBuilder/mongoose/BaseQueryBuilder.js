@@ -262,6 +262,10 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
           return callback(err);
         }
 
+        if (!model) {
+          return callback(new NotFound('model not found'));
+        }
+
         this.result.model = model;
         this.result.modelJson = model.toJSON();
         this._loadedModel = model;

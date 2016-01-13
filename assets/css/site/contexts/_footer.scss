@@ -11,6 +11,8 @@
 
   @include small() {
     padding: $contentPadding 0;
+    min-height: 0;
+    margin-top: 0;
   }
 
   img.loading {
