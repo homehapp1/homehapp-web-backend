@@ -64,7 +64,7 @@ export default class Login extends React.Component {
           <form method='POST' action='/auth/login'>
             <div className='form'>
               <input type='hidden' name='_csrf' defaultValue={this.state.csrf} />
-              <input type='hidden' name='redirectUrl' defaultValue={url} />
+              <input type='hidden' name='redirectTo' defaultValue={url} />
               <input type='email' name='username' required placeholder='Username' />
               <input type='password' name='password' required placeholder='Password' />
               <input type='submit' value='Login ›' />
