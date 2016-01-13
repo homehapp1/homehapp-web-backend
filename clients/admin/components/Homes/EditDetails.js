@@ -384,7 +384,7 @@ export default class HomesEditDetails extends EditDetails {
     let area = null;
     if (homeLocation.neighborhood && homeLocation.neighborhood.area) {
       area = homeLocation.neighborhood.area;
-      if (!lat && homeLocation.neighborhood.location.coordinates && homeLocation.neighborhood.location.coordinates.length >= 2) {
+      if (!lat && homeLocation.neighborhood && homeLocation.neighborhood.location && homeLocation.neighborhood.location.coordinates && homeLocation.neighborhood.location.coordinates.length >= 2) {
         lat = homeLocation.neighborhood.location.coordinates[0];
         lng = homeLocation.neighborhood.location.coordinates[1];
       }
