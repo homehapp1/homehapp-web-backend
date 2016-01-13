@@ -186,6 +186,15 @@ exports.getId = function getId(obj) {
 // Strip the model from Mongoose features and normalize UUIDs
 exports.exposeHome = function exposeHome(home) {
   home = JSON.parse(JSON.stringify(home));
+
+  if (typeof home.createdBy === 'object') {
+    home.creator = exports.exposeUser(home.createdBy);
+  }
+
+  if (typeof home.updatedBy === 'object') {
+    home.updater = exports.exposeUser(home.updatedBy);
+  }
+
   home.createdBy = exports.getId(home.createdBy);
   home.updatedBy = exports.getId(home.updatedBy);
   return home;
@@ -216,4 +225,4 @@ exports.exposeUser = function exposeUser(user) {
   }
 
   return rval;
-}
+};
