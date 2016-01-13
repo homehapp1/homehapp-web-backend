@@ -23,6 +23,37 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {String} user.contact.address.zipcode  User's post office code
    * @apiSuccess {String} user.contact.address.country  User's country
    * @apiSuccess {String} user.contact.phone            User's phone number
+   * @apiSuccess {Object} user.home                     User's <a href="#api-Homes-Home_details">Home</a>
+   */
+
+  /**
+   * @apiDefine UserSuccessResponseJSON
+   * @apiVersion 0.1.0
+   *
+   * @apiSuccessExample {json} JSON serialization of the user
+   *     "user": {
+   *       "id": "...",
+   *       "email": "...",
+   *       "displayName": "...",
+   *       "firstname": "...",
+   *       "lastname": "...",
+   *       "profileImage": {
+   *         "url": "...",
+   *         "alt": "...",
+   *         "width": ...,
+   *         "height": ...
+   *       },
+   *       "contact": {
+   *         "address": {
+   *           "street": "...",
+   *           "city": "...",
+   *           "zipcode": "...",
+   *           "country": "..."
+   *         },
+   *         "phone": "..."
+   *       },
+   *       "home": {...}
+   *     }
    */
 
   /**
@@ -43,6 +74,17 @@ exports.registerRoutes = (app) => {
    */
 
   /**
+   * @api {any} /api/* User details
+   * @apiVersion 0.1.1
+   * @apiName UserData
+   * @apiGroup Users
+   *
+   * @apiDescription User details for each response that has the user object contains the same set of data
+   * @apiUse UserSuccessResponse
+   * @apiUse UserSuccessResponseJSON
+   */
+
+  /**
    * @api {put} /api/auth/user Update user details
    * @apiVersion 0.1.1
    * @apiName UpdateUser
@@ -53,35 +95,8 @@ exports.registerRoutes = (app) => {
    * @apiPermission authenticated
    * @apiUse MobileRequestHeadersAuthenticated
    * @apiUse UserSuccessResponse
+   * @apiUse UserSuccessResponseJSON
    * @apiUse UserBody
-   *
-   * @apiSuccessExample {json} Success-Response:
-   *    HTTP/1.1 200 OK
-   *    {
-   *     "status": "ok",
-   *     "user": {
-   *      "id": "...",
-   *      "email": "...",
-   *      "displayName": "...",
-   *      "firstname": "...",
-   *      "lastname": "...",
-   *      "profileImage": {
-   *        "url": "...",
-   *        "alt": "...",
-   *        "width": ...,
-   *        "height": ...
-   *      },
-   *      "contact": {
-   *        "address": {
-   *         "street": "...",
-   *         "city": "...",
-   *         "zipcode": "...",
-   *         "country": "..."
-   *        },
-   *        "phone": "..."
-   *      }
-   *     }
-   *    }
    *
    * @apiError (400) BadRequest Invalid request body, missing parameters.
    * @apiError (403) Forbidden  User account has been disabled

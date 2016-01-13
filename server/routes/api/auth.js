@@ -1,6 +1,6 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 import {NotFound, BadRequest, Forbidden} from '../../lib/Errors';
-import {randomString, normalizeHome} from '../../lib/Helpers';
+import {randomString, exposeHome, exposeUser} from '../../lib/Helpers';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -15,16 +15,7 @@ exports.registerRoutes = (app) => {
     return new Promise((resolve, reject) => {
       let tokenData = app.authentication.createTokenForUser(user);
 
-      let userJson = user.toJSON();
-      delete userJson.username;
-      delete userJson.metadata;
-      delete userJson.name;
-      delete userJson.rname;
-      delete userJson.deviceId;
-      delete userJson.active;
-      if (userJson.displayName === user.username || userJson.displayName === user.email) {
-        userJson.displayName = '';
-      }
+      let userJson = exposeUser(user);
 
       if (!home) {
         // No home provided, get by user id or create if not available
@@ -54,7 +45,7 @@ exports.registerRoutes = (app) => {
         return null;
       }
 
-      userJson.home = normalizeHome(home);
+      userJson.home = exposeHome(home);
 
       QB
       .forModel('User')
@@ -82,9 +73,11 @@ exports.registerRoutes = (app) => {
    * @apiDefine AuthSuccessResponse
    * @apiVersion 0.1.0
    *
-   * @apiSuccess {String} token             Authentication token for the user
-   * @apiSuccess {Number} expiresIn         Expiration time in seconds
-   * @apiSuccess {Datetime} expiresAt       ISO-8601 Formatted Expiration Datetime
+   * @apiSuccess {Object} session
+   * @apiSuccess {String} session.token             Authentication token for the user
+   * @apiSuccess {Number} session.expiresIn         Expiration time in seconds
+   * @apiSuccess {Datetime} session.expiresAt       ISO-8601 Formatted Expiration Datetime
+   * @apiSuccess {Object} session.user              <a href="#api-Users-UserData">User</a> object
    */
 
   /**
@@ -103,8 +96,10 @@ exports.registerRoutes = (app) => {
    * @apiParam {String} [user.firstname]     User's first name from the service
    * @apiParam {String} [user.lastname]      User's last name from the service
    * @apiUse AuthSuccessResponse
+   * @apiUse UserSuccessResponseJSON
+   * @apiUse HomeSuccessResponseJSON
    *
-   * @apiSuccessExample {json} Success-Response:
+   * @apiSuccessExample Success-Response
    *     HTTP/1.1 200 OK
    *     {
    *       "status": "ok",
@@ -112,14 +107,7 @@ exports.registerRoutes = (app) => {
    *          "token": "...",
    *          "expiresIn": ...,
    *          "expiresAt": '...',
-   *          "user": {
-   *            "id": "...",
-   *            "email": "...",
-   *            "token": "...",
-   *            "displayName": "...",
-   *            "firstname": "...",
-   *            "lastname": "...",
-   *            "home": {...}
+   *          "user": {...}
    *         }
    *       }
    *     }

@@ -2,7 +2,7 @@ import QueryBuilder from '../../lib/QueryBuilder';
 let debug = require('debug')('/api/homes');
 
 import {NotFound, BadRequest} from '../../lib/Errors';
-import {normalizeHome} from '../../lib/Helpers';
+import {exposeHome} from '../../lib/Helpers';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -48,6 +48,7 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {String} id                Uuid of the home
    * @apiSuccess {String} slug              URL Slug of the Home
    * @apiSuccess {Boolean} enabled          Switch for enabling/disabling the public viewing of the home
+   * @apiSuccess {String} title             Home title
    * @apiSuccess {String} announcementType  Home announcement type. Enum ['buy', 'rent', 'story']
    * @apiSuccess {String} description       Description of the Home
    * @apiSuccess {Object} details           Home details
@@ -62,20 +63,144 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {String} location.address.country   Country
    * @apiSuccess {Array}  location.coordinates   Map coordinates. [LAT, LON]
    * @apiSuccess {Object} location.neighborhood   Neighborhood object TODO: Define
+   * @apiSuccess {Object} mainImage                Main <a href="#api-Shared-Images">Image</a> of the home
    * @apiSuccess {Array} epc                      EPC <a href="#api-Shared-Images">Image</a> or PDF
-   * @apiSuccess {Array} mainImage                Main <a href="#api-Shared-Images">Image</a> of the home
+   * @apiSuccess {Array} images                    Home <a href="#api-Shared-Images">Images</a>
    * @apiSuccess {Array} floorplans               An array of <a href="#api-Shared-Images">Images</a>, dedicated to floorplans
    * @apiSuccess {Array} brochures                An array of <a href="#api-Shared-Images">Images</a>, dedicated to brochures
-   * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
-   * @apiSuccess {Datetime} updatedAt       ISO-8601 Formatted Updation Datetime
-   * @apiSuccess {Integer} createdAtTS      EPOCH formatted timestamp of the creation time
-   * @apiSuccess {Integer} updatedAtTS      EPOCH formatted timestamp of the updation time
    * @apiSuccess {Object} story             Home story blocks
    * @apiSuccess {Boolean} story.enabled    Switch to determine if the story is public
    * @apiSuccess {Array} story.blocks       An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
    * @apiSuccess {Object} neighborhoodStory             Neighborhood story blocks
    * @apiSuccess {Boolean} neighborhoodStory.enabled    Switch to determine if the story is public
    * @apiSuccess {Array} neighborhoodStory.blocks       An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
+   * @apiSuccess {String} createdBy         UUID of the <a href="#api-Users-UserData">User</a> that has created the home
+   * @apiSuccess {String} updatedBy         UUID of the <a href="#api-Users-UserData">User</a> that has updated the home
+   * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
+   * @apiSuccess {Datetime} updatedAt       ISO-8601 Formatted Updation Datetime
+   * @apiSuccess {Integer} createdAtTS      EPOCH formatted timestamp of the creation time
+   * @apiSuccess {Integer} updatedAtTS      EPOCH formatted timestamp of the updation time
+   */
+
+  /**
+   * @apiDefine HomeSuccessResponseJSON
+   * @apiVersion 0.1.0
+   *
+   * @apiSuccessExample {json} JSON serialization of the home
+   * {
+   *   "id": "00000000-0000-0000-0000-000000000000",
+   *   "slug": "...",
+   *   "enabled": true,
+   *   "title": "Home sweet home",
+   *   "announcementType": "story",
+   *   "description": "I am an example",
+   *   "details": {
+   *     "area": ...,
+   *     "freeform": "...",
+   *   },
+   *   "location": {
+   *     "address": "221B Baker Street",
+   *     "city": "Exampleby",
+   *     "country": "Great Britain",
+   *     "coordinates": [
+   *       51.4321,
+   *       -0.1234
+   *     ],
+   *     "neighborhood": "00000000-0000-0000-0000-000000000000"
+   *   },
+   *   "mainImage": {
+   *     "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+   *     "alt": "View towards the sunset",
+   *     "width": 4200,
+   *     "height": 2500
+   *   },
+   *   "images": [
+   *     {
+   *       "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+   *       "alt": "View towards the sunset",
+   *       "width": 4200,
+   *       "height": 2500
+   *     },
+   *     {
+   *       ...
+   *     }
+   *   ],
+   *   "epc": [
+   *     {
+   *       "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+   *       "alt": "View towards the sunset",
+   *       "width": 4200,
+   *       "height": 2500
+   *     },
+   *     {
+   *       ...
+   *     }
+   *   ],
+   *   "floorplans": [
+   *     {
+   *       "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+   *       "alt": "View towards the sunset",
+   *       "width": 4200,
+   *       "height": 2500
+   *     },
+   *     {
+   *       ...
+   *     }
+   *   ],
+   *   "brochures": [
+   *     {
+   *       "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+   *       "alt": "View towards the sunset",
+   *       "width": 4200,
+   *       "height": 2500
+   *     },
+   *     {
+   *       ...
+   *     }
+   *   ],
+   *   "story": {
+   *     "enabled": true,
+   *     "blocks": [
+   *       {
+   *         "template": "BigImage",
+   *         "properties": {
+   *           "image": {
+   *             "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+   *             "alt": "View towards the sunset",
+   *             "width": 4200,
+   *             "height": 2500
+   *           },
+   *           "title": "A great spectacle",
+   *           "description": "The evening routines of the Sun"
+   *         }
+   *       }
+   *     ]
+   *   },
+   *   "neighborhoodStory": {
+   *     "enabled": true,
+   *     "blocks": [
+   *       {
+   *         "template": "BigImage",
+   *         "properties": {
+   *           "image": {
+   *             "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
+   *             "alt": "View towards the sunset",
+   *             "width": 4200,
+   *             "height": 2500
+   *           },
+   *           "title": "A great spectacle",
+   *           "description": "The evening routines of the Sun"
+   *         }
+   *       }
+   *     ]
+   *   },
+   *   "createdBy": "00000000-0000-0000-0000-000000000000",
+   *   "updatedBy": "00000000-0000-0000-0000-000000000000",
+   *   "createdAt": "2016-01-13T14:38:01.0000Z",
+   *   "updatedAt": "2016-01-13T14:38:01.0000Z",
+   *   "createdAtTS": 1452695955,
+   *   "updatedAtTS": 1452695955
+   * }
    */
 
   /**
@@ -113,72 +238,20 @@ exports.registerRoutes = (app) => {
     * @apiParam {Object} [home.neighborhoodStory]                   Story block container object
     * @apiParam {Boolean} [home.neighborhoodStory.enabled=false]    Switch to determine if the story is public
     * @apiParam {Array} [home.neighborhoodStory.blocks]             An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
-    *
-    * @apiParamExample {json} Example
-    * {
-    *   "enabled": true,
-    *   "title": "Home sweet home",
-    *   "announcementType": "story",
-    *   "description": "I am an example",
-    *   "location": {
-    *     "address": "221B Baker Street",
-    *     "city": "Exampleby",
-    *     "country": "Great Britain",
-    *     "coordinates": [
-    *       51.4321,
-    *       -0.1234
-    *     ],
-    *     "neighborhood": "00000000-0000-0000-0000-000000000000"
-    *   },
-    *   "images": [
-    *     {
-    *       "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
-    *       "alt": "View towards the sunset",
-    *       "width": 4200,
-    *       "height": 2500
-    *     },
-    *     {
-    *       ...
-    *     }
-    *   ],
-    *   "story": {
-    *     "enabled": true,
-    *     "blocks": [
-    *       {
-    *         "template": "BigImage",
-    *         "properties": {
-    *           "image": {
-    *             "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
-    *             "alt": "View towards the sunset",
-    *             "width": 4200,
-    *             "height": 2500
-    *           },
-    *           "title": "A great spectacle",
-    *           "description": "The evening routines of the Sun"
-    *         }
-    *       }
-    *     ]
-    *   },
-    *   "neighborhoodStory": {
-    *     "enabled": true,
-    *     "blocks": [
-    *       {
-    *         "template": "BigImage",
-    *         "properties": {
-    *           "image": {
-    *             "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
-    *             "alt": "View towards the sunset",
-    *             "width": 4200,
-    *             "height": 2500
-    *           },
-    *           "title": "A great spectacle",
-    *           "description": "The evening routines of the Sun"
-    *         }
-    *       }
-    *     ]
-    *   }
-    * }
     */
+
+  /**
+   * @api {any} /api/* Home Details
+   * @apiVersion 0.1.1
+   * @apiName Home details
+   * @apiGroup Homes
+   *
+   * @apiDescription Data for each home object passed from the backend contains the same set of information
+   *
+   * @apiUse MobileRequestHeaders
+   * @apiUse HomeSuccessResponse
+   * @apiUse HomeSuccessResponseJSON
+   */
 
   /**
    * @api {get} /api/homes Fetch All Homes
@@ -190,6 +263,7 @@ exports.registerRoutes = (app) => {
    *
    * @apiUse MobileRequestHeaders
    * @apiUse HomeSuccessResponse
+   * @apiUse HomeSuccessResponseJSON
    *
    * @apiParam (Query) {String} [sort=desc]          Sort order. Enum: ['asc', 'desc']
    * @apiParam (Query) {String} [sortBy=updatedAt]   Which field to use for sorting
@@ -226,7 +300,7 @@ exports.registerRoutes = (app) => {
     .fetch()
     .then((result) => {
       let homes = result.models.map((home) => {
-        return normalizeHome(home);
+        return exposeHome(home);
       });
       res.json({
         status: 'ok',
@@ -247,6 +321,7 @@ exports.registerRoutes = (app) => {
    *
    * @apiUse MobileRequestHeaders
    * @apiUse HomeSuccessResponse
+   * @apiUse HomeSuccessResponseJSON
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
@@ -273,7 +348,7 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       res.json({
         status: 'ok',
-        home: normalizeHome(result.home)
+        home: exposeHome(result.home)
       });
     })
     .catch(next);
@@ -289,6 +364,7 @@ exports.registerRoutes = (app) => {
    * @apiUse MobileRequestHeaders
    * @apiUse HomeBody
    * @apiUse HomeSuccessResponse
+   * @apiUse HomeSuccessResponseJSON
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
@@ -313,7 +389,7 @@ exports.registerRoutes = (app) => {
     .then((model) => {
       res.json({
         status: 'ok',
-        home: normalizeHome(model)
+        home: exposeHome(model)
       });
     })
     .catch(next);
@@ -328,6 +404,7 @@ exports.registerRoutes = (app) => {
    * @apiUse MobileRequestHeaders
    * @apiUse HomeBody
    * @apiUse HomeSuccessResponse
+   * @apiUse HomeSuccessResponseJSON
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
@@ -335,7 +412,6 @@ exports.registerRoutes = (app) => {
    *       "status": "ok",
    *       "home": {...}
    *     }
-   *
    */
   app.post('/api/homes', app.authenticatedRoute, function(req, res, next) {
     debug('API create home');
@@ -351,7 +427,7 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       res.json({
         status: 'ok',
-        home: normalizeHome(result.model)
+        home: exposeHome(result.model)
       });
     })
     .catch((err) => {
@@ -367,7 +443,7 @@ exports.registerRoutes = (app) => {
       .then((model) => {
         res.json({
           status: 'ok',
-          home: normalizeHome(model)
+          home: exposeHome(model)
         });
       })
       .catch(next);
@@ -385,6 +461,7 @@ exports.registerRoutes = (app) => {
    *
    * @apiUse MobileRequestHeaders
    * @apiUse HomeSuccessResponse
+   * @apiUse HomeSuccessResponseJSON
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
@@ -401,7 +478,7 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       res.json({
         status: 'deleted',
-        home: normalizeHome(result.model)
+        home: exposeHome(result.model)
       });
     })
     .catch(next);

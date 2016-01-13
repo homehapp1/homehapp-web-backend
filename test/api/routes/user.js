@@ -57,15 +57,6 @@ describe('User/Authentication API paths', () => {
     });
   });
 
-  it('Should accept the authenticated request', (done) => {
-    app.authRequest('get', '/api/auth/check')
-    .expect(200)
-    .end((err, res) => {
-      should.not.exist(err);
-      done();
-    });
-  });
-
   it('Should create a new user', (done) => {
     app.mobileRequest('post', '/api/auth/login')
     .send(userData)
