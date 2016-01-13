@@ -76,7 +76,7 @@ export default class Navigation extends React.Component {
       this.navigation.removeEvent('mouseover', this.showNavigation, true);
       this.navigation.removeEvent('mouseout', this.hideNavigation, false);
     }
-    
+
     window.removeEventListener('resize', this.onResize);
     this.onResize();
 
@@ -123,8 +123,14 @@ export default class Navigation extends React.Component {
 
   hideNavigation() {
     // debug('hideNavigation', event);
-    this.icon.removeClass('open');
-    this.navigation.removeClass('open');
+    if (this.icon && this.icon.node) {
+      this.icon.removeClass('open');
+    }
+
+    if (this.navigation && this.navigation.node) {
+      this.navigation.removeClass('open');
+    }
+
     this.body.removeClass('no-scroll-small').removeClass('away-for-small');
     document.removeEventListener('mousedown', this.onDocumentClick, true);
     document.removeEventListener('touchstart', this.onDocumentClick, true);
@@ -132,8 +138,14 @@ export default class Navigation extends React.Component {
   }
 
   showNavigation() {
-    this.icon.addClass('open');
-    this.navigation.addClass('open');
+    if (this.icon && this.icon.node) {
+      this.icon.addClass('open');
+    }
+
+    if (this.navigation && this.navigation.node) {
+      this.navigation.addClass('open');
+    }
+    
     this.body.addClass('no-scroll-small').addClass('away-for-small');
     document.addEventListener('mousedown', this.onDocumentClick, true);
     document.addEventListener('touchstart', this.onDocumentClick, true);
