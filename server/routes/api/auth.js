@@ -7,8 +7,8 @@ exports.registerRoutes = (app) => {
 
   let populateAttributes = {
     'location.neighborhood': {},
-    createdBy: 'uuid',
-    updatedBy: 'uuid'
+    createdBy: {},
+    updatedBy: {}
   };
 
   function generateTokenAndRespond(res, user, home) {

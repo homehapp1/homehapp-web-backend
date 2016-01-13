@@ -20,8 +20,8 @@ exports.registerRoutes = (app) => {
 
   let populateAttributes = {
     'location.neighborhood': {},
-    createdBy: 'uuid',
-    updatedBy: 'uuid'
+    createdBy: {},
+    updatedBy: {}
   };
 
   let updateHome = function updateHome(user, uuid, data) {
@@ -74,7 +74,9 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {Object} neighborhoodStory             Neighborhood story blocks
    * @apiSuccess {Boolean} neighborhoodStory.enabled    Switch to determine if the story is public
    * @apiSuccess {Array} neighborhoodStory.blocks       An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
+   * @apiSuccess {Object} creator           <a href="#api-Users-UserData">User</a> object of the creator
    * @apiSuccess {String} createdBy         UUID of the <a href="#api-Users-UserData">User</a> that has created the home
+   * @apiSuccess {Object} updater           <a href="#api-Users-UserData">User</a> object of the updater
    * @apiSuccess {String} updatedBy         UUID of the <a href="#api-Users-UserData">User</a> that has updated the home
    * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
    * @apiSuccess {Datetime} updatedAt       ISO-8601 Formatted Updation Datetime
