@@ -126,6 +126,12 @@ exports.scrollTop = function scrollTop(offset = null, speed = 500) {
 exports.setFullHeight = function setFullHeight() {
   let height = window.innerHeight;
 
+  if (Math.abs(height - prevHeight) < 50) {
+    return null;
+  }
+
+  prevHeight = height;
+
   let setHeight = function(item, strict = false, max = 650) {
     let h = height;
 
@@ -174,7 +180,7 @@ exports.setFullHeight = function setFullHeight() {
     for (let item of items) {
       setHeight(item, false, 0);
     }
-    
+
     items = document.getElementsByClassName('full-height');
     for (let item of items) {
       if (item.className.match(/full-height-(always|small)/)) {
