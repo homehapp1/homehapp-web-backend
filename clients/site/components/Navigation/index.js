@@ -36,8 +36,10 @@ export default class Navigation extends React.Component {
 
     // Icon actions
     this.icon = new DOMManipulator(this.refs.icon);
-    this.icon.addEvent('touchstart', this.click, true);
-    this.icon.addEvent('mousedown', this.click, true);
+    if (this.icon && this.icon.node) {
+      this.icon.addEvent('touchstart', this.click, true);
+      this.icon.addEvent('mousedown', this.click, true);
+    }
 
     // Navigation actions
     this.navigation = new DOMManipulator(this.refs.navigation);
@@ -65,10 +67,16 @@ export default class Navigation extends React.Component {
 
   componentWillUnmount() {
     // Remove events
-    this.icon.removeEvent('touch', this.click, true);
-    this.icon.removeEvent('click', this.click, true);
-    this.navigation.removeEvent('mouseover', this.showNavigation, true);
-    this.navigation.removeEvent('mouseout', this.hideNavigation, false);
+    if (this.icon && this.icon.node) {
+      this.icon.removeEvent('touch', this.click, true);
+      this.icon.removeEvent('click', this.click, true);
+    }
+
+    if (this.navigation && this.navigation.node) {
+      this.navigation.removeEvent('mouseover', this.showNavigation, true);
+      this.navigation.removeEvent('mouseout', this.hideNavigation, false);
+    }
+    
     window.removeEventListener('resize', this.onResize);
     this.onResize();
 
