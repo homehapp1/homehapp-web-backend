@@ -123,6 +123,8 @@ exports.scrollTop = function scrollTop(offset = null, speed = 500) {
   nextHop();
 };
 
+let prevHeight = 0;
+
 exports.setFullHeight = function setFullHeight() {
   let height = window.innerHeight;
 
