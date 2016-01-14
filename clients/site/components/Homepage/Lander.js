@@ -333,7 +333,7 @@ export default class Lander extends React.Component {
         height: 1280
       }
     ];
-    this.imageSeed = 2 || Math.floor(Math.random() * images.length);
+    this.imageSeed = Math.floor(Math.random() * images.length);
 
     let image = images[this.imageSeed];
     image.aspectRatio = image.width / image.height;
