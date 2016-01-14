@@ -96,7 +96,7 @@ describe('Home API paths', () => {
       should.not.exist(err);
       expect(res.body.home.id).to.be(id);
       home = res.body.home;
-      expect(res.body.home.createdBy).to.be(app.user.uuid);
+      expect(res.body.home.createdBy.id).to.be(app.user.uuid);
       done();
     });
   });
@@ -137,13 +137,27 @@ describe('Home API paths', () => {
     .end((err, res) => {
       should.not.exist(err);
       expect(res.body.home.enabled).to.be(true);
-      expect(res.body.home.createdBy).to.be(app.user.uuid);
+      expect(res.body.home.createdBy.id).to.be(app.user.uuid);
       done();
     });
   });
 
+  // Breaking changes in version 1.0.1
   it('Should find the home from explicit home URL', (done) => {
     app.mobileRequest('get', `/api/homes/${home.id}`)
+    .expect(200)
+    .end((err, res) => {
+      should.not.exist(err);
+      should(res.body).have.property('home');
+      should(res.body.home.createdBy).have.property('id');
+      expect(res.body.home.createdBy.id).to.be(app.user.uuid);
+      done();
+    });
+  });
+
+  // Pre-1.0.1 has a string for createdBy
+  it('Should have a string for createdBy', (done) => {
+    app.mobileRequest('get', `/api/homes/${home.id}`, '1.0.0')
     .expect(200)
     .end((err, res) => {
       should.not.exist(err);
@@ -152,7 +166,6 @@ describe('Home API paths', () => {
       done();
     });
   });
-
 
   it('Should have the newly created, enabled home in the home list', (done) => {
     app.mobileRequest('get', '/api/homes')

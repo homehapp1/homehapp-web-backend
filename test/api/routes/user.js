@@ -70,13 +70,32 @@ describe('User/Authentication API paths', () => {
       should(user).have.property('home');
 
       home = user.home;
-      expect(home.createdBy).to.be(user.id);
+      expect(home.createdBy.id).to.be(user.id);
       done();
     });
   });
 
   it('Should not recreate the same user again', (done) => {
     app.mobileRequest('post', '/api/auth/login')
+    .send(userData)
+    .expect(200)
+    .end((err, res) => {
+      should.not.exist(err);
+      should(res.body).have.property('session');
+      should(res.body.session).have.property('user');
+      expect(res.body.session.user.id).to.be(user.id);
+      should(res.body.session.user).have.property('id');
+      should(res.body.session.user).have.property('home');
+
+      expect(res.body.session.user.home.createdBy.id).to.be(res.body.session.user.id);
+      expect(res.body.session.user.home.id).to.be(home.id);
+      done();
+    });
+  });
+
+  // Breaking changes in 1.0.1
+  it('Should return a string for 1.0.0', (done) => {
+    app.mobileRequest('post', '/api/auth/login', '1.0.0')
     .send(userData)
     .expect(200)
     .end((err, res) => {
