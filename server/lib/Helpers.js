@@ -2,6 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import util from 'util';
 import uuid from 'uuid';
+import { merge } from '../../clients/common/Helpers';
+
+let semver = require('semver');
 
 exports.randomString = function randomString(len = 8) {
   let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
@@ -183,20 +186,28 @@ exports.getId = function getId(obj) {
   return obj;
 };
 
+let defaultVersion = '10.0.0';
+
 // Strip the model from Mongoose features and normalize UUIDs
-exports.exposeHome = function exposeHome(home) {
+exports.exposeHome = function exposeHome(home, version = null, currentUser = null) {
   home = JSON.parse(JSON.stringify(home));
 
-  if (typeof home.createdBy === 'object') {
-    home.creator = exports.exposeUser(home.createdBy);
+  if (!version || semver.satisfies(version, '~0.0')) {
+    version = defaultVersion;
   }
 
-  if (typeof home.updatedBy === 'object') {
-    home.updater = exports.exposeUser(home.updatedBy);
+  switch (true) {
+    case semver.satisfies(version, '<=1.0.0'):
+      home.createdBy = exports.getId(home.createdBy);
+      home.updatedBy = exports.getId(home.updatedBy);
+      break;
+
+    case semver.satisfies(version, '<=1.0.1'):
+    default:
+      home.createdBy = exports.exposeUser(home.createdBy, version, currentUser);
+      home.updatedBy = exports.exposeUser(home.updatedBy, version, currentUser);
   }
 
-  home.createdBy = exports.getId(home.createdBy);
-  home.updatedBy = exports.getId(home.updatedBy);
   return home;
 };
 
@@ -207,11 +218,32 @@ let enumerate = exports.enumerate = function* enumerate(obj) {
 };
 
 // Strip the model from
-exports.exposeUser = function exposeUser(user) {
+exports.exposeUser = function exposeUser(user, version = 'dev', currentUser = null) {
+  if (!version || semver.satisfies(version, '~0.0')) {
+    version = defaultVersion;
+  }
+
   let rval = user;
+
+  if (!rval) {
+    return null;
+  }
+
+  if (rval.publicData) {
+    rval = rval.publicData;
+  }
 
   if (typeof rval.toJSON === 'function') {
     rval = rval.toJSON();
+  } else {
+    rval = merge({}, rval);
+  }
+
+  if (currentUser && (user.id === currentUser.id || user.id === currentUser.uuid)) {
+    rval.contact = user.contact;
+  } else if (rval.contact && rval.contact.address) {
+    delete rval.contact.address.street;
+    delete rval.contact.address.apartment;
   }
 
   delete rval.username;
@@ -220,6 +252,10 @@ exports.exposeUser = function exposeUser(user) {
   delete rval.rname;
   delete rval.deviceId;
   delete rval.active;
+  delete rval.createdAt;
+  delete rval.createdAtTS;
+  delete rval.updatedAt;
+  delete rval.updatedAtTS;
   if (rval.displayName === user.username || rval.displayName === user.email) {
     rval.displayName = '';
   }
