@@ -7,7 +7,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine UserSuccessResponse
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.1
    *
    * @apiSuccess {Object} user          User details
    * @apiSuccess {String} user.id        Internal Id of the user
@@ -18,7 +18,7 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {Object} user.profileImage User's profile image as an <a href="#api-Shared-Images">Image</a> object
    * @apiSuccess {Object} user.contact                  User's contact information
    * @apiSuccess {Object} user.contact.address          Address information
-   * @apiSuccess {String} user.contact.address.street   User's street address
+   * @apiSuccess {String} user.contact.address.street   User's street address (only for the authenticated user)
    * @apiSuccess {String} user.contact.address.city     User's city
    * @apiSuccess {String} user.contact.address.zipcode  User's post office code
    * @apiSuccess {String} user.contact.address.country  User's country
@@ -28,7 +28,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine UserSuccessResponseJSON
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.1
    *
    * @apiSuccessExample {json} JSON serialization of the user
    *     "user": {
@@ -58,7 +58,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine UserBody
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.1
    *
    * @apiParam {String} [user.email]     User's email address
    * @apiParam {String} [user.firstname] User's firstname
@@ -75,7 +75,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {any} /api/* User details
-   * @apiVersion 0.1.1
+   * @apiVersion 1.0.1
    * @apiName UserData
    * @apiGroup Users
    *
@@ -86,7 +86,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {put} /api/auth/user Update user details
-   * @apiVersion 0.1.1
+   * @apiVersion 1.0.1
    * @apiName UpdateUser
    * @apiGroup Users
    *

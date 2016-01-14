@@ -43,7 +43,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine HomeSuccessResponse
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    *
    * @apiSuccess {String} id                Uuid of the home
    * @apiSuccess {String} slug              URL Slug of the Home
@@ -86,7 +86,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine HomeSuccessResponseJSON
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    *
    * @apiSuccessExample {json} JSON serialization of the home
    * {
@@ -207,7 +207,7 @@ exports.registerRoutes = (app) => {
 
   /**
     * @apiDefine HomeBody
-    * @apiVersion 0.1.0
+    * @apiVersion 1.0.0
     *
     * @apiParam {Object} home                     Home object
     * @apiParam {Boolean} [home.enabled]          Switch for enabling/disabling the public viewing of the home
@@ -244,7 +244,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {any} /api/* Home Details
-   * @apiVersion 0.1.1
+   * @apiVersion 1.0.1
    * @apiName Home details
    * @apiGroup Homes
    *
@@ -257,7 +257,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {get} /api/homes Fetch All Homes
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    * @apiName GetHomes
    * @apiGroup Homes
    *
@@ -314,7 +314,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {get} /api/homes/:uuid Get home by id
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    * @apiName GetHomeById
    * @apiGroup Homes
    * @apiDescription Fetch Single Home
@@ -350,7 +350,7 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       res.json({
         status: 'ok',
-        home: exposeHome(result.home)
+        home: exposeHome(result.home, req.version)
       });
     })
     .catch(next);
@@ -358,7 +358,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {put} /api/homes/:id Update home
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    * @apiName UpdateHome
    * @apiGroup Homes
    * @apiDescription Update home by uuid
@@ -391,7 +391,7 @@ exports.registerRoutes = (app) => {
     .then((model) => {
       res.json({
         status: 'ok',
-        home: exposeHome(model)
+        home: exposeHome(model, req.version)
       });
     })
     .catch(next);
@@ -399,7 +399,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {post} /api/homes Create a home
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    * @apiName CreateHome
    * @apiGroup Homes
    *
@@ -429,7 +429,7 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       res.json({
         status: 'ok',
-        home: exposeHome(result.model)
+        home: exposeHome(result.model, req.version)
       });
     })
     .catch((err) => {
@@ -445,7 +445,7 @@ exports.registerRoutes = (app) => {
       .then((model) => {
         res.json({
           status: 'ok',
-          home: exposeHome(model)
+          home: exposeHome(model, req.version)
         });
       })
       .catch(next);
@@ -454,7 +454,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {delete} /api/homes/:id Delete home
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    * @apiName DeleteHome
    * @apiGroup Homes
    * @apiDescription Deletes the given home
@@ -480,7 +480,7 @@ exports.registerRoutes = (app) => {
     .then((result) => {
       res.json({
         status: 'deleted',
-        home: exposeHome(result.model)
+        home: exposeHome(result.model, req.version)
       });
     })
     .catch(next);

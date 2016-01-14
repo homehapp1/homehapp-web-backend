@@ -11,11 +11,11 @@ exports.registerRoutes = (app) => {
     updatedBy: {}
   };
 
-  function generateTokenAndRespond(res, user, home) {
+  function generateTokenAndRespond(req, res, user, home) {
     return new Promise((resolve, reject) => {
       let tokenData = app.authentication.createTokenForUser(user);
 
-      let userJson = exposeUser(user);
+      let userJson = exposeUser(user, req.version, req.user);
 
       if (!home) {
         // No home provided, get by user id or create if not available
@@ -28,7 +28,7 @@ exports.registerRoutes = (app) => {
         .findOne()
         .fetch()
         .then((result) => {
-          generateTokenAndRespond(res, user, result.model);
+          generateTokenAndRespond(req, res, user, result.model);
         })
         .catch((err) => {
           QB
@@ -38,14 +38,14 @@ exports.registerRoutes = (app) => {
             enabled: false
           })
           .then((model) => {
-            generateTokenAndRespond(res, user, model);
+            generateTokenAndRespond(req, res, user, model);
           });
         });
 
         return null;
       }
 
-      userJson.home = exposeHome(home);
+      userJson.home = exposeHome(home, req.version, req.user);
 
       QB
       .forModel('User')
@@ -71,7 +71,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine AuthSuccessResponse
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    *
    * @apiSuccess {Object} session
    * @apiSuccess {String} session.token             Authentication token for the user
@@ -82,7 +82,8 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {post} /api/auth/login Login the Mobile User
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    * @apiName UserLogin
    * @apiGroup Authentication
    *
@@ -153,7 +154,7 @@ exports.registerRoutes = (app) => {
       if (!result.user.active) {
         return next(new Forbidden('account disabled'));
       }
-      generateTokenAndRespond(res, result.user);
+      generateTokenAndRespond(req, res, result.user);
     })
     .catch((err) => {
       if (err instanceof NotFound) {
@@ -195,7 +196,7 @@ exports.registerRoutes = (app) => {
         .forModel('User')
         .createNoMultiset(userData)
         .then((model) => {
-          generateTokenAndRespond(res, model);
+          generateTokenAndRespond(req, res, model);
         })
         .catch(next);
       } else {
@@ -206,7 +207,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {post} /api/auth/register/push Register/Unregister Mobile Client for Push
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    * @apiName PushRegister
    * @apiGroup Authentication
    *
@@ -271,7 +272,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {get} /api/auth/check Check session validity
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    * @apiName CheckSessionValidity
    * @apiGroup Authentication
    *
