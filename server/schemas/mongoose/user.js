@@ -194,12 +194,19 @@ exports.loadSchemas = function (mongoose, next) {
     ];
   };
   schemas.User.virtual('publicData').get(function() {
-    return {
+    let values = {
+      id: this.uuid || this.id,
       firstname: this.firstname || this.givenName || '',
       lastname: this.lastname || this.familyName || '',
       email: this.email,
+      phone: this.phone,
       name: this.name,
-      rname: this.rname
+      rname: this.rname,
+      profileImage: this.profileImage,
+      contact: this.contact || {
+        phone: null,
+        address: null
+      }
     };
   });
 
