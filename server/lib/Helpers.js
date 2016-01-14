@@ -186,7 +186,7 @@ exports.getId = function getId(obj) {
   return obj;
 };
 
-let defaultVersion = '10.0.0';
+let defaultVersion = '1.0.1';
 
 // Strip the model from Mongoose features and normalize UUIDs
 exports.exposeHome = function exposeHome(home, version = null, currentUser = null) {
