@@ -6,7 +6,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine NeighborhoodSuccessResponse
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    *
    * @apiSuccess {String} id                Uuid of the Neighborhood
    * @apiSuccess {String} title             Title of the Neighborhood
@@ -19,7 +19,7 @@ exports.registerRoutes = (app) => {
 
   /**
     * @apiDefine NeighborhoodBody
-    * @apiVersion 0.1.0
+    * @apiVersion 1.0.0
     *
     * @apiParam {Object} neighborhood           Neighborhood object
     * @apiParam {String} neighborhood.title     Title of the Neighborhood
@@ -28,7 +28,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {get} /api/neighborhoods/:city Fetch All Neighborhood from city
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    * @apiName GetNeighborhoods
    * @apiGroup Neighborhoods
    *
@@ -74,7 +74,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {get} /api/neighborhoods/:city/:neighborhood Fetch City Neighborhood by slug
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.0
    * @apiName GetNeighborhoodBySlug
    * @apiGroup Neighborhoods
    *
