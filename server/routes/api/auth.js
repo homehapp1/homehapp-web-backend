@@ -83,7 +83,6 @@ exports.registerRoutes = (app) => {
   /**
    * @api {post} /api/auth/login Login the Mobile User
    * @apiVersion 1.0.0
-   * @apiVersion 1.0.1
    * @apiName UserLogin
    * @apiGroup Authentication
    *
