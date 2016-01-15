@@ -45,8 +45,6 @@ exports.registerRoutes = (app) => {
         return null;
       }
 
-      userJson.home = exposeHome(home, req.version, req.user);
-
       QB
       .forModel('User')
       .findById(user.id)
@@ -62,7 +60,8 @@ exports.registerRoutes = (app) => {
             expiresIn: tokenData.expiresIn,
             expiresAt: tokenData.expiresAt || '',
             user: userJson
-          }
+          },
+          home: exposeHome(home, req.version, req.user)
         });
       })
       .catch(reject);
@@ -78,6 +77,7 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {Number} session.expiresIn         Expiration time in seconds
    * @apiSuccess {Datetime} session.expiresAt       ISO-8601 Formatted Expiration Datetime
    * @apiSuccess {Object} session.user              <a href="#api-Users-UserData">User</a> object
+   * @apiSuccess {Object} home                      <a href="#api-Homes-GetHomeById">Home</a> object
    */
 
   /**
