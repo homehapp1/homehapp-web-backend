@@ -199,7 +199,7 @@ exports.exposeHome = function exposeHome(home, version = null, currentUser = nul
   if (!home) {
     return null;
   }
-  
+
   home = JSON.parse(JSON.stringify(home));
 
   if (!version || semver.satisfies(version, '~0.0')) {
@@ -243,12 +243,12 @@ exports.exposeUser = function exposeUser(user, version = null, currentUser = nul
     rval = merge({}, rval);
   }
 
-  if (currentUser && (user.id === currentUser.id || user.id === currentUser.uuid)) {
-    rval.contact = user.contact;
-  } else if (rval.contact && rval.contact.address) {
-    delete rval.contact.address.street;
-    delete rval.contact.address.apartment;
-  }
+  // if (currentUser && (user.id === currentUser.id || user.id === currentUser.uuid)) {
+  //   rval.contact = user.contact;
+  // } else if (rval.contact && rval.contact.address) {
+  //   rval.contact.address.street = '';
+  //   rval.contact.address.apartment = '';
+  // }
 
   delete rval.username;
   delete rval.metadata;
@@ -256,10 +256,10 @@ exports.exposeUser = function exposeUser(user, version = null, currentUser = nul
   delete rval.rname;
   delete rval.deviceId;
   delete rval.active;
-  delete rval.createdAt;
-  delete rval.createdAtTS;
-  delete rval.updatedAt;
-  delete rval.updatedAtTS;
+  // delete rval.createdAt;
+  // delete rval.createdAtTS;
+  // delete rval.updatedAt;
+  // delete rval.updatedAtTS;
   if (rval.displayName === user.username || rval.displayName === user.email) {
     rval.displayName = '';
   }
