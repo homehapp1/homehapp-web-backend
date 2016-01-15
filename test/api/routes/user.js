@@ -112,37 +112,48 @@ describe('User/Authentication API paths', () => {
     });
   });
 
-  it('Should be possible to update the user', (done) => {
-    let values = {
-      user: {
-        email: 'lorem@ipsum.net',
-        firstname: 'Lorem',
-        lastname: 'Ipsum',
-        profileImage: {
-          url: 'https://www.homehapp.com/',
-          alt: 'Test image',
-          width: 300,
-          height: 300
+  let updateValues = {
+    user: {
+      email: 'lorem@ipsum.net',
+      firstname: 'Lorem',
+      lastname: 'Ipsum',
+      profileImage: {
+        url: 'https://www.homehapp.com/',
+        alt: 'Test image',
+        width: 300,
+        height: 300
+      },
+      contact: {
+        address: {
+          street: 'Lorem',
+          city: 'London',
+          zipcode: '01234',
+          country: 'GB'
         },
-        contact: {
-          address: {
-            street: 'Lorem',
-            city: 'London',
-            zipcode: '01234',
-            country: 'GB'
-          },
-          phone: '+1 23 456 7890'
-        }
+        phone: '+1 23 456 7890'
       }
-    };
+    }
+  };
 
+  it('Should be possible to update the user', (done) => {
     app.authRequest('put', '/api/auth/user')
-    .send(values)
+    .send(updateValues)
     .expect(200)
     .end((err, res) => {
       should.not.exist(err);
       should(res.body).have.property('user');
-      MockupData.compare(values.user, res.body.user);
+      MockupData.compare(updateValues.user, res.body.user);
+      done();
+    });
+  });
+
+  it('Should return the updated user on check', (done) => {
+    app.authRequest('get', '/api/auth/user')
+    .expect(200)
+    .end((err, res) => {
+      should.not.exist(err);
+      should(res.body).have.property('user');
+      MockupData.compare(updateValues.user, res.body.user);
       done();
     });
   });
