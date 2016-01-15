@@ -81,6 +81,25 @@ exports.registerRoutes = (app) => {
    */
 
   /**
+   * @apiDefine AuthSuccessResponseJSON
+   * @apiVersion 1.0.1
+   *
+   * @apiSuccessExample Success-Response
+   *     HTTP/1.1 200 OK
+   *     {
+   *       "status": "ok",
+   *       "session": {
+   *         "token": "...",
+   *         "expiresIn": ...,
+   *         "expiresAt": '...',
+   *         "user": {...}
+   *       },
+   *       "home": {...}
+   *     }
+
+   */
+
+  /**
    * @api {post} /api/auth/login Login the Mobile User
    * @apiVersion 1.0.1
    * @apiName UserLogin
@@ -96,29 +115,17 @@ exports.registerRoutes = (app) => {
    * @apiParam {String} [user.firstname]     User's first name from the service
    * @apiParam {String} [user.lastname]      User's last name from the service
    * @apiUse AuthSuccessResponse
+   * @apiUse AuthSuccessResponseJSON
    * @apiUse UserSuccessResponseJSON
    * @apiUse HomeSuccessResponseJSON
-   *
-   * @apiSuccessExample Success-Response
-   *     HTTP/1.1 200 OK
-   *     {
-   *       "status": "ok",
-   *       "session": {
-   *          "token": "...",
-   *          "expiresIn": ...,
-   *          "expiresAt": '...',
-   *          "user": {...}
-   *         }
-   *       }
-   *     }
    *
    * @apiError (400) BadRequest Invalid request body, missing parameters.
    * @apiError (403) Forbidden  User account has been disabled
    * @apiErrorExample Error-Response:
    *     HTTP/1.1 403 Forbidden
    *     {
-   *       'status': 'failed',
-   *       'error': 'account disabled'
+   *       "status": "failed",
+   *       "error": "account disabled"
    *     }
    */
   app.post('/api/auth/login', function(req, res, next) {
@@ -219,7 +226,7 @@ exports.registerRoutes = (app) => {
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'ok'
+   *       "status": "ok"
    *     }
    *
    * @apiError (400) BadRequest Invalid request body, missing parameters.
@@ -227,8 +234,8 @@ exports.registerRoutes = (app) => {
    * @apiErrorExample Error-Response:
    *     HTTP/1.1 403 Forbidden
    *     {
-   *       'status': 'failed',
-   *       'error': 'account disabled'
+   *       "status": "failed",
+   *       "error": "account disabled"
    *     }
    */
   app.post('/api/auth/register/push', app.authenticatedRoute, function(req, res, next) {
@@ -283,15 +290,15 @@ exports.registerRoutes = (app) => {
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'ok'
+   *       "status": "ok"
    *     }
    *
    * @apiError (403) Forbidden  User account has been disabled
    * @apiErrorExample Error-Response:
    *     HTTP/1.1 403 Forbidden
    *     {
-   *       'status': 'failed',
-   *       'error': 'account disabled'
+   *       "status": "failed",
+   *       "error": "account disabled"
    *     }
    */
   app.get('/api/auth/check', app.authenticatedRoute, function(req, res, next) {
