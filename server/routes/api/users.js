@@ -1,6 +1,8 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 import {NotFound, BadRequest, Forbidden} from '../../lib/Errors';
-import {randomString} from '../../lib/Helpers';
+import {randomString, exposeHome, exposeUser} from '../../lib/Helpers';
+
+let debug = require('debug')('API: /api/auth/user');
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -107,6 +109,67 @@ exports.registerRoutes = (app) => {
    */
 
   /**
+   * @api {get} /api/auth/user
+   * @apiVersion 1.0.1
+   * @apiName GetUser
+   * @apiGroup Users
+   *
+   * @apiDescription Get the details of the current user
+   * @apiPermission authenticated
+   * @apiUse MobileRequestHeadersAuthenticated
+   * @apiUse UserSuccessResponse
+   * @apiUse UserSuccessResponseJSON
+   *
+   * @apiError (403) Forbidden  User account has been disabled or not logged in
+   * @apiErrorExample Error-Response:
+   *    HTTP/1.1 403 Forbidden
+   *    {
+   *     "status": "failed",
+   *     "error": "account disabled"
+   *    }
+   */
+  app.get('/api/auth/user', app.authenticatedRoute, function(req, res, next) {
+    debug('User ID', req.user.id);
+    let user = null;
+
+    QB
+    .forModel('User')
+    .findById(req.user.id)
+    .fetch()
+    .then((result) => {
+      user = result.model;
+      debug('foobar');
+
+      QB
+      .forModel('Home')
+      .query({
+        createdBy: user
+      })
+      .populate({
+        createdBy: {},
+        updatedBy: {}
+      })
+      .findOne()
+      .fetch()
+      .then((result) => {
+        res.json({
+          status: 'ok',
+          user: exposeUser(user, req.version, user),
+          home: exposeHome(result.model, req.version, user)
+        });
+      })
+      .catch((err) => {
+        res.json({
+          status: 'ok',
+          user: exposeUser(user, req.version, user),
+          home: null
+        });
+      });
+    })
+    .catch(next);
+  });
+
+  /**
    * @api {put} /api/auth/user Update user details
    * @apiVersion 1.0.1
    * @apiName UpdateUser
@@ -144,7 +207,7 @@ exports.registerRoutes = (app) => {
     .then((user) => {
       res.json({
         status: 'ok',
-        user: user
+        user: exposeUser(user)
       });
     })
     .catch(next);
