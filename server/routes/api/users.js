@@ -68,7 +68,31 @@ exports.registerRoutes = (app) => {
    * @apiParam {String} [user.contact.address.city]   User's street address
    * @apiParam {String} [user.contact.address.zipcode]   User's street address
    * @apiParam {String} [user.contact.address.country]   User's street address
-   * @apiParam {String} [user.contact.address]   User's street address
+   * @apiParam {String} [user.contact.phone]     User's phone number
+   *
+   * @apiParamExample {json} Request-example
+   *     {
+   *       "user": {
+   *         "email": "mr.developer@example.net",
+   *         "firstname": "Test",
+   *         "lastname": "Tester",
+   *         "profileImage": {
+   *           "url": "https://lh3.googleusercontent.com/-1NSytNuggHM/VDp8UrP5dpI/AAAAAAAAAHk/Ds4khe_1Eoo/w214-h280-p/self-portrait.jpg",
+   *           "alt": "Testi Testiikkeli",
+   *           "width": 214,
+   *           "height": 280
+   *         },
+   *         "contact": {
+   *           "address": {
+   *             "street": "Examplestreet",
+   *             "city": "Exampleville",
+   *             "zipcode": "01234",
+   *             "country": "EX"
+   *           },
+   *           "phone": "+1 23 456 7890"
+   *         }
+   *       }
+   *     }
    */
 
   /**
@@ -111,6 +135,7 @@ exports.registerRoutes = (app) => {
     }
 
     let data = req.body.user;
+    delete data.id;
 
     QB
     .forModel('User')
