@@ -8,22 +8,66 @@ exports.registerRoutes = (app) => {
    * @apiDefine NeighborhoodSuccessResponse
    * @apiVersion 1.0.1
    *
-   * @apiSuccess {String} id                Uuid of the Neighborhood
-   * @apiSuccess {String} title             Title of the Neighborhood
+   * @apiSuccess {String} id        UUID of the neighborhood
+   * @apiSuccess {String} title     Title of the Neighborhood
+   * @apiSuccess {Array} aliases    Different names that the neighborhood is known
+   * @apiSuccess {String} description Free textual description of the neighborhood
+   * @apiSuccess {Array} homes      An array of <a href="#api-Homes-GetHomeById">Home</a> objects of the neighborhood
+   * @apiSuccess {Object} location              Location of the neighborhood
+   * @apiSuccess {String} location.borough      Borough of the neighborhood
+   * @apiSuccess {Array} location.postCodes     Postcodes of the neighborhood
+   * @apiSuccess {String} location.postOffice   Post office of the neighborhood
+   * @apiSuccess {Object} location.city         City object related to the neighborhood
+   * @apiSuccess {Array} location.coordinates   Center coordinates for the neighborhood [latitude, longitude]
+   * @apiSuccess {Array} area       Area as coordinate pairs, e.g. for drawing the neighborhood area polygon on a map
+   * @apiSuccess {Boolean} story.enabled  Switch for enabling/disabling the public viewing of the neighborhood story
+   * @apiSuccess {Array} story.blocks     An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
+   * @apiSuccess {Array} images     An array of <a href="#api-Shared-Images">Images</a>
+   * @apiSuccess {Boolean} visible  Should the neighborhood be visible in the listings
    * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
    * @apiSuccess {Datetime} updatedAt       ISO-8601 Formatted Updation Datetime
    * @apiSuccess {Integer} createdAtTS      EPOCH formatted timestamp of the creation time
    * @apiSuccess {Integer} updatedAtTS      EPOCH formatted timestamp of the updation time
-   *
    */
 
-  /**
-    * @apiDefine NeighborhoodBody
+   /**
+    * @apiDefine NeighborhoodSuccessResponseJSON
     * @apiVersion 1.0.1
     *
-    * @apiParam {Object} neighborhood           Neighborhood object
-    * @apiParam {String} neighborhood.title     Title of the Neighborhood
-    *
+    * @apiSuccessExample {json} JSON serialization of the neighborhood
+    *     {
+    *       "id": "...",
+    *       "title": "...",
+    *       "aliases: ["...", "..."],
+    *       "description": "...",
+    *       "homes": [{...}, {...}],
+    *       "location": {
+    *         "borough": "...",
+    *         "postCodes": ["...", "..."],
+    *         "postOffice": "...",
+    *         "city": {...},
+    *         "coordinates": [
+    *           51.4321,
+    *           -0.1234
+    *         ],
+    *       },
+    *       "area": [
+    *         {
+    *           "lat": 51.4321,
+    *           "lng": -0.1234
+    *         },
+    *         {
+    *           "lat": 51.4321,
+    *           "lng": -0.1234
+    *         }
+    *       ],
+    *       "story": {
+    *         "enabled": true,
+    *         "blocks": {...}
+    *       },
+    *       "images": [{...}, {...}],
+    *       "visible": true
+    *     }
     */
 
   /**
@@ -34,8 +78,11 @@ exports.registerRoutes = (app) => {
    *
    * @apiDescription Route for fetching Neighborhoods by city
    *
+   * @apiSuccess  {String} status         Textual status message for the request
+   * @apiSuccess  {Array} neighborhoods   An array of the <a href="#api-Neighborhoods-GetNeighborhoodBySlug">Neighborhoods</a> corresponding to the query
+   *
    * @apiUse MobileRequestHeaders
-   * @apiUse NeighborhoodSuccessResponse
+   * @apiUse NeighborhoodSuccessResponseJSON
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
@@ -80,16 +127,17 @@ exports.registerRoutes = (app) => {
    *
    * @apiDescription Route for fetching Neighborhood by city and slug
    *
+   * @apiUse NeighborhoodSuccessResponse
    * @apiUse MobileRequestHeaders
    * @apiUse NeighborhoodSuccessResponse
+   * @apiUse NeighborhoodSuccessResponseJSON
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       'status': 'ok',
-   *       'neighborhood': {...}
+   *       "status": "ok",
+   *       "neighborhood": {...}
    *     }
-   *
    */
   app.get('/api/neighborhoods/:city/:neighborhood', function(req, res, next) {
     let city = null;
