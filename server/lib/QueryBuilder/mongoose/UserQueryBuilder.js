@@ -54,6 +54,8 @@ class UserQueryBuilder extends BaseQueryBuilder {
         if (!user) {
           return callback(new NotFound('user not found'));
         }
+        this.result.model = user;
+        this.result.models = [user];
         this.result.user = user;
         this.result.userJson = user.toJSON();
         this._loadedModel = user;
