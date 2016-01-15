@@ -186,10 +186,20 @@ exports.getId = function getId(obj) {
   return obj;
 };
 
+let enumerate = exports.enumerate = function* enumerate(obj) {
+  for (let key of Object.keys(obj)) {
+    yield [key, obj[key]];
+  }
+};
+
 let defaultVersion = '1.0.1';
 
 // Strip the model from Mongoose features and normalize UUIDs
 exports.exposeHome = function exposeHome(home, version = null, currentUser = null) {
+  if (!home) {
+    return null;
+  }
+  
   home = JSON.parse(JSON.stringify(home));
 
   if (!version || semver.satisfies(version, '~0.0')) {
@@ -211,14 +221,8 @@ exports.exposeHome = function exposeHome(home, version = null, currentUser = nul
   return home;
 };
 
-let enumerate = exports.enumerate = function* enumerate(obj) {
-  for (let key of Object.keys(obj)) {
-    yield [key, obj[key]];
-  }
-};
-
 // Strip the model from
-exports.exposeUser = function exposeUser(user, version = 'dev', currentUser = null) {
+exports.exposeUser = function exposeUser(user, version = null, currentUser = null) {
   if (!version || semver.satisfies(version, '~0.0')) {
     version = defaultVersion;
   }
