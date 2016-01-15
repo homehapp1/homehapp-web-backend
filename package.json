@@ -98,6 +98,7 @@
     "test-admin": "NODE_ENV=test PROJECT_NAME=admin mocha --compilers js:babel/register --timeout 50000 --reporter dot test/admin/** test/admin/**/**",
     "test-site": "NODE_ENV=test PROJECT_NAME=site mocha --compilers js:babel/register --timeout 50000 --reporter dot test/site/** test/site/**/**",
     "apidoc": "gulp apidoc",
+    "doc-version": "node docs/revision.js",
     "server": "node init.js"
   },
   "eslintConfig": {
