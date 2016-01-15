@@ -1,7 +1,7 @@
 exports.registerRoutes = (app) => {
   /**
    * @apiDefine MobileRequestHeaders
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    *
    * @apiHeader {String} X-Homehapp-Api-Key  Api key for this project
    * @apiHeader {String} X-Homehapp-Client   Client identifier. In format: platform/manufacturer;deviceType;model;OS version/deviceID/deviceLanguageCode
@@ -24,7 +24,7 @@ exports.registerRoutes = (app) => {
 
    /**
     * @apiDefine MobileRequestHeadersUnauthenticated
-    * @apiVersion 1.0.0
+    * @apiVersion 1.0.1
     *
     * @apiHeader {String} X-Homehapp-Api-Key  Api key for this project
     * @apiHeader {String} X-Homehapp-Client   Client identifier. In format: platform/manufacturer;deviceType;model;OS version/deviceID/deviceLanguageCode
@@ -39,7 +39,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine MobileRequestHeadersAuthenticated
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    *
    * @apiHeader {String} X-Homehapp-Api-Key  Api key for this project
    * @apiHeader {String} X-Homehapp-Client   Client identifier. In format: platform/manufacturer;deviceType;model;OS version/deviceID/deviceLanguageCode

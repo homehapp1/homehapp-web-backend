@@ -71,7 +71,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine AuthSuccessResponse
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    *
    * @apiSuccess {Object} session
    * @apiSuccess {String} session.token             Authentication token for the user
@@ -82,7 +82,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {post} /api/auth/login Login the Mobile User
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    * @apiName UserLogin
    * @apiGroup Authentication
    *
@@ -206,7 +206,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {post} /api/auth/register/push Register/Unregister Mobile Client for Push
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    * @apiName PushRegister
    * @apiGroup Authentication
    *
@@ -271,7 +271,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {get} /api/auth/check Check session validity
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    * @apiName CheckSessionValidity
    * @apiGroup Authentication
    *
