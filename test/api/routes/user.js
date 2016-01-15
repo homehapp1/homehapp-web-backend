@@ -112,11 +112,38 @@ describe('User/Authentication API paths', () => {
     });
   });
 
-  // it('Should be possible to update the user', (done) => {
-  //   app.authRequest('put', '/api/auth/user')
-  //   .expect(200)
-  //   .end((err, res) => {
-  //     done();
-  //   });
-  // });
+  it('Should be possible to update the user', (done) => {
+    let values = {
+      user: {
+        email: 'lorem@ipsum.net',
+        firstname: 'Lorem',
+        lastname: 'Ipsum',
+        profileImage: {
+          url: 'https://www.homehapp.com/',
+          alt: 'Test image',
+          width: 300,
+          height: 300
+        },
+        contact: {
+          address: {
+            street: 'Lorem',
+            city: 'London',
+            zipcode: '01234',
+            country: 'GB'
+          },
+          phone: '+1 23 456 7890'
+        }
+      }
+    };
+
+    app.authRequest('put', '/api/auth/user')
+    .send(values)
+    .expect(200)
+    .end((err, res) => {
+      should.not.exist(err);
+      should(res.body).have.property('user');
+      MockupData.compare(values.user, res.body.user);
+      done();
+    });
+  });
 });
