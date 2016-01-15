@@ -1,7 +1,7 @@
 exports.registerRoutes = (app) => {
   /**
    * @api {any} /api/* Story blocks
-   * @apiVersion 0.1.0
+   * @apiVersion 1.0.1
    * @apiName StoryBlock
    * @apiGroup Shared
    *
@@ -49,7 +49,7 @@ exports.registerRoutes = (app) => {
 
    /**
     * @api {any} /api/* Images
-    * @apiVersion 0.1.0
+    * @apiVersion 1.0.1
     * @apiName  Images
     * @apiGroup Shared
     *

@@ -23,7 +23,6 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {String} user.contact.address.zipcode  User's post office code
    * @apiSuccess {String} user.contact.address.country  User's country
    * @apiSuccess {String} user.contact.phone            User's phone number
-   * @apiSuccess {Object} user.home                     User's <a href="#api-Homes-Home_details">Home</a>
    */
 
   /**
@@ -51,8 +50,7 @@ exports.registerRoutes = (app) => {
    *           "country": "..."
    *         },
    *         "phone": "..."
-   *       },
-   *       "home": {...}
+   *       }
    *     }
    */
 

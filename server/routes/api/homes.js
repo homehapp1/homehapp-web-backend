@@ -43,7 +43,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine HomeSuccessResponse
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    *
    * @apiSuccess {String} id                Uuid of the home
    * @apiSuccess {String} slug              URL Slug of the Home
@@ -74,10 +74,8 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {Object} neighborhoodStory             Neighborhood story blocks
    * @apiSuccess {Boolean} neighborhoodStory.enabled    Switch to determine if the story is public
    * @apiSuccess {Array} neighborhoodStory.blocks       An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
-   * @apiSuccess {Object} creator           <a href="#api-Users-UserData">User</a> object of the creator
-   * @apiSuccess {String} createdBy         UUID of the <a href="#api-Users-UserData">User</a> that has created the home
-   * @apiSuccess {Object} updater           <a href="#api-Users-UserData">User</a> object of the updater
-   * @apiSuccess {String} updatedBy         UUID of the <a href="#api-Users-UserData">User</a> that has updated the home
+   * @apiSuccess {Object} createdBy         <a href="#api-Users-UserData">User</a> object of the creator
+   * @apiSuccess {Object} updatedBy         <a href="#api-Users-UserData">User</a> object of the updater
    * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
    * @apiSuccess {Datetime} updatedAt       ISO-8601 Formatted Updation Datetime
    * @apiSuccess {Integer} createdAtTS      EPOCH formatted timestamp of the creation time
@@ -86,7 +84,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @apiDefine HomeSuccessResponseJSON
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    *
    * @apiSuccessExample {json} JSON serialization of the home
    * {
@@ -196,8 +194,8 @@ exports.registerRoutes = (app) => {
    *       }
    *     ]
    *   },
-   *   "createdBy": "00000000-0000-0000-0000-000000000000",
-   *   "updatedBy": "00000000-0000-0000-0000-000000000000",
+   *   "createdBy": {...},
+   *   "updatedBy": {...},
    *   "createdAt": "2016-01-13T14:38:01.0000Z",
    *   "updatedAt": "2016-01-13T14:38:01.0000Z",
    *   "createdAtTS": 1452695955,
@@ -207,7 +205,7 @@ exports.registerRoutes = (app) => {
 
   /**
     * @apiDefine HomeBody
-    * @apiVersion 1.0.0
+    * @apiVersion 1.0.1
     *
     * @apiParam {Object} home                     Home object
     * @apiParam {Boolean} [home.enabled]          Switch for enabling/disabling the public viewing of the home
@@ -253,11 +251,12 @@ exports.registerRoutes = (app) => {
    * @apiUse MobileRequestHeaders
    * @apiUse HomeSuccessResponse
    * @apiUse HomeSuccessResponseJSON
+   * @apiUse UserSuccessResponseJSON
    */
 
   /**
    * @api {get} /api/homes Fetch All Homes
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    * @apiName GetHomes
    * @apiGroup Homes
    *
@@ -266,6 +265,7 @@ exports.registerRoutes = (app) => {
    * @apiUse MobileRequestHeaders
    * @apiUse HomeSuccessResponse
    * @apiUse HomeSuccessResponseJSON
+   * @apiUse UserSuccessResponseJSON
    *
    * @apiParam (Query) {String} [sort=desc]          Sort order. Enum: ['asc', 'desc']
    * @apiParam (Query) {String} [sortBy=updatedAt]   Which field to use for sorting
@@ -314,7 +314,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {get} /api/homes/:uuid Get home by id
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    * @apiName GetHomeById
    * @apiGroup Homes
    * @apiDescription Fetch Single Home
@@ -331,6 +331,7 @@ exports.registerRoutes = (app) => {
    *       "status": "ok",
    *       "home": {...}
    *     }
+   * @apiUse UserSuccessResponseJSON
    *
    * @apiError (404) NotFound   Home with given id was not found
    * @apiErrorExample Error-Response:
@@ -358,7 +359,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {put} /api/homes/:id Update home
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    * @apiName UpdateHome
    * @apiGroup Homes
    * @apiDescription Update home by uuid
@@ -367,6 +368,7 @@ exports.registerRoutes = (app) => {
    * @apiUse HomeBody
    * @apiUse HomeSuccessResponse
    * @apiUse HomeSuccessResponseJSON
+   * @apiUse UserSuccessResponseJSON
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
@@ -399,7 +401,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {post} /api/homes Create a home
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    * @apiName CreateHome
    * @apiGroup Homes
    *
@@ -407,6 +409,7 @@ exports.registerRoutes = (app) => {
    * @apiUse HomeBody
    * @apiUse HomeSuccessResponse
    * @apiUse HomeSuccessResponseJSON
+   * @apiUse UserSuccessResponseJSON
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
@@ -454,7 +457,7 @@ exports.registerRoutes = (app) => {
 
   /**
    * @api {delete} /api/homes/:id Delete home
-   * @apiVersion 1.0.0
+   * @apiVersion 1.0.1
    * @apiName DeleteHome
    * @apiGroup Homes
    * @apiDescription Deletes the given home
@@ -464,6 +467,7 @@ exports.registerRoutes = (app) => {
    * @apiUse MobileRequestHeaders
    * @apiUse HomeSuccessResponse
    * @apiUse HomeSuccessResponseJSON
+   * @apiUse UserSuccessResponseJSON
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
