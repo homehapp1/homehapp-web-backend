@@ -209,8 +209,12 @@ exports.loadSchemas = function (mongoose, next) {
       profileImage: this.profileImage,
       contact: this.contact || {
         phone: null,
-        address: null
-      }
+        address: null,
+      },
+      createdAt: this.createdAt,
+      createdAtTS: this.createdAtTS,
+      updatedAt: this.updatedAt,
+      updatedAtTS: this.updatedAtTS
     };
   });
 
