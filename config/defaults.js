@@ -119,7 +119,11 @@ module.exports = (projectRoot) => {
       enabled: true
     },
     google: {
-      enabled: false
+      enabled: false,
+      api: {
+        key: 'AIzaSyDPzTlDi9dZ2otR47DLwUPHp4Y2Ge9VQ-U',
+        audience: '897870831901-fq0r8oi489tbvces0a6c7c9lcd4s1uq4.apps.googleusercontent.com'
+      }
     },
     versioning: {
       enabled: false
