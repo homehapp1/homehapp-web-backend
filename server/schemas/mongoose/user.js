@@ -111,6 +111,10 @@ exports.loadSchemas = function (mongoose, next) {
       phone: {
         type: String,
         default: null
+      },
+      twilioPhone: {
+        type: String,
+        default: null
       }
     }
   }));
