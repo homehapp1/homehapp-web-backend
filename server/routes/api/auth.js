@@ -72,6 +72,7 @@ exports.registerRoutes = (app) => {
    * @apiDefine AuthSuccessResponse
    * @apiVersion 1.0.1
    *
+   * @apiSuccess {String} status                    Status message
    * @apiSuccess {Object} session
    * @apiSuccess {String} session.token             Authentication token for the user
    * @apiSuccess {Number} session.expiresIn         Expiration time in seconds
@@ -84,14 +85,14 @@ exports.registerRoutes = (app) => {
    * @apiDefine AuthSuccessResponseJSON
    * @apiVersion 1.0.1
    *
-   * @apiSuccessExample Success-Response
+   * @apiSuccessExample {json} Success-Response
    *     HTTP/1.1 200 OK
    *     {
    *       "status": "ok",
    *       "session": {
    *         "token": "...",
    *         "expiresIn": ...,
-   *         "expiresAt": '...',
+   *         "expiresAt": "...",
    *         "user": {...}
    *       },
    *       "home": {...}
@@ -114,6 +115,20 @@ exports.registerRoutes = (app) => {
    * @apiParam {String} [user.displayName]   User's full name from the service
    * @apiParam {String} [user.firstname]     User's first name from the service
    * @apiParam {String} [user.lastname]      User's last name from the service
+   *
+   * @apiParamExample {json} Request-Example
+   *     {
+   *       "service": "facebook",
+   *       "user": {
+   *         "id": "12345678",
+   *         "email": "mr.muscle@facebook.com",
+   *         "token": "service-auth-token",
+   *         "displayName": "Testi Testiikkeli",
+   *         "firstname": "Testi",
+   *         "lastname": "Testiikkeli"
+   *       }
+   *     }
+   *
    * @apiUse AuthSuccessResponse
    * @apiUse AuthSuccessResponseJSON
    * @apiUse UserSuccessResponseJSON
@@ -121,7 +136,7 @@ exports.registerRoutes = (app) => {
    *
    * @apiError (400) BadRequest Invalid request body, missing parameters.
    * @apiError (403) Forbidden  User account has been disabled
-   * @apiErrorExample Error-Response:
+   * @apiErrorExample {json} Error-Response
    *     HTTP/1.1 403 Forbidden
    *     {
    *       "status": "failed",
