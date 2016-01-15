@@ -25,7 +25,11 @@ glob(SOURCE_PATH + "/routes/api/*.js", function (err, files) {
 
     // Get all the @api documentation blocks
     while (match = regexp.exec(code)) {
-      if (!match[1].match(/@api/)) {
+      if (!match[1].match(/@apiVersion/)) {
+        if (match[1].match(/@api/)) {
+          console.error(filename, "found a documentation block without version information", match[1]);
+          throw new Error('Found an API documentation block without version information in "' + filename + '", aborting');
+        }
         continue;
       }
       tmp.push(match[1]);
@@ -44,8 +48,6 @@ glob(SOURCE_PATH + "/routes/api/*.js", function (err, files) {
     fs.writeFileSync(filename, code);
     return tmp.join("\n");
   });
-  // console.log(blocks.join("\n"));
-  console.log(maxVersion);
 
   fs.writeFileSync(SOURCE_PATH + '/routes/api/documentation/v' + maxVersion + '.js', blocks.join("\n").replace(/[ ]+\*/g, ' *'));
 });
