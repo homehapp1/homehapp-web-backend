@@ -284,6 +284,10 @@ exports.run = function(projectName, afterRun) {
             return reject(err);
           }
 
+          if (!router || !router.registerRoutes || typeof router.registerRoutes !== 'function') {
+            return resolve();
+          }
+
           try {
             router.registerRoutes(app);
           } catch (err) {
