@@ -114,14 +114,14 @@ export default class MockupData {
   /**
    * Deep check for source that has to include all the target properties
    */
-  compare(source, target) {
+  static compare(source, target) {
     for (let key in source) {
       should(target).have.property(key);
       let value = source[key];
       switch (typeof value) {
         case 'object':
           if (Array.isArray(value)) {
-            expect(value).to.eql(target[key]);
+            expect(value).to.eql(target[key], `Key "${key} failed"`);
           } else {
             this.compare(value, target[key]);
           }
