@@ -67,9 +67,9 @@ describe('User/Authentication API paths', () => {
       should(res.body.session).have.property('user');
       user = res.body.session.user;
       should(user).have.property('id');
-      should(user).have.property('home');
+      should(res.body).have.property('home');
 
-      home = user.home;
+      home = res.body.home;
       expect(home.createdBy.id).to.be(user.id);
       done();
     });
@@ -85,10 +85,10 @@ describe('User/Authentication API paths', () => {
       should(res.body.session).have.property('user');
       expect(res.body.session.user.id).to.be(user.id);
       should(res.body.session.user).have.property('id');
-      should(res.body.session.user).have.property('home');
 
-      expect(res.body.session.user.home.createdBy.id).to.be(res.body.session.user.id);
-      expect(res.body.session.user.home.id).to.be(home.id);
+      should(res.body).have.property('home');
+      expect(res.body.home.createdBy.id).to.be(res.body.session.user.id);
+      expect(res.body.home.id).to.be(home.id);
       done();
     });
   });
@@ -104,10 +104,10 @@ describe('User/Authentication API paths', () => {
       should(res.body.session).have.property('user');
       expect(res.body.session.user.id).to.be(user.id);
       should(res.body.session.user).have.property('id');
-      should(res.body.session.user).have.property('home');
 
-      expect(res.body.session.user.home.createdBy).to.be(res.body.session.user.id);
-      expect(res.body.session.user.home.id).to.be(home.id);
+      should(res.body).have.property('home');
+      expect(res.body.home.createdBy).to.be(res.body.session.user.id);
+      expect(res.body.home.id).to.be(home.id);
       done();
     });
   });
