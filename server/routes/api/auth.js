@@ -1,6 +1,7 @@
 import QueryBuilder from '../../lib/QueryBuilder';
 import {NotFound, BadRequest, Forbidden} from '../../lib/Errors';
 import {randomString, exposeHome, exposeUser} from '../../lib/Helpers';
+import axios from 'axios';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -10,6 +11,15 @@ exports.registerRoutes = (app) => {
     createdBy: {},
     updatedBy: {}
   };
+
+  // (new GoogleAuth).getApplicationDefault(function(err, authClient) {
+  //   console.log('google err', err, authClient);
+  // });
+
+  // console.log('app.config.google.api.json', app.config.google.api.json);
+  // (new GoogleAuth).fromJSON(app.config.google.api.json, (err, authClient) => {
+  //   console.log('glg', err, authClient);
+  // });
 
   function generateTokenAndRespond(req, res, user, home) {
     return new Promise((resolve, reject) => {
@@ -150,80 +160,133 @@ exports.registerRoutes = (app) => {
       return next(new BadRequest('invalid request, no device info found'));
     }
 
-    if (!req.body.service || !data.email || !data.id || !data.token) {
+    if (!req.body.service || !data.email || !data.token) { //  || !data.id
       return next(new BadRequest('invalid request body'));
     }
 
-    let deviceIdData = {};
-    let deviceType = 'ios';
-    if (req.clientInfo.platform) {
-      deviceType = req.clientInfo.platform.toLowerCase();
-    }
-    deviceIdData[deviceType] = req.clientInfo.deviceID;
+    let verifyToken = () => {
+      return new Promise((resolve, reject) => {
+        switch (req.body.service) {
+          case 'google':
+            axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${data.token}`)
+            .then((response) => {
+              if (response.status !== 200) {
+                return reject(new Forbidden('error validating token: invalid response'));
+              }
 
-    let query = {};
-    let user = null;
-    // Add this query to bound the user to current device
-    //query[`deviceId.${deviceType}`] = req.clientInfo.deviceID;
+              if (response.data.aud !== app.config.google.api.audience) {
+                app.log.error('Error validating Google token: Audience mismatch');
+                return reject(new Forbidden('error validating token'));
+              }
+              resolve(response.data.sub);
+            })
+            .catch((err) => {
+              app.log.error(`Error validating Google token: ${err.message}`, err);
+              reject(new Forbidden('invalid token received'));
+            });
+            break;
+          case 'facebook':
+            axios.get('https://graph.facebook.com/me', {
+              headers: {
+                'Authorization': `Bearer ${data.token}`
+              }
+            })
+            .then((response) => {
+              if (response.status !== 200) {
+                return reject(new Forbidden('error validating token: invalid response'));
+              }
 
-    QB
-    .forModel('User')
-    .query(query)
-    .findByServiceId(req.body.service, data.id)
-    .fetch()
-    .then((result) => {
-      if (!result.user.active) {
-        return next(new Forbidden('account disabled'));
+              if (!response.data.id) {
+                app.log.error('Error validating Facebook token: Id missing');
+                return reject(new Forbidden('error validating token'));
+              }
+              resolve(response.data.id);
+            })
+            .catch((err) => {
+              app.log.error(`Error validating Facebook token: ${err.message}`, err);
+              reject(new Forbidden('invalid token received'));
+            });
+            break;
+          default:
+            reject(new BadRequest('unsupported service'));
+        }
+      });
+    };
+
+    verifyToken()
+    .then((verifiedUserId) => {
+      let deviceIdData = {};
+      let deviceType = 'ios';
+      if (req.clientInfo.platform) {
+        deviceType = req.clientInfo.platform.toLowerCase();
       }
-      generateTokenAndRespond(req, res, result.user);
-    })
-    .catch((err) => {
-      if (err instanceof NotFound) {
-        let serviceData = {};
-        serviceData[req.body.service] = {
-          id: data.id,
-          token: data.token
-        };
+      deviceIdData[deviceType] = req.clientInfo.deviceID;
 
-        let userData = {
-          username: `${req.body.service}${data.id}`,
-          email: data.email,
-          //password: `${req.body.service}${data.id}`,
-          deviceId: deviceIdData,
-          _service: serviceData
-        };
+      let query = {};
+      let user = null;
+      // Add this query to bound the user to current device
+      //query[`deviceId.${deviceType}`] = req.clientInfo.deviceID;
 
-        if (data.displayName) {
-          let firstname = '';
-          let lastname = '';
-          let parts = data.displayName.split(' ');
-          firstname = parts[0];
-          if (parts.length > 1) {
-            lastname = data.displayName.substr(firstname.length + 1);
+      QB
+      .forModel('User')
+      .query(query)
+      .findByServiceId(req.body.service, verifiedUserId)
+      .fetch()
+      .then((result) => {
+        if (!result.user.active) {
+          return next(new Forbidden('account disabled'));
+        }
+        generateTokenAndRespond(req, res, result.user);
+      })
+      .catch((err) => {
+        if (err instanceof NotFound) {
+          let serviceData = {};
+          serviceData[req.body.service] = {
+            id: data.id,
+            token: data.token
+          };
+
+          let userData = {
+            username: `${req.body.service}${data.id}`,
+            email: data.email,
+            //password: `${req.body.service}${data.id}`,
+            deviceId: deviceIdData,
+            _service: serviceData
+          };
+
+          if (data.displayName) {
+            let firstname = '';
+            let lastname = '';
+            let parts = data.displayName.split(' ');
+            firstname = parts[0];
+            if (parts.length > 1) {
+              lastname = data.displayName.substr(firstname.length + 1);
+            }
+            userData.firstname = firstname;
+            userData.lastname = lastname;
           }
-          userData.firstname = firstname;
-          userData.lastname = lastname;
-        }
 
-        if (data.firstname) {
-          userData.firstname = data.firstname;
-        }
+          if (data.firstname) {
+            userData.firstname = data.firstname;
+          }
 
-        if (data.lastname) {
-          userData.lastname = data.lastname;
-        }
+          if (data.lastname) {
+            userData.lastname = data.lastname;
+          }
 
-        QB
-        .forModel('User')
-        .createNoMultiset(userData)
-        .then((model) => {
-          generateTokenAndRespond(req, res, model);
-        })
-        .catch(next);
-      } else {
-        next(err);
-      }
-    });
+          QB
+          .forModel('User')
+          .createNoMultiset(userData)
+          .then((model) => {
+            generateTokenAndRespond(req, res, model);
+          })
+          .catch(next);
+        } else {
+          next(err);
+        }
+      });
+    })
+    .catch(next);
   });
 
   /**
