@@ -16,7 +16,7 @@ describe('User/Authentication API paths', () => {
   let userData = {
     service: 'facebook',
     user: {
-      id: 'vapaaradikaali',
+      id: 'tester',
       email: 'alerts@kaktus.cc',
       token: 'test-token',
       displayName: 'Test Tester'
