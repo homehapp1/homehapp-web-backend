@@ -166,9 +166,7 @@ exports.registerRoutes = (app) => {
 
     let verifyToken = () => {
       if (app.config.env === 'test' && data.id === 'tester') {
-        return new Promise((resolve) => {
-          resolve(data.id);
-        });
+        return Promise.resolve(data.id);
       }
 
       return new Promise((resolve, reject) => {
