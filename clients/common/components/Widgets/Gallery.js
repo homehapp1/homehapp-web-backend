@@ -1,13 +1,14 @@
 import React from 'react';
+import BaseWidget from './BaseWidget';
 import linearPartition from 'linear-partition';
 import DOMManipulator from '../../DOMManipulator';
 import Modal from './Modal';
 import Pager from './Pager';
 import Image from './Image';
 
-// let debug = require('../../../common/debugger')('Gallery');
+let debug = require('../../../common/debugger')('Gallery');
 
-export default class Gallery extends React.Component {
+export default class Gallery extends BaseWidget {
   static propTypes = {
     images: React.PropTypes.array.isRequired,
     title: React.PropTypes.string,
@@ -25,6 +26,22 @@ export default class Gallery extends React.Component {
     fullscreen: true,
     className: null
   };
+
+  static validate(props) {
+    if (!props.images) {
+      debug('No images provided for the gallery');
+      throw new Error('Attribute "images" is missing');
+    }
+
+    if (!Array.isArray(props.images)) {
+      debug('Attribute "images" is not an array');
+      throw new Error('Attribute "images" is not an array');
+    }
+
+    props.images.map((image) => {
+      Image.validate(image);
+    });
+  }
 
   constructor() {
     super();
@@ -437,15 +454,15 @@ export default class Gallery extends React.Component {
     }
   }
 
-  render() {
+  renderWidget() {
     let classes = ['gallery', 'widget', 'clearfix'];
     let subclasses = ['gallery-images'];
     if (this.props.className) {
       classes.push(this.props.className);
     }
-    if (this.props.images.length < 4) {
-      subclasses.push('width-wrapper');
-    }
+    // if (this.props.images.length < 4) {
+    //   subclasses.push('width-wrapper');
+    // }
     let title = null;
     if (this.props.title) {
       title = (
@@ -462,7 +479,7 @@ export default class Gallery extends React.Component {
           this.props.images.map((item, index) => {
             let image = {
               src: item.url,
-              alt: item.alt,
+              alt: item.alt || '',
               variant: 'gallery',
               linked: (this.props.fullscreen) ? 'fullscreen' : null,
               aspectRatio: item.aspectRatio || (item.width / item.height)

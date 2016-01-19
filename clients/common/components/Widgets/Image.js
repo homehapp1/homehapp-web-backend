@@ -1,4 +1,5 @@
 import React from 'react';
+import BaseWidget from './BaseWidget';
 import ApplicationStore from '../../stores/ApplicationStore';
 import { merge } from '../../Helpers';
 import DOMManipulator from '../../DOMManipulator';
@@ -6,7 +7,7 @@ import DOMManipulator from '../../DOMManipulator';
 
 let debug = require('../../../common/debugger')('Image');
 
-export default class Image extends React.Component {
+export default class Image extends BaseWidget {
   static propTypes = {
     src: React.PropTypes.string,
     url: React.PropTypes.string,
@@ -91,6 +92,12 @@ export default class Image extends React.Component {
     this.setState({
       config: ApplicationStore.getState().config
     });
+  }
+
+  static validate(props) {
+    if (!props.url && !props.src) {
+      throw new Error('Missing attribute "url"');
+    }
   }
 
   resolveParams() {
@@ -340,7 +347,7 @@ export default class Image extends React.Component {
     );
   }
 
-  render() {
+  renderWidget() {
     if (!this.state.config) {
       return null;
     }
