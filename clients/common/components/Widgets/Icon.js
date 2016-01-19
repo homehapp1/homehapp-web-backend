@@ -17,7 +17,7 @@ export default class Icon extends React.Component {
 
   render() {
     let image = {
-      src: `images/icons/white/${this.props.type}.svg`,
+      url: `images/icons/white/${this.props.type}.svg`,
       alt: '',
       type: 'asset'
     };
