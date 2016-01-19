@@ -123,16 +123,57 @@ exports.scrollTop = function scrollTop(offset = null, speed = 500) {
   nextHop();
 };
 
-let prevHeight = 0;
+let orientation = null;
+
+exports.getOrientation = function getOrientation() {
+  if (window.innerHeight > window.innerWidth) {
+    return 'portrait';
+  }
+
+  return 'landscape';
+}
 
 exports.setFullHeight = function setFullHeight() {
   let height = window.innerHeight;
 
-  if (Math.abs(height - prevHeight) < 50) {
-    return null;
-  }
+  let iosHeights = [
+    1302, // iPad Pro portrait,
 
-  prevHeight = height;
+    960, // iPad retina portrait, iPad Pro landscape
+    704, // iPad retina landscape,
+
+    628, // iPhone 6(s)+ portrait
+    414, // iPhone 6(s)+ landscape
+
+    559, // iPhone 6(s) portrait
+    375, // iPhone 6(s) landscape
+
+    460, // iPhone 5(s) portrait
+    320, // iPhone 5(s) landscape
+
+    372, // iPhone 4(s) portrait
+    320 // iPhone 4(s) landscape
+  ];
+
+  // Prevent resizing the iOS device full heights, because scrolling will
+  // otherwise cause a nasty side effect
+  if (/iPad|iPhone|iPod/.test(navigator.platform)) {
+    if (orientation === exports.getOrientation()) {
+      return null;
+    }
+
+    orientation = exports.getOrientation();
+
+    let closest = iosHeights[0];
+
+    for (let h of iosHeights) {
+      if (Math.abs(h - height) < Math.abs(closest - height)) {
+        closest = h;
+      }
+    }
+
+    height = closest;
+  }
 
   let setHeight = function(item, strict = false, max = 650) {
     let h = height;
