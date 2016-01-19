@@ -13,18 +13,18 @@ export function register(app, config) {
 
   app.twilio = {
     client: twilioClient,
-    registerNumberForAgent: (agent) => {
-      //debug('registerNumberForAgent', agent);
+    registerNumberForUser: (user) => {
+      //debug('registerNumberForUser', user);
 
       return new Promise((resolve, reject) => {
         let searchOpts = config.phoneNumbers.options || {};
         let numberType = 'local';
-        // if (agent._realPhoneNumberType) {
-        //   numberType = agent._realPhoneNumberType;
+        // if (user._realPhoneNumberType) {
+        //   numberType = user._realPhoneNumberType;
         // }
         let numberCountry = config.phoneNumbers.country;
-        if (agent.location && agent.location.address.country) {
-          numberCountry = agent.location.address.country;
+        if (user.location && user.location.address.country) {
+          numberCountry = user.location.address.country;
         }
         twilioClient.availablePhoneNumbers(numberCountry)[numberType].get(searchOpts)
         .then((searchResults) => {
@@ -33,14 +33,14 @@ export function register(app, config) {
             return reject(new Error('No numbers found with given options'));
           }
 
-          let voiceCallBackUrl = `${callBackBaseUrl}/request/${agent.uuid}/voice`;
-          let smsCallBackUrl = `${callBackBaseUrl}/request/${agent.uuid}/sms`;
+          let voiceCallBackUrl = `${callBackBaseUrl}/request/${user.uuid}/voice`;
+          let smsCallBackUrl = `${callBackBaseUrl}/request/${user.uuid}/sms`;
 
           let createDetails = {
             PhoneNumber: searchResults.availablePhoneNumbers[0].phoneNumber,
             VoiceUrl: voiceCallBackUrl,
             SmsUrl: smsCallBackUrl,
-            FriendlyName: agent.name
+            FriendlyName: user.name
           };
           app.log.debug('Purchasing number with details', createDetails);
           return twilioClient.incomingPhoneNumbers.create(createDetails);
@@ -55,14 +55,14 @@ export function register(app, config) {
         });
       });
     },
-    unregisterNumberForAgent: (agent) => {
-      //debug('unregisterNumberForAgent', agent);
+    unregisterNumberForUser: (user) => {
+      //debug('unregisterNumberForUser', user);
       return new Promise((resolve, reject) => {
-        if (!agent._contactNumberSid) {
+        if (!user._contactNumberSid) {
           return resolve();
         }
 
-        twilioClient.incomingPhoneNumbers(agent._contactNumberSid)
+        twilioClient.incomingPhoneNumbers(user._contactNumberSid)
         .delete()
         .then(() => {
           debug('removed number');

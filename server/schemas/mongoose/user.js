@@ -105,19 +105,37 @@ exports.loadSchemas = function (mongoose, next) {
       ios: String,
       android: String
     },
+    contactNumber: {
+      type: String,
+      default: null
+    },
+    _contactNumberSid: {
+      type: String
+    },
+    _realPhoneNumber: {
+      type: String
+    },
+    _realPhoneNumberType: {
+      type: String,
+      default: 'mobile',
+      enum: ['mobile', 'local']
+    },
     profileImage: getImageFields(),
     contact: {
-      address: getAddressFields(),
-      phone: {
-        type: String,
-        default: null
-      },
-      twilioPhone: {
-        type: String,
-        default: null
-      }
+      address: getAddressFields()
     }
   }));
+
+  schemas.User.virtual('phone').get(function() {
+    return this.contactNumber;
+  });
+
+  schemas.User.virtual('phone').set(function(value) {
+    // Refuse to reset the real phone number with a generated number
+    if (value && value !== this.contactNumber) {
+      this._realPhoneNumber = value;
+    }
+  });
 
   schemas.User.virtual('displayName').get(function () {
     let displayName = [];
@@ -208,8 +226,7 @@ exports.loadSchemas = function (mongoose, next) {
       rname: this.rname,
       profileImage: this.profileImage,
       contact: this.contact || {
-        phone: null,
-        address: null,
+        address: null
       },
       createdAt: this.createdAt,
       createdAtTS: this.createdAtTS,
