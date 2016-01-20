@@ -122,20 +122,13 @@ exports.loadSchemas = function (mongoose, next) {
     },
     profileImage: getImageFields(),
     contact: {
-      address: getAddressFields()
+      address: getAddressFields(),
+      phone: {
+        type: String,
+        default: null
+      }
     }
   }));
-
-  schemas.User.virtual('phone').get(function() {
-    return this.contactNumber;
-  });
-
-  schemas.User.virtual('phone').set(function(value) {
-    // Refuse to reset the real phone number with a generated number
-    if (value && value !== this.contactNumber) {
-      this._realPhoneNumber = value;
-    }
-  });
 
   schemas.User.virtual('displayName').get(function () {
     let displayName = [];
