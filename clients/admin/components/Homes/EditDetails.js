@@ -67,6 +67,7 @@ export default class HomesEditDetails extends EditDetails {
 
   componentDidMount() {
     HomeStore.listen(this.storeListener);
+    this.setState({home: this.home});
   }
 
   componentWillReceiveProps(props) {
@@ -112,7 +113,6 @@ export default class HomesEditDetails extends EditDetails {
   }
 
   onNeighborhoodChange(neighborhood) {
-    debug('this.home', this.home);
     if (!this.home) {
       return null;
     }
