@@ -7,7 +7,7 @@ import Well from 'react-bootstrap/lib/Well';
 import UploadArea from '../../../common/components/UploadArea';
 import UploadAreaUtils from '../../../common/components/UploadArea/utils';
 import ApplicationStore from '../../../common/stores/ApplicationStore';
-import { randomNumericId, setCDNUrlProperties, merge, enumerate, createNotification } from '../../../common/Helpers';
+import { randomNumericId, setCDNUrlProperties, merge, enumerate, createNotification, parseCloudinaryTransformation } from '../../../common/Helpers';
 import ImageList from './ImageList';
 
 let debug = require('debug')('WidgetsBaseBlock');
@@ -79,6 +79,26 @@ export default class WidgetsBaseBlock extends React.Component {
     });
   }
 
+  getDerivedVideos(transformations) {
+    if (!transformations) {
+      return [];
+    }
+
+    let paramMap = {
+      w: 'width',
+      h: 'height',
+      f: 'format'
+    };
+
+    return transformations.map((transform) => {
+      let rval = {
+        url: transform.secure_url || transform.url
+      };
+
+      return merge(rval, parseCloudinaryTransformation(rval.url));
+    });
+  }
+
   onFileUpload(key, file) {
     debug('onFileUpload', key, file);
     //console.log('b this.props[key]', this.props[key]);
@@ -92,11 +112,16 @@ export default class WidgetsBaseBlock extends React.Component {
       for (let [k, imageData] of enumerate(uploads)) {
         debug(k, 'data:', imageData);
         this.props[key] = merge(this.props[key], {
-          url: imageData.url,
+          url: imageData.secure_url || imageData.url,
           width: imageData.width,
           height: imageData.height,
           aspectRatio: (imageData.width / imageData.height)
         });
+
+        if (imageData.eager) {
+          this.props[key].derived = this.getDerivedVideos(imageData.eager);
+        }
+
         this.onFormChange(key, null, imageData);
       }
     } else if (this.blockProperties[key].type === 'images') {
@@ -353,6 +378,16 @@ export default class WidgetsBaseBlock extends React.Component {
                 onUpload={(file) => {
                   this.onVideoUpload(key, file);
                 }}
+                transformations={[
+                  {
+                    format: 'mp4',
+                    height: 720
+                  },
+                  {
+                    format: 'webm',
+                    height: 720
+                  }
+                ]}
                 onError={(error) => {
                   createNotification({
                     duration: 10,
