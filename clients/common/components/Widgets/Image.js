@@ -98,6 +98,14 @@ export default class Image extends BaseWidget {
     if (!props.url && !props.src) {
       throw new Error('Missing attribute "url"');
     }
+
+    if (props.width && !BaseWidget.isNumeric(props.width)) {
+      throw new Error('Attribute "width" fails type check');
+    }
+
+    if (props.height && !BaseWidget.isNumeric(props.height)) {
+      throw new Error('Attribute "height" fails type check');
+    }
   }
 
   resolveParams() {
