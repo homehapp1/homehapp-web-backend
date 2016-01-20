@@ -7,6 +7,10 @@ export default class BaseWidget extends React.Component {
     return false;
   }
 
+  static isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
   renderWidget() {
     debug('Default render widget, please override');
     return null;
