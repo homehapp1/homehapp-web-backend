@@ -445,6 +445,11 @@ export default class BigVideo extends BigBlock {
       width: null,
       height: null
     };
+
+    if (Array.isArray(this.props.video.derived) && this.props.video.derived.length) {
+      video.derived = this.props.video.derived;
+    }
+
     debug('video', video);
 
     let image = {
