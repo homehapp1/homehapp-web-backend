@@ -6,6 +6,8 @@ import UploadAreaUtils from './utils';
 import Helpers from '../../Helpers';
 import ApplicationStore from '../../stores/ApplicationStore';
 
+import { toCloudinaryTransformation } from '../../../common/Helpers';
+
 let debug = require('../../debugger')('UploadArea');
 
 let Dropzone = null;
@@ -38,7 +40,8 @@ class UploadArea extends React.Component {
     children: React.PropTypes.oneOfType([
       React.PropTypes.array,
       React.PropTypes.object
-    ])
+    ]),
+    transformations: React.PropTypes.string
   }
 
   static defaultProps = {
@@ -51,7 +54,8 @@ class UploadArea extends React.Component {
     uploadParams: {},
     clickable: true,
     isVideo: false,
-    maxSize: Infinity
+    maxSize: Infinity,
+    transformations: null
   }
 
   constructor(props) {
@@ -97,11 +101,11 @@ class UploadArea extends React.Component {
 
   _fetchCloudinarySignature() {
     let params = {};
-    if (this.props.useCloudinary && this.props.isVideo) {
+    if (this.props.useCloudinary && this.props.isVideo && this.props.transformations) {
       params = {
         notification_type: 'eager',
         eager_async: true,
-        eager: 'f_mp4|f_webm'
+        eager: toCloudinaryTransformation(this.props.transformations)
       };
     }
 
