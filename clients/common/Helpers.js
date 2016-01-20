@@ -540,3 +540,83 @@ exports.createNotification = function createNotification(d) {
   };
   return notification;
 };
+
+let cloudinaryParamMap = {
+  w: 'width',
+  h: 'height',
+  f: 'format',
+  c: 'mode',
+  q: 'quality',
+  g: 'gravity'
+};
+
+exports.parseCloudinaryTransformation = function parseCloudinaryTransformation(url) {
+  let paramMap = cloudinaryParamMap;
+
+  let regs;
+  let rval = {};
+
+  if (regs = url.match(/upload\/([^\/]+?)\/v[0-9]+/)) {
+    regs[1].split(',').map((attr) => {
+      let parts = attr.split('_');
+      let k = parts[0];
+
+      if (typeof paramMap[k] === 'undefined') {
+        return null;
+      }
+
+      let key = paramMap[k];
+
+      switch (key) {
+        case 'width':
+        case 'height':
+          rval[key] = Number(parts[1]);
+          break;
+
+        default:
+          rval[key] = parts[1];
+      }
+    });
+  }
+
+  return rval;
+};
+
+exports.toCloudinaryTransformation = function toCloudinaryTransformation(transformations) {
+  if (typeof transformations === 'string') {
+    return transformations;
+  }
+
+  if (Array.isArray(transformations)) {
+    return transformations.map((transformation) => {
+      return exports.toCloudinaryTransformation(transformation);
+    }).join('|');
+  }
+
+  let paramMap = {};
+
+  for (let k in cloudinaryParamMap) {
+    paramMap[cloudinaryParamMap[k]] = k;
+  }
+
+  try {
+    let rval = [];
+
+    for (let k in transformations) {
+      let v = transformations[k];
+
+      if (typeof paramMap[k] !== 'undefined') {
+        key = paramMap[k];
+      } else {
+        key = k;
+      }
+
+      rval.push(`${k}_${v}`);
+    }
+    return rval;
+  } catch (error) {
+    return '';
+  }
+
+  return String(transformations) || '';
+};
