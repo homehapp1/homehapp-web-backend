@@ -131,7 +131,7 @@ exports.getOrientation = function getOrientation() {
   }
 
   return 'landscape';
-}
+};
 
 exports.setFullHeight = function setFullHeight() {
   let height = window.innerHeight;
