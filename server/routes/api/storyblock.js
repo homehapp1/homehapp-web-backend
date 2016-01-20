@@ -1,67 +1,128 @@
 exports.registerRoutes = (app) => {
   /**
-   * @api {any} /api/* Story blocks
+   * @api {any} /api/* All story blocks
    * @apiVersion 1.0.1
-   * @apiName StoryBlock
-   * @apiGroup Shared
+   * @apiName All StoryBlocks
+   * @apiGroup StoryBlocks
+   * @apiUse StoryBlockSuccess
+   * @apiUse StoryBlockSuccessJSON
    *
    * @apiDescription Story block definitions for both setting and getting
    *
-   * @apiParam (BigImage) {string='BigImage'} template        Template name for big image widget
-   * @apiParam (BigImage) {object} properties                 Story block properties
-   * @apiParam (BigImage) {string} properties.title           Story block title
-   * @apiParam (BigImage) {string} properties.description     Story block description
-   * @apiParam (BigImage) {string='left', 'center', 'right'} [properties.align='center'] Horizontal position of the textual content
-   * @apiParam (BigImage) {string='top', 'middle', 'bottom'} [properties.valign='middle'] Vertical position of the textual content
-   * @apiParam (BigImage) {object} properties.image                <a href="#">Image object</a>
-   *
-   * @apiParam (BigVideo) {string='BigVideo'} template        Template name for BigVideo widget
-   * @apiParam (BigVideo) {object} properties                 Story block properties
-   * @apiParam (BigVideo) {string} properties.title                Story block title
-   * @apiParam (BigVideo) {string} properties.description          Story block description
-   * @apiParam (BigVideo) {string='left', 'center', 'right'} [properties.align='center'] Horizontal position of the textual content
-   * @apiParam (BigVideo) {string='top', 'middle', 'bottom'} [properties.valign='middle'] Vertical position of the textual content
-   * @apiParam (BigVideo) {object} properties.video                Video object
-   * @apiParam (BigVideo) {string} properties.video.url            Video URL
-   * @apiParam (BigVideo) {string} properties.video.alt            Alt text or brief description
-   * @apiParam (BigVideo) {number} [properties.video.width]        Video width
-   * @apiParam (BigVideo) {number} [properties.video.height]       Video height
-   * @apiParam (BigVideo) {boolean} [properties.video.fixed]       Flag for fixing the video position for parallax scrolling
-   * @apiParam (BigVideo) {string='left', 'center', 'right'} [properties.video.align='center'] Horizontal position of the video
-   * @apiParam (BigVideo) {string='top', 'middle', 'bottom'} [properties.video.valign='middle'] Vertical position of the video
-   *
-   * @apiParam (ContentBlock) {string='ContentBlock'} template        Template name for ContentBlock widget
-   * @apiParam (ContentBlock) {object} properties                 Story block properties
-   * @apiParam (ContentBlock) {string} properties.title            Story block title
-   * @apiParam (ContentBlock) {string} properties.content          Story block content
+   * @apiParam (ContentBlock) {string='ContentBlock'} template      Template name for ContentBlock widget
+   * @apiParam (ContentBlock) {object} properties            Story block properties
+   * @apiParam (ContentBlock) {string} properties.title        Story block title
+   * @apiParam (ContentBlock) {string} properties.content       Story block content
    * @apiParam (ContentBlock) {string='left', 'center', 'right'} [properties.align='left'] Horizontal position of the content
    *
-   * @apiParam (ContentImage) {string='ContentImage'} template        Template name for big image widget
-   * @apiParam (ContentImage) {object} properties                 Story block properties
-   * @apiParam (ContentImage) {string} properties.title            Story block title
-   * @apiParam (ContentImage) {string} properties.content          Story block content
+   * @apiParam (ContentImage) {string='ContentImage'} template      Template name for big image widget
+   * @apiParam (ContentImage) {object} properties            Story block properties
+   * @apiParam (ContentImage) {string} properties.title        Story block title
+   * @apiParam (ContentImage) {string} properties.content       Story block content
    * @apiParam (ContentImage) {string='left', 'right'} [properties.imageAlign='left'] On which side the image should be related to the text
    *
-   * @apiParam (Gallery) {string='Gallery'} template        Template name for Gallery widget
-   * @apiParam (Gallery) {object} properties                 Story block properties
-   * @apiParam (Gallery) {Array} [properties.images]               An array of <a href="#api-Shared-Images">Images</a>
+   * @apiParam (Gallery) {string='Gallery'} template      Template name for Gallery widget
+   * @apiParam (Gallery) {object} properties            Story block properties
+   * @apiParam (Gallery) {Array} [properties.images]          An array of <a href="#api-Shared-Images">Images</a>
    */
 
-   /**
-    * @api {any} /api/* Images
-    * @apiVersion 1.0.1
-    * @apiName  Images
-    * @apiGroup Shared
-    *
-    * @apiDescription Every Image uses the following definition
-    *
-    * @apiParam {string} url            Image URL
-    * @apiParam {string} alt            Alt text or brief description
-    * @apiParam {number} [width]        Image width
-    * @apiParam {number} [height]       Image height
-    * @apiParam {number} [aspectRatio]  Aspect ratio
-    * @apiParam {boolean} [fixed]       Flag for fixing the image position for parallax scrolling
-    * @apiParam {string='left', 'center', 'right'} [align='center'] Horizontal position of the image
-    * @apiParam {string='top', 'middle', 'bottom'} [valign='middle'] Vertical position of the image
-    */
+  /**
+   * @apiDefine StoryBlockSuccess
+   * @apiVersion 1.0.1
+   *
+   * @apiSuccess {boolean} enabled      Switch to enable story block
+   * @apiSuccess {Array} blocks         Story blocks as defined here
+   */
+
+  /**
+   * @apiDefine StoryBlockSuccessJSON
+   * @apiVersion 1.0.1
+   *
+   * @apiSuccessExample {json} Story block segment
+   *     {
+   *       "enabled": true,
+   *       "blocks": [
+   *         {
+   *           "template": '...',
+   *           "properties": {...}
+   *         },
+   *         ...,
+   *         {
+   *           "template": '...',
+   *           "properties": {...}
+   *         }
+   *       ]
+   *     }
+   */
+
+  /**
+   * @api {any} /api/* BigImage
+   * @apiVersion 1.0.1
+   * @apiName BigImage
+   * @apiGroup StoryBlocks
+   *
+   * @apiParam {string='BigImage'} template      Template name for big image widget
+   * @apiParam {object} properties            Story block properties
+   * @apiParam {string} properties.title        Story block title
+   * @apiParam {string} properties.description    Story block description
+   * @apiParam {string='left', 'center', 'right'} [properties.align='center'] Horizontal position of the textual content
+   * @apiParam {string='top', 'middle', 'bottom'} [properties.valign='middle'] Vertical position of the textual content
+   * @apiParam {object} properties.image           <a href="#">Image object</a>
+   *
+   * @apiSuccess {String} template            Template name, always BigImage
+   * @apiSuccess {Object} properties          Content control properties
+   * @apiSuccess {Object} properties.image    <a href="#api-Shared-Images">Image</a> object
+   * @apiSuccess {String} align               Horizontal alignment of the text ('left', 'center', 'right')
+   * @apiSuccess {String} valign              Vertical alignment of the text ('top', 'middle', 'bottom')
+   * @apiSuccess {String} title               Block title
+   * @apiSuccess {String} description         Block content or description
+   *
+   * @apiSuccessExample {json} Example
+   *     {
+   *       "template": 'BigImage',
+   *       "properties": {
+   *         "image": {...},
+   *         "title": "...",
+   *         "description": "...",
+   *         "align": "center",
+   *         "valign": "middle",
+   *       }
+   *     }
+   * @apiUse ImageSuccessJSON
+   */
+  /**
+   * @api {any} /api/* BigVideo
+   * @apiVersion 1.0.1
+   * @apiName BigVideo
+   * @apiGroup StoryBlocks
+   *
+   * @apiParam {string='BigImage'} template      Template name for big video widget
+   * @apiParam {object} properties            Story block properties
+   * @apiParam {string} properties.title        Story block title
+   * @apiParam {string} properties.description    Story block description
+   * @apiParam {string='left', 'center', 'right'} [properties.align='center'] Horizontal position of the textual content
+   * @apiParam {string='top', 'middle', 'bottom'} [properties.valign='middle'] Vertical position of the textual content
+   * @apiParam {object} properties.video           <a href="#">Video object</a>
+   *
+   * @apiSuccess {String} template            Template name, always BigVideo
+   * @apiSuccess {Object} properties          Content control properties
+   * @apiSuccess {Object} properties.image    <a href="#api-Shared-Videos">Video</a> object
+   * @apiSuccess {String} align               Horizontal alignment of the text ('left', 'center', 'right')
+   * @apiSuccess {String} valign              Vertical alignment of the text ('top', 'middle', 'bottom')
+   * @apiSuccess {String} title               Block title
+   * @apiSuccess {String} description         Block content or description
+   *
+   * @apiSuccessExample {json} Example
+   *     {
+   *       "template": 'BigVideo',
+   *       "properties": {
+   *         "video": {...},
+   *         "title": "...",
+   *         "description": "...",
+   *         "align": "center",
+   *         "valign": "middle",
+   *       }
+   *     }
+   * @apiUse VideoSuccessJSON
+   */
 };
