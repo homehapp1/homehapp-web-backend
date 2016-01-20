@@ -1,8 +1,9 @@
 import React from 'react';
+import BaseWidget from './BaseWidget';
 import DOMManipulator from '../../DOMManipulator';
 import { merge } from '../../Helpers';
 
-export default class Video extends React.Component {
+export default class Video extends BaseWidget {
   static propTypes = {
     src: React.PropTypes.string.isRequired,
     mode: React.PropTypes.string,
@@ -26,8 +27,23 @@ export default class Video extends React.Component {
       React.PropTypes.null,
       React.PropTypes.number,
       React.PropTypes.string
-    ])
+    ]),
+    derived: React.PropTypes.array
   };
+
+  static validate(props) {
+    if (!props.src) {
+      throw new Error('Attribute "src" missing');
+    }
+
+    if (props.width && !BaseWidget.isNumeric(props.width)) {
+      throw new Error('Attribute "width" fails type check');
+    }
+
+    if (props.height && !BaseWidget.isNumeric(props.height)) {
+      throw new Error('Attribute "height" fails type check');
+    }
+  }
 
   static defaultProps = {
     mode: 'html5',
@@ -44,7 +60,8 @@ export default class Video extends React.Component {
     controls: true,
     standalone: false,
     width: '100%',
-    height: '100%'
+    height: '100%',
+    derived: []
   };
 
   constructor() {
@@ -137,6 +154,22 @@ export default class Video extends React.Component {
         className: classes.join(' ')
       };
 
+      if (Array.isArray(this.props.derived) && this.props.derived.length) {
+        console.error('derived', this.props.derived);
+        return (
+          <video {...video}>
+            {
+              this.props.derived.map((derived, index) => {
+                let type = `video/${derived.format}`;
+                return (
+                  <source src={derived.url} type={type} key={index} />
+                );
+              })
+            }
+          </video>
+        );
+      }
+
       return (
         <video {...video}>
           {
@@ -155,7 +188,7 @@ export default class Video extends React.Component {
     return `Not yet implemented '${this.props.mode}' with src '${this.props.src}'`;
   }
 
-  render() {
+  renderWidget() {
     this.resolveAspectRatio();
 
     if (!this.props.src) {
