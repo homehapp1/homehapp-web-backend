@@ -531,10 +531,10 @@
  *
  */
 /**
- * @api {any} /api/* Story blocks
- * @apiVersion 1.0.0
- * @apiName StoryBlock
- * @apiGroup Shared
+* @api {any} /api/* All story blocks
+* @apiVersion 1.0.0
+* @apiName All StoryBlocks
+* @apiGroup StoryBlocks
  *
  * @apiDescription Story block definitions for both setting and getting
  *
