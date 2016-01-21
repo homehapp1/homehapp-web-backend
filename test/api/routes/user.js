@@ -123,8 +123,8 @@ describe('User/Authentication API paths', () => {
         width: 300,
         height: 300
       },
-      phone: '+1 23 456 7890',
       contact: {
+        phone: '+1 23 456 7890',
         address: {
           street: 'Lorem',
           city: 'London',
