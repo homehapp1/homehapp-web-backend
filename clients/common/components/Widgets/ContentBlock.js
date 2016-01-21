@@ -1,6 +1,7 @@
 import React from 'react';
+import BaseWidget from './BaseWidget';
 
-export default class ContentBlock extends React.Component {
+export default class ContentBlock extends BaseWidget {
   static propTypes = {
     align: React.PropTypes.string,
     children: React.PropTypes.oneOfType([
@@ -16,7 +17,13 @@ export default class ContentBlock extends React.Component {
     align: 'left'
   };
 
-  render() {
+  validate(props) {
+    if (['left', 'center', 'right'].indexOf(props.align) === -1) {
+      throw new Error('Allowed values for "align" are "left", "center" and "right"');
+    }
+  }
+
+  renderWidget() {
     let classes = [
       'widget',
       'content-block',

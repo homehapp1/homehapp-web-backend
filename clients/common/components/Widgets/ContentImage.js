@@ -1,9 +1,10 @@
 import React from 'react';
+import BaseWidget from './BaseWidget';
 import Columns from './Columns';
 import ContentBlock from './ContentBlock';
 import Image from './Image';
 
-export default class ContentImage extends React.Component {
+export default class ContentImage extends BaseWidget {
   static propTypes = {
     image: React.PropTypes.object.isRequired,
     imageAlign: React.PropTypes.string,
@@ -19,7 +20,17 @@ export default class ContentImage extends React.Component {
     imageAlign: 'left'
   };
 
-  render() {
+  static validate(props) {
+    Image.validate(props.image);
+
+    if (['left', 'right'].indexOf(props.imageAlign) === -1) {
+      throw new Error('Attribute "imageAlign" has to be either "left" or "right"');
+    }
+
+    return true;
+  }
+
+  renderWidget() {
     let left = null;
     let right = null;
     let classes = [
