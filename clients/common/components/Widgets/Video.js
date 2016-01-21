@@ -43,6 +43,27 @@ export default class Video extends BaseWidget {
     if (props.height && !BaseWidget.isNumeric(props.height)) {
       throw new Error('Attribute "height" fails type check');
     }
+
+    if (props.derived) {
+      if (!Array.isArray(props.derived)) {
+        throw new Error('Attribute "derived" has to be an array');
+      }
+
+      props.derived.map((derived) => {
+        if (!derived.url) {
+          throw new Error('Derived video is missing "url" attribute');
+        }
+        if (!derived.format) {
+          throw new Error('Derived video is missing "format" attribute');
+        }
+        if (derived.width && !BaseWidget.isNumeric(derived.width)) {
+          throw new Error('Derived video attribute "width" has to be numeric');
+        }
+        if (derived.height && !BaseWidget.isNumeric(derived.height)) {
+          throw new Error('Derived video attribute "height" has to be numeric');
+        }
+      });
+    }
   }
 
   static defaultProps = {
