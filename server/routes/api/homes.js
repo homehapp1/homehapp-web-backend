@@ -74,6 +74,9 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {Object} neighborhoodStory             Neighborhood story blocks
    * @apiSuccess {Boolean} neighborhoodStory.enabled    Switch to determine if the story is public
    * @apiSuccess {Array} neighborhoodStory.blocks       An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
+   * @apiSuccess {Object} likes                   Likes container object
+   * @apiSuccess {Number} likes.total             Total likes for this home
+   * @apiSuccess {Array} likes.users              Array of User uuids who has liked this home
    * @apiSuccess {Object} createdBy         <a href="#api-Users-UserData">User</a> object of the creator
    * @apiSuccess {Object} updatedBy         <a href="#api-Users-UserData">User</a> object of the updater
    * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
@@ -194,6 +197,10 @@ exports.registerRoutes = (app) => {
    *       }
    *     ]
    *   },
+   *   "likes": {
+   *     "total": 0,
+   *     "users": [...]
+   *   },
    *   "createdBy": {...},
    *   "updatedBy": {...},
    *   "createdAt": "2016-01-13T14:38:01.0000Z",
@@ -239,6 +246,15 @@ exports.registerRoutes = (app) => {
     * @apiParam {Boolean} [home.neighborhoodStory.enabled=false]    Switch to determine if the story is public
     * @apiParam {Array} [home.neighborhoodStory.blocks]             An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
     */
+
+  /**
+   * @apiDefine StateSuccessResponse
+   * @apiVersion 1.0.1
+   *
+   * @apiParam {Object} state               State object
+   * @apiParam {String} state.type          Type of the state information. Enum: ['like']
+   * @apiParam {Boolean} state.status       Status of the state. (true if set, false is unset)
+   */
 
   /**
    * @api {any} /api/* Home Details
@@ -489,4 +505,49 @@ exports.registerRoutes = (app) => {
     })
     .catch(next);
   });
+
+  /**
+   * @api {put} /api/homes/:id/like Like/Unlike home
+   * @apiVersion 1.0.1
+   * @apiName LikeHome
+   * @apiGroup Homes
+   * @apiPermission authenticated
+   * @apiDescription Like or Unlike home by uuid
+   *
+   * @apiParam {String} id Home's internal id
+   *
+   * @apiUse MobileRequestHeadersAuthenticated
+   * @apiUse StateSuccessResponse
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {
+   *       "status": "ok",
+   *       "state": {...}
+   *     }
+   *
+   */
+  app.put('/api/homes/:uuid/like', app.authenticatedRoute, function(req, res, next) {
+    debug('API like home with uuid', req.params.uuid, 'with user', req.user.id);
+
+    QB
+    .forModel('Home')
+    .findByUuid(req.params.uuid)
+    .fetch()
+    .then((result) => {
+      result.model.updateActionState('like', req.user)
+      .then((actionStatus) => {
+        res.json({
+          status: 'ok',
+          state: {
+            type: 'like',
+            status: actionStatus
+          }
+        });
+      })
+      .catch(next);
+    })
+    .catch(next);
+  });
+
 };

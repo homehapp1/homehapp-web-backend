@@ -40,6 +40,56 @@ exports.extendSchema = function (schema) {
     },
     can(user, requirement, done) {
       done(null, false);
+    },
+
+    updateActionState(type, user) {
+      return new Promise((resolve, reject) => {
+        let HomeAction = this.db.model('HomeAction');
+
+        switch (type) {
+          case 'like':
+            if (this.likes.users.indexOf(user.uuid) !== -1) {
+              // User has already liked this home
+              HomeAction.remove({
+                type: type,
+                home: this.id,
+                user: user.id
+              }).exec((err) => {
+                if (err) {
+                  return reject(err);
+                }
+                this.likes.users = this.likes.users.filter((uuid) => {
+                  return uuid !== user.uuid;
+                });
+                this.likes.total = this.likes.total - 1;
+                this.saveAsync().then(() => {
+                  resolve(false);
+                }).catch(reject);
+              });
+            } else {
+              // New like from User
+              let action = new HomeAction({
+                type: type,
+                home: this.id,
+                user: user.id
+              });
+              action.save((err) => {
+                if (err) {
+                  return reject(err);
+                }
+                this.likes.users.push(user.uuid);
+                this.likes.total = this.likes.total + 1;
+                this.saveAsync().then(() => {
+                  resolve(true);
+                }).catch(reject);
+              });
+            }
+            break;
+          default:
+            return reject(new Error(`unknown action type '${type}'`));
+        }
+      });
     }
+
   });
 };

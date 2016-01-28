@@ -108,6 +108,17 @@ exports.loadSchemas = function (mongoose, next) {
     epc: getImageFields(),
     floorplans: [schemas.HomeImage],
     brochures: [schemas.HomeImage],
+    // Like related
+    likes: {
+      total: {
+        type: Number,
+        default: 0
+      },
+      users: {
+        type: [String],
+        default: []
+      }
+    },
     // Flags
     visible: {
       type: Boolean,
@@ -206,6 +217,27 @@ exports.loadSchemas = function (mongoose, next) {
       'brochures', 'image', 'epc', 'floorplans', 'properties', 'enabled'
     ];
   };
+
+  schemas.HomeAction = new Schema({
+    type: {
+      type: String,
+      default: 'like',
+      index: true
+    },
+    user: {
+      type: ObjectId,
+      ref: 'User',
+      index: true
+    },
+    home: {
+      type: ObjectId,
+      ref: 'Home',
+      index: true
+    },
+    createdAt: {
+      type: Date
+    }
+  });
 
   Object.keys(schemas).forEach((name) => {
     loadCommonPlugins(schemas[name], name, mongoose);
