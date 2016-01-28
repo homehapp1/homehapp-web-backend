@@ -18,7 +18,7 @@ ENV GOOGLE_PROJECT_ID=homehappweb
 ENV LOG_PATH=/mnt/log
 
 ADD package.json /app/package.json
-RUN cd /app && npm install
+RUN cd /app && npm install --production
 ADD . /app
 
 #RUN useradd -ms /bin/bash node
