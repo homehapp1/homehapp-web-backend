@@ -63,7 +63,12 @@ exports.extendSchema = function (schema) {
                 });
                 this.likes.total = this.likes.total - 1;
                 this.saveAsync().then(() => {
-                  resolve(false);
+                  resolve({
+                    status: false,
+                    data: {
+                      likes: this.likes
+                    }
+                  });
                 }).catch(reject);
               });
             } else {
@@ -80,7 +85,12 @@ exports.extendSchema = function (schema) {
                 this.likes.users.push(user.uuid);
                 this.likes.total = this.likes.total + 1;
                 this.saveAsync().then(() => {
-                  resolve(true);
+                  resolve({
+                    status: true,
+                    data: {
+                      likes: this.likes
+                    }
+                  });
                 }).catch(reject);
               });
             }

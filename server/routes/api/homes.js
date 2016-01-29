@@ -2,7 +2,7 @@ import QueryBuilder from '../../lib/QueryBuilder';
 let debug = require('debug')('/api/homes');
 
 import {NotFound, BadRequest} from '../../lib/Errors';
-import {exposeHome} from '../../lib/Helpers';
+import {merge, exposeHome} from '../../lib/Helpers';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -251,9 +251,12 @@ exports.registerRoutes = (app) => {
    * @apiDefine StateSuccessResponse
    * @apiVersion 1.0.1
    *
-   * @apiParam {Object} state               State object
-   * @apiParam {String} state.type          Type of the state information. Enum: ['like']
-   * @apiParam {Boolean} state.status       Status of the state. (true if set, false is unset)
+   * @apiSuccess {Object} state               State object
+   * @apiSuccess {String} state.type          Type of the state information. Enum: ['like']
+   * @apiSuccess {Boolean} state.status       Status of the state. (true if set, false is unset)
+   * @apiSuccess {Object} [likes]                   Likes container object
+   * @apiSuccess {Number} [likes.total]             Total likes for this home
+   * @apiSuccess {Array} [likes.users]              Array of User uuids who has liked this home
    */
 
   /**
@@ -536,14 +539,16 @@ exports.registerRoutes = (app) => {
     .fetch()
     .then((result) => {
       result.model.updateActionState('like', req.user)
-      .then((actionStatus) => {
-        res.json({
+      .then((results) => {
+        let returnObject = {
           status: 'ok',
           state: {
             type: 'like',
-            status: actionStatus
+            status: results.status
           }
-        });
+        };
+        returnObject = merge(returnObject, results.data);
+        res.json(returnObject);
       })
       .catch(next);
     })
