@@ -298,8 +298,18 @@ exports.registerRoutes = (app) => {
       };
     }
 
+    // Filter homes that has been modified since given ISODate string
+    if (req.query.updatedSince) {
+      query.updatedAt = {
+        $gt: req.query.updatedSince
+      };
+    }
+
     QB
     .forModel('Home')
+    .sort({
+      'updatedAt': 'desc'
+    })
     .parseRequestArguments(req)
     .populate(populateAttributes)
     .query(query)
