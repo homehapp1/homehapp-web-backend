@@ -65,8 +65,7 @@ exports.registerRoutes = (app) => {
             })
             .then((neighborhood) => {
               model.myNeighborhood = neighborhood;
-              model.saveSync()
-              .then(() => {
+              model.save(() => {
                 generateTokenAndRespond(req, res, user, model);
               });
             });

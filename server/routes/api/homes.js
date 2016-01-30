@@ -384,8 +384,10 @@ exports.registerRoutes = (app) => {
         })
         .then((neighborhood) => {
           result.home.myNeighborhood = neighborhood;
-          result.home.saveSync()
-          .then(() => {
+          result.home.save((err) => {
+            if (err) {
+              return next(err);
+            }
             QB
             .forModel('Home')
             .populate(populateAttributes)
@@ -398,8 +400,7 @@ exports.registerRoutes = (app) => {
               });
             })
             .catch(next);
-          })
-          .catch(next);
+          });
         })
         .catch(next);
         return;
