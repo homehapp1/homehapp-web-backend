@@ -58,10 +58,11 @@ exports.registerRoutes = (app) => {
           .then((model) => {
             QB
             .forModel('Neighborhood')
-            .createNoMultiset({
-              createdBy: user,
+            .setExtraData({
+              createdBy: req.user,
               enabled: false
             })
+            .create({})
             .then((neighborhood) => {
               model.myNeighborhood = neighborhood;
               model.saveSync()

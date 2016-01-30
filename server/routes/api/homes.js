@@ -377,10 +377,11 @@ exports.registerRoutes = (app) => {
       if (checkforMyNeighborhood) {
         QB
         .forModel('Neighborhood')
-        .createNoMultiset({
+        .setExtraData({
           createdBy: req.user,
           enabled: false
         })
+        .create({})
         .then((neighborhood) => {
           result.home.myNeighborhood = neighborhood;
           result.home.saveSync()
