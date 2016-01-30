@@ -18,8 +18,13 @@ exports.registerRoutes = (app) => {
     }
   ];
 
+  let neighborhoodPopulation = {
+    select: 'uuid title description story images'
+  };
+
   let populateAttributes = {
-    'location.neighborhood': {},
+    'location.neighborhood': neighborhoodPopulation,
+    'myNeighborhood': neighborhoodPopulation,
     createdBy: {},
     updatedBy: {}
   };
@@ -71,14 +76,12 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {Object} story             Home story blocks
    * @apiSuccess {Boolean} story.enabled    Switch to determine if the story is public
    * @apiSuccess {Array} story.blocks       An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
-   * @apiSuccess {Object} neighborhoodStory             Neighborhood story blocks
-   * @apiSuccess {Boolean} neighborhoodStory.enabled    Switch to determine if the story is public
-   * @apiSuccess {Array} neighborhoodStory.blocks       An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
+   * @apiSuccess {Object} myNeighborhood          User defined Neighborhood object TODO: define
    * @apiSuccess {Object} likes                   Likes container object
    * @apiSuccess {Number} likes.total             Total likes for this home
    * @apiSuccess {Array} likes.users              Array of User uuids who has liked this home
    * @apiSuccess {Object} createdBy         <a href="#api-Users-UserData">User</a> object of the creator
-   * @apiSuccess {Object} updatedBy         <a href="#api-Users-UserData">User</a> object of the updater
+   * @apiSuccess {Object} updatedBy         UUID of the updater user
    * @apiSuccess {Datetime} createdAt       ISO-8601 Formatted Creation Datetime
    * @apiSuccess {Datetime} updatedAt       ISO-8601 Formatted Updation Datetime
    * @apiSuccess {Integer} createdAtTS      EPOCH formatted timestamp of the creation time
@@ -109,7 +112,7 @@ exports.registerRoutes = (app) => {
    *       51.4321,
    *       -0.1234
    *     ],
-   *     "neighborhood": "00000000-0000-0000-0000-000000000000"
+   *     "neighborhood": {...}
    *   },
    *   "mainImage": {
    *     "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
@@ -179,30 +182,13 @@ exports.registerRoutes = (app) => {
    *       }
    *     ]
    *   },
-   *   "neighborhoodStory": {
-   *     "enabled": true,
-   *     "blocks": [
-   *       {
-   *         "template": "BigImage",
-   *         "properties": {
-   *           "image": {
-   *             "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
-   *             "alt": "View towards the sunset",
-   *             "width": 4200,
-   *             "height": 2500
-   *           },
-   *           "title": "A great spectacle",
-   *           "description": "The evening routines of the Sun"
-   *         }
-   *       }
-   *     ]
-   *   },
+   *   "myNeighborhood": {...},
    *   "likes": {
    *     "total": 0,
    *     "users": [...]
    *   },
    *   "createdBy": {...},
-   *   "updatedBy": {...},
+   *   "updatedBy": "...",
    *   "createdAt": "2016-01-13T14:38:01.0000Z",
    *   "updatedAt": "2016-01-13T14:38:01.0000Z",
    *   "createdAtTS": 1452695955,

@@ -215,7 +215,7 @@ exports.exposeHome = function exposeHome(home, version = null, currentUser = nul
     case semver.satisfies(version, '<=1.0.1'):
     default:
       home.createdBy = exports.exposeUser(home.createdBy, version, currentUser);
-      home.updatedBy = exports.exposeUser(home.updatedBy, version, currentUser);
+      home.updatedBy = exports.getId(home.updatedBy);
   }
 
   return home;
@@ -256,10 +256,13 @@ exports.exposeUser = function exposeUser(user, version = null, currentUser = nul
   delete rval.rname;
   delete rval.deviceId;
   delete rval.active;
-  // delete rval.createdAt;
-  // delete rval.createdAtTS;
-  // delete rval.updatedAt;
-  // delete rval.updatedAtTS;
+  delete rval.createdAt;
+  delete rval.createdAtTS;
+  delete rval.updatedAt;
+  delete rval.updatedAtTS;
+  delete rval.updatedBy;
+  delete rval.createdBy;
+
   if (rval.displayName === user.username || rval.displayName === user.email) {
     rval.displayName = '';
   }

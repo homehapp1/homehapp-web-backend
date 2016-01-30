@@ -6,8 +6,13 @@ import axios from 'axios';
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
+  let neighborhoodPopulation = {
+    select: 'uuid title description story images'
+  };
+
   let populateAttributes = {
-    'location.neighborhood': {},
+    'location.neighborhood': neighborhoodPopulation,
+    'myNeighborhood': neighborhoodPopulation,
     createdBy: {},
     updatedBy: {}
   };

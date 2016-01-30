@@ -103,6 +103,10 @@ exports.loadSchemas = function (mongoose, next) {
       },
       blocks: [schemas.HomeStoryBlock]
     },
+    myNeighborhood: {
+      type: ObjectId,
+      ref: 'Neighborhood'
+    },
     images: [schemas.HomeImage],
     _image: getImageFields(),
     epc: getImageFields(),
@@ -242,7 +246,23 @@ exports.loadSchemas = function (mongoose, next) {
   Object.keys(schemas).forEach((name) => {
     loadCommonPlugins(schemas[name], name, mongoose);
     schemas[name].options.toJSON.transform = (doc, ret) => {
-      return commonJsonTransform(ret);
+      ret = commonJsonTransform(ret);
+      if (ret.mainImage) {
+        delete ret.mainImage.id;
+      }
+      if (ret.images && ret.images.length) {
+        ret.images = ret.images.map((img) => {
+          delete img.id;
+          return img;
+        });
+      }
+      if (ret.attributes && ret.attributes.length) {
+        ret.attributes = ret.attributes.map((attr) => {
+          delete attr._id;
+          return attr;
+        });
+      }
+      return ret;
     };
     if (name === 'HomeStoryBlock' || name === 'HomeAttribute') {
       schemas[name].options.toJSON.transform = (doc, ret) => {
