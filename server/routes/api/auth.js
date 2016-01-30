@@ -13,6 +13,9 @@ exports.registerRoutes = (app) => {
   let populateAttributes = {
     'location.neighborhood': neighborhoodPopulation,
     'myNeighborhood': neighborhoodPopulation,
+    agents: {
+      select: 'uuid firstname lastname title contactNumber email images'
+    },
     createdBy: {},
     updatedBy: {}
   };
@@ -45,7 +48,7 @@ exports.registerRoutes = (app) => {
         .then((result) => {
           generateTokenAndRespond(req, res, user, result.model);
         })
-        .catch((err) => {
+        .catch(() => {
           QB
           .forModel('Home')
           .createNoMultiset({
@@ -53,7 +56,19 @@ exports.registerRoutes = (app) => {
             enabled: false
           })
           .then((model) => {
-            generateTokenAndRespond(req, res, user, model);
+            QB
+            .forModel('Neighborhood')
+            .createNoMultiset({
+              createdBy: user,
+              enabled: false
+            })
+            .then((neighborhood) => {
+              model.myNeighborhood = neighborhood;
+              model.saveSync()
+              .then(() => {
+                generateTokenAndRespond(req, res, user, model);
+              });
+            });
           });
         });
 

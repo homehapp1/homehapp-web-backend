@@ -25,6 +25,9 @@ exports.registerRoutes = (app) => {
   let populateAttributes = {
     'location.neighborhood': neighborhoodPopulation,
     'myNeighborhood': neighborhoodPopulation,
+    agents: {
+      select: 'uuid firstname lastname title contactNumber email images'
+    },
     createdBy: {},
     updatedBy: {}
   };
@@ -356,14 +359,51 @@ exports.registerRoutes = (app) => {
    *       "error": "model not found"
    *     }
    */
-  app.get('/api/homes/:uuid', function(req, res, next) {
+  app.get('/api/homes/:uuid', checkAuthenticationNeed, function(req, res, next) {
     debug('Try by uuid', req.params.uuid);
+
     QB
     .forModel('Home')
     .populate(populateAttributes)
     .findByUuid(req.params.uuid)
     .fetch()
     .then((result) => {
+
+      let checkforMyNeighborhood = false;
+      if (req.query.my && req.user && !result.home.myNeighborhood) {
+        checkforMyNeighborhood = (result.home.createdBy.uuid === req.user.uuid);
+      }
+
+      if (checkforMyNeighborhood) {
+        QB
+        .forModel('Neighborhood')
+        .createNoMultiset({
+          createdBy: req.user,
+          enabled: false
+        })
+        .then((neighborhood) => {
+          result.home.myNeighborhood = neighborhood;
+          result.home.saveSync()
+          .then(() => {
+            QB
+            .forModel('Home')
+            .populate(populateAttributes)
+            .findByUuid(req.params.uuid)
+            .fetch()
+            .then((newResult) => {
+              res.json({
+                status: 'ok',
+                home: exposeHome(newResult.home, req.version)
+              });
+            })
+            .catch(next);
+          })
+          .catch(next);
+        })
+        .catch(next);
+        return;
+      }
+
       res.json({
         status: 'ok',
         home: exposeHome(result.home, req.version)
