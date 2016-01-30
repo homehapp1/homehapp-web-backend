@@ -107,12 +107,12 @@ echo "Updating Cluster Pods for project '$PBNAME' to revision $REV for environme
 
 updateCluster $3
 
-if [ "$ENV" = "prod" ]; then
-  echo ""
-  echo "Updating Proxy Cluster"
-
-  updateProxyCluster $3
-fi
+# if [ "$ENV" = "prod" ]; then
+#   echo ""
+#   echo "Updating Proxy Cluster"
+#
+#   updateProxyCluster $3
+# fi
 
 echo ""
 echo "Finished"
