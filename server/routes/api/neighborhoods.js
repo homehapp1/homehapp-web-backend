@@ -1,8 +1,12 @@
 import QueryBuilder from '../../lib/QueryBuilder';
-// let debug = require('debug')('app');
+import {BadRequest} from '../../lib/Errors';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
+
+  let populateAttributes = {
+    'location.city': {}
+  };
 
   /**
    * @apiDefine NeighborhoodSuccessResponse
@@ -71,6 +75,119 @@ exports.registerRoutes = (app) => {
     */
 
   /**
+    * @apiDefine NeighborhoodBody
+    * @apiVersion 1.0.1
+    *
+    * @apiParam {Object} neighborhood                     Neighborhood object
+    * @apiParam {Boolean} [neighborhood.enabled]          Switch for enabling/disabling the public viewing of the neighborhood
+    * @apiParam {String} [neighborhood.title]             Title of the Neighborhood
+    * @apiParam {String} [neighborhood.description]         Textual description of the neighborhood
+    * @apiParam {Object} [neighborhood.location]            Location details
+    * @apiParam {String} [neighborhood.location.borough]            Borough
+    * @apiParam {Array} [neighborhood.location.postCodes]     Array of PostCode strings
+    * @apiParam {String} [neighborhood.location.postOffice]  PostOffice
+    * @apiParam {String} [neighborhood.location.city]       City
+    * @apiParam {Array}  [neighborhood.location.coordinates]        Map coordinates. [LAT, LON]
+    * @apiParam {Array}  [neighborhood.images]                  An array of <a href="#api-Shared-Images">Images</a>
+    * @apiParam {Object} [neighborhood.story]                   Story block container object
+    * @apiParam {Boolean} [neighborhood.story.enabled=false]    Switch to determine if the story is public
+    * @apiParam {Array} [neighborhood.story.blocks]             An array of <a href="#api-Shared-StoryBlock">StoryBlocks</a>
+    */
+
+ /**
+  * @api {get} /api/neighborhoods/my/:id Fetch users own Neighborhood by id
+  * @apiVersion 1.0.1
+  * @apiName GetMyNeighborhood
+  * @apiGroup Neighborhoods
+  * @apiPermission authenticated
+  *
+  * @apiDescription Route for fetching Users own Neighborhood by id
+  *
+  * @apiSuccess  {String} status         Textual status message for the request
+  * @apiSuccess  {Object} neighborhood   <a href="#api-Neighborhoods-GetNeighborhoodBySlug">Neighborhood</a>
+  *
+  * @apiUse MobileRequestHeaders
+  * @apiUse NeighborhoodSuccessResponseJSON
+  *
+  * @apiSuccessExample {json} Success-Response:
+  *     HTTP/1.1 200 OK
+  *     {
+  *       "status": "ok",
+  *       "neighborhood": {...}
+  *     }
+  *
+  */
+  app.get('/api/neighborhoods/my/:uuid', app.authenticatedRoute, function (req, res, next) {
+    QB
+    .forModel('Neighborhood')
+    .query({
+      createdBy: req.user
+    })
+    .populate(populateAttributes)
+    .findByUuid(req.params.uuid)
+    .fetch()
+    .then((result) => {
+      let modelJson = result.model.toJSON();
+      delete modelJson.updatedBy;
+      delete modelJson.createdBy;
+      res.json({
+        status: 'ok',
+        neighborhood: modelJson
+      });
+    })
+    .catch(next);
+  });
+
+ /**
+  * @api {put} /api/neighborhoods/my/:id Update users own Neighborhood by id
+  * @apiVersion 1.0.1
+  * @apiName UpdateMyNeighborhood
+  * @apiGroup Neighborhoods
+  * @apiPermission authenticated
+  *
+  * @apiDescription Route for updating Users own Neighborhood by id
+  *
+  * @apiSuccess  {String} status         Textual status message for the request
+  * @apiSuccess  {Object} neighborhood   <a href="#api-Neighborhoods-GetNeighborhoodBySlug">Neighborhood</a>
+  *
+  * @apiUse MobileRequestHeaders
+  * @apiUse NeighborhoodBody
+  * @apiUse NeighborhoodSuccessResponseJSON
+  *
+  * @apiSuccessExample {json} Success-Response:
+  *     HTTP/1.1 200 OK
+  *     {
+  *       "status": "ok",
+  *       "neighborhood": {...}
+  *     }
+  *
+  */
+  app.put('/api/neighborhoods/my/:uuid', app.authenticatedRoute, function (req, res, next) {
+    if (!req.body.neighborhood) {
+      return next(new BadRequest('invalid request body'));
+    }
+
+    QB
+    .forModel('Neighborhood')
+    .query({
+      createdBy: req.user
+    })
+    .populate(populateAttributes)
+    .findByUuid(req.params.uuid)
+    .update(req.body.neighborhood)
+    .then((model) => {
+      let modelJson = model.toJSON();
+      delete modelJson.updatedBy;
+      delete modelJson.createdBy;
+      res.json({
+        status: 'ok',
+        neighborhood: modelJson
+      });
+    })
+    .catch(next);
+  });
+
+  /**
    * @api {get} /api/neighborhoods/:city Fetch All Neighborhood from city
    * @apiVersion 1.0.1
    * @apiName GetNeighborhoods
@@ -107,6 +224,7 @@ exports.registerRoutes = (app) => {
         enabled: true,
         'location.city': city
       })
+      .populate(populateAttributes)
       .findAll()
       .fetch();
     })
@@ -155,6 +273,7 @@ exports.registerRoutes = (app) => {
         // 'location.city': city,
         slug: req.params.neighborhood
       })
+      .populate(populateAttributes)
       .findAll()
       .fetch();
     })
