@@ -19,7 +19,7 @@ exports.registerRoutes = (app) => {
   ];
 
   let neighborhoodPopulation = {
-    select: 'uuid title description story images'
+    select: 'uuid title description story images updatedAt createdAt'
   };
 
   let populateAttributes = {
