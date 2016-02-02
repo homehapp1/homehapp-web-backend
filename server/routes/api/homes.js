@@ -498,6 +498,7 @@ exports.registerRoutes = (app) => {
       }
       QB
       .forModel('Home')
+      .populate(populateAttributes)
       .createNoMultiset({
         enabled: false,
         createdBy: req.user
