@@ -37,7 +37,6 @@ exports.registerRoutes = (app) => {
 
       if (!home) {
         let createMyNeighborhood = (home) => {
-          console.log('createMyNeighborhood', home.uuid);
           return new Promise((resolve, reject) => {
             QB
             .forModel('Neighborhood')
@@ -49,7 +48,6 @@ exports.registerRoutes = (app) => {
             .then((neighborhood) => {
               home.myNeighborhood = neighborhood;
               home.save(() => {
-                console.log('home saved');
                 resolve(home);
               });
             }).catch(reject);
