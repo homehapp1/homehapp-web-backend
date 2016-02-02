@@ -36,6 +36,25 @@ exports.registerRoutes = (app) => {
       let userJson = exposeUser(user, req.version, req.user);
 
       if (!home) {
+        let createMyNeighborhood = (home) => {
+          console.log('createMyNeighborhood', home.uuid);
+          return new Promise((resolve, reject) => {
+            QB
+            .forModel('Neighborhood')
+            .createNoMultiset({
+              createdBy: user,
+              slug: `nh-${user.uuid}`, // create something for the slug
+              enabled: false
+            })
+            .then((neighborhood) => {
+              home.myNeighborhood = neighborhood;
+              home.save(() => {
+                console.log('home saved');
+                resolve(home);
+              });
+            }).catch(reject);
+          });
+        };
         // No home provided, get by user id or create if not available
         QB
         .forModel('Home')
@@ -46,7 +65,17 @@ exports.registerRoutes = (app) => {
         .findOne()
         .fetch()
         .then((result) => {
-          generateTokenAndRespond(req, res, user, result.model);
+          if (!result.model.myNeighborhood) {
+            createMyNeighborhood(result.model)
+            .then((home) => {
+              generateTokenAndRespond(req, res, user, home);
+            }).catch((err) => {
+              console.log(`Error creating my neighborhood: ${err.message}`, err);
+              generateTokenAndRespond(req, res, user, result.model);
+            });
+          } else {
+            generateTokenAndRespond(req, res, user, result.model);
+          }
         })
         .catch(() => {
           QB
@@ -56,18 +85,12 @@ exports.registerRoutes = (app) => {
             enabled: false
           })
           .then((model) => {
-            QB
-            .forModel('Neighborhood')
-            .createNoMultiset({
-              createdBy: user,
-              slug: `nh-${req.user.uuid}`, // create something for the slug
-              enabled: false
-            })
-            .then((neighborhood) => {
-              model.myNeighborhood = neighborhood;
-              model.save(() => {
-                generateTokenAndRespond(req, res, user, model);
-              });
+            createMyNeighborhood(result.model)
+            .then((home) => {
+              generateTokenAndRespond(req, res, user, home);
+            }).catch((err) => {
+              console.log(`Error creating my neighborhood: ${err.message}`, err);
+              generateTokenAndRespond(req, res, user, model);
             });
           });
         });
