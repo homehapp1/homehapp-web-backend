@@ -67,10 +67,12 @@ exports.registerRoutes = (app) => {
    * @apiSuccess {String} location.address.street   Street address
    * @apiSuccess {String} location.address.apartment   Apartment
    * @apiSuccess {String} location.address.city     City
+   * @apiSuccess {String} location.address.sublocality     Sub locality of the location. ie. Kamppi
    * @apiSuccess {String} location.address.zipcode   zipcode
    * @apiSuccess {String} location.address.country   Country
    * @apiSuccess {Array}  location.coordinates   Map coordinates. [LAT, LON]
    * @apiSuccess {Object} location.neighborhood   Neighborhood object TODO: Define
+   * @apiSuccess {Object} rooms                   Rooms object (freely defined by client)
    * @apiSuccess {Object} mainImage                Main <a href="#api-Shared-Images">Image</a> of the home
    * @apiSuccess {Array} epc                      EPC <a href="#api-Shared-Images">Image</a> or PDF
    * @apiSuccess {Array} images                    Home <a href="#api-Shared-Images">Images</a>
@@ -110,12 +112,16 @@ exports.registerRoutes = (app) => {
    *   "location": {
    *     "address": "221B Baker Street",
    *     "city": "Exampleby",
+   *     "sublocality": "Kamppi",
    *     "country": "Great Britain",
    *     "coordinates": [
    *       51.4321,
    *       -0.1234
    *     ],
    *     "neighborhood": {...}
+   *   },
+   *   "rooms": {
+   *     "bathrooms": 1, ...
    *   },
    *   "mainImage": {
    *     "url": "https:*res.cloudinary.com/homehapp/.../example.jpg",
@@ -279,6 +285,7 @@ exports.registerRoutes = (app) => {
    * @apiParam (Query) {String} [sortBy=updatedAt]   Which field to use for sorting
    * @apiParam (Query) {Number} [limit=20]           How many items to fetch
    * @apiParam (Query) {Number} [skip]               How many items to skip
+   * @apiParam (Query) {String} [updatedSince]       Fetch only items updated after ISO-8601 Formatted Datetime
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
@@ -311,7 +318,8 @@ exports.registerRoutes = (app) => {
     QB
     .forModel('Home')
     .sort({
-      'updatedAt': 'desc'
+      'updatedAt': 'desc',
+      'metadata.score': 'desc'
     })
     .parseRequestArguments(req)
     .populate(populateAttributes)
