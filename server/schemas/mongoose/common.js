@@ -57,6 +57,10 @@ exports.getAddressFields = function getAddressFields() {
       type: String,
       default: ''
     },
+    sublocality: {
+      type: String,
+      default: ''
+    },
     zipcode: {
       type: String,
       default: ''

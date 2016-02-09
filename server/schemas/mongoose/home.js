@@ -85,6 +85,12 @@ exports.loadSchemas = function (mongoose, next) {
       type: String,
       default: ''
     },
+    // This is free object defined by clients
+    // Example value: {bedrooms: 4, bathrooms: 2, otherRooms: 1}
+    rooms: {
+      type: Schema.Types.Mixed,
+      default: {}
+    },
     // attributes: [schemas.HomeAttribute],
     // amenities: [String],
     // facilities: [String],
