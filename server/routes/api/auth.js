@@ -42,7 +42,7 @@ exports.registerRoutes = (app) => {
             .forModel('Neighborhood')
             .createNoMultiset({
               createdBy: user,
-              slug: `nh-${user.uuid}`, // create something for the slug
+              slug: `nh-${user.uuid}-${(new Date()).getTime()}`, // create something for the slug
               enabled: false
             })
             .then((neighborhood) => {
