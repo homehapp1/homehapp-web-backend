@@ -37,7 +37,7 @@ exports.registerRoutes = (app) => {
 
       if (!home) {
         let createMyNeighborhood = (home) => {
-          return new Promise((resolve, reject) => {
+          return new Promise((createResolve, createReject) => {
             QB
             .forModel('Neighborhood')
             .createNoMultiset({
@@ -48,12 +48,13 @@ exports.registerRoutes = (app) => {
             .then((neighborhood) => {
               home.myNeighborhood = neighborhood;
               home.save(() => {
-                resolve(home);
+                createResolve(home);
               });
-            }).catch(reject);
+            }).catch(createReject);
           });
         };
         // No home provided, get by user id or create if not available
+        app.log.debug(`No home provided, get by user id or create if not available`);
         QB
         .forModel('Home')
         .populate(populateAttributes)
@@ -64,18 +65,25 @@ exports.registerRoutes = (app) => {
         .fetch()
         .then((result) => {
           if (!result.model.myNeighborhood) {
+            app.log.debug(`creating neighborhood for home ${result.model.uuid}`);
             createMyNeighborhood(result.model)
             .then((home) => {
+              app.log.debug(`created neighborhood for home ${result.model.uuid}`);
               generateTokenAndRespond(req, res, user, home);
             }).catch((err) => {
-              console.log(`Error creating my neighborhood: ${err.message}`, err);
+              app.log.error(`Error creating my neighborhood: ${err.message}`, err);
               generateTokenAndRespond(req, res, user, result.model);
             });
           } else {
             generateTokenAndRespond(req, res, user, result.model);
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          app.log.debug(`no home found for user, creating it now`);
+          if (!(err instanceof NotFound)) {
+            app.log.error(`Error occurred while finding users home: ${err.message}`, err);
+          }
+
           QB
           .forModel('Home')
           .createNoMultiset({
@@ -83,11 +91,13 @@ exports.registerRoutes = (app) => {
             enabled: false
           })
           .then((model) => {
-            createMyNeighborhood(result.model)
+            app.log.debug(`creating neighborhood for home ${model.uuid}`);
+            createMyNeighborhood(model)
             .then((home) => {
+              app.log.debug(`created neighborhood for home ${model.uuid}`);
               generateTokenAndRespond(req, res, user, home);
             }).catch((err) => {
-              console.log(`Error creating my neighborhood: ${err.message}`, err);
+              app.log.error(`Error creating my neighborhood: ${err.message}`, err);
               generateTokenAndRespond(req, res, user, model);
             });
           });
