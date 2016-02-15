@@ -92,7 +92,7 @@ exports.loadSchemas = function (mongoose, next) {
       default: {}
     },
     // attributes: [schemas.HomeAttribute],
-    // amenities: [String],
+    amenities: [String],
     // facilities: [String],
     // Story
     story: {
