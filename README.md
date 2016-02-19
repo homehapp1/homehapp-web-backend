@@ -1,4 +1,4 @@
-# Homehapp Web proto
+# Homehapp Web
 
 TBD
 
@@ -9,6 +9,26 @@ All features must be done in their own separated branches and when ready a merge
 getting them to the development branch.
 
 Make sure you follow the Coding Standard as defined in here: https://github.com/airbnb/javascript
+
+## To run the development
+
+Website:
+
+```
+npm run dev
+`
+
+Admin:
+
+```
+npm run dev-admin
+`
+
+API:
+
+```
+npm run dev-api
+`
 
 ### Loading fixture data to database
 
