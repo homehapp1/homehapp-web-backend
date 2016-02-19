@@ -17,10 +17,67 @@ html, body {
 
 body {
   margin: 0;
-  
+  position: relative;
+  @include vendors(transition-property, transform);
+  @include vendors(transition-duration, $transitionDuration);
+  overflow-y: scroll;
+
+  @include small() {
+    background-color: $extraDarkGray;
+  }
+
   &.no-scroll {
     overflow-y: hidden;
+
+    & > #app {
+      overflow-y: scroll;
+
+      #navigation, #contentNavigation {
+        opacity: 0;
+      }
+    }
   }
+
+  &.blurred {
+    #container {
+      @include vendors(filter, blur(20px));
+    }
+  }
+
+  @include small() {
+    overflow-x: hidden;
+  }
+
+  &.no-scroll-mobile, &.no-scroll-small {
+    @include small() {
+      overflow-y: hidden;
+    }
+  }
+
+  &.no-scroll-medium {
+    @include small() {
+      overflow-y: hidden;
+    }
+  }
+
+  &.away-for-small {
+    // @include small() {
+    @media only screen and (max-width: 900px) {
+      #header, #container, #footer, #navigation {
+        @include vendors(transform, translateX(-1 * $navigationOffset));
+      }
+
+      #header, #container, #footer {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.centered {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .width-wrapper {
@@ -30,16 +87,38 @@ body {
   margin-right: auto;
   padding-left: $contentPadding;
   padding-right: $contentPadding;
+
+  @include small() {
+    padding-left: $contentPadding / 2;
+    padding-right: $contentPadding / 2;
+  }
 }
 
-#container {
-  height: 100%;
+.full-height {
+  min-height: 700px;
+  @include vendors(transition-property, all);
+  @include vendors(transition-duration, $transitionDuration);
+  @include vendors(transition-timing-function, ease-out);
+
+  @include small() {
+    min-height: 400px;
+  }
+}
+
+#app {
+  min-height: 100%;
+
+  #layout, #container, #footer {
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, $transitionDuration);
+    @include vendors(transition-timing-function, ease-out);
+  }
 }
 
 // Display only for small screens
 .show-for-small {
   display: none;
-  
+
   @include small() {
     display: block;
   }
@@ -55,7 +134,7 @@ body {
 // Display only for medium screens
 .show-for-medium {
   display: none !important;
-  
+
   @include medium(false) {
     display: block !important;
   }
@@ -78,7 +157,7 @@ body {
 // Hide only for large screens
 .hide-for-large {
   display: none !important;
-  
+
   @include noOverflow() {
     display: block !important;
   }
@@ -94,7 +173,7 @@ body {
 // Hide only for large screens
 .hide-for-large-and-medium, .hide-for-medium-and-large {
   display: none !important;
-  
+
   @include small() {
     display: block !important;
   }
@@ -103,7 +182,7 @@ body {
 // Display only for small and medium screens
 .show-for-small-and-medium, .show-for-medium-and-small {
   display: none;
-  
+
   @include medium() {
     display: block !important;
   }
@@ -112,23 +191,8 @@ body {
 // Hide only for small screens
 .hide-for-small-and-medium, .hide-for-medium-and-small {
   display: block;
-  
+
   @include medium() {
     display: none !important;
-  }
-}
-
-.row {
-  @include clearfix();
-  display: table;
-  
-  & > * {
-    display: table-cell;
-  }
-}
-
-@for $i from 1 through $cols {
-  .span#{$i} {
-    width: 100% * $i / $cols;
   }
 }

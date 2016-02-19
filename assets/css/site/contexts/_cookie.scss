@@ -1,27 +1,54 @@
 #cookiePolicy {
-  $h: 20px;
+  $h: 22px;
+  $p: 4px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: $h;
-  line-height: $h;
-  background-color: black;
-  color: white;
   text-align: center;
-  z-index: 100;
-  font-weight: 300;
-  
-  a {
-    cursor: pointer;
-    color: $orange;
+  z-index: $zCookie;
+  font-weight: $defaultWeight;
+  text-align: center;
+  display: none !important;
+
+  @include medium() {
+    top: auto;
+    bottom: 0;
   }
-  
-  & + #header {
-    margin-top: $h;
+
+  @include small() {
+    left: 30px;
+    right: 30px;
+    top: auto;
+    bottom: $p;
   }
-  
-  &.hidden + #header {
-    margin-top: 0;
+
+  p {
+    display: inline-block;
+    margin: 0 auto;
+    padding: $p 0.5em $p $contentPadding;
+    min-height: $h;
+    line-height: $h - 2 * $p;
+    background-color: black;
+    width: auto;
+    font-size: $fontSizeSecondary;
+    vertical-align: top;
+    position: relative;
+
+    &, a {
+      color: white;
+    }
+
+    .close {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: $p;
+      text-align: center;
+      cursor: pointer;
+      color: $red;
+      width: $h;
+      margin-right: 0.5em;
+    }
   }
 }

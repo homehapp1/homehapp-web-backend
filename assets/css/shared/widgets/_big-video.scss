@@ -1,0 +1,195 @@
+&.big-video {
+  &[data-valign], [data-valign] {
+    vertical-align: top;
+  }
+
+  .mobile-icons {
+    $s: 2em;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    font-size: $fontSizeHeading2;
+    padding-top: 10px;
+    margin-left: -0.5 * $s;
+    margin-top: -0.5 * $s;
+
+    & > * {
+      width: $s;
+      height: $s;
+      line-height: 2em;
+      text-align: center;
+      vertical-align: middle;
+      color: white;
+      border: solid 2px;
+      text-shadow: $textShadow;
+      border-radius: $s;
+
+      &.fa-play {
+        padding-left: 0.15em;
+      }
+
+      &.fa-pause {
+        opacity: 0;
+      }
+    }
+  }
+
+  video::-webkit-media-controls {
+    display:none !important;
+  }
+
+  &.is-playing {
+    .image-content {
+      img {
+        display: none !important;
+      }
+
+      video {
+        display: block !important;
+      }
+    }
+  }
+
+  .loader {
+    $w: 180px;
+    $h: 20px;
+    width: $w;
+    height: $h;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -0.5 * $w;
+    margin-top: -0.5 * $h;
+    border-radius: 4px;
+
+    & > .bar {
+      background-image: url("data:image/gif;base64,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");
+      background-repeat: repeat;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 4px;
+      @include vendors(transition-property, width);
+      @include vendors(transition-duration, $transitionDuration);
+    }
+  }
+
+  .controls {
+    $h: 1.5em;
+    position: absolute;
+    bottom: $contentPadding;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: $fontSizeHeading3;
+    height: $h;
+    line-height: $h;
+    color: white;
+    text-shadow: $textShadow;
+
+    .invisible {
+      opacity: 0;
+    }
+
+    & > * {
+      text-align: left;
+    }
+
+    .controller {
+      display: inline-block;
+      cursor: pointer;
+      @include vendors(transition-property, all);
+      @include vendors(transition-duration, $transitionDuration);
+      width: 1em;
+      margin: 0 0.3em;
+
+      // &:hover {
+      //   color: $turquoise;
+      // }
+
+      &.fullscreen {
+        & > .exit {
+          display: none;
+        }
+        &.in-fullscreen > .exit {
+          display: inline;
+        }
+        &.in-fullscreen > .enter {
+          display: none;
+        }
+      }
+    }
+
+    .position {
+      display: inline-block;
+      box-shadow: $textShadow;
+      border: solid 1px white;
+      width: 5em;
+      height: 0.3em;
+      margin: -0.15em 0.3em 0;
+      vertical-align: middle;
+      position: relative;
+
+      & > .bar {
+        background-color: white;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        @include vendors(transition-property, width);
+        @include vendors(transition-duration, $transitionDuration);
+
+        &.no-transitions {
+          @include vendors(transition-property, none);
+          @include vendors(transition-duration, 0);
+        }
+      }
+    }
+  }
+
+  &.full-height {
+    @include small() {
+      display: table;
+      width: 100%;
+      height: auto !important;
+      min-height: 0 !important;
+
+      & > .image-content {
+        display: table-cell;
+        position: relative;
+
+        & > img, & > video {
+          position: static;
+          @include vendors(transform, none);
+          width: 100%;
+          height: auto;
+          min-width: 0;
+          min-height: 0;
+          max-width: none;
+          max-height: none;
+        }
+      }
+
+      & > .image-text {
+        display: table-caption;
+        background-color: white;
+        @include grayGradient();
+        padding-bottom: $contentPadding;
+        position: relative;
+
+        &, h1, h2, h3, p, a {
+          color: $fontDarkGray;
+          text-shadow: none;
+        }
+
+        &, .full-height, .full-height-strict {
+          height: auto !important;
+          min-height: 0 !important;
+        }
+      }
+    }
+  }
+}

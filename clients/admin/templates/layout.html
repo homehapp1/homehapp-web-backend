@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%- site.title %></title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=EDGE, IE=10, IE=9, IE=8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- !Stylesheets -->
+  <% if (env !== 'development') { %>
+    <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/all.min.css">
+  <% } else { %>
+    <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/vendor.css">
+    <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/admin.css">
+  <% } %>
+  <%- cssIncludeHtml %>
+
+  <!-- !Favicons -->
+  <meta itemprop="image" content="<%= revisionedStaticPath %>/images/favicon-64.png" />
+  <link rel="shortcut icon" type="image/x-icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
+  <link rel="icon" type="image/png" href="<%= revisionedStaticPath %>/images/favicon-64.png" />
+  <link rel="shortcut icon"  type="image/png" href="<%= revisionedStaticPath %>/images/favicon-64.png" />
+  <link rel="icon" type="image/vnd.microsoft.icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
+
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.2&libraries=geometry,drawing"></script>
+  <% if (env !== 'development') { %>
+    <script type="text/javascript" src="https://cdn.raygun.io/raygun4js/raygun.min.js"></script>
+    <script>
+      Raygun.init('OCdFdBx08bVAUUNdSf0+eA==').attach();
+    </script>
+  <% } %>
+
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body class="<%= bodyClass %>">
+  <%- body %>
+
+  <% if (includeClient) { %>
+    <% if (env !== 'development') { %>
+      <script src="<%= revisionedStaticPath %>/js/vendor.bundle.min.js"></script>
+      <script src="<%= revisionedStaticPath %>/js/client.min.js"></script>
+    <% } else { %>
+      <script src="<%= revisionedStaticPath %>/js/vendor.bundle.js"></script>
+      <script src="<%= revisionedStaticPath %>/js/client.js"></script>
+    <% } %>
+  <% } %>
+  <%- jsIncludeHtml %>
+</body>
+</html>

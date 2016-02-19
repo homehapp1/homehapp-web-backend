@@ -1,2 +1,9 @@
 node_modules/
 build/
+npm-debug.log
+config/locals.js
+dist/
+tmp/
+logs/
+docs/api
+.firstrun

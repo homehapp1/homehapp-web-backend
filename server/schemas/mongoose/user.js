@@ -1,8 +1,7 @@
-"use strict";
-
-import moment from "moment";
-import bcrypt from "bcrypt";
-import {loadCommonPlugins, commonJsonTransform} from "./common";
+import moment from 'moment';
+import bcrypt from 'bcrypt';
+import { loadCommonPlugins, getImageFields, getAddressFields, commonJsonTransform, populateMetadata } from './common';
+let debug = require('debug')('UserSchema');
 
 let getSalt = function () {
   let salt = bcrypt.genSaltSync(10);
@@ -20,20 +19,28 @@ exports.loadSchemas = function (mongoose, next) {
 
   let schemas = {};
 
-  schemas.User = new Schema({
+  schemas.User = new Schema(populateMetadata({
     uuid: {
       type: String,
       index: true,
       unique: true
     },
-    givenName: {
+    firstname: {
       type: String
     },
-    familyName: {
+    lastname: {
       type: String
     },
-    email: {
+    _email: {
       type: String
+    },
+    _lastValidEmail: {
+      type: String,
+      default: null
+    },
+    _emailValidated: {
+      type: Boolean,
+      default: false
     },
     // Authentication related
     username: {
@@ -46,7 +53,7 @@ exports.loadSchemas = function (mongoose, next) {
     },
     _saltAlg: {
       type: String,
-      default: "default"
+      default: 'default'
     },
     _password: {
       type: String
@@ -59,32 +66,128 @@ exports.loadSchemas = function (mongoose, next) {
     },
     _accessLevel: {
       type: String,
-      default: "user"
+      default: 'user'
+    },
+    // JWT Authentication related
+    _checkId: {
+      type: String,
+      default: ''
+    },
+    // Service authentication related
+    _service: {
+      facebook: {
+        id: {
+          type: String,
+          index: true
+        },
+        token: String
+      },
+      google: {
+        id: {
+          type: String,
+          index: true
+        },
+        token: String
+      }
     },
     active: {
       type: Boolean,
       index: true,
       default: true
     },
-    // Common metadata
-    createdAt: {
-      type: Date
+    // Client device related
+    deviceId: {
+      ios: String,
+      android: String
     },
-    updatedAt: {
-      type: Date
+    // Push notification related
+    pushToken: {
+      ios: String,
+      android: String
     },
-    deletedAt: {
-      type: Date
+    contactNumber: {
+      type: String,
+      default: null
+    },
+    _contactNumberSid: {
+      type: String
+    },
+    _realPhoneNumber: {
+      type: String
+    },
+    _realPhoneNumberType: {
+      type: String,
+      default: 'mobile',
+      enum: ['mobile', 'local']
+    },
+    profileImage: getImageFields(),
+    contact: {
+      address: getAddressFields(),
+      phone: {
+        type: String,
+        default: null
+      }
     }
-  });
+  }));
 
-  schemas.User.virtual("displayName").get(function () {
-    return [this.givenName, this.familyName].join(" ");
+  schemas.User.virtual('displayName').get(function () {
+    let displayName = [];
+
+    if (this.firstname) {
+      displayName.push(this.firstname);
+    }
+    if (this.lastname) {
+      displayName.push(this.lastname);
+    }
+    if (!displayName.length) {
+      //debug('populate with email');
+      displayName.push(this._email);
+    }
+    if (!displayName.length) {
+      //debug('populate with username');
+      displayName.push(this.username);
+    }
+
+    let name = displayName.join(' ');
+
+    if (name.match(/[^\s]/)) {
+      return name;
+    }
+    return '<unidentified johndoe>';
   });
-  schemas.User.virtual("password").set(function (password) {
+  schemas.User.virtual('name').get(function () {
+    let firstname = this.firstname || this.givenName || '';
+    let lastname = this.lastname || this.familyName || '';
+
+    if (!firstname && !lastname) {
+      return this.username;
+    }
+    return [firstname, lastname].join(' ');
+  });
+  schemas.User.virtual('rname').get(function () {
+    let firstname = this.firstname || this.givenName || '';
+    let lastname = this.lastname || this.familyName || '';
+
+    if (!firstname && !lastname) {
+      return this.username;
+    }
+    return [lastname, firstname].join(', ').replace(/^, /, '');
+  });
+  schemas.User.virtual('password').set(function (password) {
+    debug('Set password', password);
     this._salt = getSalt();
     this._password = calculateHash(password, this._salt);
     this._passwordSetAt = moment().utc().toDate();
+  });
+  schemas.User.virtual('email').get(function() {
+    return this._email;
+  });
+  schemas.User.virtual('email').set(function (email) {
+    email = email.toLowerCase();
+    if (!schemas.User.methods.isValidEmail(email)) {
+      throw new Error('Invalid email given');
+    }
+    this._email = email;
   });
   schemas.User.methods.isValidPassword = function (password) {
     if (!this._password) {
@@ -102,14 +205,35 @@ exports.loadSchemas = function (mongoose, next) {
 
   schemas.User.statics.editableFields = function () {
     return [
-      "givenName", "familyName", "email"
+      'firstname', 'lastname', 'email', 'profileImage', 'contact'
     ];
   };
+  schemas.User.virtual('publicData').get(function() {
+    let values = {
+      id: this.uuid || this.id,
+      firstname: this.firstname || this.givenName || '',
+      lastname: this.lastname || this.familyName || '',
+      email: this.email,
+      phone: this.phone,
+      name: this.name,
+      rname: this.rname,
+      profileImage: this.profileImage,
+      contact: this.contact || {
+        address: null
+      },
+      createdAt: this.createdAt,
+      createdAtTS: this.createdAtTS,
+      updatedAt: this.updatedAt,
+      updatedAtTS: this.updatedAtTS
+    };
+  });
 
   Object.keys(schemas).forEach((name) => {
     loadCommonPlugins(schemas[name], name, mongoose);
     schemas[name].options.toJSON.transform = (doc, ret) => {
-      return commonJsonTransform(ret);
+      ret = commonJsonTransform(ret);
+      delete ret.password;
+      return ret;
     };
   });
 

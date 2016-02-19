@@ -1,0 +1,32 @@
+FROM ubuntu:14.04
+MAINTAINER Jerry Jalava <jerry@qvik.fi>
+
+LABEL Description="Homehapp Mobile API container"
+
+# Disable prompts from apt
+env DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -y && apt-get install -y curl git make g++ python python-software-properties build-essential libkrb5-dev
+RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash
+RUN apt-get install -y nodejs
+
+ENV NODE_ENV=production
+ENV PROJECT_NAME=api
+
+ENV NODE_PORT=8080
+ENV GOOGLE_PROJECT_ID=homehappweb
+ENV LOG_PATH=/mnt/log
+
+ADD package.json /app/package.json
+RUN cd /app && npm install
+ADD . /app
+
+#RUN useradd -ms /bin/bash node
+#RUN chown -R node:node /app
+#RUN mkdir -p /mnt/log
+#RUN chown -R node:node /mnt/log
+
+#USER node
+
+EXPOSE 8080
+ENTRYPOINT cd /app && npm run server

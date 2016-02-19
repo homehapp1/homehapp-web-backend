@@ -1,0 +1,122 @@
+.neighborhoods-list {
+  .neighborhood {
+    $opacity: 0.2;
+    position: relative;
+    text-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+
+    &, a {
+      color: white;
+    }
+
+    .hoverable {
+      @include small() {
+        margin-left: -4 * $contentPadding;
+        margin-right: -4 * $contentPadding;
+      }
+
+      img {
+        height: auto;
+      }
+    }
+
+    .content-block {
+      padding: 0;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      & > .width-wrapper {
+        display: table;
+        width: 100%;
+        height: 100%;
+
+        h2 {
+          display: table-row;
+          margin: 0;
+
+          @include small() {
+            padding-bottom: $contentPadding;
+          }
+
+          a {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+          }
+        }
+      }
+    }
+
+    .buttons {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: $contentPadding * 3;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+
+      @include medium() {
+        bottom: $contentPadding * 2;
+      }
+
+      @include small() {
+        bottom: $contentPadding;
+        left: $contentPadding / 2;
+        right: $contentPadding / 2;
+      }
+
+      & > li {
+        display: inline-block;
+        border: solid 1px;
+        padding: 0.2em $contentPadding;
+        text-align: center;
+        width: 15em;
+        font-weight: $buttonFontWeight;
+        background-color: rgba(0, 0, 0, $opacity / 2);
+        box-shadow: 0 0 2em rgba(0, 0, 0, $opacity);
+        white-space: nowrap;
+
+        @include medium() {
+          width: 40%;
+        }
+
+        @include small() {
+          width: 100%;
+          display: block;
+          margin-left: 0;
+        }
+
+        & + li {
+          margin-left: 1em;
+
+          @include small() {
+            margin-left: 0;
+            margin-top: $contentPadding / 2;
+          }
+        }
+
+        &, a {
+          color: white;
+        }
+      }
+    }
+
+    .content-block {
+      background-color: transparent;
+    }
+
+    & + .neighborhood {
+      margin-top: $contentPadding * 2;
+    }
+  }
+}

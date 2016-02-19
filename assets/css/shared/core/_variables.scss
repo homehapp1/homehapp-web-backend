@@ -1,31 +1,96 @@
 $blue: #5785D4;
+$turquoise: #62d8b9;
 $orange: #ff7d5a;
-$lightGray: #eeeeee;
+$red: #ff5555;
+$pink: #ffaaa5;
+$lightGray: #d5d9d9;
 $extraLightGray: #f1f1f1;
+$mediumGray: #888888;
 $borderGray: #dddddd;
 $linkGray: #666666;
+$darkGray: #2b3b3d;
+$extraDarkGray: #111111;
 $linkBlue: #000088;
+$gold: #e0ac5a;
+$goldDark: #948369;
+$brown: #3b3031;
+$darkBrown: $brown;
+
+$buttonBackground: $darkGray;
+$buttonBackgroundHover: darken($buttonBackground, 10%);
+
+$fontGray: #444444;
+$fontMediumGray: $linkGray;
+$fontLightGray: #aaaaaa;
+$fontDarkGray: $fontGray;
+$fontWhite: #f1f1f1;
+$fontGold: $gold;
+$fontGoldDark: $goldDark;
 
 // Measurements
 $headerHeight: 60px;
-$footerHeight: 350px;
-$contentPadding: 10px;
+$footerHeight: 60px;
+$contentPadding: 20px;
 
 // Page size breakpoints
-$largeWidth: 960px;
-$mediumWidth: 960px;
-$smallWidth: 400px;
-$pageWidth: 960px;
+$pageWidth: 1200px;
+$largeWidth: $pageWidth;
+$mediumWidth: $pageWidth;
+$smallWidth: 700px;
 
+$navigationOffset: 65%;
+
+// Misc
+$maskOpacity: 0.1;
+
+// Fonts
 $cols: 12;
-$fontSize: 16px;
-$defaultWeight: 200;
-$titleWeight: 200;
-$navigationWeight: 200;
+$baseSize: 20px;
+$badgeSize: 0.5 * $baseSize;
+$fontSize: $baseSize;
+$fontSizeInput: $baseSize;
+$fontSizeHeading1: 3.5 * $baseSize;
+$fontSizeHeading2: 2.78 * $baseSize;
+$fontSizeHeading25: 2.2 * $baseSize;
+$fontSizeHeading3: 1.25 * $baseSize;
+$fontSizeSecondary: 0.8 * $baseSize;
+$fontSizeSmall: 0.7 * $baseSize;
+$fontSizeButton: 0.8 * $baseSize;
+$defaultWeight: 300;
+$titleWeight: 500;
+$boldWeight: $titleWeight;
+$buttonFontWeight: $titleWeight;
+$buttonWeight: $buttonFontWeight;
+$navigationWeight: 500;
+$fontSizeQ: 0.8;
+$fontSizeQSmall: 0.7;
+
+$textShadow: 0 0 2px rgba(0, 0, 0, 5 * $maskOpacity);
+$textShadowWhite: 0 0 2px rgba(255, 255, 255, 5 * $maskOpacity);
 
 // Z-indexes
 $zHeader: 100;
+$zNavigation: $zHeader + 10;
 $zModal: 1000;
+$zFooter: $zHeader;
+$zCookie: $zModal + 100;
 
-// Easings
+// Transitions
 $easingEaseOutSlow: cubic-bezier(0,1,0,1);
+$transitionDuration: 400ms;
+$transitionDurationFast: 200ms;
+$transitionDurationSlow: 1000ms;
+
+// Pinterest styled property cards
+$cardWidth: 320px; // How wide should one card be
+$cardColumns: 4;   // Maximum quantity of columns
+
+// Element sizes
+$buttonHeight: 1.8em;
+$navigationIconSize: 20px;
+$fontSizeButton: $fontSize;
+
+$defaultFont: "Roboto", Helvetica, Arial, sans-serif;
+$titleFont: "Fjalla One", "FjallaOne", Helvetica, Arial, sans-serif;
+// $highlightFont: "Roboto Slab", monospace, serif;
+$highlightFont: $titleFont;

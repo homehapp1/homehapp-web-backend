@@ -1,0 +1,145 @@
+&.columns {
+  $padding: 2 * $contentPadding;
+  padding-top: $padding;
+  padding-bottom: $padding;
+
+  @include small() {
+    padding-top: $contentPadding;
+    padding-bottom: $contentPadding;
+  }
+
+  & > .columns-container {
+    margin-left: -0.5 * $padding;
+    margin-right: -0.5 * $padding;
+
+    @include small() {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    & > .row {
+      $cols: 12;
+
+      @for $i from 1 through $cols {
+        & > .cols-#{$i} {
+          width: 100% / $i;
+        }
+
+        & > .span#{$i} {
+          width: $i / $cols * 100%;
+        }
+
+        & > .cols-#{$i}, & > .span#{$i} {
+          display: block;
+          float: left;
+          padding-left: 0.5 * $padding;
+          padding-right: 0.5 * $padding;
+
+          @include medium() {
+            padding-left: $padding;
+            padding-right: $padding;
+          }
+
+          @include small() {
+            width: 100% !important;
+            display: block;
+            float: none;
+            padding-left: 0;
+            padding-right: 0;
+
+            & + * {
+              padding-top: $contentPadding;
+            }
+          }
+
+          img {
+            max-width: 100%;
+            height: auto;
+          }
+
+        }
+      }
+    }
+  }
+
+  &.padded > .columns-row > .row > * {
+    padding-right: 1em;
+
+    @include small() {
+      padding-right: 0;
+    }
+
+    & + * {
+      padding-left: 1em;
+      padding-right: 0;
+
+      @include small() {
+        padding-left: 0;
+      }
+    }
+  }
+
+  &.table {
+    & > .columns-container {
+      display: table;
+      width: 100%;
+
+      @include small() {
+        display: block;
+      }
+
+      & > .row {
+        display: table-row;
+
+        @include small() {
+          display: block;
+        }
+
+        & > * {
+          display: table-cell;
+          float: none;
+
+          @include small() {
+            display: block;
+            padding-left: $contentPadding;
+            padding-right: $contentPadding;
+          }
+        }
+      }
+    }
+
+    @include small() {
+      &.rearrange {
+        & > .columns-container > .row {
+          display: table;
+
+          & > * {
+            display: table-row;
+
+            &.row-end {
+              display: table-caption;
+            }
+          }
+        }
+      }
+    }
+
+    &[data-valign='middle'] {
+      & > .columns-container > .row > * {
+        vertical-align: middle;
+      }
+    }
+
+    &[data-valign='bottom'] {
+      & > .columns-container > .row > * {
+        vertical-align: bottom;
+      }
+    }
+  }
+}
+
+&.content-block {
+  .widget-columns:first-child {
+    padding-top: 0;
+  }
+}

@@ -1,26 +1,28 @@
-"use strict";
+import Bluebird from 'bluebird';
+import BaseAdapter from './BaseAdapter';
+import Helpers from '../Helpers';
+import mongoose from 'mongoose';
+import async from 'async';
 
-import BaseAdapter from "./BaseAdapter";
-import Helpers from "../Helpers";
-import mongoose from "mongoose";
-import async from "async";
+Bluebird.promisifyAll(mongoose);
 
 class MongooseAdapter extends BaseAdapter {
   static defaults() {
     return {
       schemaRootPaths: [
-        require("path").join(__dirname, "/../../schemas/mongoose")
+        require('path').join(__dirname, '/../../schemas/mongoose')
       ]
     };
   }
 
-  constructor(config) {
-    super(config, MongooseAdapter.defaults());
+  constructor(app, config) {
+    super(app, config, MongooseAdapter.defaults());
+    this.migrationSupport = true;
   }
 
   connect(cb) {
     if (!this.config.uri) {
-      err = new Error("Unable to find proper configuration for Mongoose!");
+      err = new Error('Unable to find proper configuration for Mongoose!');
       return cb(err);
     }
 
@@ -33,12 +35,12 @@ class MongooseAdapter extends BaseAdapter {
       }
 
       if (opts.debug) {
-        mongoose.set("debug", opts.debug);
+        mongoose.set('debug', opts.debug);
       }
 
       let uri = this.config.uri;
-      if (require("util").isArray(uri)) {
-        uri = uri.join(",");
+      if (require('util').isArray(uri)) {
+        uri = uri.join(',');
       }
 
       try {
@@ -49,11 +51,11 @@ class MongooseAdapter extends BaseAdapter {
         return next(err);
       }
 
-      conn.on("error", function (err) {
-        console.error("Error occurred on Mongoose: " + err.message, err.stack);
+      conn.on('error', function (err) {
+        console.error(`Error occurred on Mongoose: ${err.message}`, err.stack);
       });
 
-      conn.once("open", () => {
+      conn.once('open', () => {
         next(null);
       });
     };
@@ -63,13 +65,13 @@ class MongooseAdapter extends BaseAdapter {
       let schemaPaths = [];
 
       if (!this.config.schemaRootPaths) {
-        return next(new Error("No schemaRootPaths defined in config!"));
+        return next(new Error('No schemaRootPaths defined in config!'));
       }
 
       this.config.schemaRootPaths.forEach((rootPath) => {
-        rootPath = require("path").normalize(rootPath);
+        rootPath = require('path').normalize(rootPath);
         let paths = Helpers.walkDirSync(rootPath, {
-          ext: [".js"]
+          ext: ['.js']
         });
         if (paths) {
           schemaPaths = schemaPaths.concat(paths);
@@ -82,12 +84,12 @@ class MongooseAdapter extends BaseAdapter {
           try {
             sp = require(schemaPath);
           } catch(err) {
-            console.error("Error loading schema: " + schemaPath, err);
+            console.error(`Error loading schema: ${schemaPath}`, err);
             return ccb();
           }
           if (sp.loadSchemas) {
             sp.loadSchemas(mongoose, (schemas) => {
-              this._schemas = require("util")._extend(this._schemas, schemas);
+              this._schemas = require('util')._extend(this._schemas, schemas);
 
               // Read each schema as model once, so mongoose populates its internal index properly
               Object.keys(this._schemas).forEach((name) => {
@@ -123,6 +125,9 @@ class MongooseAdapter extends BaseAdapter {
   getSchema(name) {
     return this._schemas[name];
   }
+  getSchemas() {
+    return this._schemas;
+  }
   getModel(name, dbName) {
     if (!dbName) {
       dbName = name;
@@ -133,6 +138,20 @@ class MongooseAdapter extends BaseAdapter {
     } catch (err) {
       return this.connection.model(dbName);
     }
+  }
+  getModels() {
+    let models = {};
+    Object.keys(this._schemas).forEach((name) => {
+      models[name] = this.getModel(name);
+    });
+    return models;
+  }
+
+  getMigrator() {
+    return require('./Migrators/Mongoose');
+  }
+  getFixturesData() {
+    return require(require('path').join(this.app.PROJECT_ROOT, 'fixtures', 'mongoose'));
   }
 }
 

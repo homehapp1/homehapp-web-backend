@@ -1,15 +1,28 @@
-"use strict";
+import React from 'react';
 
-import React from "react";
+import RouteNotFound from './RouteNotFound';
+import ErrorPage from '../../../common/components/Layout/ErrorPage';
+import ContentBlock from '../../../common/components/Widgets/ContentBlock';
 
-class HomeRouteNotFound extends React.Component {
+export default class HomeRouteNotFound extends RouteNotFound {
+  componentWillMount() {
+    super.componentWillMount();
+    this.error.message = 'Home not found';
+  }
+
   render() {
+    let error = this.error;
+
     return (
-      <div className="errorPage">
-        <h1>Oh No`s! Home was not found here.</h1>
-      </div>
+      <ErrorPage {...error}>
+        <ContentBlock>
+          <h2>Now what?</h2>
+          <p>You can always:</p>
+          <ul>
+            <li>Lorem ipsum</li>
+          </ul>
+        </ContentBlock>
+      </ErrorPage>
     );
   }
 }
-
-export default HomeRouteNotFound;

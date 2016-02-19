@@ -1,0 +1,102 @@
+&.hoverable {
+  display: block;
+  overflow: hidden;
+  background-color: none;
+
+  & > img {
+    opacity: 0;
+    display: block;
+
+    @include small() {
+      opacity: 1;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  & > .hoverable-wrapper {
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 0;
+
+    @include small() {
+      &, & > img.hoverable-image {
+        display: none;
+      }
+    }
+
+    & > img.hoverable-image {
+      opacity: 1;
+      position: absolute;
+      display: block;
+      z-index: -1;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      @include vendors(transition-property, transform);
+      @include vendors(transition-timing-function, ease-out);
+      @include vendors(transition-duration, $transitionDuration);
+    }
+  }
+
+  &:hover > .hoverable-wrapper > img.hoverable-image {
+    @include vendors(transition-duration, 60s);
+    @include vendors(transition-timing-function, linear);
+    @include vendors(transform, scale(1.2));
+  }
+
+  &.with-shadow {
+    $c1: rgba(0, 0, 0, 0.4);
+    $c2: rgba(0, 0, 0, 0);
+
+    & {
+      &:before {
+        display: block;
+        content: ' ';
+        position: absolute;
+        z-index: 1;
+        height: 400px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: -webkit-linear-gradient(bottom, $c1, $c2);
+        background-image: -moz-linear-gradient(bottom, $c1, $c2);
+        background-image: -ms-linear-gradient(bottom, $c1, $c2);
+        background-image: -o-linear-gradient(bottom, $c1, $c2);
+        background-image: linear-gradient(bottom, $c1, $c2);
+        background-repeat: repeat;
+        background-position: bottom left;
+
+        @include small() {
+          height: 300px;
+        }
+      }
+
+      &:after {
+        $c1: rgba(0, 0, 0, 0.3);
+        display: block;
+        content: ' ';
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+
+  &, & > .hoverable {
+    display: block;
+    min-height: 200px;
+    position: relative;
+  }
+}

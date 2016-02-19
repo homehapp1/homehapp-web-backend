@@ -1,57 +1,61 @@
-"use strict";
-
-import BaseQueryBuilder from "./BaseQueryBuilder";
-import {NotFound} from "../../Errors";
-import async from "async";
+import BaseQueryBuilder from './BaseQueryBuilder';
+import {NotFound} from '../../Errors';
+import {merge} from '../../Helpers';
+import async from 'async';
 
 class UserQueryBuilder extends BaseQueryBuilder {
   constructor(app) {
-    super(app, "User");
+    super(app, 'User');
   }
 
   initialize() {
   }
 
-  findAll() {
-    this.queries.push((callback) => {
-      let cursor = this.Model.find({
-        deletedAt: null
-      });
-
-      if (this._opts.limit) {
-        cursor.limit(this._opts.limit);
-      }
-      if (this._opts.sort) {
-        cursor.sort(this._opts.sort);
-      }
-      if (this._opts.skip) {
-        cursor.skip(this._opts.skip);
-      }
-
-      cursor.exec((err, users) => {
-        if (err) {
-          return callback(err);
-        }
-        this.result.users = users;
-        this.result.usersJson = users.map(user => {
-          return user.toJSON();
-        });
-        callback();
-      });
-    });
-
-    return this;
-  }
+  // findAll() {
+  //   this._queries.push((callback) => {
+  //     let cursor = this.Model.find({
+  //       deletedAt: null
+  //     });
+  //
+  //     if (this._opts.limit) {
+  //       cursor.limit(this._opts.limit);
+  //     }
+  //     if (this._opts.sort) {
+  //       cursor.sort(this._opts.sort);
+  //     }
+  //     if (this._opts.skip) {
+  //       cursor.skip(this._opts.skip);
+  //     }
+  //     this._configurePopulationForCursor(cursor);
+  //
+  //     cursor.exec((err, users) => {
+  //       if (err) {
+  //         return callback(err);
+  //       }
+  //       this.result.users = users;
+  //       this.result.usersJson = users.map(user => {
+  //         return user.toJSON();
+  //       });
+  //       callback();
+  //     });
+  //   });
+  //
+  //   return this;
+  // }
 
   findById(id) {
-    this.queries.push((callback) => {
-      this.Model.findById(id, (err, user) => {
+    this._queries.push((callback) => {
+      let cursor = this.Model.findById(id);
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, user) => {
         if (err) {
           return callback(err);
         }
         if (!user) {
-          return callback(new NotFound("user not found"));
+          return callback(new NotFound('user not found'));
         }
+        this.result.model = user;
+        this.result.models = [user];
         this.result.user = user;
         this.result.userJson = user.toJSON();
         this._loadedModel = user;
@@ -63,16 +67,18 @@ class UserQueryBuilder extends BaseQueryBuilder {
   }
 
   findByUuid(uuid) {
-    this.queries.push((callback) => {
-      this.Model.findOne({
+    this._queries.push((callback) => {
+      let cursor = this.Model.findOne({
         uuid: uuid,
         deletedAt: null
-      }, (err, user) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, user) => {
         if (err) {
           return callback(err);
         }
         if (!user) {
-          return callback(new NotFound("user not found"));
+          return callback(new NotFound('user not found'));
         }
         this.result.user = user;
         this.result.userJson = user.toJSON();
@@ -85,17 +91,19 @@ class UserQueryBuilder extends BaseQueryBuilder {
   }
 
   findByUsername(username) {
-    this.queries.push((callback) => {
-      this.Model.findOne({
+    this._queries.push((callback) => {
+      let cursor = this.Model.findOne({
         username: username,
         deletedAt: null
-      }).exec((err, user) => {
+      });
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, user) => {
         if (err) {
           return callback(err);
         }
 
         if (!user) {
-          return callback(new NotFound("user not found"));
+          return callback(new NotFound('user not found'));
         }
 
         this.result.user = user;
@@ -110,7 +118,7 @@ class UserQueryBuilder extends BaseQueryBuilder {
   }
 
   findByIdOrUsername(idOrUsername) {
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       async.seq(
         (cb) => {
           this.Model.findOne({
@@ -138,7 +146,71 @@ class UserQueryBuilder extends BaseQueryBuilder {
         }
 
         if (!user) {
-          return callback(new NotFound("user not found"));
+          return callback(new NotFound('user not found'));
+        }
+
+        this.result.user = user;
+        this.result.userJson = user.toJSON();
+        this._loadedModel = user;
+
+        callback();
+      });
+    });
+
+    return this;
+  }
+
+  findByDeviceId(deviceId) {
+    this._queries.push((callback) => {
+      let findQuery = {
+        $or: [
+          {'deviceId.ios': deviceId},
+          {'deviceId.android': deviceId}
+        ],
+        deletedAt: null
+      };
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
+      }
+
+      this.Model.findOne(findQuery).exec((err, user) => {
+        if (err) {
+          return callback(err);
+        }
+
+        if (!user) {
+          return callback(new NotFound('user not found'));
+        }
+
+        this.result.user = user;
+        this.result.userJson = user.toJSON();
+        this._loadedModel = user;
+
+        callback();
+      });
+    });
+
+    return this;
+  }
+
+  findByServiceId(service, id) {
+    this._queries.push((callback) => {
+      let findQuery = {
+        deletedAt: null
+      };
+      findQuery[`_service.${service}.id`] = id;
+
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
+      }
+
+      this.Model.findOne(findQuery).exec((err, user) => {
+        if (err) {
+          return callback(err);
+        }
+
+        if (!user) {
+          return callback(new NotFound('user not found'));
         }
 
         this.result.user = user;

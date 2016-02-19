@@ -1,49 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title><%- site.title %></title>
+<%
+var title = [];
 
+if (typeof page !== 'undefined') {
+  if (page.title) {
+    title.push(page.title);
+  }
+  if (page.description) {
+    openGraph['og:description'] = page.description;
+  }
+}
+
+title.push(site.title);
+openGraph['og:title'] = title.join(' | ');
+
+if (!openGraph['og:type']) {
+  openGraph['og:type'] = 'article';
+}
+
+for (var key in openGraph) {
+  var values = openGraph[key];
+  if (!values) {
+    continue;
+  }
+
+  if (!Array.isArray(values)) {
+    values = [values];
+  }
+
+  for (var i = 0; i < values.length; i++) {
+    metadatas.push({
+      property: key,
+      value: values[i]
+    });
+  }
+}
+%><!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+  <title><%- title.join(' | ') %></title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=EDGE, IE=10, IE=9, IE=8" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<% if (env !== 'development') { %>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/all.min.css" />
+<% } else { %>
+  <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/vendor.css" />
+  <link rel="stylesheet" href="<%= revisionedStaticPath %>/css/site.css" />
+<% }
 
-  <!-- !Stylesheets -->
-  <link rel="stylesheet" href="/public/css/vendor.css">
-  <link rel="stylesheet" href="/public/css/site.css">
-  <% if (styleSheets.length) { %>
-    <% for (var i=0; i < styleSheets.length; i++) { %>
-      <link rel="stylesheet" href="<%- styleSheets[i] %>">
-    <% } %>
+if (styleSheets.length) {
+  for (var i = 0; i < styleSheets.length; i++) { %>
+  <link rel="stylesheet" href="<%- styleSheets[i] %>">
+  <% }
+}
+if (metadatas.length) {
+  var tags = [];
+  for (var i = 0; i < metadatas.length; i++) {
+    var tag = [];
+    for (var k in metadatas[i]) {
+      var value = metadatas[i][k].replace(/"/, '”');
+      tag.push(k + '="' + value + '"');
+    }
+    var str = tag.join(' ');
+    if (tags.indexOf(str) === -1) {
+      tags.push(str);
+    }
+  }
+
+  for (var i = 0; i < tags.length; i++) {
+  %>  <meta <%- tags[i] %> />
+<%
+  }
+}
+%>
+  <link rel="shortcut icon" type="image/x-icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
+  <link rel="icon" type="image/png" href="<%= revisionedStaticPath %>/images/favicon-64.png" />
+  <link rel="shortcut icon"  type="image/png" href="<%= revisionedStaticPath %>/images/favicon-64.png" />
+  <link rel="icon" type="image/vnd.microsoft.icon" href="<%= revisionedStaticPath %>/images/favicon.ico" />
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="<%= revisionedStaticPath %>/images/favicon-152.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<%= revisionedStaticPath %>/images/favicon-144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="<%= revisionedStaticPath %>/images/favicon-120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<%= revisionedStaticPath %>/images/favicon-114.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%= revisionedStaticPath %>/images/favicon-72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="<%= revisionedStaticPath %>/images/favicon-57.png" />
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.2&libraries=geometry,drawing"></script>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <% if (env !== 'development') { %>
+    <script type="text/javascript" src="https://cdn.raygun.io/raygun4js/raygun.min.js"></script>
+    <script>
+      Raygun.init('OCdFdBx08bVAUUNdSf0+eA==').attach();
+    </script>
   <% } %>
-
-  <!-- !OpenGraph -->
-  <meta property="og:title" content="homehapp" />
-  <meta property="og:description" name="description" content="homehapp" />
-  <meta property="og:site_name" content="homehapp" />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="http://homehapp.co.uk/" />
-  <meta property="og:image" content="http://homehapp.co.uk/images/metadata.png" />
-  <meta property="fb:admins" content="vapaaradikaali" />
-  <meta itemprop="image" content="images/favicon-64.png" />
-
-  <!-- !Favicons -->
-  <meta itemprop="image" content="/public/images/favicon-64.png" />
-  <link rel="shortcut icon" type="image/x-icon" href="/public/images/favicon.ico" />
-  <link rel="icon" type="image/png" href="/public/images/favicon-64.png" />
-  <link rel="shortcut icon"  type="image/png" href="/public/images/favicon-64.png" />
-  <link rel="icon" type="image/vnd.microsoft.icon" href="/public/images/favicon.ico" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
 </head>
 <body>
-  <div id="app"><%- html %></div>
-
-  <% if (env === 'production') { %>
-    <!-- real production urls here -->
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-65572973-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <%- body %>
+  <% if (env !== 'development') { %>
+    <script src="<%= revisionedStaticPath %>/js/vendor.bundle.min.js"></script>
+    <script src="<%= revisionedStaticPath %>/js/client.min.js"></script>
   <% } else { %>
-    <script src="/public/js/vendor.bundle.js"></script>
-    <script src="/public/js/client.js"></script>
+    <script src="<%= revisionedStaticPath %>/js/vendor.bundle.js"></script>
+    <script src="<%= revisionedStaticPath %>/js/client.js"></script>
   <% } %>
 </body>
 </html>

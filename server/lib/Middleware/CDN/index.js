@@ -1,5 +1,3 @@
-"use strict";
-
 exports.configure = function(app, config) {
   return new Promise((resolve, reject) => {
     let instance = null;
@@ -9,7 +7,7 @@ exports.configure = function(app, config) {
     } catch (err) {
       return reject(err);
     }
-    app.cdb = instance;
+    app.cdn = instance;
     resolve();
   });
 };

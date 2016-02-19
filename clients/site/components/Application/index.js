@@ -1,23 +1,25 @@
-"use strict";
+import React from 'react';
+let {RouteHandler} = require('react-router');
 
-import React from "react";
-let {RouteHandler} = require("react-router");
+import Header from '../Header';
+import CookiePolicy from '../Header/CookiePolicy';
+import Navigation from '../Navigation';
+import Footer from '../Footer';
+import Layout from '../../../common/components/Layout';
+import GoogleAnalytics from '../../../common/components/Analytics/GoogleAnalytics';
 
-import ApplicationStore from "../../../common/stores/ApplicationStore";
+// let debug = require('debug')('Application');
 
-import Header from "../Header";
-import Footer from "../Footer";
-
-class Application extends React.Component {
-  static defaultProps = {
-  }
+export default class Application extends React.Component {
   static propTypes = {
-    // autoPlay: React.PropTypes.bool.isRequired,
-    // maxLoops: React.PropTypes.number.isRequired,
-    // posterFrameSrc: React.PropTypes.string.isRequired,
+    context: React.PropTypes.object
   }
-  state = {
-    // loopsRemaining: this.props.maxLoops,
+
+  static contextTypes = {
+    router: React.PropTypes.func
+  }
+
+  static defaultProps = {
   }
 
   constructor(props) {
@@ -25,15 +27,23 @@ class Application extends React.Component {
     // Operations usually carried out in componentWillMount go here
   }
 
+  state = {
+    // loopsRemaining: this.props.maxLoops,
+  }
+
   render() {
+    // debug(this.context.router);
     return (
-      <div className="application">
+      <Layout>
+        <Navigation {...this.props} />
         <Header {...this.props} />
-        <RouteHandler />
+        <div id='container'>
+          <RouteHandler />
+        </div>
         <Footer {...this.props} />
-      </div>
+        <GoogleAnalytics />
+        <CookiePolicy />
+      </Layout>
     );
   }
 }
-
-export default Application;

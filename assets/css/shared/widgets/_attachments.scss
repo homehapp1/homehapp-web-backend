@@ -1,0 +1,27 @@
+&.attachments {
+  text-align: center;
+
+  & > .width-wrapper > .attachment {
+    display: inline-block;
+    width: 180px;
+    height: 160px;
+    vertical-align: top;
+    text-align: center;
+    font-size: $fontSizeHeading3;
+
+    &, a {
+      color: $fontMediumGray;
+    }
+
+    &, &:first-child {
+      margin: $contentPadding;
+    }
+
+    .icon {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 0.5em;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+.image-widget {
+  background-position: center center;
+
+  &.loading {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 16' width='32' height='16' fill='black'><circle transform='translate(8 0)' cx='0' cy='8' r='0'><animate attributeName='r' values='0; 4; 0; 0' dur='1.2s' repeatCount='indefinite' begin='0' keytimes='0;0.2;0.7;1' keySplines='0.2 0.2 0.4 0.8;0.2 0.6 0.4 0.8;0.2 0.6 0.4 0.8' calcMode='spline' /></circle><circle transform='translate(16 0)' cx='0' cy='8' r='0'><animate attributeName='r' values='0; 4; 0; 0' dur='1.2s' repeatCount='indefinite' begin='0.3' keytimes='0;0.2;0.7;1' keySplines='0.2 0.2 0.4 0.8;0.2 0.6 0.4 0.8;0.2 0.6 0.4 0.8' calcMode='spline' /></circle><circle transform='translate(24 0)' cx='0' cy='8' r='0'><animate attributeName='r' values='0; 4; 0; 0' dur='1.2s' repeatCount='indefinite' begin='0.6' keytimes='0;0.2;0.7;1' keySplines='0.2 0.2 0.4 0.8;0.2 0.6 0.4 0.8;0.2 0.6 0.4 0.8' calcMode='spline' /></circle></svg>");
+    background-color: $extraLightGray;
+  }
+
+  &.load-error {
+    $s: 70px;
+    background-image: url("data:image/svg+xml;utf8,<?xml version='1.0' standalone='no'?><!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg width='#{$s}' height='#{$s}' viewBox='0 0 70 70' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xml:space='preserve' style='fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;'><path d='M31.999,0.744C33.656,-0.247 36.344,-0.246 38.001,0.744L62.148,15.181C63.806,16.172 65.149,18.541 65.149,20.473L65.149,49.527C65.149,51.459 63.805,53.829 62.148,54.819L38.001,69.256C36.344,70.247 33.656,70.246 31.999,69.256L7.852,54.819C6.194,53.828 4.851,51.459 4.851,49.527L4.851,20.473C4.851,18.541 6.195,16.171 7.852,15.181L31.999,0.744ZM51.483,38.862C51.224,37.543 49.942,36.683 48.623,36.942L20.328,42.505C19.008,42.765 18.148,44.046 18.407,45.365C18.667,46.684 19.948,47.545 21.267,47.285L49.563,41.722C50.882,41.463 51.742,40.181 51.483,38.862ZM27.344,22.299C29.78,22.299 31.758,24.278 31.758,26.714C31.758,29.151 29.78,31.129 27.344,31.129C24.907,31.129 22.929,29.151 22.929,26.714C22.929,24.278 24.907,22.299 27.344,22.299ZM44.968,22.299C47.405,22.299 49.383,24.278 49.383,26.714C49.383,29.151 47.405,31.129 44.968,31.129C42.532,31.129 40.554,29.151 40.554,26.714C40.554,24.278 42.532,22.299 44.968,22.299Z' style='fill:#{$pink};'/></svg>");
+    min-height: $s;
+    min-width: $s;
+  }
+}

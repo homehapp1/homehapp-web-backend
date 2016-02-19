@@ -1,29 +1,344 @@
 #navigation {
+  $offset: 10px;
+  $pv: $contentPadding;
   display: block;
-  float: right;
-  
-  ul {
-    margin: 0;
+  position: fixed;
+  z-index: $zNavigation;
+  width: 100%;
+  line-height: $headerHeight - 2 * $pv;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+  font-size: $fontSizeSecondary;
+  $spacing: 5px;
+  $h: $navigationIconSize / 3 - $spacing;
+  $oSquared: $h / 1.44;
+  $oThirds: 0.5 * $h;
+
+  & > .social {
+    $s: 42px;
+    position: absolute;
+    right: 121px * $fontSizeQ + $contentPadding * 3;
+    top: $contentPadding;
+    font-size: $s * $fontSizeQ;
+    line-height: $s * $fontSizeQ;
+    margin: -10px 0 0;
     padding: 0;
-    display: block;
-    line-height: $headerHeight - 2 * $pv;
-    text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
-    
+
+    @media only screen and (max-width: 900px) {
+      font-size: $s / 2;
+      line-height: $s / 2;
+      right: 121px * $fontSizeQSmall + $contentPadding;
+    }
+
     & > li {
       display: inline;
-      
+
       & + li {
-        &:before {
-          content: '//';
-          margin-left: 1em;
-          margin-right: 1em;
-        }
+        margin-left: 0.5em;
       }
-      
-      a {
-        color: black;
-        font-weight: $navigationWeight;
+
+      & > a {
+        color: white;
       }
     }
+  }
+
+  @media only screen and (max-width: 900px) {
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, $transitionDuration);
+    @include vendors(transition-timing-function, ease-out);
+  }
+
+  .user-profile {
+    $mod: 0.5;
+
+    display: block;
+    position: absolute;
+    top: 0;
+    right: $contentPadding * 2;
+    background-color: $darkBrown;
+    padding: $contentPadding / 2;
+    background-image: url('../images/user-profile.svg');
+    background-position: center 25%;
+    background-size: 50% auto;
+    width: 121px * $fontSizeQ;
+    height: 127px * $fontSizeQ;
+    padding-top: 85px * $fontSizeQ;
+    font-weight: 400;
+    text-align: center;
+
+    @media only screen and (max-width: 900px) {
+      right: $contentPadding;
+      width: 121px * $mod;
+      height: 127px * $mod;
+      padding-top: 85px * $mod;
+      font-size: $fontSizeSecondary * $mod;
+
+      &.logged-in {
+        right: $contentPadding + 30px;
+      }
+    }
+
+    &, a {
+      color: white;
+    }
+
+    @include vendors(transition-property, all);
+    @include vendors(transition-duration, $transitionDurationFast);
+
+    &:hover {
+      background-color: $gold;
+    }
+  }
+
+  .icon {
+    display: block;
+    width: $navigationIconSize;
+    height: $navigationIconSize;
+    position: fixed;
+    z-index: $zNavigation - 1;
+    top: $offset * 2;
+    right: $offset * 2;
+    border-radius: $navigationIconSize;
+
+    // &:before {
+    //   $p: 14px;
+    //   content: ' ';
+    //   display: block;
+    //   position: absolute;
+    //   z-index: -1;
+    //   width: $navigationIconSize + $p;
+    //   height: $navigationIconSize + $p;
+    //   margin-top: -0.5 * $p;
+    //   margin-left: -0.5 * $p;
+    //   // background-color: white;
+    //   border-radius: $navigationIconSize + $p;
+    // }
+
+    & > * {
+      display: block;
+      position: absolute;
+      width: $navigationIconSize;
+      height: $h;
+      background-color: white;
+      border-radius: 2px;
+
+      @media only screen and (max-width: 900px) {
+        @include vendors(transition-property, none);
+      }
+
+      &.top {
+        top: 0;
+        @include vendors(transform-origin, 50% 0 0);
+        @include vendors(transform, translateY(4px));
+      }
+
+      &.middle {
+        top: 50%;
+        margin-top: -0.5 * $h;
+      }
+
+      &.bottom {
+        top: 100%;
+        margin-top: -1 * $h;
+        @include vendors(transform-origin, 50% 100% 0);
+        @include vendors(transform, translateY(-4px));
+      }
+    }
+
+    &.loading {
+      @include vendors(animation-name, rotate);
+      @include vendors(animation-iteration-count, infinite);
+      @include vendors(animation-duration, 1000ms);
+      @include vendors(animation-direction, initial);
+      @include vendors(animation-timing-function, linear);
+
+      & > * {
+        background-color: $turquoise;
+        box-shadow: none;
+        $x: 0.866 * $oThirds;
+        &.top {
+          $m: 0.5 * ($navigationIconSize - $oThirds);
+          $t: translateX($x) translateY($m) rotate(60deg);
+          @include vendors(transform, $t);
+        }
+
+        &.bottom {
+          $m: -0.5 * ($navigationIconSize - $oThirds);
+          $t: translateX($x) translateY($m) rotate(-60deg);
+          @include vendors(transform, $t);
+        }
+      }
+    }
+  }
+
+  & > .container {
+    position: fixed;
+    top: $offset;
+    right: $offset;
+    z-index: 9;
+    width: 0;
+    overflow: hidden;
+
+    @media only screen and (max-width: 900px) {
+      width: 100%;
+      height: 100%;
+      min-width: 320px;
+      left: 100%;
+      top: 0;
+      bottom: 0;
+      box-shadow: none;
+      background-color: $extraDarkGray;
+      font-weight: $boldWeight;
+      font-size: 11pt;
+    }
+
+    & > ul {
+      margin: 0;
+      padding: $contentPadding * 0.6 $contentPadding * 1.5;
+      list-style: none;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+      @media only screen and (max-width: 900px) {
+        box-shadow: none;
+        width: $navigationOffset;
+        border: solid 1px transparent;
+      }
+
+      li {
+        display: block;
+        white-space: nowrap;
+
+        & > ul {
+          margin: 0;
+          padding: 0 0 0 1.5em;
+          list-style: none;
+        }
+
+        a {
+          display: block;
+          padding: 12px 0 2px;
+          color: black;
+          // font-style: italic;
+          text-decoration: none;
+
+          @media only screen and (max-width: 900px) {
+            color: $extraLightGray;
+            padding: $contentPadding / 4 0;
+          }
+
+          &:hover, &.active {
+            color: $turquoise;
+          }
+        }
+      }
+
+      &.social {
+        position: absolute;
+        bottom: 0;
+        font-size: $fontSizeHeading3;
+        padding-left: $contentPadding;
+        padding-right: $contentPadding;
+
+        li {
+          display: inline-block;
+
+          a {
+            padding: 0 0.22em;
+          }
+        }
+      }
+    }
+  }
+
+  @media only screen and (max-width: 900px) {
+    &.open {
+      $offset: 100% - $navigationOffset;
+    }
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  #navigation {
+    .icon {
+      display: none;
+    }
+
+    & > .container {
+      display: block;
+      width: auto;
+      box-shadow: none;
+      position: absolute;
+      overflow: visible;
+      left: 220px;
+      letter-spacing: 0.14em;
+
+      .secondary {
+        display: none !important;
+      }
+
+      & > ul {
+        padding: 0 $contentPadding 0 0;
+        background-color: transparent;
+        text-transform: uppercase;
+        box-shadow: none;
+
+        li {
+          position: relative;
+
+          &, & > a {
+            display: block;
+            float: left;
+            color: white;
+            font-style: normal;
+            font-weight: $navigationWeight;
+          }
+
+          a:hover, a.active {
+            // color: $turquoise;
+            color: white;
+            border-bottom: solid 2px white;
+          }
+
+          ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            margin-top: -1px;
+            right: 0;
+            background-color: $extraDarkGray;
+            padding: $contentPadding / 2 $contentPadding;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+            a {
+              color: white;
+
+              &.active {
+                color: $turquoise;
+              }
+            }
+          }
+
+          &:hover {
+            & > ul {
+              display: block;
+            }
+          }
+
+          & + li {
+            margin-left: 1.5em;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include animate(rotate) {
+  0% {
+    @include vendors(transform, rotate(0));
+  }
+
+  100% {
+    @include vendors(transform, rotate(360deg));
   }
 }

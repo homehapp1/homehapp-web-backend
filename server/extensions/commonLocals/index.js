@@ -1,12 +1,11 @@
-"use strict";
+import {merge} from '../../lib/Helpers';
 
-import {merge} from "../../lib/Helpers";
-
-//let debug = require("debug")("Extension:commonLocals");
+//let debug = require('debug')('Extension:commonLocals');
 
 export function register(app) {
+
   app.getLocals = function(req, res, ext = {}) {
-    ext.locals = ext.locals || {};
+    ext = ext || {};
 
     let user = req.user;
 
@@ -14,23 +13,46 @@ export function register(app) {
       if (!user) {
         return null;
       }
-      return user.toJSON();
+      if (user.toJSON) {
+        return user.toJSON();
+      }
+      return null;
     }
 
-    let appLocals = app.locals || {};
-    let resLocals = res.locals || {};
+    let appLocals = JSON.parse(JSON.stringify(app.locals)) || {};
+    let resLocals = JSON.parse(JSON.stringify(res.locals)) || {};
+
+    let jsIncludeHtml = '';
+
+    if (ext.includeJS && ext.includeJS.length) {
+      ext.includeJS.forEach((path) => {
+        let tag = `<script type="text/javascript" src="${path}"></script>`;
+        jsIncludeHtml += tag;
+      });
+    }
 
     let opts = merge({
-      layout: "layout",
-      staticPath: "/static",
+      layout: 'layout',
+      staticPath: app.staticPath,
+      revisionedStaticPath: app.revisionedStaticPath,
+      revision: app.PROJECT_REVISION,
       site: {
-        title: "",
+        title: '',
         host: app.config.host
       },
       user: cleanUser(),
-      cssIncludeHtml: "",
-      jsIncludeHtml: ""
-    }, appLocals, resLocals, ext.locals);
+      env: app.config.env,
+      html: '',
+      cssIncludeHtml: '',
+      jsIncludeHtml: jsIncludeHtml,
+      bodyClass: '',
+      metadatas: [],
+      openGraph: {}
+    }, appLocals, resLocals, ext);
+
+    if (!opts.body) {
+      opts.body = '';
+    }
 
     return Promise.resolve(opts);
   };

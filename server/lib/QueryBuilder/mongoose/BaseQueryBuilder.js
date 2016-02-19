@@ -1,41 +1,45 @@
-"use strict";
+import async from 'async';
+import moment from 'moment';
+import {NotFound} from '../../Errors';
+import {merge, enumerate} from '../../Helpers';
+import CommonQueryBuilder from '../CommonQueryBuilder';
 
-import async from "async";
-import moment from "moment";
-
-class BaseQueryBuilder {
+/**
+ * Base QueryBuilder for Mongoose
+ */
+export default class BaseQueryBuilder extends CommonQueryBuilder {
+  /**
+   * Initializes new QB for given Model
+   * @param  {object} app       Application instance
+   * @param  {string} modelName Name of the Model to use
+   */
   constructor(app, modelName) {
-    this.Model = app.db.getModel(modelName);
-    this.app = app;
-    this.queries = [];
-    this.result = {
-      queryBuilder: this
-    };
-    this._opts = {};
-    this._loadedModel = null;
+    super(app, modelName);
+
+    this.Schema = this._app.db.getSchema(modelName);
+    this._extraDatas = null;
+    this._populateOptions = {};
 
     this.initialize();
   }
 
+  /**
+   * Overridable initialization method
+   */
   initialize() {}
 
-  limit(limit) {
-    this._opts.limit = parseInt(limit);
+  hasSchemaField(name) {
+    return !!this.Schema.pathType(name);
+  }
+
+  select(fields) {
+    this._opts.fields = fields;
     return this;
   }
 
-  sort(sort) {
-    this._opts.sort = sort;
+  populate(options) {
+    this._populateOptions = options;
     return this;
-  }
-
-  skip(skipCount) {
-    this._opts.skip = parseInt(skipCount);
-    return this;
-  }
-
-  fetch() {
-    return this._executeTasks();
   }
 
   count() {
@@ -43,115 +47,321 @@ class BaseQueryBuilder {
     return this._executeTasks();
   }
 
-  // Parse common request query arguments and translate them to
-  // search query arguments.
-  // req.query.sort       String "asc|desc" (defaults to desc)
-  // req.query.sortBy     String (defaults to updatedAt)
-  // req.query.limit      Number
-  // req.query.skip       Number
-  parseRequestArguments(req) {
-    // Here we allow this convenience handling to sort ascendingly by the updatedAt value
-    if (req.query.sort || req.query.sortBy) {
-      let sortBy = req.query.sortBy || "updatedAt";
-      let order = "desc";
-      if (req.query.sort === "asc") {
-        order = "asc";
+  distinct(field) {
+    this._queries.push((callback) => {
+      let findQuery = {
+        deletedAt: null
+      };
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
       }
-      let sort = {};
-      sort[sortBy] = order;
-      this.sort(sort);
-    }
 
-    if (req.query.limit) {
-      this.limit(req.query.limit);
-    }
-
-    if (req.query.skip) {
-      this.skip(req.query.skip);
-    }
+      let cursor = this.Model.distinct(field, findQuery);
+      this._configurePopulationForCursor(cursor);
+      cursor.exec((err, models) => {
+        if (err) {
+          return callback(err);
+        }
+        this.result.models = models;
+        this.result.modelsJson = JSON.stringify(models.map((id) => {
+          return String(id);
+        }));
+        callback();
+      });
+    });
 
     return this;
   }
 
-  /**
-  * This is called after model is created and updated, right after saving model.
-  * override this to do extras after shaving the model.
-  * @param data that was used when creating/updating model
-  * @param callback
-  */
-  afterSave(data, callback){
-    callback();
+  query(query) {
+    if (!this._opts.query) {
+      this._opts.query = {};
+    }
+    this._opts.query = merge({}, this._opts.query, query);
+    return this;
+  }
+
+  setExtraData(data) {
+    if (!this._extraDatas) {
+      this._extraDatas = {};
+    }
+    this._extraDatas = merge({}, this._extraDatas, data);
     return this;
   }
 
   create(data) {
     this._loadedModel = new this.Model();
-    //should we have own createFields for multiSet for model creation?
     return this.update(data);
   }
 
-  update(data) {
-    this.queries.push((callback) => {
-      this._loadedModel.multiSet(data, this.Model.editableFields());
+  createNoMultiset(data) {
+    this._loadedModel = new this.Model(data);
+
+    this._queries.push((callback) => {
       this._loadedModel.save((err, model) => {
         this._loadedModel = model;
         callback(err);
       });
     });
-    this.queries.push((callback) => {
+    this._queries.push((callback) => {
       this.afterSave(data, callback);
     });
     return this._save();
   }
 
-  /**
-  * This is called before model is removed,
-  * override this to do extras before removing model.
-  * @param callback
-  */
-  beforeRemove(callback){
-    callback();
-    return this;
+  update(data) {
+    this._queries.push((callback) => {
+      this._loadedModel.multiSet(data, this.Model.editableFields());
+
+      if (this._extraDatas) {
+        for (let [key, value] of enumerate(this._extraDatas)) {
+          this._loadedModel.set(key, value);
+        }
+      }
+
+      this._loadedModel.save((err, model) => {
+        this._loadedModel = model;
+        callback(err);
+      });
+    });
+    this._queries.push((callback) => {
+      this.afterSave(data, callback);
+    });
+    return this._save();
+  }
+
+  updateNoMultiset(data) {
+    this._queries.push((callback) => {
+      for (let [key, value] of enumerate(data)) {
+        this._loadedModel.set(key, value);
+      }
+
+      if (this._extraDatas) {
+        for (let [key, value] of enumerate(this._extraDatas)) {
+          this._loadedModel.set(key, value);
+        }
+      }
+
+      this._loadedModel.save((err, model) => {
+        this._loadedModel = model;
+        callback(err);
+      });
+    });
+    this._queries.push((callback) => {
+      this.afterSave(data, callback);
+    });
+    return this._save();
   }
 
   remove() {
-    this.queries.push(this.beforeRemove.bind(this));
-    this.queries.push((callback) => {
+    this._queries.push(this.beforeRemove.bind(this));
+    this._queries.push((callback) => {
       this._loadedModel.deletedAt = moment().utc().toDate();
       this._loadedModel.save((err, model) => {
         this._loadedModel = model;
+        this.result.model = model;
         callback(err);
       });
     });
     return this._executeTasks();
   }
 
-  _executeTasks() {
-    return new Promise((resolve, reject) => {
-      async.series(this.queries, (err) => {
-        this.queries = [];
-        if(err) {
-          return reject(err);
-        } else {
-          resolve(this._opts.count ? this.result.count : this.result);
+  removeAll() {
+    this.result.deletedCount = 0;
+    this._queries.push(this.beforeRemove.bind(this));
+    this._queries.push((callback) => {
+      let subQueries = [];
+      if (this.result.models && this.result.models.length) {
+        this.result.models.forEach((model) => {
+          subQueries.push((scb) => {
+            model.deletedAt = moment().utc().toDate();
+            model.save((err) => {
+              if (err) {
+                return scb(err);
+              }
+              this.result.deletedCount += 1;
+              scb();
+            });
+          });
+        });
+      }
+      async.series(subQueries, callback);
+    });
+    return this._executeTasks();
+  }
+
+  findAll() {
+    this._queries.push((callback) => {
+      let findQuery = {
+        deletedAt: null
+      };
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
+      }
+
+      let cursor = this.Model.find(findQuery);
+      if (this._opts.count) {
+        cursor = this.Model.count(findQuery);
+      }
+
+      if (this._opts.limit) {
+        cursor.limit(this._opts.limit);
+      }
+      if (this._opts.sort) {
+        cursor.sort(this._opts.sort);
+      }
+      if (this._opts.skip) {
+        cursor.skip(this._opts.skip);
+      }
+      if (this._opts.fields) {
+        cursor.select(this._opts.fields);
+      }
+
+      this._configurePopulationForCursor(cursor);
+
+      cursor.exec((err, models) => {
+        if (err) {
+          return callback(err);
         }
+
+        if (this._opts.count) {
+          this.result.count = models;
+          return callback();
+        }
+
+        this.result.models = models;
+        this.result.modelsJson = models.map(model => {
+          return model.toJSON();
+        });
+        callback();
       });
     });
 
+    return this;
+  }
+
+  findOne() {
+    this._queries.push((callback) => {
+      let findQuery = {
+        deletedAt: null
+      };
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
+      }
+
+      let cursor = this.Model.findOne(findQuery);
+
+      if (this._opts.fields) {
+        cursor.select(this._opts.fields);
+      }
+
+      this._configurePopulationForCursor(cursor);
+
+      cursor.exec((err, model) => {
+        if (err) {
+          return callback(err);
+        }
+
+        if (!model) {
+          return callback(new NotFound('model not found'));
+        }
+
+        this.result.model = model;
+        this.result.modelJson = model.toJSON();
+        this._loadedModel = model;
+        callback();
+      });
+    });
+
+    return this;
+  }
+
+  findById(id) {
+    this._queries.push((callback) => {
+      let cursor = this.Model.findById(id);
+
+      this._configurePopulationForCursor(cursor);
+
+      cursor.exec((err, model) => {
+        if (err) {
+          return callback(err);
+        }
+        if (!model) {
+          return callback(new NotFound('model not found'));
+        }
+        this.result.model = model;
+        this.result.modelJson = model.toJSON();
+        this._loadedModel = model;
+        callback();
+      });
+    });
+
+    return this;
+  }
+
+  findByUuid(uuid) {
+    this._queries.push((callback) => {
+      let findQuery = {
+        uuid: uuid,
+        deletedAt: null
+      };
+      if (this._opts.query) {
+        findQuery = merge(findQuery, this._opts.query);
+      }
+
+      let cursor = this.Model.findOne(findQuery);
+
+      this._configurePopulationForCursor(cursor);
+
+      cursor.exec((err, model) => {
+        if (err) {
+          return callback(err);
+        }
+        if (!model) {
+          return callback(new NotFound('model not found'));
+        }
+        this.result.model = model;
+        this.result.modelJson = model.toJSON();
+        this._loadedModel = model;
+        callback();
+      });
+    });
+
+    return this;
   }
 
   _save() {
     return new Promise((resolve, reject) => {
-      async.series(this.queries, (err) => {
-        this.queries = [];
+      async.series(this._queries, (err) => {
+        this._queries = [];
         if (err) {
           return reject(err);
         } else {
-          resolve(this._loadedModel);
+          if (!Object.keys(this._populateOptions).length) {
+            return resolve(this._loadedModel);
+          }
+          this.findById(this._loadedModel._id)
+          .fetch()
+          .then((result) => {
+            resolve(result.model);
+          });
         }
       });
     });
   }
-}
 
-module.exports = BaseQueryBuilder;
+  _configurePopulationForCursor(cursor) {
+    for (let [field, options] of enumerate(this._populateOptions)) {
+      if (options) {
+        if (typeof options === 'string') {
+          cursor.populate(field, options);
+        } else {
+          options.path = field;
+          cursor.populate(options);
+        }
+      } else {
+        cursor.populate(field, options);
+      }
+    }
+  }
+}

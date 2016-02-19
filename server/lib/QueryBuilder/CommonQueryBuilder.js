@@ -1,62 +1,80 @@
-"use strict";
+import async from 'async';
 
-import async from "async";
-
-class CommonQueryBuilder {
+/**
+ * Common QueryBuilder which different Database implementations
+ * base classes extend from.
+ */
+export default class CommonQueryBuilder {
   constructor(app, modelName) {
-    this.app = app;
-    this.Model = app.db.getModel(modelName);
-    this.queries = [];
-    this.result = {
-      queryBuilder: this
-    };
+    this._app = app;
+    this._queries = [];
     this._opts = {};
     this._loadedModel = null;
 
-    this.initialize();
+    this.Model = app.db.getModel(modelName);
+    this.result = {
+      queryBuilder: this
+    };
   }
 
-  initialize() {}
-
+  /**
+   * Limit query results by number
+   * @param  {number} limit Limit results to number of items
+   */
   limit(limit) {
     this._opts.limit = parseInt(limit);
     return this;
   }
 
+  /**
+   * Sort query result
+   * @param  {{"sortBy": "order"}} sort Sort by rules
+   */
   sort(sort) {
     this._opts.sort = sort;
     return this;
   }
 
+  /**
+   * Skip query results items by number
+   * @param  {number} skipCount How many items to skip
+   */
   skip(skipCount) {
     this._opts.skip = parseInt(skipCount);
     return this;
   }
 
+  /**
+   * Execute fetch
+   */
   fetch() {
     return this._executeTasks();
   }
 
+  /**
+   * Execute count
+   */
   count() {
-    this._opts = {count: true};
+    this._opts.count = true;
     return this._executeTasks();
   }
 
   /**
    * Parse common request query arguments and translate them to
    * search query arguments.
-   * req.query.sort       String "asc|desc" (defaults to desc)
+   * req.query.sort       String 'asc|desc' (defaults to desc)
    * req.query.sortBy     String (defaults to updatedAt)
    * req.query.limit      Number
    * req.query.skip       Number
+   * @param {object} req  Express.js Request object
    */
   parseRequestArguments(req) {
     // Here we allow this convenience handling to sort ascendingly by the updatedAt value
     if (req.query.sort || req.query.sortBy) {
-      let sortBy = req.query.sortBy || "updatedAt";
-      let order = "desc";
-      if (req.query.sort === "asc") {
-        order = "asc";
+      let sortBy = req.query.sortBy || 'updatedAt';
+      let order = 'desc';
+      if (req.query.sort === 'asc') {
+        order = 'asc';
       }
       let sort = {};
       sort[sortBy] = order;
@@ -99,24 +117,24 @@ class CommonQueryBuilder {
    * @param data Object
    */
   create() {
-    throw new Error("not implemented");
+    throw new Error('not implemented');
   }
 
   /**
    * @param data Object
    */
   update() {
-    throw new Error("not implemented");
+    throw new Error('not implemented');
   }
 
   remove() {
-    throw new Error("not implemented");
+    throw new Error('not implemented');
   }
 
   _executeTasks() {
     return new Promise((resolve, reject) => {
-      async.series(this.queries, (err) => {
-        this.queries = [];
+      async.series(this._queries, (err) => {
+        this._queries = [];
         if (err) {
           return reject(err);
         } else {
@@ -128,8 +146,8 @@ class CommonQueryBuilder {
 
   _save() {
     return new Promise((resolve, reject) => {
-      async.series(this.queries, (err) => {
-        this.queries = [];
+      async.series(this._queries, (err) => {
+        this._queries = [];
         if (err) {
           return reject(err);
         } else {
@@ -139,5 +157,3 @@ class CommonQueryBuilder {
     });
   }
 }
-
-module.exports = CommonQueryBuilder;

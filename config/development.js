@@ -1,7 +1,12 @@
 "use strict";
 
 module.exports = function (projectRoot) {
-  var config = {};
-
+  var config = {
+    logging: {
+      Console: {
+        level: "debug"
+      }
+    }
+  };
   return config;
 };

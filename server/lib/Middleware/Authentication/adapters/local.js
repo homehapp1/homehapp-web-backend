@@ -1,21 +1,24 @@
-"use strict";
+//import moment from 'moment';
 
-//import moment from "moment";
+import {Strategy as LocalStrategy} from 'passport-local';
 
-import {Strategy as LocalStrategy} from "passport-local";
+import QueryBuilder from '../../../QueryBuilder';
+import {Forbidden} from '../../../Errors';
 
-import QueryBuilder from "../../../QueryBuilder";
-import {Forbidden} from "../../../Errors";
-
-let debug = require("debug")("Authentication:LocalAdapter");
+let debug = require('debug')('Authentication:LocalAdapter');
 
 /*, config*/
-let initSessionStore = function(app) {
+let initSessionStore = function(app, _, session) {
   let store = null;
 
-  if (app.config.database.adapter === "mongoose") {
-    let MongoStore = require("connect-mongodb");
-    store = new MongoStore({ db: app.db.connection.db });
+  if (app.config.database.adapter === 'mongoose') {
+    let MongoStore = require('connect-mongo')(session);
+    store = new MongoStore({
+      mongooseConnection: app.db.connection,
+      ttl: 14 * 24 * 60 * 60, // 14 days
+      autoRemove: 'interval',
+      autoRemoveInterval: 5 // 5 minutes
+    });
   }
 
   return store;
@@ -24,18 +27,20 @@ let initSessionStore = function(app) {
 exports.register = function (parent, app, config) {
   const QB = new QueryBuilder(app);
 
-  if (config.session) {
-    let session = require("express-session");
+  app.authenticationRoutes = config.routes;
 
-    if (app.config.env !== "test") {
-      parent.sessionStore = initSessionStore(app, config.session);
+  if (config.session) {
+    let session = require('express-session');
+
+    if (app.config.env !== 'test') {
+      parent.sessionStore = initSessionStore(app, config.session, session);
     }
 
     let sessionConfig = {
-        name: config.session.name,
-        secret: config.session.secret,
-        resave: true,
-        saveUninitialized: false
+      name: config.session.name,
+      secret: config.session.secret,
+      resave: true,
+      saveUninitialized: false
     };
 
     if (config.cookie) {
@@ -47,24 +52,24 @@ exports.register = function (parent, app, config) {
     if (parent.sessionStore) {
       sessionConfig.store = parent.sessionStore;
     }
-
+    app.hasSessions = true;
     app.use(session(sessionConfig));
   }
 
-  parent.authentication.use("local", new LocalStrategy((username, password, done) => {
-    debug("passport:local", username);
+  parent.authentication.use('local', new LocalStrategy((username, password, done) => {
+    debug('passport:local', username);
 
     QB
-    .query("User")
+    .query('User')
     .findByUsername(username)
     .fetch()
     .then((result) => {
       if (!result.user) {
-        return done(null, false, { message: "unknown user" });
+        return done(null, false, { message: 'unknown user' });
       }
 
       if (!result.user.isValidPassword(password)) {
-        return done(null, false, { message: "invalid password" });
+        return done(null, false, { message: 'invalid password' });
       }
 
       // TODO: Handle this through QB also
@@ -79,9 +84,10 @@ exports.register = function (parent, app, config) {
   }));
 
   app.authenticatedRoute.push(function(req, res, next) {
-    if (!req.isAuthenticated()) {
-      return next(new Forbidden("not enough permissions"));
+    if (!req.url.toString().match(/^\/auth/) && !req.isAuthenticated()) {
+      return next(new Forbidden('Not authenticated'));
     }
+
     next();
   });
 
@@ -91,9 +97,10 @@ exports.register = function (parent, app, config) {
         username: username,
         password: password
       }
-    }, res = {};
+    };
+    let res = {};
 
-    parent.authentication.authenticate("local", (authErr, user) => {
+    parent.authentication.authenticate('local', (authErr, user) => {
       if (authErr) {
         return done(authErr);
       }

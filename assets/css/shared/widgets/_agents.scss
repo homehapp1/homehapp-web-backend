@@ -1,0 +1,141 @@
+&.agents {
+  $imageWidth: 240px;
+  padding-top: 5 * $contentPadding;
+  padding-bottom: 5 * $contentPadding;
+  text-align: center;
+
+  p.title {
+    font-size: 24px;
+    text-transform: uppercase;
+    color: $fontMediumGray;
+    font-weight: $boldWeight;
+    margin: 0;
+
+    & + h3 {
+      margin-top: 0;
+    }
+  }
+
+  a {
+    color: black;
+  }
+
+  p.has-icon {
+    font-size: $fontSizeSecondary;
+    white-space: nowrap;
+    font-weight: $boldWeight;
+
+    .icon {
+      display: block;
+
+      &:before {
+        display: block;
+        content: ' ';
+        width: 80px;
+        height: 70px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 10px;
+        background-size: contain;
+        background-position: center bottom;
+
+        @include small() {
+          width: 40px;
+          margin-bottom: 18px;
+        }
+      }
+    }
+
+    &.phone .icon:before {
+      background-image: url('../images/icons/phone.svg');
+    }
+
+    &.email .icon:before {
+      background-image: url('../images/icons/mail.svg');
+    }
+  }
+
+  .agents-list {
+    display: block;
+    margin: 0;
+    padding: $contentPadding 0;
+    text-align: center;
+    font-weight: $boldWeight;
+
+    & > .agent {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      vertical-align: top;
+      text-align: center;
+      position: relative;
+
+      @include small() {
+        width: 100%;
+      }
+
+      p {
+        min-height: 1.5em;
+        line-height: 1.5em;
+        margin: 0;
+
+        &.has-icon {
+          $w: 200px;
+          $h: 120px;
+          width: $w;
+          height: $h;
+          position: absolute;
+          top: 50%;
+          margin-top: -20px;
+
+          @include small() {
+            width: 120px;
+            margin-top: -15px;
+          }
+
+          &.phone {
+            margin-left: -1 * ($w + $imageWidth / 2);
+            left: 50%;
+
+            @include small() {
+              left: 0;
+              margin-left: 0;
+            }
+          }
+
+          &.email {
+            margin-right: -1 * ($w + $imageWidth / 2);
+            right: 50%;
+
+            @include small() {
+              right: 0;
+              margin-right: 0;
+            }
+          }
+        }
+      }
+
+      .title {
+        color: $mediumGray;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: $fontSizeSecondary;
+      }
+
+      .photo {
+        padding: $contentPadding;
+        background-image: url('../images/masks/hexagon-white-bordered.svg');
+        background-size: contain;
+        background-position: center center;
+        width: $imageWidth;
+        height: auto;
+        display: block;
+        margin: $contentPadding auto;
+
+        @include small() {
+          width: 120px;
+        }
+      }
+    }
+  }
+}

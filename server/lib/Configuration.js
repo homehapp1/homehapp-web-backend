@@ -1,8 +1,6 @@
-"use strict";
-
-import Helpers from "./Helpers";
-import fs from "fs";
-import path from "path";
+import Helpers from './Helpers';
+import fs from 'fs';
+import path from 'path';
 
 let Configuration = exports = module.exports = {};
 
@@ -21,51 +19,61 @@ let exists = Configuration.exists = (filename) => {
   }
 };
 
-Configuration.load = (projectRoot, configDir, defs={}, next) => {
-  let env = "development";
+let getConfig = null;
+
+let getConfigForEnvironment = function getConfigForEnvironment(configDir, projectName, environment) {
+  let config = {};
+  let envCfg = getConfig(path.join(configDir, environment + '.js'));
+  config = Helpers.merge(config, envCfg);
+  if (exists(path.join(configDir, projectName, environment + '.js'))) {
+    envCfg = getConfig(path.join(configDir, projectName, environment + '.js'));
+    config = Helpers.merge(config, envCfg);
+  }
+  return config;
+};
+
+Configuration.load = function load(projectRoot, projectName, configDir, defs={}, next) {
+  let env = 'development';
   if (process.env.NODE_ENV) {
     env = process.env.NODE_ENV;
   }
 
   let config = {
-    env: env,
-    logging: {
-      "console": {
-        enabled: true
-      }
-    }
+    env: env
   };
 
-  let getConfig = (file) => {
+  getConfig = (file) => {
     try {
       return require(file)(projectRoot);
     } catch (err) {
-      console.error("Error reading config file " + file, err);
+      console.error('Error reading config file ' + file, err);
       //console.log(err.stack);
     }
+    return {};
   };
 
-  config = Helpers.merge({}, config, defs);
+  config = Helpers.merge(config, defs);
 
   // Read in defaults
-  let defaults = getConfig(path.join(configDir, "defaults.js"));
-  config = Helpers.merge({}, config, defaults);
+  let defaults = getConfigForEnvironment(configDir, projectName, 'defaults');
+  config = Helpers.merge(config, defaults);
 
   // Get environment specific config, if exists
-  if (env === "test" && exists(path.join(configDir, "development.js"))) {
-    let envCfg = getConfig(path.join(configDir, "development.js"));
-    config = Helpers.merge({}, config, envCfg);
+
+  if (env === 'test' && exists(path.join(configDir, 'development.js'))) {
+    let envCfg = getConfigForEnvironment(configDir, projectName, 'development');
+    config = Helpers.merge(config, envCfg);
   }
 
-  if (exists(path.join(configDir, env + ".js"))) {
-    let envCfg = getConfig(path.join(configDir, env + ".js"));
-    config = Helpers.merge({}, config, envCfg);
+  if (exists(path.join(configDir, env + '.js'))) {
+    let envCfg = getConfigForEnvironment(configDir, projectName, env);
+    config = Helpers.merge(config, envCfg);
   }
 
   // Load local overrides
-  if (exists(path.join(configDir, "locals.js"))) {
-    let envCfg = getConfig(path.join(configDir, "locals.js"));
-    config = Helpers.merge({}, config, envCfg);
+  if (exists(path.join(configDir, 'locals.js'))) {
+    let envCfg = getConfigForEnvironment(configDir, projectName, 'locals');
+    config = Helpers.merge(config, envCfg);
   }
 
   next(null, config);

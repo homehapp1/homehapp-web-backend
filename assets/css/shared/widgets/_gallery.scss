@@ -1,0 +1,41 @@
+&.gallery {
+  position: relative;
+  background-color: $extraLightGray;
+  padding: $contentPadding / 2;
+
+  @include small() {
+    padding: $contentPadding / 4;
+  }
+
+  img {
+    display: block;
+    float: left;
+    padding: $contentPadding / 2;
+
+    @include small() {
+      padding: $contentPadding / 4;
+    }
+  }
+
+  &.tight {
+    img {
+      padding: 1px;
+    }
+  }
+
+  &.details-view {
+    padding: 4 * $contentPadding 0;
+
+    & > .gallery-images {
+      width: 100%;
+      max-width: $pageWidth;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+
+// No background colors when already wrapped within a widget
+& .gallery {
+  background-color: transparent;
+}

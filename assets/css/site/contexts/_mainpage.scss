@@ -1,0 +1,374 @@
+#mainpage {
+  .splash {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 45%;
+    $q: 14px;
+
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .symbol {
+      width: 7 * $q;
+    }
+
+    .logotype {
+      width: 25 * $q;
+      margin-top: $q;
+    }
+
+    .slogan {
+      width: 13 * $q;
+      margin-top: $q;
+    }
+
+    h1, p {
+      margin: 0;
+    }
+  }
+
+  .call-to-action {
+    padding-bottom: 5 * $contentPadding;
+    margin: 0;
+
+    @include small() {
+      padding-bottom: $contentPadding;
+      margin-left: $contentPadding / 2;
+      margin-right: $contentPadding / 2;
+    }
+
+    .button {
+      max-width: 20em;
+      width: 100%;
+    }
+  }
+
+  .find-agents {
+    .row > * {
+      padding: 2 * $contentPadding 4 * $contentPadding;
+
+      @include medium() {
+        padding: 2 * $contentPadding;
+      }
+
+      @include small() {
+        padding: $contentPadding;
+      }
+    }
+
+    .right {
+      img {
+        display: block;
+        width: 400px;
+        height: 515px;
+        background-color: $lightGray;
+        border: solid 1px $mediumGray;
+      }
+    }
+  }
+
+  .hovering {
+    @include vendors(animation-name, hovering);
+    @include vendors(animation-duration, 7000ms);
+    @include vendors(animation-iteration-count, infinite);
+  }
+}
+
+@include animate(hovering) {
+  $s: 1.05;
+  0% {
+    @include vendors(transform, scaleX(1));
+  }
+
+  50% {
+    @include vendors(transform, scaleX($s));
+  }
+
+  100% {
+    @include vendors(transform, scaleX(1));
+  }
+}
+
+#lander {
+  .full-height-always {
+    @include vendors(transition-property, none);
+  }
+
+  img {
+    height: auto;
+  }
+
+  .mobile-padded {
+    @include small() {
+      padding-left: $contentPadding;
+      padding-right: $contentPadding;
+    }
+  }
+
+  #socialShare {
+    position: fixed;
+    top: 15px;
+    right: 100px;
+    z-index: 10000;
+    color: white;
+
+    @media only screen and (max-width: 900px) {
+      &.logged-in {
+        right: 120px;
+      }
+    }
+  }
+
+  .pager {
+    font-size: 18px * $fontSizeQ;
+    letter-spacing: 0;
+    color: $fontGray;
+
+    @include small() {
+      font-size: 18px * $fontSizeQSmall;
+    }
+
+    .icon {
+      @include diamond(98px * $fontSizeQ, $gold);
+      font-size: 70px * $fontSizeQ;
+      line-height: 98px * $fontSizeQ;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 0.2em;
+      text-shadow: none;
+      font-weight: 100;
+      color: white;
+
+      @include vendors(animation-name, hovering);
+      @include vendors(animation-duration, 3000ms);
+      @include vendors(animation-iteration-count, infinite);
+      @include vendors(transition-property, all);
+
+      @include small() {
+        @include diamond(98px * $fontSizeQSmall, $gold);
+        font-size: 70px * $fontSizeQSmall;
+        line-height: 98px * $fontSizeQSmall;
+      }
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  @include small() {
+    .big-image {
+      & > .image-content {
+        background-image: url('https://res.cloudinary.com/homehapp/image/upload/w_1000,h_800,c_fill,g_center,fl_progressive/v1450887451/site/images/content/lander.jpg');
+        background-size: cover;
+
+        img {
+          display: none;
+        }
+      }
+
+      &.image-1 > .image-content {
+        background-image: url('https://res.cloudinary.com/homehapp/image/upload/w_1000,h_800,c_fill,g_east,fl_progressive/v1450887447/site/images/content/balcony.jpg');
+      }
+
+      &.image-2 > .image-content {
+        background-image: url('https://res.cloudinary.com/homehapp/image/upload/w_1000,h_800,c_fill,g_east,fl_progressive/v1450887437/site/images/content/moving-boxes.jpg');
+      }
+
+      .secondary {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+
+  & > .big-image:before {
+    display: block;
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    $d: top;
+    $g1: rgba(104, 74, 27, 0.3);
+    $g2: rgba(109, 76, 25, 0.5);
+    $g3: rgba(197, 182, 112, 0.13);
+    background-image: -webkit-linear-gradient($d, $g1, $g2, $g3);
+    background-image: -moz-linear-gradient($d, $g1, $g2, $g3);
+    background-image: -ms-linear-gradient($d, $g1, $g2, $g3);
+    background-image: -o-linear-gradient($d, $g1, $g2, $g3);
+    background-image: linear-gradient($d, $g1, $g2, $g3);
+  }
+
+  .big-image {
+    h1 {
+      font-size: 90px * $fontSizeQ;
+      line-height: 1.1em;
+
+      @include small() {
+        font-size: 38px;
+      }
+    }
+
+    p {
+      font-size: 23px * $fontSizeQ;
+      line-height: 1.2em;
+      letter-spacing: 0.05em;
+
+      @include small() {
+        font-size: 23px * $fontSizeQSmall;
+      }
+    }
+
+    .secondary {
+      padding-top: $contentPadding;
+
+      .pager {
+        color: white;
+      }
+    }
+  }
+
+  .mailing-list {
+    @include small() {
+      display: table;
+      width: 100%;
+
+      & > * {
+        display: table-cell;
+        width: 100%;
+        height: 100%;
+        vertical-align: middle;
+        padding-top: $contentPadding;
+      }
+    }
+  }
+
+  form {
+    $h: 40px;
+
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    &.mailchimp {
+      max-width: 400px;
+    }
+
+    input, select, textarea {
+      display: block;
+      width: 100%;
+      height: $h;
+      line-height: $h;
+      font-size: 18px * $fontSizeQ;
+      padding-top: 0;
+      padding-bottom: 0;
+      padding-left: 1em;
+      padding-right: 1em;
+      outline: none;
+      border-radius: 0;
+      -webkit-appearance: none;
+      background-color: white;
+
+      @include small() {
+        font-size: 18px * $fontSizeQSmall;
+      }
+
+      &[type='submit'] {
+        background-color: $darkBrown;
+        @include vendors(transition-property, background-color);
+        @include vendors(transition-duration, $transitionDuration);
+        color: white;
+        border-color: transparent;
+        -webkit-appearance: none;
+      }
+    }
+
+    select {
+      $w: 16 * $fontSizeQ;
+      $h: 12 * $fontSizeQ;
+      $o: 8;
+      background-image: url("data:image/svg+xml;utf8,<svg width='100%' height='100%' viewBox='0 0 #{$w + $o} #{$h}' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xml:space='preserve'><path d='M0,0L#{$w},0L#{$w / 2},#{$h}M0,0Z' style='fill:#d8d8d8;'/></svg>");
+      background-position: right 16px;
+      background-size: ($w + $o) * 1px $h * 1px;
+    }
+
+    &.beta-testers {
+      max-width: 500px;
+
+      p {
+        font-size: 21px * $fontSizeQ;
+
+        @include small() {
+          font-size: 21px * $fontSizeQSmall;
+        }
+
+        &.title-like {
+          font-size: 18px * $fontSizeQ;
+
+          @include small() {
+            font-size: 18px * $fontSizeQSmall;
+          }
+        }
+      }
+
+      input, select {
+        margin-bottom: 10px;
+        border: solid 1px #f7f7f7;
+
+        &:hover {
+          border-color: $lightGray;
+        }
+
+        &:active, &:focus {
+          border-color: $mediumGray;
+        }
+      }
+
+      input[type='submit'] {
+        max-width: 330px * $fontSizeQ;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    .wrapper {
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+
+      &, tr, td, th {
+        border: none;
+      }
+
+      td {
+        padding: 0;
+        height: $h;
+        line-height: $h;
+        background-color: transparent;
+
+        &.email {
+          min-width: 240px;
+        }
+
+        input {
+          display: block;
+          border: solid 1px transparent;
+
+          &:focus, &:hover {
+            border-color: $darkGray;
+          }
+        }
+      }
+    }
+  }
+}

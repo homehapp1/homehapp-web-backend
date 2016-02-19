@@ -1,6 +1,6 @@
 #header {
-  $pv: $contentPadding;
-  padding: $pv $contentPadding * 2;
+  $pv: 0.6 * $contentPadding;
+  padding: $pv $contentPadding;
   //box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   position: fixed;
   left: 0;
@@ -8,29 +8,46 @@
   top: 0;
   height: $headerHeight;
   z-index: $zHeader;
-  background-color: rgba(255, 255, 255, 0.6);
   @include vendors(transition-property, all);
-  @include vendors(transition-duration, 500ms);
-  
-  &.away {
-    //@include vendors(transform, translateY(-50%));
-    @include vendors(filter, blur(2px));
-    opacity: 0.3;
+  @include vendors(transition-duration, $transitionDuration);
+
+  &:before {
+    display: block;
+    content: ' ';
+    height: $headerHeight + $contentPadding * 2;
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    top: 0;
+    $g1: rgba(0, 0, 0, 0.2);
+    $g2: rgba(0, 0, 0, 0);
+    background-image: -webkit-linear-gradient(top, $g1, $g2);
+    background-image: -moz-linear-gradient(top, $g1, $g2);
+    background-image: -ms-linear-gradient(top, $g1, $g2);
+    background-image: -o-linear-gradient(top, $g1, $g2);
+    background-image: linear-gradient(top, $g1, $g2);
   }
-  
+
+  &.away {
+    // @include vendors(transform, translateY(-100%));
+    // @include vendors(filter, blur(2px));
+    // opacity: 0.3;
+  }
+
   .logo {
     float: left;
-    
+
     img {
-      width: 230px / 69px * ($headerHeight - 2 * $pv);
       height: $headerHeight - 2 * $pv;
-      margin-left: 0;
+
+      @include small() {
+        height: $headerHeight - 3 * $pv;
+      }
     }
   }
-  
-  @import "navigation";
-  
-  & + * {
-    // margin-top: $headerHeight;
-  }
+}
+
+[data-handler="homepage"] #header {
+  //display: none;
 }

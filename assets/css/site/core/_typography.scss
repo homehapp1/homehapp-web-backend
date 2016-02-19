@@ -1,9 +1,10 @@
 // @import url("//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
 @import url("../fonts/font-awesome/css/font-awesome.min.css");
-@import url("http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,200italic,300italic,400italic,600italic");
+@import url("https://fonts.googleapis.com/css?family=Roboto:500,400,300,300italic,700italic,700,500italic,400italic|Roboto+Slab:400,300,700|Fjalla+One");
 
-* {
-  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+
+body, input, select, textarea {
+  font-family: $defaultFont;
 }
 
 table {
@@ -28,6 +29,13 @@ table {
   }
 }
 
+.ellipsis-overflow {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;;
+}
+
 a {
   color: $linkBlue;
 
@@ -47,31 +55,113 @@ a {
 body {
   font-size: $fontSize;
   font-weight: $defaultWeight;
+  color: $fontMediumGray;
 }
+
+$mediumQ: 0.9;
+$smallQ: 0.8;
 
 h1, h2, h3, h4, h5, h6, li, p {
   line-height: 1.4em;
+  color: $fontGray;
 }
 
-h1 {
-  font-size: 200%;
-  font-weight: $titleWeight;
-}
-
-h2 {
-  font-size: 150%;
-  font-weight: $titleWeight;
+h1, h2, h3, h4, h5, h6 {
+  a {
+    color: $fontGray;
+  }
+  font-family: $titleFont;
+  text-transform: uppercase;
 }
 
 h3 {
-  font-size: 130%;
+  font-size: $fontSizeHeading3;
+  font-weight: $titleWeight;
+
+  @include medium() {
+    font-size: $fontSizeHeading3 * $mediumQ;
+  }
+
+  @include small() {
+    font-size: $fontSizeHeading3 * $smallQ;
+  }
+}
+
+h2, .modal-container h1 {
+  font-size: $fontSizeHeading2;
+  font-weight: $titleWeight;
+  // font-family: $defaultFont;
+  font-family: $highlightFont;
+
+  @include medium() {
+    font-size: $fontSizeHeading2 * $mediumQ;
+  }
+
+  @include small() {
+    font-size: $fontSizeHeading2 * $smallQ;
+  }
+}
+
+h1, .block-title, .big-image h2, .big-video h2 {
+  font-size: $fontSizeHeading1;
+  font-weight: $titleWeight;
+  font-family: $highlightFont;
+  margin: 0.8em 0;
+
+  @include medium() {
+    font-size: $fontSizeHeading2 * $mediumQ;
+  }
+
+  @include small() {
+    font-size: $fontSizeHeading25;
+  }
+}
+
+.title-like {
+  font-family: $highlightFont;
   font-weight: $titleWeight;
 }
 
 h1, h2, h3 {
   margin: 1em 0 0.5em;
+
+  a:hover, a:visited:hover {
+    text-decoration: none;
+  }
+}
+
+.teaser {
+  margin-bottom: 0;
+
+  & + h1, & + h2, & + h3 {
+    margin-top: 0;
+  }
 }
 
 p {
   margin: 1em 0;
+}
+
+.pre-line {
+  white-space: pre-line;
+  @include small() {
+    br {
+      display: none;
+    }
+  }
+}
+
+blockquote {
+  margin: 0 2em;
+  padding: 0 0 0 2em;
+  border-left: solid 4px $lightGray;
+  white-space: pre-line;
+}
+
+.fa .alt {
+  display: none !important;
+}
+
+.uppercase {
+  text-transform: uppercase;
 }

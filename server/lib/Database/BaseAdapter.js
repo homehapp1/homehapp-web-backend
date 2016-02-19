@@ -1,9 +1,8 @@
-"use strict";
-
-import {merge} from "../Helpers";
+import {merge} from '../Helpers';
 
 class BaseAdapter {
-  constructor(config, defaults = {}) {
+  constructor(app, config, defaults = {}) {
+    this.app = app;
     this._schemas = {};
     this.config = merge(defaults, config);
     this.migrationSupport = false;

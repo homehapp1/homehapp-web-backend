@@ -1,12 +1,10 @@
-"use strict";
-
-import {toTitleCase} from "../Helpers";
+import {toTitleCase} from '../Helpers';
 
 class QueryBuilder {
   constructor(app) {
     this.app = app;
   }
-  query(modelName) {
+  forModel(modelName) {
     let className = `${toTitleCase(modelName)}QueryBuilder`;
     let Klass = null;
     try {
@@ -16,6 +14,10 @@ class QueryBuilder {
       throw new Error(`No Query builder found for model ${modelName}!`);
     }
     return new Klass(this.app);
+  }
+  query(modelName) {
+    console.warn(`QueryBuilder.query(${modelName}) has been depracated. Use .forModel(${modelName})`);
+    return this.forModel(modelName);
   }
 }
 

@@ -1,0 +1,21 @@
+&.separator {
+  $s: 5em;
+  height: $contentPadding;
+  position: relative;
+  background-color: white;
+
+  & > .icon {
+    position: absolute;
+    width: $s;
+    height: $s;
+    left: 50%;
+    bottom: 0;
+    margin-left: -0.5 * $s;
+    margin-bottom: -0.5 * $s;
+    z-index: 1;
+  }
+}
+
+&.next-separator:not(.map) {
+  padding-bottom: $contentPadding;
+}

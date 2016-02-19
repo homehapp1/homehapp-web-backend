@@ -1,0 +1,41 @@
+#contentNavigation {
+  $iconSize: $navigationIconSize + 14px;
+  position: fixed;
+  top: $contentPadding * 1.5 + $navigationIconSize;
+  right: 15px;
+  z-index: $zNavigation - 1;
+
+  @include notSmall() {
+    top: $contentPadding;
+    right: $contentPadding / 2;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: block;
+      height: $iconSize;
+      line-height: $iconSize;
+      font-size: $iconSize * 0.7;
+      margin-right: $contentPadding;
+      text-align: center;
+      width: 30px;
+
+      @include small() {
+        margin-right: 0;
+      }
+
+      a {
+        color: white;
+        text-shadow: $textShadow;
+
+        &.active {
+          color: $turquoise;
+          text-shadow: $textShadowWhite;
+        }
+      }
+    }
+  }
+}

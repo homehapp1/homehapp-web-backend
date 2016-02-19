@@ -1,0 +1,261 @@
+.home-list {
+  $fs: 0.7px;
+  $fsm: 0.6px;
+  $p: $contentPadding / 4;
+  $w: 424 * $fs + $p;
+  $wTolerance: 319px;
+
+  text-align: center;
+
+  @include medium() {
+    padding: $p / 2;
+    padding: $p / 2;
+
+    .spacer {
+      display: none;
+    }
+  }
+
+  .list-container {
+    position: relative;
+    text-align: center;
+
+    .card {
+      width: $w;
+      display: inline-block;
+      float: left;
+      position: relative;
+      text-align: left;
+      font-size: 26 * $fs;
+      padding: $p;
+
+      @include small() {
+        font-size: 26 * $fsm;
+      }
+
+      h3 {
+        font-size: 32 * $fs;
+
+        @include small() {
+          font-size: 32 * $fsm;
+        }
+      }
+
+      .hoverable {
+        min-height: 90px;
+      }
+
+      .badge {
+        $s: 86 * $fs;
+        $sm: 86 * $fsm;
+        display: table;
+        position: absolute;
+        right: $contentPadding;
+        margin-top: -0.5 * $s;
+        z-index: 1;
+        font-size: $fs * 20;
+        text-align: center;
+        color: white;
+        font-weight: $titleWeight;
+        line-height: 1.2em;
+        width: $s;
+        height: $s;
+
+        @include small() {
+          width: $sm;
+          height: $sm;
+          font-size: $fsm * 20;
+          margin-top: -0.5 * $sm;
+          right: $contentPadding / 2;
+        }
+
+        & > * {
+          display: table-cell;
+          width: 100%;
+          height: 100%;
+          padding-left: 0.6em;
+          padding-right: 0.6em;
+          vertical-align: middle;
+          text-align: center;
+        }
+
+        @include diamond($s, $brown);
+
+        // @include medium() {
+        //   width: $s * 0.8;
+        //   height: $s * 0.8;
+        // }
+
+        &.medium {
+          @include diamond($s, $gold);
+
+          @include small() {
+            width: $sm;
+            height: $sm;
+          }
+        }
+      }
+
+      .shares {
+        color: white;
+        position: absolute;
+        left: $contentPadding;
+        bottom: $contentPadding / 2;
+        z-index: 2;
+        font-size: $fs * 22;
+
+        @include small() {
+          font-size: $fsm * 22;
+        }
+
+        &, .fa {
+          font-weight: bold;
+        }
+
+        i {
+          &:before {
+            font-size: $fs * 30;
+            margin-right: 0.2em;
+            display: inline-block;
+            vertical-align: middle;
+            font-weight: 200;
+            margin-top: -0.1em;
+
+            @include small() {
+              font-size: $fsm * 30;
+            }
+          }
+        }
+
+        & > * + * {
+          margin-left: 1.1em;
+        }
+      }
+
+      // @include medium() {
+      //   width: $w / 2;
+      // }
+
+      @media only screen and (max-width: $w * 2) {
+        width: 50%;
+      }
+
+      @media only screen and (max-width: $wTolerance) {
+        width: 100%;
+        float: none;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      .details {
+        padding: $contentPadding;
+        background-color: white;
+
+        @include small() {
+          padding: $contentPadding * 0.8;
+        }
+
+        .location {
+          font-size: 24 * $fs;
+          font-weight: 400;
+          font-style: italic;
+          color: $fontGoldDark;
+
+          @include small() {
+            font-size: 24 * $fsm;
+            margin-right: 20px;
+          }
+
+          & > .neighborhood {
+            @include vendors(hyphens, auto);
+          }
+
+          & > * + *:before {
+            content: ', ';
+          }
+        }
+
+        & > * {
+          margin: 0;
+        }
+
+        h3 {
+          margin-bottom: 5px;
+          font-weight: 600;
+
+          @include small() {
+            @include vendors(hyphens, auto);
+          }
+        }
+
+        .price {
+          font-size: 28 * $fs;
+          font-weight: $titleWeight;
+          margin-top: 0.5em;
+
+          @include small() {
+            font-size: 28 * $fsm;
+          }
+
+          .currency {
+            display: inline-block;
+            vertical-align: baseline;
+            margin-right: 0.2em;
+            font-size: 30 * $fs;
+            color: $fontGoldDark;
+
+            @include small() {
+              font-size: 30 * $fsm;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media only screen and (min-width: $wTolerance) {
+    &.init {
+      .card {
+        float: none;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        $props: margin-left, margin-top;
+        @include vendors(transition-property, $props);
+        @include vendors(transition-duration, $transitionDuration);
+        @include vendors(transition-timing-function, ease-out);
+        z-index: 1;
+
+        &.invisible {
+          opacity: 0;
+          z-index: 0;
+          margin-top: 0;
+          margin-left: -0.5 * $w !important;
+        }
+      }
+    }
+  }
+
+  & > .single {
+    text-align: center;
+
+    .card {
+      position: static;
+      margin-left: auto;
+      margin-right: auto;
+
+      @include medium() {
+        width: $w;
+      }
+
+      @media only screen and (max-width: $w * 2) {
+        width: 100%;
+      }
+    }
+  }
+}

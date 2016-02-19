@@ -33,7 +33,7 @@
     }
   }
   @else {
-    @media only screen and (min-width: $mediumWidth) and (max-width: $mediumWidth + $bannerWidth * 2) {
+    @media only screen and (min-width: $mediumWidth) and (max-width: $pageWidth) {
       @content;
     }
   }
@@ -64,58 +64,16 @@
   }
 }
 
-/* !triangle($width, $height, $dir, $color) */
-@mixin triangle($width, $height, $dir, $color) {
-  $width: $width / 1px;
-  $height: $height / 1px;
-  
-  $mid: $width / 2;
-  $p1x: 0;
-  $p1y: 0;
-  
-  $p2x: $width;
-  $p2y: 0;
-  
-  $p3x: $mid;
-  $p3y: $height;
-  
-  @if $dir == up {
-    $mid: $width / 2;
-    $p1x: 0;
-    $p1y: $height;
-    
-    $p2x: $width;
-    $p2y: $height;
-    
-    $p3x: $mid;
-    $p3y: 0;
+@mixin verySmall() {
+  @media only screen and (max-width: $smallWidth / 2) {
+    @content;
   }
-  
-  @if $dir == left {
-    $mid: $height / 2;
-    $p1x: $width;
-    $p1y: $height;
-    
-    $p2x: 0;
-    $p2y: $mid;
-    
-    $p3x: $width;
-    $p3y: 0;
+}
+
+@mixin notSmall() {
+  @media only screen and (min-width: $smallWidth) {
+    @content;
   }
-  
-  @if $dir == right {
-    $mid: $height / 2;
-    $p1x: 0;
-    $p1y: 0;
-    
-    $p2x: $width;
-    $p2y: $mid;
-    
-    $p3x: 0;
-    $p3y: $height;
-  }
-  
-  background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="triangle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="#{$width}px" height="#{$height}px" viewBox="0 0 #{$width} #{$height}" enable-background="new 0 0 #{$width} #{$height}" xml:space="preserve"><polygon fill="#{$color}" points="#{$p1x},#{$p1y} #{$p2x},#{$p2y} #{$p3x},#{$p3y} " /></svg>');
 }
 
 @mixin animate($name) {
@@ -134,4 +92,132 @@
   @keyframes #{$name} {
     @content;
   }
+}
+
+@mixin ball() {
+  $s: 40px;
+  display: block;
+  width: $s;
+  height: $s;
+  line-height: $s;
+  margin-top: -0.5 * $s;
+  border-radius: $s;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+  font-size: 150%;
+  background-color: #ffffff;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  opacity: 0.4;
+  font-size: 0.8 * $s;
+  @include vendors(transition-property, all);
+  @include vendors(transition-duration, $transitionDurationFast);
+
+  @include small() {
+    @include vendors(transition-property, none);
+  }
+
+  &:hover {
+    opacity: 1;
+
+    @include small() {
+      opacity: 0.4;
+    }
+  }
+}
+
+@mixin imageContent() {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: -1;
+  background-color: $extraLightGray;
+}
+
+@mixin imageFill() {
+  @include imageContent();
+
+  & > img, & > video {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    left: 50%;
+    top: 50%;
+    @include vendors(transform, translateX(-50%) translateY(-50%));
+  }
+
+  &[data-valign="top"] {
+    & > img, & > video {
+      top: 0;
+      @include vendors(transform, translateX(-50%));
+    }
+  }
+
+  img[data-valign="top"], video[data-valign="top"] {
+    top: 0;
+    @include vendors(transform, translateX(-50%));
+  }
+
+  &[data-valign="middle"] {
+    & > img, & > video {
+      top: 50%;
+      @include vendors(transform, translateX(-50%) translateY(-50%));
+    }
+  }
+
+  &[data-valign="bottom"] {
+    & > img, & > video {
+      top: auto;
+      bottom: 0;
+    }
+  }
+
+  img[data-valign="bottom"], video[data-valign="bottom"] {
+    top: auto;
+    bottom: 0;
+    @include vendors(transform, translateX(-50%));
+  }
+
+  img[data-align="left"], video[data-align="left"] {
+    left: 0;
+    top: 50%;
+    @include vendors(transform, translateY(-50%));
+  }
+
+  img[data-align="right"], video[data-align="right"] {
+    right: 0;
+    top: 50%;
+    @include vendors(transform, translateX(-50%) translateY(-50%));
+  }
+
+  @content;
+}
+
+@mixin hexagon($color) {
+  background-image: url("data:image/svg+xml;utf8,<?xml version='1.0'?><svg width='100%' height='100%' viewBox='0 0 70 70' version='1.1' xmlns='http://www.w3.org/2000/svg'><g transform='matrix(0.437564,0,0,0.437564,4.78837,-0.161124)'><path d='M62.186,2.069C65.974,-0.196 72.117,-0.195 75.904,2.069L131.089,35.062C134.877,37.327 137.947,42.742 137.947,47.156L137.947,113.557C137.947,117.972 134.875,123.387 131.089,125.651L75.904,158.644C72.116,160.909 65.973,160.908 62.186,158.644L7.001,125.651C3.213,123.386 0.143,117.971 0.143,113.557L0.143,47.156C0.143,42.741 3.215,37.326 7.001,35.062L62.186,2.069Z' style='fill:#{$color};'/></g></svg>");
+  background-position: center center;
+  background-size: contain;
+}
+
+@mixin grayGradient() {
+  $d: top;
+  $g1: rgba(0, 0, 0, 0.05);
+  $g2: rgba(0, 0, 0, 0.0);
+  background-image: -webkit-linear-gradient($d, $g1, $g2);
+  background-image: -moz-linear-gradient($d, $g1, $g2);
+  background-image: -ms-linear-gradient($d, $g1, $g2);
+  background-image: -o-linear-gradient($d, $g1, $g2);
+  background-image: linear-gradient($d, $g1, $g2);
+}
+
+@mixin diamond($s, $color) {
+  width: $s;
+  height: $s;
+  background-image: url("data:image/svg+xml,<?xml version='1.0'?><svg width='100%' height='100%' viewBox='0 0 90 90' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xml:space='preserve' style='fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;'><g transform='matrix(0.991655,0,0,0.991655,-0.616122,-0.731814)'><g id='diamond'><clipPath id='_clip1'><path d='M34.685,5.432C40.934,-0.817 51.069,-0.815 57.315,5.432L86.685,34.801C92.934,41.051 92.931,51.185 86.685,57.432L57.315,86.801C51.066,93.051 40.931,93.048 34.685,86.801L5.315,57.432C-0.934,51.183 -0.931,41.048 5.315,34.801L34.685,5.432Z'/></clipPath><g clip-path='url(#_clip1)'><rect x='0' y='0' width='92' height='92' style='fill:#{$color};fill-rule:nonzero;'/></g></g></g></svg>");
+  background-position: center center;
+  background-size: contain;
 }
