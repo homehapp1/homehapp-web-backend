@@ -10,26 +10,6 @@ getting them to the development branch.
 
 Make sure you follow the Coding Standard as defined in here: https://github.com/airbnb/javascript
 
-## To run the development
-
-Website:
-
-```
-npm run dev
-`
-
-Admin:
-
-```
-npm run dev-admin
-`
-
-API:
-
-```
-npm run dev-api
-`
-
 ### Loading fixture data to database
 
 To load fixtures to database run:
