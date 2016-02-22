@@ -141,11 +141,11 @@ exports.commonJsonTransform = (ret) => {
 exports.getMainImage = function getMainImage(model, placeholder = null) {
   if (!placeholder) {
     placeholder = {
-      url: 'https://res.cloudinary.com/homehapp/image/upload/v1441913472/site/images/content/content-placeholder.jpg',
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1456002304/bg_addstory_home.png',
       alt: 'Placeholder',
-      width: 1920,
-      height: 1280,
-      aspectRatio: 1920 / 1280
+      width: 700,
+      height: 468,
+      aspectRatio: 700 / 468
     };
   }
 

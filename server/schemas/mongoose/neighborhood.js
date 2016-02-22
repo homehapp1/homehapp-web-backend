@@ -105,11 +105,11 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.Neighborhood.virtual('mainImage').get(function mainImage() {
     // Placeholder
     let placeholder = {
-      url: 'https://res.cloudinary.com/homehapp/image/upload/v1439564093/london-view.jpg',
+      url: 'https://res.cloudinary.com/homehapp/image/upload/v1456002299/bg_addstory_neighbourhood.png',
       alt: 'A view over London',
-      width: 4828,
-      height: 3084,
-      aspectRatio: 4828 / 3084
+      width: 700,
+      height: 466,
+      aspectRatio: 700 / 466
     };
     return getMainImage(this, placeholder);
   });
