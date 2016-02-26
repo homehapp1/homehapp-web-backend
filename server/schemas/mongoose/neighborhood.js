@@ -105,8 +105,8 @@ exports.loadSchemas = function (mongoose, next) {
   schemas.Neighborhood.virtual('mainImage').get(function mainImage() {
     // Placeholder
     let placeholder = {
-      url: 'https://res.cloudinary.com/homehapp/image/upload/v1456002299/bg_addstory_neighbourhood.png',
-      alt: 'A view over London',
+      url: 'http://res.cloudinary.com/homehapp/image/upload/v1456227018/bg_addstory_neighbourhood1.png',
+      alt: '',
       width: 700,
       height: 466,
       aspectRatio: 700 / 466

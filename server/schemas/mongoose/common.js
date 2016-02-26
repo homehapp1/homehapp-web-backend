@@ -39,6 +39,9 @@ exports.getImageFields = function getImageFields() {
       data: String,
       dataVersion: Number,
       url: String
+    },
+    backgroundColor: {
+      type: String
     }
   };
 };
@@ -141,8 +144,8 @@ exports.commonJsonTransform = (ret) => {
 exports.getMainImage = function getMainImage(model, placeholder = null) {
   if (!placeholder) {
     placeholder = {
-      url: 'https://res.cloudinary.com/homehapp/image/upload/v1456002304/bg_addstory_home.png',
-      alt: 'Placeholder',
+      url: 'http://res.cloudinary.com/homehapp/image/upload/v1456227020/bg_addstory_home1.png',
+      alt: '',
       width: 700,
       height: 468,
       aspectRatio: 700 / 468
