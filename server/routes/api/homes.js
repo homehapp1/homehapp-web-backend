@@ -299,9 +299,10 @@ exports.registerRoutes = (app) => {
    */
   app.get('/api/homes', checkAuthenticationNeed, function(req, res, next) {
     let query = {
-      enabled: {
-        $ne: false
-      }
+      enabled: true
+      // enabled: {
+      //   $ne: false
+      // }
     };
 
     if (req.user) {
