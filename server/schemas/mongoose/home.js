@@ -144,6 +144,15 @@ exports.loadSchemas = function (mongoose, next) {
     }]
   }));
 
+  // Compound index for home listing
+  schemas.Home.index({
+    enabled: 1,
+    deletedAt: 1,
+    updatedAt: -1,
+    'metadata.score': -1
+  });
+  // db.homes.createIndex( { "enabled" : 1, "deletedAt" : 1, "updatedAt" : -1, "metadata.score" : -1 } )
+
   schemas.Home.virtual('image').get(function() {
     if (this._image && this._image.url) {
       return this._image;
