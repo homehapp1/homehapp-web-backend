@@ -202,7 +202,8 @@ exports.populateMetadata = function populateMetadata(schema) {
     ref: 'User'
   };
   schema.deletedAt = {
-    type: Date
+    type: Date,
+    index: true
   };
   schema.metadata = {
     title: {
