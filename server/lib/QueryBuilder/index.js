@@ -1,18 +1,35 @@
 import {toTitleCase} from '../Helpers';
 
+let resolvedClasses = {};
+
 class QueryBuilder {
   constructor(app) {
     this.app = app;
   }
   forModel(modelName) {
-    let className = `${toTitleCase(modelName)}QueryBuilder`;
+    let span = this.app.traceAgent.startSpan(
+      'qb:construct', {
+        modelName: modelName
+      }
+    );
+
     let Klass = null;
-    try {
-      Klass = require(`./${this.app.config.database.adapter}/${className}`);
-    } catch (err) {
-      console.log(err);
-      throw new Error(`No Query builder found for model ${modelName}!`);
+
+    if (resolvedClasses[modelName]) {
+      Klass = resolvedClasses[modelName];
+    } else {
+      let className = `${toTitleCase(modelName)}QueryBuilder`;
+      try {
+        Klass = require(`./${this.app.config.database.adapter}/${className}`);
+        resolvedClasses[modelName] = Klass;
+      } catch (err) {
+        console.log(err);
+        this.app.traceAgent.endSpan(span);
+        throw new Error(`No Query builder found for model ${modelName}!`);
+      }
     }
+
+    this.app.traceAgent.endSpan(span);
     return new Klass(this.app);
   }
   query(modelName) {
