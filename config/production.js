@@ -19,12 +19,12 @@ module.exports = function (projectRoot) {
             native_parser: true
           },
           server: {
-            poolSize: 25
+            poolSize: 10
           },
           replset: {
             rs_name: 'rs0',
             readPreference: 'nearest',
-            poolSize: 25,
+            poolSize: 10,
             socketOptions: {
               keepAlive: 120
             }
