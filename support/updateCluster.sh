@@ -11,8 +11,8 @@ CLUSTER_NAME="homehapp-$ENV"
 CLUSTER_GOOGLE_NAME=""
 
 REPLICAS=2
-CPU="400Mi"
-MEM="80m"
+MEM="400Mi"
+CPU="80m"
 
 function printUsage() {
   echo "Required environment variables:"
@@ -41,11 +41,11 @@ if [ "$PNAME" = "" ]; then
   printUsageAndExit
 fi
 
-if [ "$PNAME" = "api" ]; then
+if [ "$PBNAME" = "api" ]; then
   if [ "$ENV" = "prod" ]; then
     REPLICAS=4
-    CPU="1000Mi"
-    MEM="200m"
+    MEM="1200Mi"
+    CPU="200m"
   fi
 fi
 

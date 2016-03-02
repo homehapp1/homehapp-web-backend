@@ -49,7 +49,7 @@ if [ "$ENV" = "prod" ]; then
   fi
 fi
 
-if [ "$PNAME" = "api" ]; then
+if [ "$PBNAME" = "api" ]; then
   if [ "$ENV" = "prod" ]; then
     REPLICAS=4
     CPU="1000Mi"
