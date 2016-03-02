@@ -10,6 +10,7 @@ export default class CommonQueryBuilder {
     this._queries = [];
     this._opts = {};
     this._loadedModel = null;
+    this._modelName = modelName;
 
     this.Model = app.db.getModel(modelName);
     this.result = {
