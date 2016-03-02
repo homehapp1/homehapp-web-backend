@@ -362,6 +362,12 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
   }
 
   _configurePopulationForCursor(cursor) {
+    let span = this._app.traceAgent.startSpan(
+      'qb:configurePopulationForCursor', {
+        fieldCount: Object.keys(this._populateOptions).length
+      }
+    );
+
     for (let [field, options] of enumerate(this._populateOptions)) {
       if (options) {
         if (typeof options === 'string') {
@@ -374,5 +380,7 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
         cursor.populate(field, options);
       }
     }
+
+    this._app.traceAgent.endSpan(span);
   }
 }

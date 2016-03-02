@@ -133,9 +133,17 @@ export default class CommonQueryBuilder {
   }
 
   _executeTasks() {
+    let span = this._app.traceAgent.startSpan(
+      'qb:executeTasks', {
+        queryCount: this._queries.length
+      }
+    );
+
     return new Promise((resolve, reject) => {
       async.series(this._queries, (err) => {
         this._queries = [];
+        this._app.traceAgent.endSpan(span);
+
         if (err) {
           return reject(err);
         } else {
