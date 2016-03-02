@@ -11,7 +11,7 @@
     "namespace": ""
   },
   "spec": {
-    "replicas": 2,
+    "replicas": 4,
     "selector": {
       "name": ":PROJECT_NAME",
       "revision": ":REV",
