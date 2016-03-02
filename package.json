@@ -16,6 +16,7 @@
     "body-parser": "1.14.1",
     "classnames": "2.1.5",
     "cloudinary": "1.2.5",
+    "compression": "^1.6.1",
     "connect": "3.4.0",
     "connect-mongo": "0.8.2",
     "cookie-parser": "1.4.0",

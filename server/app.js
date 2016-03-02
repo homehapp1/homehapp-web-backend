@@ -8,6 +8,7 @@ import fs from 'fs';
 import http from 'http';
 
 const express = require('express');
+const compression = require('compression');
 
 // For Isomorphic React
 import React from 'react';
@@ -78,6 +79,8 @@ exports.run = function(projectName, afterRun) {
         addTransactionLabel: function addTransactionLabel() {} /* key, value */
       };
     }
+
+    app.use(compression());
 
     /**
      * Configure templating if views folder is present
