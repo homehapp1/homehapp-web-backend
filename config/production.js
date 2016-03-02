@@ -24,10 +24,10 @@ module.exports = function (projectRoot) {
           },
           replset: {
             rs_name: 'rs0',
-            poolSize: 20,
-            socketOptions: {
-              keepAlive: 120
-            }
+            poolSize: 20
+            // , socketOptions: {
+            //   keepAlive: 120
+            // }
           }
         }
       }
