@@ -11,7 +11,7 @@
     "namespace": ""
   },
   "spec": {
-    "replicas": 4,
+    "replicas": :REPLICAS,
     "selector": {
       "name": ":PROJECT_NAME",
       "revision": ":REV",
@@ -35,8 +35,8 @@
             "image": "eu.gcr.io/:PROJECT_ID/:PROJECT_BASE_NAME::REV-:ENV",
             "resources": {
               "limits": {
-                "cpu": "100m",
-                "memory": "800Mi"
+                "cpu": ":CPU",
+                "memory": ":MEM"
               }
             },
             "ports": [

@@ -11,6 +11,10 @@ CERT_PATH_PREFIX=$3
 CLUSTER_NAME="homehapp-$ENV"
 CLUSTER_GOOGLE_NAME=""
 
+REPLICAS=2
+CPU="400Mi"
+MEM="80m"
+
 function printUsage() {
   echo "Required environment variables:"
   echo "  PROJECT_ID:     Google Project ID"
@@ -45,6 +49,14 @@ if [ "$ENV" = "prod" ]; then
   fi
 fi
 
+if [ "$PNAME" = "api" ]; then
+  if [ "$ENV" = "prod" ]; then
+    REPLICAS=4
+    CPU="1000Mi"
+    MEM="200m"
+  fi
+fi
+
 if [ ! -d "$CWD/tmp" ]; then
   mkdir "$CWD/tmp"
 fi
@@ -72,6 +84,9 @@ function createController() {
   sed "s/:CONTROLLER_NAME/$PNAME-controller-$REV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
   sed "s/:REV/$REV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
   sed "s/:ENV/$ENV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+  sed "s/:REPLICAS/$REPLICAS/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+  sed "s/:CPU/$CPU/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+  sed "s/:MEM/$MEM/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
 
   if [ "$1" = "-d" ]; then
     echo "Execute: 'kubectl create -f $CWD/tmp/$PNAME-controller.json'"

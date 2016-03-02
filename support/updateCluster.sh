@@ -10,6 +10,10 @@ PBNAME="$2"
 CLUSTER_NAME="homehapp-$ENV"
 CLUSTER_GOOGLE_NAME=""
 
+REPLICAS=2
+CPU="400Mi"
+MEM="80m"
+
 function printUsage() {
   echo "Required environment variables:"
   echo "  PROJECT_ID:     Google Project ID"
@@ -37,6 +41,14 @@ if [ "$PNAME" = "" ]; then
   printUsageAndExit
 fi
 
+if [ "$PNAME" = "api" ]; then
+  if [ "$ENV" = "prod" ]; then
+    REPLICAS=4
+    CPU="1000Mi"
+    MEM="200m"
+  fi
+fi
+
 function setContext() {
   if [ "$CLUSTER_GOOGLE_NAME" = "" ]; then
     CLUSTER_GOOGLE_NAME=`kubectl config view | awk '{print $2}' | grep $CLUSTER_NAME | tail -n 1`
@@ -61,11 +73,14 @@ function updateCluster() {
   sed "s/:CONTROLLER_NAME/$PNAME-controller-$REV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
   sed "s/:REV/$REV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
   sed "s/:ENV/$ENV/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+  sed "s/:REPLICAS/$REPLICAS/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+  sed "s/:CPU/$CPU/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
+  sed "s/:MEM/$MEM/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
 
   if [ "$1" = "-d" ]; then
-    echo "Executing: 'kubectl rolling-update $CURRENT_CONTROLLER -f $CWD/tmp/$PNAME-controller.json'"
+    echo "Executing: 'kubectl rolling-update $CURRENT_CONTROLLER -f $CWD/tmp/$PNAME-controller.json' --update-period=20s"
   else
-    kubectl rolling-update $CURRENT_CONTROLLER -f "$CWD/tmp/$PNAME-controller.json"
+    kubectl rolling-update $CURRENT_CONTROLLER -f "$CWD/tmp/$PNAME-controller.json" --update-period=20s
     rm $TARGET_CONFIG
   fi
 }
