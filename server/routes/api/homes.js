@@ -7,6 +7,12 @@ import {merge, exposeHome, exposeHomeWithApp} from '../../lib/Helpers';
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
 
+  // Pre load QBs
+  QB.forModel('User');
+  QB.forModel('Home');
+  QB.forModel('Neighborhood');
+  QB.forModel('Agent');
+
   let checkAuthenticationNeed = [
     function(req, res, next) {
       let span = app.traceAgent.startSpan(
