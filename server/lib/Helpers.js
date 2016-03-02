@@ -195,7 +195,7 @@ let enumerate = exports.enumerate = function* enumerate(obj) {
 let defaultVersion = '1.0.1';
 
 // Strip the model from Mongoose features and normalize UUIDs
-exports.exposeHome = function exposeHome(home, version = null, currentUser = null) {
+exports.exposeHome = function exposeHome(home, version = null, currentUser = null, app = null) {
   if (!home) {
     return null;
   }
@@ -214,7 +214,7 @@ exports.exposeHome = function exposeHome(home, version = null, currentUser = nul
 
     case semver.satisfies(version, '<=1.0.1'):
     default:
-      home.createdBy = exports.exposeUser(home.createdBy, version, currentUser);
+      home.createdBy = exports.exposeUser(home.createdBy, version, currentUser, app);
       home.updatedBy = exports.getId(home.updatedBy);
   }
 
@@ -222,7 +222,7 @@ exports.exposeHome = function exposeHome(home, version = null, currentUser = nul
 };
 
 // Strip the model from
-exports.exposeUser = function exposeUser(user, version = null, currentUser = null) {
+exports.exposeUser = function exposeUser(user, version = null, currentUser = null, app = null) {
   if (!version || semver.satisfies(version, '~0.0')) {
     version = defaultVersion;
   }
