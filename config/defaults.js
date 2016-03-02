@@ -10,7 +10,15 @@ module.exports = (projectRoot) => {
   let hostname = getEnvironmentValue('HOSTNAME', 'localhost');
   let host = `http://${hostname}:${port}`;
 
-  let databaseOptions = {};
+  let databaseOptions = {
+    db: {
+      native_parser: true
+    },
+    server: {
+      poolSize: 10,
+      auto_reconnect: true
+    }
+  };
   if (getEnvironmentValue('DATABASE_OPTIONS', null)) {
     try {
       databaseOptions = JSON.parse(getEnvironmentValue('DATABASE_OPTIONS', {}));
