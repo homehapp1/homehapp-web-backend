@@ -192,12 +192,6 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
 
   findAll(populateJson = true) {
     this._queries.push((callback) => {
-      let span = this._app.traceAgent.startSpan(
-        'qb:findAll', {
-          modelName: this._modelName
-        }
-      );
-
       let findQuery = {
         deletedAt: null
       };
@@ -225,8 +219,15 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
 
       this._configurePopulationForCursor(cursor);
 
+      let span = this._app.traceAgent.startSpan(
+        'qb:findAll', {
+          modelName: this._modelName
+        }
+      );
+
       cursor.exec((err, models) => {
         this._app.traceAgent.endSpan(span);
+
         if (err) {
           return callback(err);
         }
