@@ -7,7 +7,7 @@ import path from 'path';
 import fs from 'fs';
 import http from 'http';
 
-import express from 'express';
+const express = require('express');
 
 // For Isomorphic React
 import React from 'react';
@@ -64,9 +64,6 @@ exports.run = function(projectName, afterRun) {
 
     if (typeof cloudTraceAgent !== 'undefined') {
       app.traceAgent = cloudTraceAgent;
-      app.traceAgent.addTransactionLabel(
-        'projectName', PROJECT_NAME
-      );
     }
 
     /**
@@ -96,6 +93,13 @@ exports.run = function(projectName, afterRun) {
 
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+
+    app.use((req, res, next) => {
+      app.traceAgent.addTransactionLabel(
+        'projectName', PROJECT_NAME
+      );
+      next();
+    });
 
     function resolveCurrentRevision() {
       return new Promise((resolve) => {

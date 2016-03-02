@@ -1,7 +1,7 @@
 import Bluebird from 'bluebird';
 import BaseAdapter from './BaseAdapter';
 import Helpers from '../Helpers';
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 import async from 'async';
 
 Bluebird.promisifyAll(mongoose);
