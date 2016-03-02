@@ -200,7 +200,20 @@ exports.exposeHome = function exposeHome(home, version = null, currentUser = nul
     return null;
   }
 
-  home = JSON.parse(JSON.stringify(home));
+  let span = null;
+  if (app) {
+    span = app.traceAgent.startSpan(
+      'exposeHome:stringifyHome', {
+      }
+    );
+  }
+
+  //home = JSON.parse(JSON.stringify(home));
+  home = home.toJSON();
+
+  if (app) {
+    app.traceAgent.endSpan(span);
+  }
 
   if (!version || semver.satisfies(version, '~0.0')) {
     version = defaultVersion;
@@ -221,10 +234,22 @@ exports.exposeHome = function exposeHome(home, version = null, currentUser = nul
   return home;
 };
 
+exports.exposeHomeWithApp = function exposeHomeWithApp(app, home, version = null, currentUser = null) {
+  return exports.exposeHome(home, version, currentUser, app);
+}
+
 // Strip the model from
 exports.exposeUser = function exposeUser(user, version = null, currentUser = null, app = null) {
   if (!version || semver.satisfies(version, '~0.0')) {
     version = defaultVersion;
+  }
+
+  let span = null;
+  if (app) {
+    span = app.traceAgent.startSpan(
+      'exposeUser:stringifyUser', {
+      }
+    );
   }
 
   let rval = user;
@@ -265,6 +290,10 @@ exports.exposeUser = function exposeUser(user, version = null, currentUser = nul
 
   if (rval.displayName === user.username || rval.displayName === user.email) {
     rval.displayName = '';
+  }
+
+  if (app) {
+    app.traceAgent.endSpan(span);
   }
 
   return rval;
