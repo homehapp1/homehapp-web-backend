@@ -9,11 +9,20 @@ exports.registerRoutes = (app) => {
 
   let checkAuthenticationNeed = [
     function(req, res, next) {
+      let span = app.traceAgent.startSpan(
+        'checkAuthenticationNeed', {
+          hasToken: (req.headers['x-homehapp-auth-token'] ? 'true' : 'false')
+        }
+      );
+
       if (req.headers['x-homehapp-auth-token']) {
         return app.authenticatedRoute.forEach((handler) => {
+          app.traceAgent.endSpan(span);
           handler(req, res, next);
         });
       }
+
+      app.traceAgent.endSpan(span);
       return next();
     }
   ];
