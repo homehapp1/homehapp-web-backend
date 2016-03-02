@@ -10,6 +10,12 @@ getting them to the development branch.
 
 Make sure you follow the Coding Standard as defined in here: https://github.com/airbnb/javascript
 
+Export following to the terminal where you are running the server:
+
+```sh
+export GOOGLE_APPLICATION_CREDENTIALS=google-service-key.json
+```
+
 ### Loading fixture data to database
 
 To load fixtures to database run:
