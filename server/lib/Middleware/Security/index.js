@@ -91,9 +91,10 @@ exports.configure = function(app, config) {
         if (reason) {
           app.log.info(`API client request denied. Reason: ${reason}`);
           return next(new Forbidden('invalid request'));
-        } else {
-          app.log.info('API client request accepted');
         }
+        //  else {
+        //   app.log.info('API client request accepted');
+        // }
 
         next();
       });
