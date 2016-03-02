@@ -48,7 +48,7 @@ export function register(app, config) {
   });
 
   app.logDevices = function (req, res, next) {
-    debug('device logging performed (not implemented)');
+    // debug('device logging performed (not implemented)');
     next();
   };
 
