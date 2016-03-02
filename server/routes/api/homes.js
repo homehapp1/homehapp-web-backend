@@ -28,7 +28,9 @@ exports.registerRoutes = (app) => {
     agents: {
       select: 'uuid firstname lastname title contactNumber email images'
     },
-    createdBy: {},
+    createdBy: {
+      select: 'uuid _email firstname lastname contact profileImage contactNumber'
+    },
     updatedBy: {}
   };
 
@@ -330,14 +332,14 @@ exports.registerRoutes = (app) => {
     .parseRequestArguments(req)
     .populate(populateAttributes)
     .query(query)
-    .findAll()
+    .findAll(false)
     .fetch()
     .then((result) => {
       app.traceAgent.endSpan(span);
 
       span = app.traceAgent.startSpan(
         'prepareResponse', {
-          itemCount: result.models.count
+          itemCount: result.models.length
         }
       );
 
