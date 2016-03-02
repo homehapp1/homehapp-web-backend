@@ -7,11 +7,11 @@ class QueryBuilder {
     this.app = app;
   }
   forModel(modelName) {
-    let span = this.app.traceAgent.startSpan(
-      'qb:construct', {
-        modelName: modelName
-      }
-    );
+    // let span = this.app.traceAgent.startSpan(
+    //   'qb:construct', {
+    //     modelName: modelName
+    //   }
+    // );
 
     let Klass = null;
 
@@ -24,12 +24,12 @@ class QueryBuilder {
         resolvedClasses[modelName] = Klass;
       } catch (err) {
         console.log(err);
-        this.app.traceAgent.endSpan(span);
+        // this.app.traceAgent.endSpan(span);
         throw new Error(`No Query builder found for model ${modelName}!`);
       }
     }
 
-    this.app.traceAgent.endSpan(span);
+    // this.app.traceAgent.endSpan(span);
     return new Klass(this.app);
   }
   query(modelName) {
