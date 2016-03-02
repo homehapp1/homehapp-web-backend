@@ -2,7 +2,7 @@ import QueryBuilder from '../../lib/QueryBuilder';
 let debug = require('debug')('/api/homes');
 
 import {NotFound, BadRequest} from '../../lib/Errors';
-import {merge, exposeHome} from '../../lib/Helpers';
+import {merge, exposeHome, exposeHomeWithApp} from '../../lib/Helpers';
 
 exports.registerRoutes = (app) => {
   const QB = new QueryBuilder(app);
@@ -40,7 +40,9 @@ exports.registerRoutes = (app) => {
     createdBy: {
       select: 'uuid _email firstname lastname contact profileImage contactNumber'
     },
-    updatedBy: {}
+    updatedBy: {
+      select: 'uuid _email firstname lastname contact profileImage contactNumber'
+    }
   };
 
   let updateHome = function updateHome(user, uuid, data) {
@@ -353,7 +355,8 @@ exports.registerRoutes = (app) => {
       );
 
       let homes = result.models.map((home) => {
-        return exposeHome(home);
+        return home.toJSON();
+        //return exposeHomeWithApp(app, home);
       });
 
       app.traceAgent.endSpan(span);
