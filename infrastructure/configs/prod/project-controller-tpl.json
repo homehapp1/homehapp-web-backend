@@ -35,8 +35,8 @@
             "image": "eu.gcr.io/:PROJECT_ID/:PROJECT_BASE_NAME::REV-:ENV",
             "resources": {
               "limits": {
-                "cpu": "80m",
-                "memory": "400Mi"
+                "cpu": "100m",
+                "memory": "800Mi"
               }
             },
             "ports": [
