@@ -35,7 +35,7 @@
     "marked": "^0.3.5",
     "moment": "2.10.6",
     "moment-timezone": "0.4.1",
-    "mongoose": "4.1.11",
+    "mongoose": "4.4.5",
     "passport": "0.3.0",
     "passport-local": "1.0.0",
     "passport-strategy": "1.0.0",
