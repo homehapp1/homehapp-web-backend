@@ -226,6 +226,7 @@ exports.loadSchemas = function (mongoose, next) {
       updatedAt: this.updatedAt,
       updatedAtTS: this.updatedAtTS
     };
+    return values;
   });
 
   Object.keys(schemas).forEach((name) => {
