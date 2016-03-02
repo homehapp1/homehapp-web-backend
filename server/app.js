@@ -1,3 +1,8 @@
+const cloudTraceAgent = require('@google/cloud-trace').start({
+  projectId: process.env.PROJECT_ID
+  // ,logLevel: 5
+});
+
 import path from 'path';
 import fs from 'fs';
 import http from 'http';
@@ -56,6 +61,13 @@ exports.run = function(projectName, afterRun) {
     app.SOURCE_PATH = SOURCE_PATH;
 
     app.set('trust proxy', 1);
+
+    if (typeof cloudTraceAgent !== 'undefined') {
+      app.traceAgent = cloudTraceAgent;
+      app.traceAgent.addTransactionLabel(
+        'projectName', PROJECT_NAME
+      );
+    }
 
     /**
      * Configure templating if views folder is present

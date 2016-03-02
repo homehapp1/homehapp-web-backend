@@ -5,6 +5,7 @@
   "description": "",
   "author": "Jerry Jalava <jerry@qvik.fi>",
   "dependencies": {
+    "@google/cloud-trace": "^0.3.0",
     "alt": "0.17.4",
     "async": "1.4.2",
     "axios": "0.7.0",
