@@ -315,6 +315,12 @@ exports.registerRoutes = (app) => {
       };
     }
 
+    let span = app.traceAgent.startSpan(
+      'queryHomes', {
+        query: JSON.stringify(query)
+      }
+    );
+
     QB
     .forModel('Home')
     .sort({
@@ -327,9 +333,20 @@ exports.registerRoutes = (app) => {
     .findAll()
     .fetch()
     .then((result) => {
+      app.traceAgent.endSpan(span);
+
+      span = app.traceAgent.startSpan(
+        'prepareResponse', {
+          itemCount: result.models.count
+        }
+      );
+
       let homes = result.models.map((home) => {
         return exposeHome(home);
       });
+
+      app.traceAgent.endSpan(span);
+
       res.json({
         status: 'ok',
         homes: homes
