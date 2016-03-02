@@ -30,7 +30,8 @@ exports.loadSchemas = function (mongoose, next) {
     },
     enabled: {
       type: Boolean,
-      default: true
+      default: true,
+      index: true
     },
     // Details
     title: {
