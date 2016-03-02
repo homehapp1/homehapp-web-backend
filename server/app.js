@@ -64,6 +64,19 @@ exports.run = function(projectName, afterRun) {
 
     if (typeof cloudTraceAgent !== 'undefined') {
       app.traceAgent = cloudTraceAgent;
+    } else {
+      app.traceAgent = {
+        startSpan: function startSpan() { /* name, labels */
+          return null;
+        },
+        endSpan: function endSpan() { /* name, labels */
+        },
+        runInSpan: function runInSpan(name, labels, callback) { /* name, labels, callback */
+          callback();
+        },
+        setTransactionName: function setTransactionName() {}, /* name */
+        addTransactionLabel: function addTransactionLabel() {} /* key, value */
+      };
     }
 
     /**
