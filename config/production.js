@@ -15,20 +15,19 @@ module.exports = function (projectRoot) {
           'mongodb://homehapp:NPUPZZD6Qocrh2o8diDhkXO4KtkXRRmp@mongodb2-hhmdb-2'
         ],
         options: {
-          debug: true,
           db: {
             native_parser: true
           },
           server: {
-            poolSize: 30,
+            poolSize: 100,
             auto_reconnect: true
           },
           replset: {
             rs_name: 'rs0',
-            poolSize: 30,
-            socketOptions: {
-              keepAlive: 1200
-            }
+            poolSize: 100
+            // ,socketOptions: {
+            //   keepAlive: 1200
+            // }
           }
         }
       }
