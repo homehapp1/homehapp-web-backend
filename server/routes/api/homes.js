@@ -361,8 +361,9 @@ exports.registerRoutes = (app) => {
       );
 
       let homes = result.models.map((home) => {
-        return home.toJSON();
-        //return exposeHomeWithApp(app, home);
+        // return home.toJSON();
+        return exposeHome(app, home);
+        // return exposeHomeWithApp(app, home);
       });
 
       app.traceAgent.endSpan(span);
