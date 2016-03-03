@@ -39,7 +39,7 @@ class MongooseAdapter extends BaseAdapter {
       }
 
       let uri = this.config.uri;
-      if (require('util').isArray(uri)) {
+      if (Array.isArray(uri)) {
         uri = uri.join(',');
       }
 
