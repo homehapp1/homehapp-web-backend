@@ -362,7 +362,7 @@ exports.registerRoutes = (app) => {
 
       let homes = result.models.map((home) => {
         // return home.toJSON();
-        return exposeHome(app, home);
+        return exposeHome(home);
         // return exposeHomeWithApp(app, home);
       });
 
