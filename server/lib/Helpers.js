@@ -224,7 +224,6 @@ exports.exposeHome = function exposeHome(home, version = null, currentUser = nul
       home.createdBy = exports.getId(home.createdBy);
       home.updatedBy = exports.getId(home.updatedBy);
       break;
-
     case semver.satisfies(version, '<=1.0.1'):
     default:
       home.createdBy = exports.exposeUser(home.createdBy, version, currentUser, app);
@@ -236,7 +235,7 @@ exports.exposeHome = function exposeHome(home, version = null, currentUser = nul
 
 exports.exposeHomeWithApp = function exposeHomeWithApp(app, home, version = null, currentUser = null) {
   return exports.exposeHome(home, version, currentUser, app);
-}
+};
 
 // Strip the model from
 exports.exposeUser = function exposeUser(user, version = null, currentUser = null, app = null) {
