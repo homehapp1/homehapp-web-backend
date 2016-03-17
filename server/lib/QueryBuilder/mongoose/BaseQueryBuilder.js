@@ -341,6 +341,56 @@ export default class BaseQueryBuilder extends CommonQueryBuilder {
     return this;
   }
 
+  findDeleted(since) {
+    this._queries.push((callback) => {
+      let findQuery = {
+        deletedAt: {
+          $ne: null
+        }
+      };
+      if (since) {
+        findQuery.deletedAt = {
+          $gte: since
+        };
+      }
+
+      let cursor = this.Model.find(findQuery);
+      if (this._opts.count) {
+        cursor = this.Model.count(findQuery);
+      }
+
+      if (this._opts.limit) {
+        cursor.limit(this._opts.limit);
+      }
+      if (this._opts.sort) {
+        cursor.sort(this._opts.sort);
+      }
+      if (this._opts.skip) {
+        cursor.skip(this._opts.skip);
+      }
+      if (this._opts.fields) {
+        cursor.select(this._opts.fields);
+      }
+
+      cursor.exec((err, models) => {
+        if (err) {
+          return callback(err);
+        }
+
+        if (this._opts.count) {
+          this.result.count = models;
+          return callback();
+        }
+
+        this.result.models = models;
+
+        callback();
+      });
+    });
+
+    return this;
+  }
+
   _save() {
     return new Promise((resolve, reject) => {
       async.series(this._queries, (err) => {

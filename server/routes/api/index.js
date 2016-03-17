@@ -1,4 +1,11 @@
+import QueryBuilder from '../../lib/QueryBuilder';
+
 exports.registerRoutes = (app) => {
+  const QB = new QueryBuilder(app);
+  // Pre load QBs
+  QB.forModel('Home');
+  QB.forModel('Neighborhood');
+
   /**
    * @apiDefine MobileRequestHeaders
    * @apiVersion 1.0.1
@@ -56,4 +63,34 @@ exports.registerRoutes = (app) => {
 
   // perform device info logging
   app.all('/api/*', app.logDevices);
+
+  app.get('/api/deleted/:model', app.authenticatedRoute, function(req, res, next) {
+    let modelName = null;
+    switch (req.params.model) {
+      case 'home':
+        modelName = 'Home';
+        break;
+      case 'neighborhood':
+        modelName = 'Neighborhood';
+        break;
+      default:
+        modelName = 'Home';
+    }
+
+    QB
+    .forModel(modelName)
+    .select('uuid')
+    .findDeleted(req.query.since)
+    .fetch()
+    .then((result) => {
+      let ids = result.models.map((model) => {
+        return model.uuid;
+      });
+      res.json({
+        status: 'ok',
+        items: ids
+      });
+    })
+    .catch(next);
+  });
 };
