@@ -64,7 +64,7 @@ exports.registerRoutes = (app) => {
   // perform device info logging
   app.all('/api/*', app.logDevices);
 
-  app.get('/api/deleted/:model', app.authenticatedRoute, function(req, res, next) {
+  app.get('/api/deleted/:model', function(req, res, next) {
     let modelName = null;
     switch (req.params.model) {
       case 'home':
