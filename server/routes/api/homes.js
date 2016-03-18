@@ -321,6 +321,7 @@ exports.registerRoutes = (app) => {
       }
     };
 
+    // Do not return users own data, as the mobile client should have the master data
     if (req.user) {
       query.createdBy = {
         $ne: req.user.id
