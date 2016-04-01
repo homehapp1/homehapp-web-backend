@@ -179,6 +179,18 @@ exports.registerRoutes = (app) => {
       let modelJson = model.toJSON();
       delete modelJson.updatedBy;
       delete modelJson.createdBy;
+
+      QB
+      .forModel('Home')
+      .query({
+        createdBy: req.user
+      })
+      .findOne()
+      .update({})
+      .catch((err) => {
+        app.log.error(`Unable to update users home: ${err.message}`, err);
+      });
+
       res.json({
         status: 'ok',
         neighborhood: modelJson
