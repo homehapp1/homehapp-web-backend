@@ -65,7 +65,7 @@ function updateCluster() {
   local SOURCE_CONFIG="$CWD/infrastructure/configs/$ENV/project-controller-tpl.json"
   local TARGET_CONFIG="$CWD/tmp/$PNAME-controller.json"
   local TMP_FILE="/tmp/$PNAME-controller.json"
-  local CURRENT_CONTROLLER=`kubectl get rc | grep $PROJECT_ID | awk '{print $1}' | grep "$PNAME-controller"`
+  local CURRENT_CONTROLLER=`kubectl get rc | awk '{print $1}' | grep "$PNAME-controller"`
 
   sed "s/:PROJECT_NAME/$PNAME/g" $SOURCE_CONFIG > $TARGET_CONFIG
   sed "s/:PROJECT_BASE_NAME/$PBNAME/g" $TARGET_CONFIG > $TMP_FILE && mv $TMP_FILE $TARGET_CONFIG
@@ -90,7 +90,7 @@ function updateProxyCluster() {
   local TARGET_CONFIG="$CWD/tmp/$PNAME-proxy-controller.json"
   local TMP_FILE="/tmp/$PNAME-proxy-controller.json"
   local UC_PNAME=`echo "${PBNAME}_${ENV}" | awk '{print toupper($0)}'`
-  local CURRENT_CONTROLLER=`kubectl get rc | grep $PROJECT_ID | awk '{print $1}' | grep "$PNAME-proxy-controller"`
+  local CURRENT_CONTROLLER=`kubectl get rc | awk '{print $1}' | grep "$PNAME-proxy-controller"`
 
   local SERVICE_HOST="${UC_PNAME}_SERVICE_HOST"
   local SERVICE_PORT="${UC_PNAME}_SERVICE_PORT_ENDPOINT"
